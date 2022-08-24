@@ -22,8 +22,8 @@ export default function UserList() {
       renderCell: (params) => {
         return (
           <div className="userListUser">
-            <img className="userListImg" src={params.row.avatar} alt="" />
-            {params.row.username}
+            <img className="userListImg" src='./' alt="" />
+            hihi
           </div>
         );
       },
@@ -46,7 +46,7 @@ export default function UserList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/user/" + params.row.id}>
+            <Link to={"/user/" + '1'}>
               <button className="userListEdit">Edit</button>
             </Link>
             <DeleteIcon
@@ -58,7 +58,6 @@ export default function UserList() {
       },
     },
   ];
-
   return (
     <div className="userList">
       <DataGrid

@@ -13,8 +13,7 @@ export default function User() {
   const [user, setUser] = React.useState({});
   console.log(userId);
   useEffect(() => {
-     //call api  here
-  
+    
   }, [])
   return (
     <div className="user">
@@ -25,7 +24,7 @@ export default function User() {
         <div className="userShow">
         <div className="userShowTop">
             <img
-              src={user.image}
+              // src={user.image}
               alt=""
               className="userShowImg"
             />

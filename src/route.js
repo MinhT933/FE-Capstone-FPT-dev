@@ -1,17 +1,17 @@
 
-import Home from './pages/home/home';
+import Home from './pages/home/home.jsx';
 import UserList from './pages/userList/UserList';
 const routesHome = [
 {
     path: "/",
-    exact: true,
+    index: true,
     component: Home,
 
 },
 {
     path: "/users",
-    exact: false,
+    index: false,
     component: UserList,
 },
 ];
-export default { routesHome };
+export default routesHome;
