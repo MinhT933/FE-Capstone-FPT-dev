@@ -29,7 +29,7 @@ const rows = [
   { id: 4, Name: "Cá chiên", restaurant: "Biển Khơi", price: 130000 },
   { id: 5, Name: "Cá chiên", restaurant: "Biển Khơi", price: 130000 },
   { id: 6, Name: "Cá chiên", restaurant: "Biển Khơi", price: 130000 },
-  { id: 7, Name: "Cá chiên", restaurant: "Biển Khơi", price: 130000 },
+  // { id: 7, Name: "Cá chiên", restaurant: "Biển Khơi", price: 130000 },
 ];
 
 export default function ProductList() {
