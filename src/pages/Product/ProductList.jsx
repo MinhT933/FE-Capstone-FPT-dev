@@ -1,4 +1,4 @@
-import "./userList.css";
+
 import { DataGrid} from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userRows } from "../../dummyData";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 
-export default function UserList() {
+export default function ProductList() {
   const [data, setData] = useState(userRows);
 
   const handleDelete = (id) => {
@@ -22,16 +22,16 @@ export default function UserList() {
       renderCell: (params) => {
         return (
           <div className="userListUser">
-            <img className="userListImg" src="https://lh3.googleusercontent.com/pw/AL9nZEW3KGj4QJKIEhFlgC5T4Pdwv2AuWVfEJ4qmomgsGIBi1k6mcibWxv3t1sZyu-Z36NzEa35K9s4InDovIYOeMqo6LYYXuvIiCJ-OH1Ilf4YFlj0iRIHDDLcJypkE08JqNqA4gSSPGEeWFd77MLxO_21Z=w447-h649-no?authuser=0" alt="" />
-             Phạm Đan Quỳnh
+            <img className="userListImg" src="" alt="" />
+             Package
           </div>
         );
       },
     },
-    { field: "email", headerName: "Email", width: 200 },
+    { field: "email", headerName: "Nhà Hàng", width: 200 },
     {
-      field: "Phone",
-      headerName: "Liên hệ",
+      field: "price",
+      headerName: "Giá",
       width: 160,
     },
     {

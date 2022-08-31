@@ -1,90 +1,70 @@
 import "./sidebar.css";
 
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import FoodBankIcon from "@mui/icons-material/FoodBank";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import PeopleIcon from "@mui/icons-material/People";
+import SellIcon from "@mui/icons-material/Sell";
 
 export default function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Dashboard</h3>
+          <h3 className="sidebarTitle">Quản Lí Kho</h3>
           <ul className="sidebarList">
-            <Link to="/" className="link">
+            <NavLink
+              style={(isActive) => ({
+                color: isActive ? "black" : "black",
+              })}
+              to="/product"
+              className="link"
+            >
               <li className="sidebarList">
-                {/* <LineStyle className="sidebarIcon" /> */}
-                Home
+                <FoodBankIcon className="sidebarIcon" />
+                Sản Phẩm
               </li>
-            </Link>
-            <li className="sidebarListItem">
-              {/* <Timeline className="sidebarIcon" /> */}
-              Analytics
-            </li>
-            <Link to = "/TravelTour" className="link">
-            <li className="sidebarListItem">
-            {/* <DirectionsWalk className="sidebarIcon" /> */}
-            tour
-          </li>
-            </Link>
+            </NavLink>
+            <NavLink
+              style={(isActive) => ({
+                color: isActive ? "black" : "black",
+              })}
+              to="/"
+              className="link"
+            >
+              <li className="sidebarListItem">
+                <InsertDriveFileIcon className="sidebarIcon" />
+                Đơn Hàng
+              </li>
+            </NavLink>
           </ul>
           <div className="sidebarMenu">
-            <h3 className="sidebarTitle">Quick Menu</h3>
+            <h3 className="sidebarTitle">Quản lí người dùng</h3>
             <ul className="sidebarList">
-              <Link to="/users" className="link">
+              <NavLink
+                style={(isActive) => ({
+                  color: isActive ? "black" : "black",
+                })}
+                to="/users"
+                className="link"
+              >
                 <li className="sidebarListItem">
-                  {/* <PermIdentity className="sidebarIcon" /> */}
-                  Users
+                  <PeopleIcon className="sidebarIcon" />
+                  Người Mua
                 </li>
-              </Link>
-              <Link to="/Tour" className="link">
-              <li className="sidebarListItem">
-                {/* <AccountCircle className="sidebarIcon" /> */}
-                Tourguide
-              </li>
-              </Link>
-             <Link to="/Booking" className="link">
-             <li className="sidebarListItem">
-                {/* <AttachMoney className="sidebarIcon" /> */}
-                Booking
-              </li>
-             </Link>
-              <li className="sidebarListItem">
-                {/* <BarChart className="sidebarIcon" /> */}
-                Reports
-              </li>
-            </ul>
-          </div>
-          <div className="sidebarMenu">
-            <h3 className="sidebarTitle">Notifications</h3>
-            <ul className="sidebarList">
-              <li className="sidebarListItem">
-                {/* <MailOutline className="sidebarIcon" /> */}
-                Mail
-              </li>
-              <li className="sidebarListItem">
-                {/* <DynamicFeed className="sidebarIcon" /> */}
-                Feedback
-              </li>
-              <li className="sidebarListItem">
-                {/* <ChatBubbleOutline className="sidebarIcon" /> */}
-                Messages
-              </li>
-            </ul>
-          </div>
-          <div className="sidebarMenu">
-            <h3 className="sidebarTitle">Staff</h3>
-            <ul className="sidebarList">
-              <li className="sidebarListItem">
-                {/* <WorkOutline className="sidebarIcon" /> */}
-                Manage
-              </li>
-              <li className="sidebarListItem">
-                {/* <Timeline className="sidebarIcon" /> */}
-                Analytics
-              </li>
-              <li className="sidebarListItem">
-                {/* <Report className="sidebarIcon" /> */}
-                Reports
-              </li>
+              </NavLink>
+              <NavLink
+                style={(isActive) => ({
+                  color: isActive ? "black" : "black",
+                })}
+                to="/"
+                className="link"
+              >
+                <li className="sidebarListItem">
+                  <SellIcon className="sidebarIcon" />
+                  Người Bán
+                </li>
+              </NavLink>
             </ul>
           </div>
         </div>

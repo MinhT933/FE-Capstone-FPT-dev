@@ -13,12 +13,6 @@ function App() {
       return routes.map((item, index) => {
         const Component = item.component;
         return (
-          // <HomeTemplate
-          //   key={index}
-          //   exact={item.exact}
-          //   path={item.path}
-          //   Component={item.component}
-          // />
           <Route
             path={item.path}
             key={index}
@@ -37,12 +31,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         {showMenuHome(routesHome)}
-        {/* <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
-          <Route path="user" element={<UserList />}>
-            <Route path=":userID" element={<User />} />
-          </Route>
-        </Route> */}
       </Routes>
     </BrowserRouter>
   );

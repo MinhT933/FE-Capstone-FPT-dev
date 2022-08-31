@@ -1,9 +1,9 @@
 .home{
     flex: 4;
-    
+  
 }
 
 .homeWidgets{
-    display: flex;
+    display: inline-block;
     margin: 20px;
 }

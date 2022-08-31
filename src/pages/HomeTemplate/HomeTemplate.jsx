@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route } from "react-router-dom";
 import Topbar from './../../components/topbar/Topbar';
 import Sidebar from './../../components/sidebar/Sidebar';
+import './HomeTemplate.css'
 
 export const  HomeLayout = ({children}) => {
   console.log(children);
@@ -16,21 +16,3 @@ export const  HomeLayout = ({children}) => {
     );
 };
 
-// export default function HomeTemplate({ Component, ...props }) {
-//     return (
-//       <Route
-//         {...props}
-//         render={(propsComponent) => {
-//             if (true) {
-//                 return (
-//                     <HomeLayout>
-//                       <Component {...propsComponent} />
-//                     </HomeLayout>
-//                   )
-//             }else{
-//               // something went wrong 
-//             }
-//         }}
-//       />
-//     );
-//   }
