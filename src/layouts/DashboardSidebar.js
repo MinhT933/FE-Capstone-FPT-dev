@@ -66,6 +66,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         <Logo />
+        <h1>Admin-Mesu</h1>
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -92,22 +93,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
           <Box
             component="img"
-            src="/static/illustrations/illustration_avatar.png"
+            src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t39.30808-6/302918650_3266017480383457_2186236725953791994_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=730e14&_nc_ohc=Tp-EINlGlcIAX-yq8kj&_nc_ht=scontent.fsgn2-5.fna&oh=00_AT9wnAyZ5meOWF3OoSNdddep9JYEqdLfy9gzOTd7bexIiw&oe=631AD9CD"
             sx={{ width: 100, position: 'absolute', top: -50 }}
           />
-
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography gutterBottom variant="h6">
-              Get more?
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              From only $69
-            </Typography>
-          </Box>
-
-          <Button href="https://material-ui.com/store/items/minimal-dashboard/" target="_blank" variant="contained">
-            Upgrade to Pro
-          </Button>
         </Stack>
       </Box>
     </Scrollbar>

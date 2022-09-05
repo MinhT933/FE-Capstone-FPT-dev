@@ -32,17 +32,17 @@ const navConfig = [
   },
   {
     title: 'login',
-    path: '/login',
+    path: '/dashboard/login',
     icon: getIcon('eva:lock-fill'),
   },
   {
     title: 'register',
-    path: '/register',
+    path: '/dashboard/register',
     icon: getIcon('eva:person-add-fill'),
   },
   {
     title: 'Not found',
-    path: '/404',
+    path: '/dashboard/404',
     icon: getIcon('eva:alert-triangle-fill'),
   },
 ];

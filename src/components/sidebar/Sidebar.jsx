@@ -63,7 +63,7 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         <Logo />
-        <h1> Mesu-Admin </h1>
+        
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -90,7 +90,8 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
         <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
           <Box
             component="img"
-            src="/static/illustrations/illustration_avatar.png"
+            src="
+            "
             sx={{ width: 100, position: 'absolute', top: -50 }}
           />
         </Stack>

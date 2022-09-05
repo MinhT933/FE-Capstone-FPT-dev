@@ -10,7 +10,6 @@ export const  HomeLayout = ({children}) => {
             <div className="container"  >
                 <Sidebar/>
                 {children}
-                <h1>heheh</h1>
             </div>
         </React.Fragment>
     );
