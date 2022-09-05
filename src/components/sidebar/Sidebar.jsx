@@ -1,145 +1,132 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Toolbar from "@mui/material/Toolbar";
-import LocalDiningIcon from "@mui/icons-material/LocalDining";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import PersonIcon from "@mui/icons-material/Person";
-import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
-import HelpIcon from "@mui/icons-material/Help";
-import { NavLink } from 'react-router-dom';
-const drawerWidth = 200;
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+// material
+import { styled } from '@mui/material/styles';
+import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
+// mock
+import account from '../../_mock/account';
+// hooks
+import useResponsive from '../../hooks/useResponsive';
+// components
+import Logo from '../Logo';
+import Scrollbar from '../../components/hook-form/Scrollbar';
+import NavSection from '../../components/hook-form/NavSection';
+//
+import navConfig from './NavConfig';
 
-function Sidebar(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+// ----------------------------------------------------------------------
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-  const drawer = (
-    <div>
-      <Divider />
-      <List>
-        <ListItem>
-          <NavLink to='/product/'
-           style={(isActive) => ({
-            color: isActive ? "black" : "black",textDecoration: 'none'
-          })}>
-          <ListItemButton>
-            <ListItemIcon sx={{ fontFamily: "arial" }}>
-              <LocalDiningIcon sx={{ mr: "20px" }} />
-              Sản Phẩm
-            </ListItemIcon>
-          </ListItemButton>
-          </NavLink>
-        </ListItem>
-        <ListItem>
-          <ListItemButton>
-            <ListItemIcon sx={{ fontFamily: "arial" }}>
-              <InsertDriveFileIcon sx={{ mr: "20px" }} />
-              Đơn Hàng
-            </ListItemIcon>
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <NavLink to ='/users/'
-          style={(isActive) => ({
-            color: isActive ? "black" : "black",textDecoration: 'none'
-          })} >
-          <ListItemButton>
-            <ListItemIcon sx={{ fontFamily: "arial" }}>
-              <PersonIcon sx={{ mr: "20px" }} />
-              Người Mua
-            </ListItemIcon>
-          </ListItemButton>
-          </NavLink>
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem>
-          <ListItemButton>
-            <ListItemIcon sx={{ fontFamily: "arial" }}>
-              <QuestionAnswerIcon sx={{ mr: "20px" }} />
-              Phản Hồi
-            </ListItemIcon>
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <ListItemButton>
-            <ListItemIcon sx={{ fontFamily: "arial" }}>
-              <HelpIcon sx={{ mr: "20px" }} />
-              Trợ Giúp
-            </ListItemIcon>
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </div>
-  );
+const DRAWER_WIDTH = 280;
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              pt:"100px"
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              mt:"65px"
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-    </Box>
-  );
-}
+const RootStyle = styled('div')(({ theme }) => ({
+  [theme.breakpoints.up('lg')]: {
+    flexShrink: 0,
+    width: DRAWER_WIDTH,
+  },
+}));
 
+const AccountStyle = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(2, 2.5),
+  borderRadius: Number(theme.shape.borderRadius) * 1.5,
+  backgroundColor: theme.palette.grey[500_12],
+}));
+
+// ----------------------------------------------------------------------
+
+/// hooks
 Sidebar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
+  isOpenSidebar: PropTypes.bool,
+  onCloseSidebar: PropTypes.func,
 };
 
-export default Sidebar;
+export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
+  const { pathname } = useLocation();
+
+  const isDesktop = useResponsive('up', 'lg');
+
+  useEffect(() => {
+    if (isOpenSidebar) {
+      onCloseSidebar();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  const renderContent = (
+    <Scrollbar
+      sx={{
+        height: 1,
+        '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
+      }}
+    >
+      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
+        <Logo />
+        <h1> Mesu-Admin </h1>
+      </Box>
+
+      <Box sx={{ mb: 5, mx: 2.5 }}>
+        <Link underline="none" component={RouterLink} to="#">
+          <AccountStyle>
+            <Avatar src={account.photoURL} alt="photoURL" />
+            <Box sx={{ ml: 2 }}>
+              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+                {account.displayName}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {account.role}
+              </Typography>
+            </Box>
+          </AccountStyle>
+        </Link>
+      </Box>
+
+      <NavSection navConfig={navConfig} />
+
+      <Box sx={{ flexGrow: 1 }} />
+
+      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+        <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
+          <Box
+            component="img"
+            src="/static/illustrations/illustration_avatar.png"
+            sx={{ width: 100, position: 'absolute', top: -50 }}
+          />
+        </Stack>
+      </Box>
+    </Scrollbar>
+  );
+
+  return (
+    <RootStyle>
+      {!isDesktop && (
+        <Drawer
+          open={isOpenSidebar}
+          onClose={onCloseSidebar}
+          PaperProps={{
+            sx: { width: DRAWER_WIDTH },
+          }}
+        >
+          {renderContent}
+        </Drawer>
+      )}
+
+      {isDesktop && (
+        <Drawer
+          open
+          variant="persistent"
+          PaperProps={{
+            sx: {
+              width: DRAWER_WIDTH,
+              bgcolor: 'background.default',
+              borderRightStyle: 'dashed',
+            },
+          }}
+        >
+          {renderContent}
+        </Drawer>
+      )}
+    </RootStyle>
+  );
+}
