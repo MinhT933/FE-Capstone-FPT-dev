@@ -6,7 +6,7 @@ export default function Home() {
     <div className="home">
       <div className="homeWidgets">
          <h1>heheheh</h1>
-         <h2>cádasdasdasd</h2>
+         <h2>123</h2>
       </div>
     </div>
   );
