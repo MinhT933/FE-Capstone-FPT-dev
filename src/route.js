@@ -9,11 +9,11 @@ import DashboardLayout from './layouts/DashboardLayout.js';
 
 export default function Router(){
     return useRoutes([
-        {
-            path: '/',
+        // {
+        //     path: '/',
         
-            children:[{path:'/', element:<Home/>}]
-        },
+        //     children:[{path:'/', element:<Home/>}]
+        // },
         {
           path: '/dashboard',
           element: <DashboardLayout />,
