@@ -29,7 +29,7 @@ export default function Page404() {
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Cái này mị chưa phát triển kịp á, zui lòng đi tới tính năng khác trong thời gian tới á
+            Cái này mị chưa phát triển kịp á, Mị sẽ cố gắng thêm zui lòng đi tới tính năng khác 
             Cảm ơn mấy đứa đã ghé thăm web của mị
 
           </Typography>
