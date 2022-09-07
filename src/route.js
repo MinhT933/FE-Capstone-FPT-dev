@@ -34,14 +34,6 @@ export default function Router(){
           ],
         },
         { path: "*", element: <Navigate to="/404" replace /> },
-        // {
-        //   path:'/dashboard/package',
-        //   element:<PackageFood/>,
-        //   children:[
-        //     {
-        //       path:'newpackage',element:<newPackage/>
-        //     }
-        //   ]
-        // }
+        
       ]);
 }
