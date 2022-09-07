@@ -57,15 +57,15 @@ export default function NewUserPopup(props) {
           <PageHeader
             title="New User"
             subTitle="Form design with validation"
-            icon={<PeopleAltIcon fontSize="large" />}
+            icon={<PeopleAltIcon fontSize="smail" />}
           />
         </DialogTitle>
 
         <DialogContent>
-          <TForm>
+         
             <Grid
               container
-              rowSpacing={2}
+              rowSpacing={4}
               columnSpacing={{ xs: 1, sm: 3, md: 2 }}
             >
               <Grid item xs={6}>
@@ -101,7 +101,6 @@ export default function NewUserPopup(props) {
                   options={UpdateService.getOptions()}
                 />
               </Grid>
-
               <Grid item xs={6}>
                 <Controls.RadioGroup
                   name="gender"
@@ -112,8 +111,8 @@ export default function NewUserPopup(props) {
                 />
               </Grid>
             </Grid>
-          </TForm>
-          <div style={{ marginLeft: "250px", marginTop: "20px" }}>
+          
+          <div style={{ marginLeft: "240px", marginTop: "20px" }}>
             <Stack spacing={2} direction="row" width="200px">
               <ColorButton variant="contained">Create </ColorButton>
             </Stack>
