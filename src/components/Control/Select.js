@@ -11,7 +11,7 @@ export default function Select(props) {
   const { name, label, value, error = null, onChange, options } = props;
   console.log(options);
   return (
-    <FormControl fullWidth sx={{ m: 1, maxWidth: 225, size: "small" }}>
+    <FormControl fullWidth sx={{  maxWidth: 225, size: "small" }}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         labelId="demo-simple-select-label"

@@ -22,7 +22,7 @@ export default function UseCreateForm(initialValue,validateOnChange = false, val
 const useStyles = makeStyles((theme) => ({
   root: {
     "&.MuiFormControl-form": {
-      witdh: "80%",
+      witdh: "90%",
      
     },
   },

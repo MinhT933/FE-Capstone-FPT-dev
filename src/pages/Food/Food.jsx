@@ -2,6 +2,7 @@ import { filter } from "lodash";
 import { sentenceCase } from "change-case";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { Icon } from '@iconify/react';
 // material
 import {
   Card,
@@ -19,28 +20,33 @@ import {
   TablePagination,
 } from "@mui/material";
 // components
-import Label from "../../components/label/label";
-import Scrollbar from "../../components/hook-form/Scrollbar";
-import Iconify from "../../components/hook-form/Iconify";
-import SearchNotFound from "../../components/topbar/SearchNotFound";
-import Page from "../../components/setPage/Page";
+import Label from "./../../components/label/label";
+import Scrollbar from "./../../components/hook-form/Scrollbar";
+import Iconify from "./../../components/hook-form/Iconify";
+import SearchNotFound from "./../../components/topbar/SearchNotFound";
+import Page from "./../../components/setPage/Page";
 import {
   UserListHead,
   UserListToolbar,
   UserMoreMenu,
 } from "../../sections/@dashboard/user";
 // mock
-import USERLIST from "../../_mock/usersample";
+import FOODLIST from "../../_mock/foodsample";
 import NewUserPopup from "../../components/PopUp/NewUserPopup";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "name", label: "Name", alignRight: false },
-  { id: "company", label: "Company", alignRight: false },
-  { id: "role", label: "Role", alignRight: false },
-  { id: "isVerified", label: "Verified", alignRight: false },
+  { id: "name", label: "Tên", alignRight: false },
+  { id: "price", label: "Giá", alignRight: false },
+  { id: "type", label: "phân loại", alignRight: false },
+  
+  { id: "createdate", label: "Ngày thêm", alignRight: false },
+  { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
+  { id: "description", label: "Mô tả", alignRight: false },
+  
+  
   { id: "" },
 ];
 
@@ -78,7 +84,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function Food() {
   const[OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -100,7 +106,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = FOODLIST.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -139,10 +145,10 @@ export default function UserList() {
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
 
   const filteredUsers = applySortFilter(
-    USERLIST,
+    FOODLIST,
     getComparator(order, orderBy),
     filterName
   );
@@ -150,7 +156,7 @@ export default function UserList() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="User">
+    <Page title="food">
       <Container>
         <Stack
           direction="row"
@@ -159,7 +165,7 @@ export default function UserList() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            {/* User */}
+          {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
           <Button
             variant="contained"
@@ -187,13 +193,13 @@ export default function UserList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 1200 }}>
               <Table>
                 <UserListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={FOODLIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -205,11 +211,14 @@ export default function UserList() {
                       const {
                         id,
                         name,
-                        role,
+                        price,
+                        description,
+                        createDate,
+                        updateDate,
                         status,
-                        company,
-                        avatarUrl,
-                        isVerified,
+                        datatype,
+                        avatarUrl
+
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -240,21 +249,22 @@ export default function UserList() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">
-                            {isVerified ? "Yes" : "No"}
-                          </TableCell>
+                       
+                          <TableCell align="left">{price}</TableCell>
+                          <TableCell align="left">{datatype}</TableCell>
+                          <TableCell align="left">{createDate}</TableCell>
+                          <TableCell align="left">{updateDate}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={
-                                (status === "banned" && "error") || "success"
+                                (status === "active" && "error") || "success"
                               }
                             >
                               { (status)}
                             </Label>
                           </TableCell>
+                          <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="right">
                             <UserMoreMenu />
@@ -285,7 +295,7 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={USERLIST.length}
+            count={FOODLIST.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

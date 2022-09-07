@@ -1,7 +1,8 @@
 import { filter } from "lodash";
-import { sentenceCase } from "change-case";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, NavLink } from "react-router-dom";
+// import { Icon } from '@iconify/react';
+// import { DataGrid } from '@mui/x-data-grid';
 // material
 import {
   Card,
@@ -30,16 +31,26 @@ import {
   UserMoreMenu,
 } from "../../sections/@dashboard/user";
 // mock
-import USERLIST from "../../_mock/usersample";
+import PACKAGELIST from "../../_mock/packagsample";
 import NewUserPopup from "../../components/PopUp/NewUserPopup";
+
+//Link routers
+
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "name", label: "Name", alignRight: false },
-  { id: "company", label: "Company", alignRight: false },
-  { id: "role", label: "Role", alignRight: false },
-  { id: "isVerified", label: "Verified", alignRight: false },
+  { id: "name", label: "Tên", alignRight: false },
+  { id: "price", label: "Giá", alignRight: false },
+  { id: "type", label: "phân loại", alignRight: false },
+  { id: "createdate", label: "Ngày thêm", alignRight: false },
+  { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
+  { id: "startSale", label: "ngày bán", alignRight: false },
+  { id: "endSale", label: "Không Bán", alignRight: false },
+  { id: "totalMeal", label: "Tổng buổi ăn", alignRight: false },
+  { id: "totalfood", label: "Tổng số thức ăn", alignRight: false },
+
+  { id: "areaSale", label: "địa điểm bán", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "" },
 ];
@@ -47,6 +58,7 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
+  console.log(PACKAGELIST);
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -78,8 +90,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ProductList() {
-  const[OpenPopUp, SetOpenPopUp] = useState(false);
+export default function PackageFood() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -100,7 +111,7 @@ export default function ProductList() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = PACKAGELIST.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -139,10 +150,10 @@ export default function ProductList() {
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PACKAGELIST.length) : 0;
 
   const filteredUsers = applySortFilter(
-    USERLIST,
+    PACKAGELIST,
     getComparator(order, orderBy),
     filterName
   );
@@ -150,7 +161,7 @@ export default function ProductList() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="User">
+    <Page title="package">
       <Container>
         <Stack
           direction="row"
@@ -159,24 +170,18 @@ export default function ProductList() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            User
+            {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={
-              <Iconify
-                icon="eva:plus-fill"
-               
-              />
-            }
-            onClick={() => {
-              SetOpenPopUp(true);
-            }}
-          >
-            New User
-          </Button>
+         
+            <Button
+              variant="contained"
+              component={RouterLink}
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              to='/dashboard/newpackage'
+            >
+              Thêm Gói Ăn
+            </Button>
+        
         </Stack>
 
         <Card>
@@ -187,17 +192,18 @@ export default function ProductList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 1800 }}>
               <Table>
                 <UserListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={PACKAGELIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
+
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -205,11 +211,18 @@ export default function ProductList() {
                       const {
                         id,
                         name,
-                        role,
+                        price,
+                        description,
+                        createDate,
+                        updateDate,
+                        startSale,
+                        endSale,
+                        totalMeal,
+                        totalfood,
+                        areaSale,
                         status,
-                        company,
+                        datatype,
                         avatarUrl,
-                        isVerified,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -240,21 +253,26 @@ export default function ProductList() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">
-                            {isVerified ? "Yes" : "No"}
-                          </TableCell>
+                          <TableCell align="left">{price}</TableCell>
+                          <TableCell align="left">{datatype}</TableCell>
+                          <TableCell align="left">{createDate}</TableCell>
+                          <TableCell align="left">{updateDate}</TableCell>
+                          <TableCell align="left">{startSale}</TableCell>
+                          <TableCell align="left">{endSale}</TableCell>
+                          <TableCell align="left">{totalMeal}</TableCell>
+                          <TableCell align="left">{totalfood}</TableCell>
+                          <TableCell align="left">{areaSale}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={
-                                (status === "banned" && "error") || "success"
+                                (status === "active" && "error") || "success"
                               }
                             >
-                              {sentenceCase(status)}
+                              {status}
                             </Label>
                           </TableCell>
+                          <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="right">
                             <UserMoreMenu />
@@ -285,7 +303,7 @@ export default function ProductList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={USERLIST.length}
+            count={PACKAGELIST.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -293,7 +311,7 @@ export default function ProductList() {
           />
         </Card>
       </Container>
-      <NewUserPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewUserPopup>
+      
     </Page>
   );
 }
