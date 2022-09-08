@@ -98,6 +98,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           />
         </Stack>
       </Box>
+      
     </Scrollbar>
   );
 

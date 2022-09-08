@@ -48,7 +48,7 @@ function NavItem({ item, active }) {
   };
 
   const activeRootStyle = {
-    color: '#5dc9bc',
+    color: '#FFCC33',
     fontWeight: 'fontWeightMedium',
     bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
   };

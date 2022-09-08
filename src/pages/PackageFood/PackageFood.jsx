@@ -1,6 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink, NavLink } from "react-router-dom";
+import { sentenceCase } from 'change-case';
 // import { Icon } from '@iconify/react';
 // import { DataGrid } from '@mui/x-data-grid';
 // material
@@ -32,7 +33,7 @@ import {
 } from "../../sections/@dashboard/user";
 // mock
 import PACKAGELIST from "../../_mock/packagsample";
-import NewUserPopup from "../../components/PopUp/NewUserPopup";
+
 
 //Link routers
 
@@ -159,7 +160,6 @@ export default function PackageFood() {
   );
 
   const isUserNotFound = filteredUsers.length === 0;
-
   return (
     <Page title="package">
       <Container>
@@ -267,9 +267,10 @@ export default function PackageFood() {
                               variant="ghost"
                               color={
                                 (status === "active" && "error") || "success"
+                                
                               }
                             >
-                              {status}
+                              {sentenceCase(status)}
                             </Label>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
@@ -280,11 +281,7 @@ export default function PackageFood() {
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
+            
                 </TableBody>
 
                 {isUserNotFound && (
@@ -298,10 +295,9 @@ export default function PackageFood() {
                 )}
               </Table>
             </TableContainer>
-          </Scrollbar>
-
+         </Scrollbar> 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 20]}
+            rowsPerPageOptions={[ 25, 10,5]}
             component="div"
             count={PACKAGELIST.length}
             rowsPerPage={rowsPerPage}

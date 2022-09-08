@@ -1,14 +1,19 @@
 import "./App.css";
-import { HomeLayout } from "./pages/HomeTemplate/HomeTemplate";
 import { BrowserRouter, Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import routesHome from "./route.js";
 import Router from "./route.js";
+import { BaseOptionChartStyle } from "./components/chart/BaseOptionChart";
+import ThemeProvider from "./theme";
+import ScrollToTop from './components/hook-form/ScrollToTop';
 function App() {
-
   return (
     <BrowserRouter>
-      <Router/>
+      <ThemeProvider>
+        <ScrollToTop/>
+        <BaseOptionChartStyle />
+        <Router />
+      </ThemeProvider>
     </BrowserRouter>
   );
 }
