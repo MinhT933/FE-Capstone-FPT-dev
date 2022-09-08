@@ -11,12 +11,13 @@ export default function DatePicker(props) {
   const handleChange = (newValue) => {
     setValue(newValue);
   };
+  const {name}= props
 
   return (
     <FormControl fullWidth sx={{  maxWidth: 225 }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDatePicker
-          label="Date desktop"
+          label={name}
           inputFormat="MM/DD/YYYY"
           value={value}
           onChange={handleChange}

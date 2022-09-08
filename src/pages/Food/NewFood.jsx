@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Paper } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
@@ -39,7 +38,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   display: "center",
 }));
 
-export default function NewPackage() {
+export default function NewFood() {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
   return (
     <Paper>
@@ -67,7 +66,7 @@ export default function NewPackage() {
         </Grid>
         <Grid item xs={6}>
           <Controls.DatePicker
-            name="Ngày bán"
+            name="Ngày Thêm"
             label="Date of Birth"
             value={values.DatePicker}
             onChange={handleInputChange}
@@ -75,7 +74,7 @@ export default function NewPackage() {
         </Grid>
         <Grid item xs={6}>
           <Controls.DatePicker
-            name="Ngày kết thúc bán"
+            name="Ngày Sửa"
             label="Date of Birth"
             value={values.DatePicker}
             onChange={handleInputChange}

@@ -2,14 +2,13 @@ import { filter } from "lodash";
 import { sentenceCase } from "change-case";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Icon } from '@iconify/react';
+import { Icon } from "@iconify/react";
 // material
 import {
   Card,
   Table,
   Stack,
   Avatar,
-  Button,
   Checkbox,
   TableRow,
   TableBody,
@@ -18,6 +17,7 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  Paper,
 } from "@mui/material";
 // components
 import Label from "./../../components/label/label";
@@ -32,7 +32,9 @@ import {
 } from "../../sections/@dashboard/user";
 // mock
 import FOODLIST from "../../_mock/foodsample";
-import NewUserPopup from "../../components/PopUp/NewUserPopup";
+
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
@@ -40,13 +42,12 @@ const TABLE_HEAD = [
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
   { id: "type", label: "phân loại", alignRight: false },
-  
+
   { id: "createdate", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
-  
-  
+
   { id: "" },
 ];
 
@@ -85,7 +86,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Food() {
-  const[OpenPopUp, SetOpenPopUp] = useState(false);
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -154,6 +155,15 @@ export default function Food() {
   );
 
   const isUserNotFound = filteredUsers.length === 0;
+  //setColor button
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC32"),
+    backgroundColor: "#FFCC33",
+    "&:hover": {
+      backgroundColor: "#FFCC32",
+    },
+    display: "center",
+  }));
 
   return (
     <Page title="food">
@@ -165,24 +175,15 @@ export default function Food() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-          {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
+            {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
-          <Button
+          <ColorButton
             variant="contained"
             component={RouterLink}
-            to="#"
-            startIcon={
-              <Iconify
-                icon="eva:plus-fill"
-               
-              />
-            }
-            onClick={() => {
-              SetOpenPopUp(true);
-            }}
+            to="/dashboard/newfood"
           >
-            New User
-          </Button>
+            Thêm thức ăn
+          </ColorButton>
         </Stack>
 
         <Card>
@@ -193,7 +194,7 @@ export default function Food() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1200 }}>
+            <TableContainer>
               <Table>
                 <UserListHead
                   order={order}
@@ -217,8 +218,7 @@ export default function Food() {
                         updateDate,
                         status,
                         datatype,
-                        avatarUrl
-
+                        avatarUrl,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -249,7 +249,7 @@ export default function Food() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                       
+
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
                           <TableCell align="left">{createDate}</TableCell>
@@ -261,7 +261,7 @@ export default function Food() {
                                 (status === "active" && "error") || "success"
                               }
                             >
-                              { (status)}
+                              {status}
                             </Label>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
@@ -272,11 +272,6 @@ export default function Food() {
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
                 </TableBody>
 
                 {isUserNotFound && (
@@ -303,7 +298,9 @@ export default function Food() {
           />
         </Card>
       </Container>
-      <NewUserPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewUserPopup>
+      <Paper>
+        
+      </Paper>
     </Page>
   );
 }
