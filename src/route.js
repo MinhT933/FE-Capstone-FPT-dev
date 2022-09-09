@@ -18,7 +18,7 @@ export default function Router(){
             path: '/',
             element:<DashboardLayout/>,
             children:[{path:'/', element:<Home/>}]
-        },
+        },  
         
         {
           path: '/dashboard',
