@@ -7,7 +7,7 @@ export default function RadioGroup(props) {
     const { name, label, value, onChange, items } = props;
 
     return (
-        <FormControl>
+        <FormControl >
             <FormLabel>{label}</FormLabel>
             <MuiRadioGroup row
                 name={name}

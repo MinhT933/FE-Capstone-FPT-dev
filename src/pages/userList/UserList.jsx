@@ -1,7 +1,7 @@
 import { filter } from "lodash";
-import { sentenceCase } from "change-case";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 // material
 import {
   Card,
@@ -21,7 +21,6 @@ import {
 // components
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
-import Iconify from "../../components/hook-form/Iconify";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 import {
@@ -146,6 +145,15 @@ export default function UserList() {
     getComparator(order, orderBy),
     filterName
   );
+    //setColor button
+    const ColorButton = styled(Button)(({ theme }) => ({
+      color: theme.palette.getContrastText("#FFCC32"),
+      backgroundColor: "#FFCC33",
+      "&:hover": {
+        backgroundColor: "#ffee32",
+      },
+      display: "center",
+    }));
 
   const isUserNotFound = filteredUsers.length === 0;
 
@@ -161,22 +169,22 @@ export default function UserList() {
           <Typography variant="h4" gutterBottom>
             {/* User */}
           </Typography>
-          <Button
+          <ColorButton
             variant="contained"
             component={RouterLink}
             to="#"
-            startIcon={
-              <Iconify
-                icon="eva:plus-fill"
+            // startIcon={
+            //   <Iconify
+            //     icon="eva:plus-fill"
                
-              />
-            }
+            //   />
+            // }
             onClick={() => {
               SetOpenPopUp(true);
             }}
           >
-            New User
-          </Button>
+            Thêm người dùng
+          </ColorButton>
         </Stack>
 
         <Card>

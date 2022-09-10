@@ -1,111 +1,135 @@
 import React from "react";
 import { Paper } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+
 import { styled } from "@mui/material/styles";
-import { purple } from "@mui/material/colors";
 import { Grid } from "@mui/material";
+import Box from "@mui/material/Box";
+
+import Iconify from '../../components/hook-form/Iconify';
+
 
 import Button from "@mui/material/Button";
 import UseCreateForm from "../../components/PopUp/useForm";
 import * as UpdateService from "../../utils/UpdateService/UpdateService";
 import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
+import InputImg from './../../components/InputImg/inputImg';
 
 const initialValue = {
   id: 0,
-  fullName: "",
-  mobile: "",
-  email: "",
-  city: "",
-  gender: "",
-  departmentId: "",
-  hireDate: new Date(),
+  name: "",
+  createDate: new Date(),
+  endDate: new Date(),
+  description: "",
+  img: "",
+  price: "",
   isActive: false,
 };
-const genderItems = [
-  { id: "male", title: "Male" },
-  { id: "female", title: "Female" },
-  { id: "other", title: "Other" },
-];
-
+const useStyles = styled((theme) => ({
+  pageContent: {
+    margin: theme.spacing(5),
+    padding: theme.spacing(9),
+  },
+}));
+//geticon
+const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+/// csss button
 const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText(purple[500]),
-  backgroundColor: purple[500],
+  color: theme.palette.getContrastText("#FFCC32"),
+  backgroundColor: "#FFCC32",
   "&:hover": {
-    backgroundColor: "#5dc9bc",
+    backgroundColor: "#ffee32",
   },
   display: "center",
 }));
 
 export default function NewFood() {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
+  const classes = useStyles();
   return (
-    <Paper>
-      <PageHeader
+    <Paper className={classes.pageContent}>
+      <PageHeader  
         title="Thêm thức ăn"
-        subTitle="Form design with validation"
-        icon={<PeopleAltIcon fontSize="smail" />}
+        subTitle="Tinh hoa ẩm thực "
+       
+        icon={getIcon('emojione-monotone:pot-of-food')}
       />
-      <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 3, md: 2 }}>
-        <Grid item xs={6}>
-          <Controls.Input
-            variant="outlined"
-            label="Name"
-            values={values.fullName}
-            onChange={handleInputChange}
-          />
+      <Box sx={{float:"left" ,width:"40%"}}>
+        <Paper>
+        <InputImg/>
+        </Paper>
+      </Box>
+      <Box sx={{ foat: "right",width: "60%", flexGrow: 1 }}
+       display="flex"
+       justifyContent="center"
+       alignItems="center"
+       >
+        <Grid
+          container
+          spacing = {1.5}
+        >
+          <Grid item xs={6} >
+            <Controls.Input
+              variant="outlined"
+              label="Name"
+              value={values.name}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Controls.Input
+              variant="outlined"
+              label="Price"
+              value={values.price}
+              onChange={handleInputChange}
+            />
+          </Grid>
+         
+          <Grid item xs={6}>
+            <Controls.DatePicker
+              name="Ngày tạo"
+              label="Date of Birth"
+              value={values.DatePicker}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Controls.DatePicker
+              name="Ngày cập nhập"
+              label="Date of Birth"
+              value={values.DatePicker}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Controls.Input
+              variant="outlined"
+              label="Decription"
+              value={values.price}
+              onChange={handleInputChange}
+            />
+          </Grid>
+
+          <Grid item xs={6} >
+            <Controls.Select
+              name="Nhóm Package"
+              label="Loại"
+              value={values.departmentId}
+              onChange={handleInputChange}
+              options={UpdateService.Cate()}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Controls.Input
-            variant="outlined"
-            label="Email"
-            values={values.email}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.DatePicker
-            name="Ngày Thêm"
-            label="Date of Birth"
-            value={values.DatePicker}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.DatePicker
-            name="Ngày Sửa"
-            label="Date of Birth"
-            value={values.DatePicker}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.Select
-            name="Nhóm Package"
-            label="Nhóm Package"
-            values={values.departmentId}
-            onChange={handleInputChange}
-            options={UpdateService.getOptionsGroup()}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.RadioGroup
-            name="gender"
-            label="Gender"
-            values={values.gender}
-            onChange={handleInputChange}
-            items={genderItems}
-          />
-        </Grid>
-        <Grid item xs={6} >
-          <div>
-            <Stack spacing={2} direction="row" width="200px">
-              <ColorButton variant="contained">Create </ColorButton>
-            </Stack>
-          </div>
-        </Grid>
-      </Grid>
+       
+         
+        
+      </Box>
+      <Box>
+        <Stack width="200px" justifyContent="center" marginLeft={"25rem"} marginTop={"5rem"}>
+            <ColorButton variant="contained">Create </ColorButton>
+          </Stack>
+        </Box>
     </Paper>
   );
 }

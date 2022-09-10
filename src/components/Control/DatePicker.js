@@ -14,7 +14,11 @@ export default function DatePicker(props) {
   const {name}= props
 
   return (
-    <FormControl fullWidth sx={{  maxWidth: 225 }}>
+    <FormControl  sx={{
+      display: "grid",
+      gridTemplateColumns: { sm: "6fr 1fr" },
+      
+    }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDatePicker
           label={name}

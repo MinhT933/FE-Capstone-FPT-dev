@@ -1,8 +1,6 @@
 import { filter } from "lodash";
-import { sentenceCase } from "change-case";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Icon } from "@iconify/react";
 // material
 import {
   Card,
@@ -22,7 +20,6 @@ import {
 // components
 import Label from "./../../components/label/label";
 import Scrollbar from "./../../components/hook-form/Scrollbar";
-import Iconify from "./../../components/hook-form/Iconify";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
 import {
@@ -86,7 +83,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Food() {
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -145,8 +142,8 @@ export default function Food() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
 
   const filteredUsers = applySortFilter(
     FOODLIST,
@@ -160,7 +157,7 @@ export default function Food() {
     color: theme.palette.getContrastText("#FFCC32"),
     backgroundColor: "#FFCC33",
     "&:hover": {
-      backgroundColor: "#FFCC32",
+      backgroundColor: "#ffee32",
     },
     display: "center",
   }));

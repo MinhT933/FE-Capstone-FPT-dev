@@ -2,6 +2,7 @@ import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { sentenceCase } from 'change-case';
+import { styled } from "@mui/material/styles";
 
 import {
   Card,
@@ -21,7 +22,6 @@ import {
 // components
 import Label from "./../../components/label/label";
 import Scrollbar from "./../../components/hook-form/Scrollbar";
-import Iconify from "./../../components/hook-form/Iconify";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
 import {
@@ -88,6 +88,8 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
+
+
 
 export default function PackageFood() {
   const [page, setPage] = useState(0);
@@ -156,6 +158,15 @@ export default function PackageFood() {
     getComparator(order, orderBy),
     filterName
   );
+    //setColor button
+    const ColorButton = styled(Button)(({ theme }) => ({
+      color: theme.palette.getContrastText("#FFCC32"),
+      backgroundColor: "#FFCC33",
+      "&:hover": {
+        backgroundColor: "#ffee32",
+      },
+      display: "center",
+    }));
 
   const isUserNotFound = filteredUsers.length === 0;
   return (
@@ -171,17 +182,15 @@ export default function PackageFood() {
             {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
          
-            <Button
+            <ColorButton
               variant="contained"
               component={RouterLink}
-              startIcon={<Iconify icon="eva:plus-fill" />}
+              // startIcon={<Iconify icon="eva:plus-fill" />}
               to='/dashboard/newpackage'
             >
               Thêm Gói Ăn
-            </Button>
-        
+            </ColorButton>
         </Stack>
-
         <Card>
           <UserListToolbar
             numSelected={selected.length}

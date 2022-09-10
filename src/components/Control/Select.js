@@ -4,14 +4,17 @@ import {
   InputLabel,
   Select as MuiSelect,
   MenuItem,
-  FormHelperText,
 } from "@mui/material";
 
 export default function Select(props) {
-  const { name, label, value, error = null, onChange, options } = props;
-  console.log(options);
+  const { name, label, value,  onChange, options } = props;
+  //error = null,
   return (
-    <FormControl fullWidth sx={{  maxWidth: 225, size: "small" }}>
+    <FormControl sx={{
+      display: "grid",
+      gridTemplateColumns: { sm: "6fr 1fr" },
+      
+    }} >
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         labelId="demo-simple-select-label"
