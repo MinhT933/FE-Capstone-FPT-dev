@@ -10,6 +10,8 @@ import Food from './pages/Food/Food';
 import PackageFood from './pages/PackageFood/PackageFood';
 import NewPackage from './pages/PackageFood/newPackage';
 import NewFood from './pages/Food/NewFood.jsx';
+import Login from './pages/Login/login';
+
 
   
 export default function Router(){
@@ -17,7 +19,9 @@ export default function Router(){
         {
             path: '/',
             element:<DashboardLayout/>,
-            children:[{path:'/', element:<Home/>}]
+            children:[{path:'/', element:<Home/>},
+            { path:'/login',element:<Login/>}
+           ]
         },  
         
         {
@@ -29,10 +33,12 @@ export default function Router(){
             { path: 'product', element: <Food/>  },
             { path: '404', element: <Page404/> },
             { path: 'package', element: <PackageFood/> },
-            {path:'newpackage',element:<NewPackage/>},
+            { path:'newpackage',element:<NewPackage/>},
             { path: 'login', element: <Page404/> },
             { path: 'register', element: <Page404/> },
-            {path:'newfood',element:<NewFood/>},
+            { path:'newfood',element:<NewFood/>},
+            // { path:'login',element:<Login/>}
+            
           ],
         },
         { path: "*", element: <Navigate to="/404" replace /> },
