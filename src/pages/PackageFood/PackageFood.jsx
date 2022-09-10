@@ -1,10 +1,8 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink, NavLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { sentenceCase } from 'change-case';
-// import { Icon } from '@iconify/react';
-// import { DataGrid } from '@mui/x-data-grid';
-// material
+
 import {
   Card,
   Table,
@@ -150,8 +148,8 @@ export default function PackageFood() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PACKAGELIST.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PACKAGELIST.length) : 0;
 
   const filteredUsers = applySortFilter(
     PACKAGELIST,

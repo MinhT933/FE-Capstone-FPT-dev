@@ -13,18 +13,25 @@ const navConfig = [
     icon: getIcon('eva:pie-chart-2-fill'),
     // component: Home
   },
- 
-  {
-    title: 'Thức ăn',
-    path: '/dashboard/product',
-    icon: getIcon('eva:shopping-bag-fill'),
-    // component:ProductList,
-  },
-  {
-    title: 'Gói ăn',
-    path: '/dashboard/package',
-    icon: getIcon('mdi:package'),
-  },
+   {
+    title:'sản phẩm',
+    icon:getIcon('tabler:building-warehouse'),
+    children:[
+      {
+        title: 'Gói ăn',
+        path: '/dashboard/package',
+        icon: getIcon('eva:shopping-bag-fill'),
+        
+      },
+        {
+          title: 'Thức ăn',
+          path: '/dashboard/product',
+          icon: getIcon('ep:food'),
+        
+        },
+       
+    ]
+   },
   {
     title: 'Người Dùng',
     path: '/dashboard/users',

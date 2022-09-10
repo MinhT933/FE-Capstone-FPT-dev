@@ -7,9 +7,8 @@ import Iconify from '../components/hook-form/Iconify';
 //
 
 
-import Searchbar from './../components/topbar/Searchbar';
+
 import AccountPopover from './../components/topbar/AccountPopover';
-import LanguagePopover from './../components/topbar/LanguagePopover';
 import NotificationsPopover from './../components/topbar/NotificationsPopover';
 
 // ----------------------------------------------------------------------
@@ -50,11 +49,11 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
 
-        <Searchbar />
+        {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
+          {/* <LanguagePopover /> */}
           <NotificationsPopover />
           <AccountPopover />
         </Stack>

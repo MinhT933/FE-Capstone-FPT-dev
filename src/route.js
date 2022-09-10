@@ -1,7 +1,5 @@
 
 import Home from './pages/home/home.jsx';
-import UserList from './pages/userList/UserList';
-
 import ProductList from './pages/userList/UserList';
 import { Navigate, useRoutes } from 'react-router-dom'
 import DashboardLayout from './layouts/DashboardLayout.js';
@@ -38,9 +36,12 @@ export default function Router(){
             { path: 'register', element: <Page404/> },
             { path:'newfood',element:<NewFood/>},
             // { path:'login',element:<Login/>}
-            
           ],
         },
+        // {
+        //   path:'/dashboard/sanpham',
+        //   element:</>
+        // },
         { path: "*", element: <Navigate to="/404" replace /> },
         
       ]);
