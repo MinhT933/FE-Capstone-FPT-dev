@@ -7,10 +7,12 @@ import Iconify from '../../../components/hook-form/Iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu() {
+export default function UserMoreMenu(props) {
   const ref = useRef(null);
+  
+  console.log(props);
   const [isOpen, setIsOpen] = useState(false);
-
+  
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
@@ -34,7 +36,7 @@ export default function UserMoreMenu() {
           <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
 
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+        <MenuItem component={RouterLink} to={`/dashboard/${props}`} sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Iconify icon="eva:edit-fill" width={24} height={24} />
           </ListItemIcon>

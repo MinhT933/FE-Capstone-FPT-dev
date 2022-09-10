@@ -32,6 +32,7 @@ import FOODLIST from "../../_mock/foodsample";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import EditFood from './EditFood';
 
 // ----------------------------------------------------------------------
 
@@ -82,7 +83,9 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function Food() {
+
+
+export default function Food(props) {
 
   const [page, setPage] = useState(0);
 
@@ -95,6 +98,7 @@ export default function Food() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -150,6 +154,7 @@ export default function Food() {
     getComparator(order, orderBy),
     filterName
   );
+
 
   const isUserNotFound = filteredUsers.length === 0;
   //setColor button
@@ -217,8 +222,9 @@ export default function Food() {
                         datatype,
                         avatarUrl,
                       } = row;
+                     
                       const isItemSelected = selected.indexOf(name) !== -1;
-
+                      console.log(id);
                       return (
                         <TableRow
                           hover
@@ -246,7 +252,7 @@ export default function Food() {
                               </Typography>
                             </Stack>
                           </TableCell>
-
+                          <TableCell align="left">{id}</TableCell>
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
                           <TableCell align="left">{createDate}</TableCell>
