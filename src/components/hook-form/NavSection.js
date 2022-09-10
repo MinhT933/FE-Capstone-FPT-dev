@@ -7,6 +7,7 @@ import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from 
 //
 import Iconify from './Iconify';
 
+
 // ----------------------------------------------------------------------
 
 const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props} />)(({ theme }) => ({
@@ -27,7 +28,7 @@ const ListItemIconStyle = styled(ListItemIcon)({
   justifyContent: 'center',
 });
 
-// ----------------------------------------------------------------------
+
 
 NavItem.propTypes = {
   item: PropTypes.object,
@@ -54,13 +55,14 @@ function NavItem({ item, active }) {
   };
 
   const activeSubStyle = {
-    color: 'text.primary',
+    color: '#FFCC33',
     fontWeight: 'fontWeightMedium',
   };
 
   if (children) {
     return (
       <>
+      {/* menu multipe  */}
         <ListItemStyle
           onClick={handleOpen}
           sx={{
@@ -78,16 +80,15 @@ function NavItem({ item, active }) {
          {/* map với navConfig */}
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            
             {children.map((item) => {
-              const { title, path } = item;
+              const { title, path,icon } = item;
               const isActiveSub = active(path);
-
               return (
                 <ListItemStyle
                   key={title}
                   component={RouterLink}
                   to={path}
+                  icon={icon}
                   sx={{
                     ...(isActiveSub && activeSubStyle),
                   }}
@@ -107,9 +108,11 @@ function NavItem({ item, active }) {
                         ...(isActiveSub && {
                           transform: 'scale(2)',
                           bgcolor: 'primary.main',
+                          // icon:{icon}
                         }),
                       }}
                     />
+                    <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
                   </ListItemIconStyle>
                   <ListItemText disableTypography primary={title} />
                 </ListItemStyle>
@@ -122,7 +125,7 @@ function NavItem({ item, active }) {
   }
 
   return (
-    <ListItemStyle
+  <ListItemStyle
       component={RouterLink}
       to={path}
       sx={{
@@ -140,11 +143,11 @@ NavSection.propTypes = {
   navConfig: PropTypes.array,
 };
 
+//NavSection
 export default function NavSection({ navConfig, ...other }) {
   const { pathname } = useLocation();
 
   const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
-
   return (
     <Box {...other}>
       <List disablePadding sx={{ p: 1 }}>
