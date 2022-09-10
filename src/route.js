@@ -9,6 +9,7 @@ import PackageFood from './pages/PackageFood/PackageFood';
 import NewPackage from './pages/PackageFood/newPackage';
 import NewFood from './pages/Food/NewFood.jsx';
 import Login from './pages/Login/login';
+import EditFood from './pages/Food/EditFood.jsx';
 
 
   
@@ -35,14 +36,12 @@ export default function Router(){
             { path: 'login', element: <Page404/> },
             { path: 'register', element: <Page404/> },
             { path:'newfood',element:<NewFood/>},
+            { path:'editFood',element:<EditFood/>},
             // { path:'login',element:<Login/>}
           ],
         },
-        // {
-        //   path:'/dashboard/sanpham',
-        //   element:</>
-        // },
-        { path: "*", element: <Navigate to="/404" replace /> },
+     
+        { path: "*", element: <Navigate to="404" replace /> },
         
       ]);
 }

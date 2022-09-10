@@ -44,7 +44,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   display: "center",
 }));
 
-export default function NewFood() {
+export default function EditFood() {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
   const classes = useStyles();
   return (

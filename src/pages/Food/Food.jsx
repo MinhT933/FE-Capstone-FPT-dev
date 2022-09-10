@@ -1,8 +1,6 @@
 import { filter } from "lodash";
-import { sentenceCase } from "change-case";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Icon } from "@iconify/react";
 // material
 import {
   Card,
@@ -22,7 +20,6 @@ import {
 // components
 import Label from "./../../components/label/label";
 import Scrollbar from "./../../components/hook-form/Scrollbar";
-import Iconify from "./../../components/hook-form/Iconify";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
 import {
@@ -35,6 +32,7 @@ import FOODLIST from "../../_mock/foodsample";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import EditFood from './EditFood';
 
 // ----------------------------------------------------------------------
 
@@ -85,8 +83,10 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function Food() {
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
+
+
+export default function Food(props) {
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -98,6 +98,7 @@ export default function Food() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -145,8 +146,8 @@ export default function Food() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
 
   const filteredUsers = applySortFilter(
     FOODLIST,
@@ -154,13 +155,14 @@ export default function Food() {
     filterName
   );
 
+
   const isUserNotFound = filteredUsers.length === 0;
   //setColor button
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC32"),
     backgroundColor: "#FFCC33",
     "&:hover": {
-      backgroundColor: "#FFCC32",
+      backgroundColor: "#ffee32",
     },
     display: "center",
   }));
@@ -220,8 +222,9 @@ export default function Food() {
                         datatype,
                         avatarUrl,
                       } = row;
+                     
                       const isItemSelected = selected.indexOf(name) !== -1;
-
+                      console.log(id);
                       return (
                         <TableRow
                           hover
@@ -249,7 +252,7 @@ export default function Food() {
                               </Typography>
                             </Stack>
                           </TableCell>
-
+                          <TableCell align="left">{id}</TableCell>
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
                           <TableCell align="left">{createDate}</TableCell>
