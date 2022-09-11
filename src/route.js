@@ -12,15 +12,15 @@ import Login from './pages/Login/login';
 import EditFood from './pages/Food/EditFood.jsx';
 
 
-  
 export default function Router(){
+ 
     return useRoutes([
         {
             path: '/',
             element:<DashboardLayout/>,
             children:[{path:'/', element:<Home/>},
             { path:'/login',element:<Login/>}
-           ]
+           ]  
         },  
         
         {
@@ -36,7 +36,8 @@ export default function Router(){
             { path: 'login', element: <Page404/> },
             { path: 'register', element: <Page404/> },
             { path:'newfood',element:<NewFood/>},
-            { path:'editFood',element:<EditFood/>},
+            { path: "product/:id",element:<EditFood/>},
+            { path: "users/:id",element:<EditFood/>},
             // { path:'login',element:<Login/>}
           ],
         },

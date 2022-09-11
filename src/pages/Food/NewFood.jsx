@@ -25,6 +25,7 @@ const initialValue = {
   img: "",
   price: "",
   isActive: false,
+  status:""
 };
 const useStyles = styled((theme) => ({
   pageContent: {
@@ -32,6 +33,7 @@ const useStyles = styled((theme) => ({
     padding: theme.spacing(9),
   },
 }));
+
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 /// csss button
@@ -85,23 +87,6 @@ export default function NewFood() {
               onChange={handleInputChange}
             />
           </Grid>
-         
-          <Grid item xs={6}>
-            <Controls.DatePicker
-              name="Ngày tạo"
-              label="Date of Birth"
-              value={values.DatePicker}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.DatePicker
-              name="Ngày cập nhập"
-              label="Date of Birth"
-              value={values.DatePicker}
-              onChange={handleInputChange}
-            />
-          </Grid>
           <Grid item xs={6}>
             <Controls.Input
               variant="outlined"
@@ -120,13 +105,14 @@ export default function NewFood() {
               options={UpdateService.Cate()}
             />
           </Grid>
+         
         </Grid>
        
          
         
       </Box>
       <Box>
-        <Stack width="200px" justifyContent="center" marginLeft={"25rem"} marginTop={"5rem"}>
+        <Stack width="200px" justifyContent="center" marginLeft={"40%"} marginTop={"5rem"}>
             <ColorButton variant="contained">Create </ColorButton>
           </Stack>
         </Box>
