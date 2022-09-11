@@ -84,7 +84,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 
-
+const path = '/product';
 export default function Food(props) {
 
   const [page, setPage] = useState(0);
@@ -144,7 +144,10 @@ export default function Food(props) {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
+   
+  
   };
+  
 
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
@@ -252,7 +255,7 @@ export default function Food(props) {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{id}</TableCell>
+                         
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
                           <TableCell align="left">{createDate}</TableCell>
@@ -270,7 +273,7 @@ export default function Food(props) {
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <UserMoreMenu id={id} path = {path}/>
                           </TableCell>
                         </TableRow>
                       );

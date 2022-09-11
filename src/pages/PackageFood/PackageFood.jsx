@@ -57,7 +57,7 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
-  console.log(PACKAGELIST);
+
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }

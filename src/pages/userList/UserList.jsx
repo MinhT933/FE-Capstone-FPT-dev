@@ -265,7 +265,7 @@ export default function UserList() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <UserMoreMenu id = {id} />
                           </TableCell>
                         </TableRow>
                       );

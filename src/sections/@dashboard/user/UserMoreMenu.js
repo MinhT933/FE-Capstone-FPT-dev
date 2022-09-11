@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 // component
@@ -12,6 +12,9 @@ export default function UserMoreMenu(props) {
   
   console.log(props);
   const [isOpen, setIsOpen] = useState(false);
+  const {id, path} = props
+  const location = useLocation();
+  console.log(location.pathname);
   
   return (
     <>
@@ -33,14 +36,14 @@ export default function UserMoreMenu(props) {
           <ListItemIcon>
             <Iconify icon="eva:trash-2-outline" width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText primary="Cập nhật trạng thái" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
 
-        <MenuItem component={RouterLink} to={`/dashboard/${props}`} sx={{ color: 'text.secondary' }}>
+        <MenuItem component={RouterLink} to={`${location.pathname}/${id}`} sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Iconify icon="eva:edit-fill" width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText primary="Cập nhật" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
       </Menu>
     </>

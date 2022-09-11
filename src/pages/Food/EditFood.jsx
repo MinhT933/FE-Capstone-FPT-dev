@@ -26,12 +26,20 @@ const initialValue = {
   price: "",
   isActive: false,
 };
+
 const useStyles = styled((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(9),
   },
 }));
+
+const Status = [
+  {id:1, title:"Đang chờ"},
+  {id: 2,title: "đã duyệt"},
+]
+
+
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 /// csss button
@@ -50,8 +58,8 @@ export default function EditFood() {
   return (
     <Paper className={classes.pageContent}>
       <PageHeader  
-        title="Thêm thức ăn"
-        subTitle="Tinh hoa ẩm thực "
+        title="Cập nhập thông tin thức ăn"
+        // subTitle="Tinh hoa ẩm thực "
        
         icon={getIcon('emojione-monotone:pot-of-food')}
       />
@@ -72,7 +80,7 @@ export default function EditFood() {
           <Grid item xs={6} >
             <Controls.Input
               variant="outlined"
-              label="Name"
+              label="Tên"
               value={values.name}
               onChange={handleInputChange}
             />
@@ -80,32 +88,15 @@ export default function EditFood() {
           <Grid item xs={6}>
             <Controls.Input
               variant="outlined"
-              label="Price"
+              label="Giá"
               value={values.price}
-              onChange={handleInputChange}
-            />
-          </Grid>
-         
-          <Grid item xs={6}>
-            <Controls.DatePicker
-              name="Ngày tạo"
-              label="Date of Birth"
-              value={values.DatePicker}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.DatePicker
-              name="Ngày cập nhập"
-              label="Date of Birth"
-              value={values.DatePicker}
               onChange={handleInputChange}
             />
           </Grid>
           <Grid item xs={6}>
             <Controls.Input
               variant="outlined"
-              label="Decription"
+              label="Mô tả"
               value={values.price}
               onChange={handleInputChange}
             />
@@ -120,14 +111,21 @@ export default function EditFood() {
               options={UpdateService.Cate()}
             />
           </Grid>
+          <Grid item xs = {6}>
+          <Controls.RadioGroup
+            name="Status"
+            label="Trạng thái"
+            value={values.Status}
+            onChange={handleInputChange}
+            items={Status}
+          />
+          
+          </Grid>
         </Grid>
-       
-         
-        
       </Box>
       <Box>
-        <Stack width="200px" justifyContent="center" marginLeft={"25rem"} marginTop={"5rem"}>
-            <ColorButton variant="contained">Create </ColorButton>
+        <Stack width="200px" justifyContent="center" marginLeft={"40%"} marginTop={"5rem"}>
+            <ColorButton variant="contained"> Cập nhật  </ColorButton>
           </Stack>
         </Box>
     </Paper>

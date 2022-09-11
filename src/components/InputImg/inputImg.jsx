@@ -15,7 +15,7 @@ export default function InputImg() {
       <label htmlFor="contained-button-file" >
         <Input accept="image/*" id="contained-button-file" multiple type="file" />
         <Button variant="contained" component="span">
-          Upload
+          Tải lên...
         </Button>
       </label>
       <label htmlFor="icon-button-file">
