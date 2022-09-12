@@ -63,7 +63,7 @@ export default function EditFood() {
        
         icon={getIcon('emojione-monotone:pot-of-food')}
       />
-      <Box sx={{float:"left" ,width:"40%"}}>
+      <Box >
         <Paper>
         <InputImg/>
         </Paper>

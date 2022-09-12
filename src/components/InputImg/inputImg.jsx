@@ -5,20 +5,24 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
-import { Drawer } from "@mui/material";
+import { Box } from "@mui/system";
 
 const Input = styled("input")({
   display: "none",
 });
 
 export default function InputImg() {
-  const [imgFile, setImgFile] = useState();
+  const [input, setInput] = useState([]);
 
-  const uploadImg = (selectorFiles) => {
-    if (selectorFiles) {
-      setImgFile(selectorFiles[0]);
-    }
-  };
+  function _treat(e) {
+    const { files } = e.target;
+    let images = [];
+    const selecteds = [...[...files]];
+
+    selecteds.forEach((i) => images.push(URL.createObjectURL(i)));
+
+    setInput(images);
+  }
   return (
     <Stack
       direction="row"
@@ -32,30 +36,28 @@ export default function InputImg() {
           id="contained-button-file"
           multiple
           type="file"
+          onChange={_treat}
         />
-        <Button variant="contained" component="span">
+        <Button variant="contained" component="span" sx={
+          {
+            marginLeft:"23%"
+          }
+        }>
           Tải lên...
         </Button>
-      </label>
-      <label htmlFor="icon-button-file">
-        <Input
-          accept="image/*"
-          id="icon-button-file"
-          type="file"
-          onChange={(e) => uploadImg(e.target.files)}
-        />
-        <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="span"
+        <Box
+          sx={{
+            height: 165,
+            width: 165,
+            maxHeight: { xs: 233, md: 167 },
+            maxWidth: { xs: 350, md: 250 },
+            marginTop: "10%",
+          }}
         >
-          <PhotoCamera />
-          <Drawer />
-          {imgFile && <img src={URL.createObjectURL(imgFile)} />}
-        
-        
-          {/* <img  src = "https://img5.thuthuatphanmem.vn/uploads/2021/11/12/hinh-anh-anime-don-gian-hinh-nen-anime-don-gian-ma-dep_092443354.png"/> */}
-        </IconButton>
+          {input.map((i) => (
+            <img key={i} src={i} alt="" />
+          ))}
+        </Box>
       </label>
     </Stack>
   );
