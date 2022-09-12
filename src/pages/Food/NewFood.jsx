@@ -82,7 +82,7 @@ export default function NewFood() {
           <Grid item xs={6}>
             <Controls.Input
               variant="outlined"
-              label="Price"
+              label="Giá"
               value={values.price}
               onChange={handleInputChange}
             />
@@ -90,7 +90,7 @@ export default function NewFood() {
           <Grid item xs={6}>
             <Controls.Input
               variant="outlined"
-              label="Decription"
+              label="Mô tả"
               value={values.price}
               onChange={handleInputChange}
             />
@@ -113,7 +113,7 @@ export default function NewFood() {
       </Box>
       <Box>
         <Stack width="200px" justifyContent="center" marginLeft={"40%"} marginTop={"5rem"}>
-            <ColorButton variant="contained">Create </ColorButton>
+            <ColorButton variant="contained">Tạo thực phẩm </ColorButton>
           </Stack>
         </Box>
     </Paper>
