@@ -51,7 +51,6 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (
@@ -63,7 +62,6 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         <Logo />
-        
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>

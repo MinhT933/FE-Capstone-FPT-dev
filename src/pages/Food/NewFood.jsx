@@ -58,11 +58,11 @@ export default function NewFood() {
         icon={getIcon('emojione-monotone:pot-of-food')}
       />
       <Box sx={{float:"left" ,width:"40%"}}>
-        <Paper>
+        <Paper backgroundColor='red'>
         <InputImg/>
         </Paper>
       </Box>
-      <Box sx={{ foat: "right",width: "60%", flexGrow: 1 }}
+      <Box sx={{ float: "right",width: "60%", flexGrow: 1 }}
        display="flex"
        justifyContent="center"
        alignItems="center"
