@@ -52,13 +52,13 @@ const ColorButton = styled(Button)(({ theme }) => ({
   display: "center",
 }));
 
-export default function EditFood() {
+export default function UserDetail() {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
   const classes = useStyles();
   return (
     <Paper className={classes.pageContent}>
       <PageHeader  
-        title="Cập nhập thông tin thức ăn"
+        title="Cập nhập thông tin người dùng"
         // subTitle="Tinh hoa ẩm thực "
        
         icon={getIcon('emojione-monotone:pot-of-food')}
@@ -68,7 +68,7 @@ export default function EditFood() {
         <InputImg/>
         </Paper>
       </Box>
-      <Box sx={{ foat: "right",width: "60%", flexGrow: 1 }}
+      <Box sx={{ float: "right",width: "60%", flexGrow: 1 }}
        display="flex"
        justifyContent="center"
        alignItems="center"
@@ -88,7 +88,7 @@ export default function EditFood() {
           <Grid item xs={6}>
             <Controls.Input
               variant="outlined"
-              label="Giá"
+              label="Tuổi"
               value={values.price}
               onChange={handleInputChange}
             />
@@ -105,7 +105,7 @@ export default function EditFood() {
           <Grid item xs={6} >
             <Controls.Select
               name="Nhóm Package"
-              label="Loại"
+              label="Xếp hạng"
               value={values.departmentId}
               onChange={handleInputChange}
               options={UpdateService.Cate()}

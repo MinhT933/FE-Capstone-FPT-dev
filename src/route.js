@@ -10,6 +10,9 @@ import NewPackage from './pages/PackageFood/newPackage';
 import NewFood from './pages/Food/NewFood.jsx';
 import Login from './pages/Login/login';
 import EditFood from './pages/Food/EditFood.jsx';
+import UserDetail from './pages/userList/UserDetail';
+import ScheduleFood from './pages/Schedule/ScheduleFood';
+
 
 
 export default function Router(){
@@ -24,7 +27,7 @@ export default function Router(){
         },  
         
         {
-          path: '/dashboard',
+          path: '/dashboard/admin',
           element: <DashboardLayout />,
           children: [
             { path: 'app', element: <Home /> },
@@ -37,9 +40,17 @@ export default function Router(){
             { path: 'register', element: <Page404/> },
             { path:'newfood',element:<NewFood/>},
             { path: "product/:id",element:<EditFood/>},
-            { path: "users/:id",element:<EditFood/>},
-            // { path:'login',element:<Login/>}
+            { path: "users/:id",element:<UserDetail/>},
+            // { path:'login',element:<LoginForm/>}
           ],
+        },
+        {
+          path:'/dashboard/kichen',
+          element: <DashboardLayout />,
+          children: [
+            {path:'schedule',element:<ScheduleFood/>},
+            {path: 'order', element:<Page404/>}
+          ]
         },
      
         { path: "*", element: <Navigate to="404" replace /> },
