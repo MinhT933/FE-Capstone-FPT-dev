@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 
 import { width } from '@mui/system';
-import Login from './Login';
+import Login from './login';
 //figbugg
 const SignInOutContainer = () => {
     const [value, setValue] = useState(0)
