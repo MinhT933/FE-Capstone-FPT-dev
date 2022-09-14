@@ -33,8 +33,8 @@ const  Login = () => {
         });
     };
 
-    const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
+    var label = { inputProps: { "" } };
+      
     const preventDefault = (event: React.SyntheticEvent) =>
         event.preventDefault();
 
