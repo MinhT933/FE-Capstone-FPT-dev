@@ -10,6 +10,11 @@ import Food from './pages/Food/Food';
 import PackageFood from './pages/PackageFood/PackageFood';
 import NewPackage from './pages/PackageFood/newPackage';
 import NewFood from './pages/Food/NewFood.jsx';
+
+import EditFood from './pages/Food/EditFood.jsx';
+import UserDetail from './pages/userList/UserDetail';
+import ScheduleFood from './pages/Schedule/ScheduleFood';
+
 import FindAccount from './pages/Login/FindAccount.js';
 import SignInOutContainer from './pages/Login/index.js';
 import VerifyPhone from './pages/Login/VerifyPhone.js';
@@ -17,14 +22,20 @@ import ChangePassword from './pages/Login/ChangePassword.js';
 
 
   
+
 export default function Router(){
     return useRoutes([
         {
             path: '/',
            element:<DashboardLayout/>,
             children:[{path:'/', element:<Home/>},
+
+         
+           ]  
+
           // { path: 'login', element: <SignInOutContainer/> },
           ]
+
         },  
 
         {
