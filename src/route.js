@@ -12,8 +12,6 @@ import EditFood from './pages/Food/EditFood.jsx';
 import UserDetail from './pages/userList/UserDetail';
 import ScheduleFood from './pages/Schedule/ScheduleFood';
 
-
-
 export default function Router(){
  
     return useRoutes([
