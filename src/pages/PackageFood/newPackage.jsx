@@ -99,6 +99,53 @@ export default function NewPackage() {
             items={genderItems}
           />
         </Grid>
+        {/* thêm để chỉnh github */}
+        <Grid item xs={6}>
+          <Controls.RadioGroup
+            name="gender"
+            label="Gender"
+            values={values.gender}
+            onChange={handleInputChange}
+            items={genderItems}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controls.RadioGroup
+            name="gender"
+            label="Gender"
+            values={values.gender}
+            onChange={handleInputChange}
+            items={genderItems}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controls.RadioGroup
+            name="gender"
+            label="Gender"
+            values={values.gender}
+            onChange={handleInputChange}
+            items={genderItems}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controls.RadioGroup
+            name="gender"
+            label="Gender"
+            values={values.gender}
+            onChange={handleInputChange}
+            items={genderItems}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controls.RadioGroup
+            name="gender"
+            label="Gender"
+            values={values.gender}
+            onChange={handleInputChange}
+            items={genderItems}
+          />
+        </Grid>
+        {/* //-------------------------------------- */}
         <Grid item xs={6} >
           <div>
             <Stack spacing={2} direction="row" width="200px">
