@@ -1,6 +1,6 @@
-import { Typography } from "@material-ui/core";
+
 import React from "react";
-import Paper from './../../theme/overrides/Paper';
+
 
 
 export default function Home() {

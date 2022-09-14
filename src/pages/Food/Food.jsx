@@ -32,7 +32,6 @@ import FOODLIST from "../../_mock/foodsample";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import EditFood from './EditFood';
 
 // ----------------------------------------------------------------------
 

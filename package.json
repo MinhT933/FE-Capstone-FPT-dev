@@ -63,10 +63,12 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
+    ],
+    "files": [ "dist", "README.md", "src/**" ]
   },
   "devDependencies": {
     "@iconify/react": "^3.2.2",
     "Faker": "^0.7.2"
   }
+  
 }

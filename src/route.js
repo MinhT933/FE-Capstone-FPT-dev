@@ -8,7 +8,6 @@ import Food from './pages/Food/Food';
 import PackageFood from './pages/PackageFood/PackageFood';
 import NewPackage from './pages/PackageFood/newPackage';
 import NewFood from './pages/Food/NewFood.jsx';
-import Login from './pages/Login/login';
 import EditFood from './pages/Food/EditFood.jsx';
 import UserDetail from './pages/userList/UserDetail';
 import ScheduleFood from './pages/Schedule/ScheduleFood';
@@ -22,7 +21,7 @@ export default function Router(){
             path: '/',
             element:<DashboardLayout/>,
             children:[{path:'/', element:<Home/>},
-            { path:'/login',element:<Login/>}
+         
            ]  
         },  
         
