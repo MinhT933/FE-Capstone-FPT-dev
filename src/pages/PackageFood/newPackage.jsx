@@ -73,78 +73,7 @@ export default function NewPackage() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item xs={6}>
-          <Controls.DatePicker
-            name="Ngày kết thúc bán"
-            label="Date of Birth"
-            value={values.DatePicker}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.Select
-            name="Nhóm Package"
-            label="Nhóm Package"
-            values={values.departmentId}
-            onChange={handleInputChange}
-            options={UpdateService.getOptionsGroup()}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.RadioGroup
-            name="gender"
-            label="Gender"
-            values={values.gender}
-            onChange={handleInputChange}
-            items={genderItems}
-          />
-        </Grid>
-        {/* thêm để chỉnh github */}
-        <Grid item xs={6}>
-          <Controls.RadioGroup
-            name="gender"
-            label="Gender"
-            values={values.gender}
-            onChange={handleInputChange}
-            items={genderItems}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.RadioGroup
-            name="gender"
-            label="Gender"
-            values={values.gender}
-            onChange={handleInputChange}
-            items={genderItems}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.RadioGroup
-            name="gender"
-            label="Gender"
-            values={values.gender}
-            onChange={handleInputChange}
-            items={genderItems}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.RadioGroup
-            name="gender"
-            label="Gender"
-            values={values.gender}
-            onChange={handleInputChange}
-            items={genderItems}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.RadioGroup
-            name="gender"
-            label="Gender"
-            values={values.gender}
-            onChange={handleInputChange}
-            items={genderItems}
-          />
-        </Grid>
+   
         {/* //-------------------------------------- */}
         <Grid item xs={6} >
           <div>
