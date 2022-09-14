@@ -7,7 +7,7 @@ import Paper from '@mui/material/Paper';
 
 import { width } from '@mui/system';
 import Login from './login';
-//figbugg
+
 const SignInOutContainer = () => {
     const [value, setValue] = useState(0)
     const handleChange = (event, newValue) => {
@@ -15,7 +15,7 @@ const SignInOutContainer = () => {
     };
 
     //  const paperStyle = { width: '20%', float: 'right' }
-
+// fixed bug
     return (
         <div style={{ width: '100%' }}>
             <Box

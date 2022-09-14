@@ -24,7 +24,6 @@ import StyledAppointmentsAppointmentContent from "./../../components/hook-form/s
 import { appointments } from "../../../src/_mock/appointments";
 import LocationSelector from "../../components/hook-form/schedule/LocationSelector";
 import { CurrentTimeIndicator } from "@devexpress/dx-react-scheduler";
-import AlertDialog from "../../components/dialog/Dialog";
 import { EditingState } from "@devexpress/dx-react-scheduler";
 import { useState } from "react";
 
