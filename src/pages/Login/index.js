@@ -15,7 +15,7 @@ const SignInOutContainer = () => {
     };
 
     //  const paperStyle = { width: '20%', float: 'right' }
-
+// fixed bug
     return (
         <div style={{ width: '100%' }}>
             <Box
