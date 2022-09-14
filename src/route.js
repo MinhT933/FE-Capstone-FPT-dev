@@ -1,5 +1,7 @@
 
 import Home from './pages/home/home.jsx';
+import UserList from './pages/userList/UserList';
+
 import ProductList from './pages/userList/UserList';
 import { Navigate, useRoutes } from 'react-router-dom'
 import DashboardLayout from './layouts/DashboardLayout.js';
@@ -8,23 +10,52 @@ import Food from './pages/Food/Food';
 import PackageFood from './pages/PackageFood/PackageFood';
 import NewPackage from './pages/PackageFood/newPackage';
 import NewFood from './pages/Food/NewFood.jsx';
+
 import EditFood from './pages/Food/EditFood.jsx';
 import UserDetail from './pages/userList/UserDetail';
 import ScheduleFood from './pages/Schedule/ScheduleFood';
 
+import FindAccount from './pages/Login/FindAccount.js';
+import SignInOutContainer from './pages/Login/index.js';
+import VerifyPhone from './pages/Login/VerifyPhone.js';
+import ChangePassword from './pages/Login/ChangePassword.js';
+
+
+  
+
 export default function Router(){
- 
     return useRoutes([
         {
             path: '/',
-            element:<DashboardLayout/>,
+           element:<DashboardLayout/>,
             children:[{path:'/', element:<Home/>},
+
          
            ]  
+
+          // { path: 'login', element: <SignInOutContainer/> },
+          ]
+
         },  
-        
+
         {
-          path: '/dashboard/admin',
+          path: '/login',
+          element: <SignInOutContainer/>,
+        },
+        {
+          path: '/findaccount',
+          element: <FindAccount/>,
+        },
+        {
+          path: '/verifyphone',
+          element: <VerifyPhone/>,
+        },
+        {
+          path: '/changepassword',
+          element: <ChangePassword/>,
+        },
+        {
+          path: '/dashboard',
           element: <DashboardLayout />,
           children: [
             { path: 'app', element: <Home /> },
@@ -33,24 +64,14 @@ export default function Router(){
             { path: '404', element: <Page404/> },
             { path: 'package', element: <PackageFood/> },
             { path:'newpackage',element:<NewPackage/>},
-            { path: 'login', element: <Page404/> },
+            // { path: 'login', element: <Page404/> },
+            { path: 'login', element: <SignInOutContainer/> },
+            
             { path: 'register', element: <Page404/> },
             { path:'newfood',element:<NewFood/>},
-            { path: "product/:id",element:<EditFood/>},
-            { path: "users/:id",element:<UserDetail/>},
-            // { path:'login',element:<LoginForm/>}
           ],
         },
-        {
-          path:'/dashboard/kichen',
-          element: <DashboardLayout />,
-          children: [
-            {path:'schedule',element:<ScheduleFood/>},
-            {path: 'order', element:<Page404/>}
-          ]
-        },
-     
-        { path: "*", element: <Navigate to="404" replace /> },
+        { path: "*", element: <Navigate to="/404" replace /> },
         
       ]);
 }
