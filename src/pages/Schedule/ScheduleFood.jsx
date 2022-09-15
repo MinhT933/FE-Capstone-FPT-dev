@@ -79,6 +79,9 @@ const StyledWeekViewDayScaleCell = styled(WeekView.DayScaleCell)(
   })
 );
 
+//custome appoinment form
+
+
 const AppointmentContent = ({ data, formatDate, ...restProps }) => (
   <StyledAppointmentsAppointmentContent
     {...restProps}
@@ -202,11 +205,11 @@ const SchedulerContainer = ({
       <Toolbar flexibleSpaceComponent={FlexibleSpace} />
       <DateNavigator />
       <ViewSwitcher />
-      {/* <EditingState onCommitChanges={commitChanges}/> */}
+      <EditingState onCommitChanges={commitChanges}/>
           <ConfirmationDialog />
           {/* <IntegratedEditing /> */}
           <Appointments />
-          <AppointmentTooltip showOpenButton showDeleteButton/>
+          <AppointmentTooltip />
           <AppointmentForm />
         
 
@@ -296,3 +299,7 @@ export default function ScheduleFood() {
     </Provider>
   );
 }
+
+
+
+
