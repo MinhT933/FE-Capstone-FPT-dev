@@ -23,7 +23,7 @@ import {
 import StyledAppointmentsAppointmentContent from "./../../components/hook-form/schedule/Appointments";
 import { appointments } from "../../../src/_mock/appointments";
 import LocationSelector from "../../components/hook-form/schedule/LocationSelector";
-import { CurrentTimeIndicator } from "@devexpress/dx-react-scheduler";
+import { CurrentTimeIndicator } from "@devexpress/dx-react-scheduler";                
 import { EditingState } from "@devexpress/dx-react-scheduler";
 import { useState } from "react";
 
