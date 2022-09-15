@@ -184,7 +184,7 @@ export default function Food(props) {
           <ColorButton
             variant="contained"
             component={RouterLink}
-            to="/dashboard/newfood"
+            to="/dashboard/admin/newfood"
           >
             Thêm thức ăn
           </ColorButton>
