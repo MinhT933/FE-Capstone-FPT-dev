@@ -15,6 +15,7 @@ import FindAccount from './pages/Login/FindAccount.js';
 import SignInOutContainer from './pages/Login/index.js';
 import VerifyPhone from './pages/Login/VerifyPhone.js';
 import ChangePassword from './pages/Login/ChangePassword.js';
+import StationList from './pages/Station/StationList';
 export default function Router(){
  
     return useRoutes([
@@ -56,11 +57,12 @@ export default function Router(){
             { path:'newfood',element:<NewFood/>},
             { path: "product/:id",element:<EditFood/>},
             { path: "users/:id",element:<UserDetail/>},
+            { path: "station",element:<StationList/>},
             // { path:'login',element:<LoginForm/>}
           ],
         },
         {
-          path:'/dashboard/kichen',
+          path:'/dashboard/kitchen',
           element: <DashboardLayout />,
           children: [
             {path:'schedule',element:<ScheduleFood/>},
