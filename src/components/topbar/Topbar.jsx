@@ -49,9 +49,9 @@ export default function Topbar({ onOpenSidebar }) {
         </IconButton>
         <Searchbar />
         <Box sx={{ flexGrow: 1 }} />
-          <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
-          <NotificationsPopover />
+        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+          {/* <LanguagePopover />
+          <NotificationsPopover /> */}
           <AccountPopover />
         </Stack>
       </ToolbarStyle>

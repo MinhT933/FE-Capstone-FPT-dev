@@ -62,7 +62,7 @@ function NavItem({ item, active }) {
   if (children) {
     return (
       <>
-      {/* menu multipe  */}
+        {/* menu multipe  */}
         <ListItemStyle
           onClick={handleOpen}
           sx={{
@@ -77,11 +77,11 @@ function NavItem({ item, active }) {
             sx={{ width: 16, height: 16, ml: 1 }}
           />
         </ListItemStyle>
-         {/* map với navConfig */}
+        {/* map với navConfig */}
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding sx={{left:'7%'}} >
+          <List component="div" disablePadding sx={{ left: '7%' }} >
             {children.map((item) => {
-              const { title, path,icon } = item;
+              const { title, path, icon } = item;
               const isActiveSub = active(path);
               return (
                 <ListItemStyle
@@ -125,7 +125,7 @@ function NavItem({ item, active }) {
   }
 
   return (
-  <ListItemStyle
+    <ListItemStyle
       component={RouterLink}
       to={path}
       sx={{

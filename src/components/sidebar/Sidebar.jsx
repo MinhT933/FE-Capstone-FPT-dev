@@ -19,6 +19,8 @@ import navConfig from './NavConfig';
 
 const DRAWER_WIDTH = 280;
 
+
+//style gạch nối ở slidebar
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     flexShrink: 0,
@@ -33,6 +35,8 @@ const AccountStyle = styled('div')(({ theme }) => ({
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
   backgroundColor: theme.palette.grey[500_12],
 }));
+
+
 
 // ----------------------------------------------------------------------
 
@@ -96,7 +100,6 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
       </Box>
     </Scrollbar>
   );
-
   return (
     <RootStyle>
       {!isDesktop && (
