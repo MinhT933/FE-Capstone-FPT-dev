@@ -23,7 +23,7 @@ import {
 import StyledAppointmentsAppointmentContent from "./../../components/hook-form/schedule/Appointments";
 import { appointments } from "../../../src/_mock/appointments";
 import LocationSelector from "../../components/hook-form/schedule/LocationSelector";
-import { CurrentTimeIndicator } from "@devexpress/dx-react-scheduler";
+import { CurrentTimeIndicator } from "@devexpress/dx-react-scheduler";                
 import { EditingState } from "@devexpress/dx-react-scheduler";
 import { useState } from "react";
 
@@ -78,6 +78,9 @@ const StyledWeekViewDayScaleCell = styled(WeekView.DayScaleCell)(
     },
   })
 );
+
+//custome appoinment form
+
 
 const AppointmentContent = ({ data, formatDate, ...restProps }) => (
   <StyledAppointmentsAppointmentContent
@@ -202,11 +205,11 @@ const SchedulerContainer = ({
       <Toolbar flexibleSpaceComponent={FlexibleSpace} />
       <DateNavigator />
       <ViewSwitcher />
-      {/* <EditingState onCommitChanges={commitChanges}/> */}
+      <EditingState onCommitChanges={commitChanges}/>
           <ConfirmationDialog />
           {/* <IntegratedEditing /> */}
           <Appointments />
-          <AppointmentTooltip showOpenButton showDeleteButton/>
+          <AppointmentTooltip />
           <AppointmentForm />
         
 
@@ -296,3 +299,7 @@ export default function ScheduleFood() {
     </Provider>
   );
 }
+
+
+
+

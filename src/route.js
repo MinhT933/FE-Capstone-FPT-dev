@@ -57,8 +57,9 @@ export default function Router(){
             { path:'newfood',element:<NewFood/>},
             { path: "product/:id",element:<EditFood/>},
             { path: "users/:id",element:<UserDetail/>},
+
             { path: "station",element:<StationList/>},
-            // { path:'login',element:<LoginForm/>}
+
           ],
         },
         {

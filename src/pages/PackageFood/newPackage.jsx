@@ -9,7 +9,6 @@ import { Grid } from "@mui/material";
 
 import Button from "@mui/material/Button";
 import UseCreateForm from "../../components/PopUp/useForm";
-import * as UpdateService from "../../utils/UpdateService/UpdateService";
 import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
 
@@ -24,11 +23,6 @@ const initialValue = {
   hireDate: new Date(),
   isActive: false,
 };
-const genderItems = [
-  { id: "male", title: "Male" },
-  { id: "female", title: "Female" },
-  { id: "other", title: "Other" },
-];
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),

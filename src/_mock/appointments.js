@@ -31,7 +31,7 @@ export const appointments = [
       id: 4,
       location: 'món mặn',
     }, {
-      title: 'Cá chà bặc',
+      title: 'Cá chà là',
       startDate: new Date(2022, 8, 12, 6, 30),
       endDate: new Date(2022, 8, 12, 9, 45),
       id: 8,

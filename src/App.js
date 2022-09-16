@@ -1,7 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Routes } from "react-router-dom";
-import { Route } from "react-router-dom";
-import routesHome from "./route.js";
 import Router from "./route.js";
 import { BaseOptionChartStyle } from "./components/chart/BaseOptionChart";
 import ThemeProvider from "./theme";
