@@ -42,7 +42,7 @@ const TABLE_HEAD = [
   { id: "type", label: "phân loại", alignRight: false },
 
   { id: "createdate", label: "Ngày thêm", alignRight: false },
-  { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
+  { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
 

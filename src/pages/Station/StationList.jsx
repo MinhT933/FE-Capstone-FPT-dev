@@ -32,11 +32,13 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "stationName", label: "Tên Trạm", alignRight: false },
+    { id: "stationName", label: "Địa điểm", alignRight: false },
     { id: "stationAddress", label: "Địa chỉ", alignRight: false },
-    { id: "openTime", label: "Mở lúc", alignRight: false },
-    { id: "closeTime", label: "Đóng lúc", alignRight: false },
+    { id: "openTime", label: "Mở cửa", alignRight: false },
+    { id: "closeTime", label: "Đóng cửa", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
+    { id: "createDate", label: "Ngày tạo", alignRight: false },
+    { id: "updateDate", label: "Cập nhập", alignRight: false },
     { id: "" },
 ];
 
@@ -169,10 +171,10 @@ export default function StationList() {
                     <ColorButton
                         variant="contained"
                         component={RouterLink}
-                        to="#"
+                        to="/dashboard/admin/newstation"
 
                     >
-                        Thêm trạm
+                        Thêm địa điểm
                     </ColorButton>
                 </Stack>
 
@@ -206,9 +208,11 @@ export default function StationList() {
                                                 openTime,
                                                 closeTime,
                                                 status,
+                                                createDate,
+                                                updateDate,
                                             } = row;
                                             const isItemSelected = selected.indexOf(stationName) !== -1;
-                                            // console.log(stationName);
+                                           
                                             return (
                                                 <TableRow
                                                     hover
@@ -232,12 +236,14 @@ export default function StationList() {
                                                         <Label
                                                             variant="ghost"
                                                             color={
-                                                                (status === "banned" && "error") || "success"
+                                                                (status === "Closed" && "error") || "success"
                                                             }
                                                         >
                                                             {(status)}
                                                         </Label>
                                                     </TableCell>
+                                                    <TableCell align="left">{createDate}</TableCell>
+                                                    <TableCell align="left">{updateDate}</TableCell>
 
                                                     <TableCell align="right">
                                                         {/* //props */}

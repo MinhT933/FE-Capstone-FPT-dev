@@ -16,6 +16,7 @@ import SignInOutContainer from './pages/Login/index.js';
 import VerifyPhone from './pages/Login/VerifyPhone.js';
 import ChangePassword from './pages/Login/ChangePassword.js';
 import StationList from './pages/Station/StationList';
+import NewStation from './pages/Station/NewStation.jsx';
 export default function Router(){
  
     return useRoutes([
@@ -59,7 +60,7 @@ export default function Router(){
             { path: "users/:id",element:<UserDetail/>},
 
             { path: "station",element:<StationList/>},
-
+            { path: "newstation",element:<NewStation/>},
           ],
         },
         {
