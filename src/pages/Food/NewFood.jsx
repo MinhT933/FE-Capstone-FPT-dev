@@ -105,14 +105,10 @@ export default function NewFood() {
               options={UpdateService.Cate()}
             />
           </Grid>
-         
         </Grid>
-       
-         
-        
       </Box>
       <Box>
-        <Stack width="200px" justifyContent="center" marginLeft={"40%"} marginTop={"5rem"}>
+        <Stack width="200px" justifyContent="center" marginLeft={"40%"} marginTop={"rem"}>
             <ColorButton variant="contained">Tạo thực phẩm </ColorButton>
           </Stack>
         </Box>

@@ -23,7 +23,7 @@ import {
 import StyledAppointmentsAppointmentContent from "./../../components/hook-form/schedule/Appointments";
 import { appointments } from "../../../src/_mock/appointments";
 import LocationSelector from "../../components/hook-form/schedule/LocationSelector";
-import { CurrentTimeIndicator } from "@devexpress/dx-react-scheduler";                
+import { CurrentTimeIndicator } from "@devexpress/dx-react-scheduler";
 import { EditingState } from "@devexpress/dx-react-scheduler";
 import { useState } from "react";
 
@@ -80,7 +80,6 @@ const StyledWeekViewDayScaleCell = styled(WeekView.DayScaleCell)(
 );
 
 //custome appoinment form
-
 
 const AppointmentContent = ({ data, formatDate, ...restProps }) => (
   <StyledAppointmentsAppointmentContent
@@ -155,12 +154,10 @@ const DayScaleCell = ({ ...restProps }) => {
 
 const SCHEDULER_STATE_CHANGE_ACTION = "SCHEDULER_STATE_CHANGE";
 
-const commitChanges = ({ added, changed, deleted,data,setData }) => {
- 
+const commitChanges = ({ added, changed, deleted, data, setData }) => {
   let newData = [...data.data];
   if (added) {
-    const startingAddedId =
-      data.length > 0 ? data[data.length - 1].id + 1 : 0;
+    const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
     data = [...data, { id: startingAddedId, ...added }];
   }
   if (changed) {
@@ -185,7 +182,7 @@ const SchedulerContainer = ({
 }) => (
   <Paper>
     <Scheduler data={data} height={660}>
-      <ViewState
+      {/* <ViewState
         currentDate={currentDate}
         onCurrentDateChange={onCurrentDateChange}
         currentViewName={currentViewName}
@@ -193,26 +190,10 @@ const SchedulerContainer = ({
       />
       <DayView startDayHour={6} endDayHour={20} />
       <WeekView
-        startDayHour={6}
-        endDayHour={20}
-        timeTableCellComponent={TimeTableCell}
-        dayScaleCellComponent={DayScaleCell}
+
       />
-
-      <Appointments appointmentContentComponent={AppointmentContent} />
-      <Resources data={resources} />
-      <EditingState onCommitChanges={commitChanges}/>
-      <Toolbar flexibleSpaceComponent={FlexibleSpace} />
       <DateNavigator />
-      <ViewSwitcher />
-      <EditingState onCommitChanges={commitChanges}/>
-          <ConfirmationDialog />
-          {/* <IntegratedEditing /> */}
-          <Appointments />
-          <AppointmentTooltip />
-          <AppointmentForm />
-        
-
+      <ViewSwitcher /> */}
     </Scheduler>
   </Paper>
 );
@@ -292,14 +273,10 @@ const store = createStore(
 );
 
 export default function ScheduleFood() {
-  const [data, setData]= useState();
+  const [data, setData] = useState();
   return (
     <Provider store={store}>
       <ReduxSchedulerContainer />
     </Provider>
   );
 }
-
-
-
-

@@ -46,6 +46,7 @@ function NavItem({ item, active }) {
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
+    
   };
 
   const activeRootStyle = {

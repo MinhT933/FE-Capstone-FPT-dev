@@ -36,11 +36,13 @@ export default function InputImg() {
           type="file"
           onChange={_treat}
         />
-        <Button variant="contained" component="span" sx={
-          {
-            marginLeft:"23%"
-          }
-        }>
+        <Button
+          variant="contained"
+          component="span"
+          sx={{
+            marginLeft: "23%",
+          }}
+        >
           Tải lên...
         </Button>
         <Box
@@ -49,7 +51,7 @@ export default function InputImg() {
             width: 165,
             maxHeight: { xs: 233, md: 167 },
             maxWidth: { xs: 350, md: 250 },
-           
+
             marginTop: "10%",
           }}
         >

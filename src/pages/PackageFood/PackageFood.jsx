@@ -1,9 +1,7 @@
-
-
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { sentenceCase } from 'change-case';
+import { sentenceCase } from "change-case";
 import { styled } from "@mui/material/styles";
 
 import {
@@ -34,9 +32,7 @@ import {
 // mock
 import PACKAGELIST from "../../_mock/packagsample";
 
-
 //Link routers
-
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +55,6 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
-
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -90,8 +85,6 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-
-
 
 export default function PackageFood() {
   const [page, setPage] = useState(0);
@@ -160,20 +153,20 @@ export default function PackageFood() {
     getComparator(order, orderBy),
     filterName
   );
-    //setColor button
-    const ColorButton = styled(Button)(({ theme }) => ({
-      color: theme.palette.getContrastText("#FFCC32"),
-      backgroundColor: "#FFCC33",
-      "&:hover": {
-        backgroundColor: "#ffee32",
-      },
-      display: "center",
-    }));
+  //setColor button
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC32"),
+    backgroundColor: "#FFCC33",
+    "&:hover": {
+      backgroundColor: "#ffee32",
+    },
+    display: "center",
+  }));
 
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
-      <Container  maxWidth={false}>
+      <Container>
         <Stack
           direction="row"
           alignItems="center"
@@ -183,15 +176,15 @@ export default function PackageFood() {
           <Typography variant="h4" gutterBottom>
             {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
-         
-            <ColorButton
-              variant="contained"
-              component={RouterLink}
-              // startIcon={<Iconify icon="eva:plus-fill" />}
-              to='/dashboard/newpackage'
-            >
-              Thêm Gói Ăn
-            </ColorButton>
+
+          <ColorButton
+            variant="contained"
+            component={RouterLink}
+            // startIcon={<Iconify icon="eva:plus-fill" />}
+            to="/dashboard/admin/newpackage"
+          >
+            Thêm Gói Ăn
+          </ColorButton>
         </Stack>
         <Card>
           <UserListToolbar
@@ -276,7 +269,6 @@ export default function PackageFood() {
                               variant="ghost"
                               color={
                                 (status === "active" && "error") || "success"
-                                
                               }
                             >
                               {sentenceCase(status)}
@@ -290,7 +282,6 @@ export default function PackageFood() {
                         </TableRow>
                       );
                     })}
-            
                 </TableBody>
 
                 {isUserNotFound && (
@@ -304,9 +295,9 @@ export default function PackageFood() {
                 )}
               </Table>
             </TableContainer>
-         </Scrollbar> 
+          </Scrollbar>
           <TablePagination
-            rowsPerPageOptions={[ 25, 10,5]}
+            rowsPerPageOptions={[25, 10, 5]}
             component="div"
             count={PACKAGELIST.length}
             rowsPerPage={rowsPerPage}
@@ -316,7 +307,6 @@ export default function PackageFood() {
           />
         </Card>
       </Container>
-      
     </Page>
   );
 }
