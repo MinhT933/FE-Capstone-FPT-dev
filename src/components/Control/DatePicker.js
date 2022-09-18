@@ -12,6 +12,7 @@ export default function DatePicker(props) {
     setValue(newValue);
   };
   const {name}= props
+  console.log(name);
 
   return (
     <FormControl  sx={{
