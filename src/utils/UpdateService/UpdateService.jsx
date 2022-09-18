@@ -44,7 +44,7 @@ export const getDay = () => [
   { title: "Fr", year: 1972 },
   { title: "Sa", year: 1972 },
 ];
-=======
+
 export const Cate = () => ([
   { id: "1", title: "Chay" },
   { id: "2", title: "Mặn" },
