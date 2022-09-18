@@ -1,9 +1,7 @@
-
-
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { sentenceCase } from 'change-case';
+import { sentenceCase } from "change-case";
 import { styled } from "@mui/material/styles";
 
 import {
@@ -34,9 +32,7 @@ import {
 // mock
 import PACKAGELIST from "../../_mock/packagsample";
 
-
 //Link routers
-
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +55,6 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
-
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -90,8 +85,6 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-
-
 
 export default function PackageFood() {
   const [page, setPage] = useState(0);
@@ -173,7 +166,10 @@ export default function PackageFood() {
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
-      <Container maxWidth={false}>
+
+      <Container>
+
+
         <Stack
           direction="row"
           alignItems="center"
@@ -188,7 +184,10 @@ export default function PackageFood() {
             variant="contained"
             component={RouterLink}
             // startIcon={<Iconify icon="eva:plus-fill" />}
-            to='/dashboard/newpackage'
+
+            to="/dashboard/admin/newpackage"
+
+
           >
             Thêm Gói Ăn
           </ColorButton>
