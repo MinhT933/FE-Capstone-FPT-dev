@@ -62,7 +62,7 @@ export default function NewUserPopup(props) {
             <Grid item xs={6}>
               <Controls.Input
                 variant="outlined"
-                label="Tên Trạm"
+                label="Địa điểm"
                 values={values.stationName}
                 onChange={handleInputChange}
               />
@@ -78,7 +78,7 @@ export default function NewUserPopup(props) {
             <Grid item xs={6}>
               <Controls.TimeRanges
                 name="openTime"
-                label="Mở lúc"
+                label="Mở cửa"
                 value={values.openTime}
                 onChange={handleInputChange}
               />
@@ -86,7 +86,7 @@ export default function NewUserPopup(props) {
             <Grid item xs={6}>
               <Controls.TimeRanges
                 name="closeTime"
-                label="Đóng lúc"
+                label="Đóng cửa"
                 value={values.closeTime}
                 onChange={handleInputChange}
               />
@@ -94,7 +94,7 @@ export default function NewUserPopup(props) {
             <Grid item xs={6}>
               <Controls.Select
                 name="address"
-                label="Address"
+                label="Địa chỉ"
                 values={values.stationAddress}
                 onChange={handleInputChange}
                 options={UpdateService.getOptions()}
