@@ -5,6 +5,7 @@ export const getOptions = () => [
   { id: "4", title: "Back-End" },
 ];
 
+
 export const getOptionsGroup = () => [
   { id: "1", title: "gói cao cấp" },
   { id: "2", title: "gói trung cấp" },
@@ -18,6 +19,7 @@ export const Cate = () => [
   { id: "3", title: "Cân bằng calo" },
   { id: "4", title: "gảm cân" },
 ];
+
 
 export const PakageItem = () => [
   { id: "1", title: "Sáng" },
@@ -42,3 +44,6 @@ export const getDay = () => [
   { title: "Fr", year: 1972 },
   { title: "Sa", year: 1972 },
 ];
+
+
+

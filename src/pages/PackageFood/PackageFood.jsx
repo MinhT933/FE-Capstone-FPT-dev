@@ -166,7 +166,10 @@ export default function PackageFood() {
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
+
       <Container>
+
+
         <Stack
           direction="row"
           alignItems="center"
@@ -181,7 +184,10 @@ export default function PackageFood() {
             variant="contained"
             component={RouterLink}
             // startIcon={<Iconify icon="eva:plus-fill" />}
+
             to="/dashboard/admin/newpackage"
+
+
           >
             Thêm Gói Ăn
           </ColorButton>
@@ -269,6 +275,7 @@ export default function PackageFood() {
                               variant="ghost"
                               color={
                                 (status === "active" && "error") || "success"
+
                               }
                             >
                               {sentenceCase(status)}
@@ -282,6 +289,7 @@ export default function PackageFood() {
                         </TableRow>
                       );
                     })}
+
                 </TableBody>
 
                 {isUserNotFound && (
@@ -307,6 +315,7 @@ export default function PackageFood() {
           />
         </Card>
       </Container>
+
     </Page>
   );
 }

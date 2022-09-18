@@ -33,6 +33,7 @@ import FOODLIST from "../../_mock/foodsample";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -41,7 +42,7 @@ const TABLE_HEAD = [
   { id: "type", label: "phân loại", alignRight: false },
 
   { id: "createdate", label: "Ngày thêm", alignRight: false },
-  { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
+  { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
 
@@ -143,10 +144,10 @@ export default function Food(props) {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
-   
-  
+
+
   };
-  
+
 
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
@@ -224,7 +225,7 @@ export default function Food(props) {
                         datatype,
                         avatarUrl,
                       } = row;
-                     
+
                       const isItemSelected = selected.indexOf(name) !== -1;
                       console.log(id);
                       return (
@@ -254,7 +255,7 @@ export default function Food(props) {
                               </Typography>
                             </Stack>
                           </TableCell>
-                         
+
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
                           <TableCell align="left">{createDate}</TableCell>
@@ -272,7 +273,7 @@ export default function Food(props) {
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu id={id} path = {path}/>
+                            <UserMoreMenu id={id} path={path} />
                           </TableCell>
                         </TableRow>
                       );
@@ -304,7 +305,7 @@ export default function Food(props) {
         </Card>
       </Container>
       <Paper>
-        
+
       </Paper>
     </Page>
   );
