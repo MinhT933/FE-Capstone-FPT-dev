@@ -128,7 +128,7 @@ export default function NewPackageItem() {
             justifyContent="center"
             marginLeft={"35%"}
             marginTop={"2rem"}
-            marginBottom={"2rem"}
+            marginBottom={"2%"}
           >
             <ColorButton variant="contained">Chấp thuận </ColorButton>
           </Stack>

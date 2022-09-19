@@ -36,7 +36,7 @@ const navConfig = [
   },
   {
     title: "Trạm",
-    path: "/dashboard/admin/package",
+    path: "/dashboard/admin/station",
     icon: getIcon("carbon:location-company"),
   },
   {

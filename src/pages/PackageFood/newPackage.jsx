@@ -17,6 +17,7 @@ import InputImg from "./../../components/InputImg/inputImg";
 import CustomDay from "./timeframe/Timeframe";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import { MarginRounded } from "@mui/icons-material";
 
 const initialValue = {
   id: 0,
@@ -33,7 +34,6 @@ const useStyles = styled((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(9),
-    boderadius: "50%",
   },
 }));
 
@@ -53,115 +53,127 @@ export default function NewPackage() {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
   const classes = useStyles();
   return (
-    <Paper className={classes.pageContent}>
-      <PageHeader
-        title="Thiết kế gói ăn"
-        subTitle="Tinh hoa ẩm thực "
-        icon={getIcon("emojione-monotone:pot-of-food")}
-      />
-      <Box sx={{ float: "right", width: "40%" }}>
-        <Paper backgroundColor="red">
-          <InputImg />
-        </Paper>
-      </Box>
-      <Box
-        sx={{ float: "left", width: "60%", flexGrow: 1 }}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid container spacing={1.5}>
-          <Grid item xs={6}>
-            <Controls.Input
-              variant="outlined"
-              label="Name"
-              value={values.name}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.Input
-              variant="outlined"
-              label="Giá"
-              value={values.name}
-              onChange={handleInputChange}
-            />
-          </Grid>
+    <Box sx={{ borderRadius: 4, boxShadow: 12 }}>
+      <Paper className={classes.pageContent}>
+        <PageHeader
+          title="Thiết kế gói ăn"
+          subTitle="Tinh hoa ẩm thực "
+          icon={getIcon("emojione-monotone:pot-of-food")}
+        />
 
-          <Grid item xs={6}>
-            <Controls.Input
-              variant="outlined"
-              label="Giá"
-              value={values.price}
-              onChange={handleInputChange}
-            />
+        <Box sx={{ float: "right", width: "30%" }}>
+          <Paper>
+            <InputImg />
+          </Paper>
+        </Box>
+        <Box
+          sx={{
+            float: "left",
+            // borderRadius: 2,
+            width: "60%",
+            // boxShadow: 12,
+            // height: "100%",
+            marginLeft: "2%",
+          }}
+        >
+          <Grid
+            container
+            spacing={1.5}
+            // sx={{ marginLeft: "2%", marginTop: "2%", marginBottom: "5%" }}
+          >
+            <Grid item xs={6}>
+              <Controls.Input
+                variant="outlined"
+                label="Name"
+                value={values.name}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.Input
+                variant="outlined"
+                label="Giá"
+                value={values.name}
+                onChange={handleInputChange}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <Controls.Input
+                variant="outlined"
+                label="Giá"
+                value={values.price}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.Select
+                name="mục gói ăn"
+                label="chọn mục thức ăn"
+                value={values.departmentId}
+                onChange={handleInputChange}
+                options={UpdateService.PakageItem()}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.DatePicker
+                variant="outlined"
+                name="Ngày mở bán"
+                label="StartSale"
+                value={values.name}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.DatePicker
+                variant="outlined"
+                name="Ngày kết thúc bán"
+                label="EndSale"
+                value={values.name}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                multiple
+                limitTags={2}
+                id="multiple-limit-tags"
+                options={UpdateService.getDay()}
+                placeholder="nhấp vào em này"
+                getOptionLabel={(option) => option.title}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Chon ngày trong tuần"
+                    placeholder="thứ"
+                  />
+                )}
+                sx={{ width: "87%" }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.TextArea
+                variant="outlined"
+                placeholder="Mô tả"
+                value={values}
+                onChange={handleInputChange}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Controls.Select
-              name="mục gói ăn"
-              label="chọn mục thức ăn"
-              value={values.departmentId}
-              onChange={handleInputChange}
-              options={UpdateService.PakageItem()}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.DatePicker
-              variant="outlined"
-              name="Ngày mở bán"
-              label="StartSale"
-              value={values.name}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.DatePicker
-              variant="outlined"
-              name="Ngày kết thúc bán"
-              label="EndSale"
-              value={values.name}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Autocomplete
-              multiple
-              limitTags={2}
-              id="multiple-limit-tags"
-              options={UpdateService.getDay()}
-              placeholder="nhấp vào em này"
-              getOptionLabel={(option) => option.title}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Chon ngày trong tuần"
-                  placeholder="thứ"
-                />
-              )}
-              sx={{ width: "87%" }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.TextArea
-              variant="outlined"
-              placeholder="Mô tả"
-              value={values}
-              onChange={handleInputChange}
-            />
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </Paper>
 
       <Box>
         <Stack
           width="200px"
           justifyContent="center"
-          marginLeft={"40%"}
-          marginTop={"38%"}
+          marginLeft={"35%"}
+          marginTop={"20rem"}
+          paddingBottom="2rem"
         >
           <ColorButton variant="contained">Chấp thuận </ColorButton>
         </Stack>
       </Box>
-    </Paper>
+    </Box>
   );
 }
