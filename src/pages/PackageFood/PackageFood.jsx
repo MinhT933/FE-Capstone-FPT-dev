@@ -34,20 +34,23 @@ import PACKAGELIST from "../../_mock/packagsample";
 
 //Link routers
 
-// ----------------------------------------------------------------------
+// ---------------------------------------------------------------------- 
+// ở đây fix được tên tên table
+// ko nhát thiết phải thêm table head ở dưới 
 
 const TABLE_HEAD = [
+  { id: "images", name: "Hình", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
-  { id: "type", label: "phân loại", alignRight: false },
+  { id: "type", label: "Phân loại", alignRight: false },
   { id: "createdate", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
-  { id: "startSale", label: "ngày bán", alignRight: false },
-  { id: "endSale", label: "Không Bán", alignRight: false },
+  { id: "startSale", label: "Ngày bán", alignRight: false },
+  { id: "endSale", label: "Ngày không Bán", alignRight: false },
   { id: "totalMeal", label: "Tổng buổi ăn", alignRight: false },
   { id: "totalfood", label: "Tổng số thức ăn", alignRight: false },
 
-  { id: "areaSale", label: "địa điểm bán", alignRight: false },
+  { id: "areaSale", label: "Địa điểm bán", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "" },
 ];
@@ -147,7 +150,8 @@ export default function PackageFood() {
 
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PACKAGELIST.length) : 0;
-
+  
+  //sort 
   const filteredUsers = applySortFilter(
     PACKAGELIST,
     getComparator(order, orderBy),
@@ -166,10 +170,7 @@ export default function PackageFood() {
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
-
       <Container>
-
-
         <Stack
           direction="row"
           alignItems="center"
@@ -186,8 +187,6 @@ export default function PackageFood() {
             // startIcon={<Iconify icon="eva:plus-fill" />}
 
             to="/dashboard/admin/newpackage"
-
-
           >
             Thêm Gói Ăn
           </ColorButton>
@@ -249,17 +248,21 @@ export default function PackageFood() {
                               onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
+                          {/* fix cái hình và tên ở table */}
+                          <TableCell>
+                            <Avatar alt={name} src={avatarUrl} />
+                          </TableCell>
+                          <TableCell>
+                            {/* <Stack
                               direction="row"
                               alignItems="center"
                               spacing={2}
-                            >
-                              <Avatar alt={name} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
+                              // component="th" scope="row" padding="none"
+                            > */}
+                            <Typography variant="subtitle2" noWrap>
+                              {name}
+                            </Typography>
+                            {/* </Stack> */}
                           </TableCell>
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
@@ -275,7 +278,6 @@ export default function PackageFood() {
                               variant="ghost"
                               color={
                                 (status === "active" && "error") || "success"
-
                               }
                             >
                               {sentenceCase(status)}
@@ -289,7 +291,6 @@ export default function PackageFood() {
                         </TableRow>
                       );
                     })}
-
                 </TableBody>
 
                 {isUserNotFound && (
@@ -315,7 +316,6 @@ export default function PackageFood() {
           />
         </Card>
       </Container>
-
     </Page>
   );
 }

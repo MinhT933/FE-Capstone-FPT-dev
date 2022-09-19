@@ -4,12 +4,15 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Box } from "@mui/system";
+import { Icon } from "@iconify/react";
+import Iconify from "./../hook-form/Iconify";
 
 const Input = styled("input")({
   display: "none",
 });
 
 export default function InputImg() {
+  const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
   const [input, setInput] = useState([]);
 
   function _treat(e) {
@@ -51,12 +54,16 @@ export default function InputImg() {
             width: 165,
             maxHeight: { xs: 233, md: 167 },
             maxWidth: { xs: 350, md: 250 },
-
             marginTop: "10%",
+            boxShadow: 8,
           }}
         >
           {input.map((i) => (
-            <img key={i} src={i} alt="" />
+            <img
+              key={i}
+              src={i}
+              onerror="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg"
+            />
           ))}
         </Box>
       </label>
