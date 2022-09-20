@@ -51,7 +51,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 export default function NewPackageItem() {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
   const classes = useStyles();
-
+  ///css pag bo tròn và đỗ bóng lên ///
   return (
     <Box
       sx={{
@@ -122,6 +122,7 @@ export default function NewPackageItem() {
             </Grid>
           </Grid>
         </Box>
+        {/* css cho button ở dưới cáchđều ra  */}
         <Box>
           <Stack
             width="200px"

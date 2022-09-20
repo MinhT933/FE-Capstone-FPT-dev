@@ -5,7 +5,6 @@ export const getOptions = () => [
   { id: "4", title: "Back-End" },
 ];
 
-
 export const getOptionsGroup = () => [
   { id: "1", title: "gói cao cấp" },
   { id: "2", title: "gói trung cấp" },
@@ -19,7 +18,6 @@ export const Cate = () => [
   { id: "3", title: "Cân bằng calo" },
   { id: "4", title: "gảm cân" },
 ];
-
 
 export const PakageItem = () => [
   { id: "1", title: "Sáng" },
@@ -45,5 +43,25 @@ export const getDay = () => [
   { title: "Sa", year: 1972 },
 ];
 
-
-
+export const selectName = () => [
+  {
+    id: "1",
+    title: "Món chay",
+  },
+  {
+    id: "2",
+    title: "Món mặn",
+  },
+  {
+    id: "3",
+    title: "đặc sản",
+  },
+  {
+    id: "4",
+    title: "Chiên",
+  },
+  {
+    id: "4",
+    title: "xào",
+  },
+];

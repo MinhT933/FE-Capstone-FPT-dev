@@ -18,6 +18,7 @@ export default function TextArea(props) {
     <StyleBox>
       <TextField
         placeholder={placeholder}
+        label={label}
         multiline
         rows={2}
         maxRows={4}

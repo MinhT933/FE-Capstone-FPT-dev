@@ -14,10 +14,8 @@ import * as UpdateService from "../../utils/UpdateService/UpdateService";
 import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
 import InputImg from "./../../components/InputImg/inputImg";
-import CustomDay from "./timeframe/Timeframe";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { MarginRounded } from "@mui/icons-material";
 
 const initialValue = {
   id: 0,
@@ -76,11 +74,7 @@ export default function NewPackage() {
             marginLeft: "2%",
           }}
         >
-          <Grid
-            container
-            spacing={1.5}
-            // sx={{ marginLeft: "2%", marginTop: "2%", marginBottom: "5%" }}
-          >
+          <Grid container spacing={1.5} sx={{ marginLeft: "8%" }}>
             <Grid item xs={6}>
               <Controls.Input
                 variant="outlined"
@@ -101,7 +95,7 @@ export default function NewPackage() {
             <Grid item xs={6}>
               <Controls.Input
                 variant="outlined"
-                label="Giá"
+                label="....."
                 value={values.price}
                 onChange={handleInputChange}
               />
@@ -109,7 +103,7 @@ export default function NewPackage() {
             <Grid item xs={6}>
               <Controls.Select
                 name="mục gói ăn"
-                label="chọn mục thức ăn"
+                label="Chọn mục thức ăn"
                 value={values.departmentId}
                 onChange={handleInputChange}
                 options={UpdateService.PakageItem()}
@@ -144,7 +138,7 @@ export default function NewPackage() {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Chon ngày trong tuần"
+                    label=" Ngày trong tuần"
                     placeholder="thứ"
                   />
                 )}
