@@ -85,6 +85,8 @@ export default function ManagerFoodGroup() {
             marginLeft: "2%",
             paddingTop: "2%",
             height: "15rem",
+            // component: Paper,
+            bgcolor: "#ffff",
           }}
         >
           <Grid container spacing={1.5} sx={{ marginLeft: "2%" }}>
@@ -123,7 +125,7 @@ export default function ManagerFoodGroup() {
               <ColorButton variant="contained">Tạo nhóm thức ăn </ColorButton>
             </Stack>
           </Box>
-          <Box sx={{ marginTop: "20%", boxShadow: 9, borderRadius: 1 }}>
+          <Box sx={{ marginTop: "10%", boxShadow: 9, borderRadius: 1 }}>
             <Paper>
               <TableFoodGr />
             </Paper>

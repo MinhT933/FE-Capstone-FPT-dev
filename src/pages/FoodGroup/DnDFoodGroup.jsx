@@ -12,14 +12,23 @@ import Controls from "../../components/Control/Controls";
 import Box from "@mui/material/Box";
 import * as UpdateService from "../../utils/UpdateService/UpdateService";
 import UseCreateForm from "../../components/PopUp/useForm";
-import { classNames } from "clsx";
-import { selectName } from "./../../utils/UpdateService/UpdateService";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import { makeStyles } from "@material-ui/core";
+import { grey } from "@material-ui/core/colors";
 
 const stateName = {
   id: 0,
   name: "",
 };
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
 export default function DnDFoodGroup() {
   const columnsFromBackend = {
@@ -30,7 +39,7 @@ export default function DnDFoodGroup() {
     ///dòng này tạo tên bảng với items cho drag and drop
     // xuống dưới tao cho .map để render
     [uuidv4()]: {
-      name: "hihi",
+      name: "Món Chay",
       items: [],
     },
   };
@@ -113,8 +122,10 @@ export default function DnDFoodGroup() {
                 }}
                 key={columnId}
               >
-                <Typography>{column.name}</Typography>
-                <div style={{ margin: 8 }}>
+                <div>
+                  <h10>{column.name}</h10>
+                </div>
+                <div style={{ margin: 6 }}>
                   <Droppable droppableId={columnId} key={columnId}>
                     {(provided, snapshot) => {
                       return (
