@@ -126,6 +126,7 @@ export default function DnDFoodGroup() {
                               ? "#ffee32"
                               : "#ffff",
                             padding: 4,
+                            borderRadius: 9,
                             width: "15.625rem",
                             minHeight: 500,
                           }}
@@ -148,6 +149,7 @@ export default function DnDFoodGroup() {
                                         padding: 16,
                                         margin: "0 0 8px 0",
                                         minHeight: "50px",
+                                        borderRadius: 11,
                                         backgroundColor: snapshot.isDragging
                                           ? "#FFCC32" // click vào lên màu
                                           : "#EDEFF1", // màu mặc định của tấm thẻ
@@ -198,7 +200,7 @@ export default function DnDFoodGroup() {
         </DragDropContext>
       </div>
       <ColorButton sx={{ marginLeft: "36%", width: "30%", marginBottom: "4%" }}>
-        Save
+        lưu
       </ColorButton>
     </Box>
   );
