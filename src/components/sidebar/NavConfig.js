@@ -26,6 +26,11 @@ const navConfig = [
         path: "/dashboard/admin/product",
         icon: getIcon("ep:food"),
       },
+      {
+        title: "Nhóm thức ăn",
+        path: "/dashboard/admin/foodGroup",
+        icon: getIcon("clarity:blocks-group-line"),
+      },
     ],
   },
   {

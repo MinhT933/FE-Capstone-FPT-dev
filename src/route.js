@@ -17,6 +17,7 @@ import ChangePassword from "./pages/Login/ChangePassword.js";
 import StationList from "./pages/Station/StationList";
 import NewStation from "./pages/Station/NewStation.jsx";
 import TabsPacket from "./pages/PackageFood/Tabs/ColorTabs.js";
+import ManagerFoodGroup from "./pages/FoodGroup/ManagerFoodGroup.jsx";
 export default function Router() {
   return useRoutes([
     {
@@ -58,6 +59,7 @@ export default function Router() {
         //
         { path: "station", element: <StationList /> },
         { path: "newstation", element: <NewStation /> },
+        {path:"foodGroup",element: <ManagerFoodGroup/>}
       ],
     },
     {
