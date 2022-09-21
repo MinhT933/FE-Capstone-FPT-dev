@@ -49,7 +49,6 @@ export default function NewUserPopup(props) {
   const handleClose = () => {
     SetOpenPopUp(false);
   };
-  console.log(UpdateService.getOptions);
   return (
     <Paper>
       <Dialog open={OpenPopUp} onClose={handleClose}>

@@ -17,11 +17,6 @@ const navConfig = [
     icon: getIcon("tabler:building-warehouse"),
     children: [
       {
-        title: "Gói ăn",
-        path: "/dashboard/admin/package",
-        icon: getIcon("eva:shopping-bag-fill"),
-      },
-      {
         title: "Thức ăn",
         path: "/dashboard/admin/product",
         icon: getIcon("ep:food"),
@@ -31,6 +26,12 @@ const navConfig = [
         path: "/dashboard/admin/foodGroup",
         icon: getIcon("clarity:blocks-group-line"),
       },
+      {
+        title: "Gói ăn",
+        path: "/dashboard/admin/package",
+        icon: getIcon("eva:shopping-bag-fill"),
+      },
+      
     ],
   },
   {
@@ -51,7 +52,7 @@ const navConfig = [
   },
   {
     title: "Lịch trình",
-    path: "/dashboard/kichen/schedule",
+    path: "/dashboard/kitchen/schedule",
     icon: getIcon("ant-design:schedule-outlined"),
   },
   {
