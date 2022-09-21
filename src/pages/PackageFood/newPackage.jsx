@@ -32,6 +32,16 @@ const useStyles = styled((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(9),
+    borderRadius: 4,
+    bgcolor: "background.paper",
+    m: 1,
+    // width: "80%",
+    // height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    boxShadow: 12,
+    // marginLeft: "23%",
+    // border: 1,
   },
 }));
 
@@ -50,31 +60,56 @@ const ColorButton = styled(Button)(({ theme }) => ({
 export default function NewPackage() {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
   const classes = useStyles();
+  ///css pag bo tròn và đỗ bóng lên ///
   return (
-    <Box sx={{ borderRadius: 4, boxShadow: 12 }}>
+    <Box
+      sx={{
+        borderRadius: 4,
+        bgcolor: "background.paper",
+        m: 1,
+        // width: "80%",
+        // height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        boxShadow: 12,
+        // marginLeft: "23%",
+        // border: 1,
+      }}
+    >
       <Paper className={classes.pageContent}>
         <PageHeader
-          title="Thiết kế gói ăn"
+          width="40%"
+          title="Tạo mục thức ăn"
           subTitle="Tinh hoa ẩm thực "
           icon={getIcon("emojione-monotone:pot-of-food")}
         />
 
-        <Box sx={{ float: "right", width: "30%" }}>
-          <Paper>
+        <Box sx={{ float: "right", width: "30%", flexGrow: 1 }}>
+          <Paper
+            sx={{
+              marginBottom: "50%",
+              paddingBottom: "10%",
+              paddingTop: "8%",
+            }}
+          >
             <InputImg />
           </Paper>
         </Box>
         <Box
           sx={{
             float: "left",
-            // borderRadius: 2,
+            borderRadius: 2,
             width: "60%",
-            // boxShadow: 12,
-            // height: "100%",
+            boxShadow: 12,
+            height: "70%",
             marginLeft: "2%",
           }}
         >
-          <Grid container spacing={1.5} sx={{ marginLeft: "8%" }}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ marginLeft: "1%", marginTop: "1%", marginBottom: "2%" }}
+          >
             <Grid item xs={6}>
               <Controls.Input
                 variant="outlined"
@@ -95,20 +130,36 @@ export default function NewPackage() {
             <Grid item xs={6}>
               <Controls.Input
                 variant="outlined"
-                label="....."
+                label="Tổng ngày bán"
                 value={values.price}
                 onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={6}>
-              <Controls.Select
-                name="mục gói ăn"
-                label="Chọn mục thức ăn"
-                value={values.departmentId}
+              <Controls.Input
+                variant="outlined"
+                label="Tổng số thức ăn"
+                value={values.price}
                 onChange={handleInputChange}
-                options={UpdateService.PakageItem()}
               />
             </Grid>
+            <Grid item xs={6}>
+              <Controls.Input
+                variant="outlined"
+                label="Tổng Buổi"
+                value={values.price}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.Input
+                variant="outlined"
+                label="Tổng Các địa điểm giao"
+                value={values.price}
+                onChange={handleInputChange}
+              />
+            </Grid>
+
             <Grid item xs={6}>
               <Controls.DatePicker
                 variant="outlined"
@@ -127,24 +178,7 @@ export default function NewPackage() {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={6}>
-              <Autocomplete
-                multiple
-                limitTags={2}
-                id="multiple-limit-tags"
-                options={UpdateService.getDay()}
-                placeholder="nhấp vào em này"
-                getOptionLabel={(option) => option.title}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label=" Ngày trong tuần"
-                    placeholder="thứ"
-                  />
-                )}
-                sx={{ width: "87%" }}
-              />
-            </Grid>
+
             <Grid item xs={6}>
               <Controls.TextArea
                 variant="outlined"
@@ -156,18 +190,6 @@ export default function NewPackage() {
           </Grid>
         </Box>
       </Paper>
-
-      <Box>
-        <Stack
-          width="200px"
-          justifyContent="center"
-          marginLeft={"35%"}
-          marginTop={"20rem"}
-          paddingBottom="2rem"
-        >
-          <ColorButton variant="contained">Chấp thuận </ColorButton>
-        </Stack>
-      </Box>
     </Box>
   );
 }

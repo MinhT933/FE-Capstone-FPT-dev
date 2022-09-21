@@ -137,7 +137,7 @@ export default function DnDFoodGroup(props) {
                   <TextField
                     disabled
                     id="outlined-disabled"
-                    defaultValue="Đã có"
+                    defaultValue="Sẵn có:34/50"
                   />
                 </Grid>
               </Grid>
