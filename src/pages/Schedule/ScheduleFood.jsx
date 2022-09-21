@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import { styled, alpha } from "@mui/material/styles";
 import { teal, orange, red } from "@mui/material/colors";
-import { ViewState } from "@devexpress/dx-react-scheduler";
+import { IntegratedEditing, ViewState } from "@devexpress/dx-react-scheduler";
 import classes from "./../../components/hook-form/schedule/class";
 import {
   Scheduler,
@@ -182,7 +182,7 @@ const SchedulerContainer = ({
 }) => (
   <Paper>
     <Scheduler data={data} height={660}>
-      {/* <ViewState
+      <ViewState
         currentDate={currentDate}
         onCurrentDateChange={onCurrentDateChange}
         currentViewName={currentViewName}
@@ -190,10 +190,24 @@ const SchedulerContainer = ({
       />
       <DayView startDayHour={6} endDayHour={20} />
       <WeekView
-
+        // startDayHour={6}
+        // endDayHour={20}
+        timeTableCellComponent={TimeTableCell}
+        dayScaleCellComponent={DayScaleCell}
       />
+
+      <Appointments appointmentContentComponent={AppointmentContent} />
+      <Resources data={resources} />
+    
+      <Toolbar flexibleSpaceComponent={FlexibleSpace} />
       <DateNavigator />
-      <ViewSwitcher /> */}
+      <ViewSwitcher />
+      <EditingState onCommitChanges={commitChanges} />
+      <ConfirmationDialog /> 
+     
+      <Appointments />
+      <AppointmentTooltip />
+      <AppointmentForm />
     </Scheduler>
   </Paper>
 );

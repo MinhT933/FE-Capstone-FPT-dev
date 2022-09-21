@@ -18,6 +18,9 @@ import StationList from "./pages/Station/StationList";
 import NewStation from "./pages/Station/NewStation.jsx";
 import TabsPacket from "./pages/PackageFood/Tabs/ColorTabs.js";
 import ManagerFoodGroup from "./pages/FoodGroup/ManagerFoodGroup.jsx";
+import StepDesignPacketFood from "./pages/PackageFood/Step/StepDesignPacketFood.jsx";
+import ListFoodGroup from "./pages/FoodGroup/ListFoodGroup.jsx";
+
 export default function Router() {
   return useRoutes([
     {
@@ -50,7 +53,7 @@ export default function Router() {
         { path: "product", element: <Food /> },
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
-        { path: "newpackage", element: <TabsPacket /> },
+        { path: "newpackage", element: <StepDesignPacketFood /> },
         { path: "login", element: <Page404 /> },
         { path: "register", element: <Page404 /> },
         { path: "newfood", element: <NewFood /> },
@@ -59,7 +62,7 @@ export default function Router() {
         //
         { path: "station", element: <StationList /> },
         { path: "newstation", element: <NewStation /> },
-        {path:"foodGroup",element: <ManagerFoodGroup/>}
+        { path: "foodGroup", element: <ListFoodGroup /> },
       ],
     },
     {
