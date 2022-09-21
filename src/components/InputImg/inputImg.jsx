@@ -43,7 +43,7 @@ export default function InputImg() {
           variant="contained"
           component="span"
           sx={{
-            marginLeft: "23%",
+            marginLeft: "20%",
           }}
         >
           Tải lên...

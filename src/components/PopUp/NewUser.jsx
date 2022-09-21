@@ -40,7 +40,7 @@ export default function NewUser() {
           />
         </Gird>
         <Gird item xs={6}>
-          <Controls.RadioGroup
+          <Controls.Checkbox
             name="gender"
             label="Gender"
             values={values.gender}
