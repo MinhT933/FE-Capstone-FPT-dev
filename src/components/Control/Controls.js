@@ -7,6 +7,7 @@ import Button from "./Button";
 import TextArea from './TextArea';
 import TimeInput from './TimeInput';
 import TagInput from './Taginput';
+import InputTagCheckBox from './InputTagCheckBox';
 
 const Controls = {
     Input,
@@ -18,6 +19,7 @@ const Controls = {
     TextArea,
     TimeInput,
     TagInput,
+    InputTagCheckBox
 
 }
 

@@ -68,7 +68,6 @@ export default function TabsPacket() {
       display: "flex",
       height: 3,
       justifyContent: "center",
-      textColor: "red",
     },
   });
 

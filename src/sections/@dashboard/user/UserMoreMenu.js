@@ -9,8 +9,6 @@ import Iconify from '../../../components/hook-form/Iconify';
 
 export default function UserMoreMenu(props) {
   const ref = useRef(null);
-  
-  console.log(props);
   const [isOpen, setIsOpen] = useState(false);
   const {id, path} = props
   const location = useLocation();
@@ -38,7 +36,6 @@ export default function UserMoreMenu(props) {
           </ListItemIcon>
           <ListItemText primary="Cập nhật trạng thái" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
-
         <MenuItem component={RouterLink} to={`${location.pathname}/${id}`} sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Iconify icon="eva:edit-fill" width={24} height={24} />

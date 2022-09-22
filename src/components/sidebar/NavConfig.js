@@ -17,15 +17,21 @@ const navConfig = [
     icon: getIcon("tabler:building-warehouse"),
     children: [
       {
-        title: "Gói ăn",
-        path: "/dashboard/admin/package",
-        icon: getIcon("eva:shopping-bag-fill"),
-      },
-      {
         title: "Thức ăn",
         path: "/dashboard/admin/product",
         icon: getIcon("ep:food"),
       },
+      {
+        title: "Nhóm thức ăn",
+        path: "/dashboard/admin/foodGroup",
+        icon: getIcon("clarity:blocks-group-line"),
+      },
+      {
+        title: "Gói ăn",
+        path: "/dashboard/admin/package",
+        icon: getIcon("eva:shopping-bag-fill"),
+      },
+      
     ],
   },
   {

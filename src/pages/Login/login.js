@@ -7,6 +7,7 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import React, { useState } from "react";
@@ -143,6 +144,8 @@ const Login = () => {
                       fullWidth
                       variant="contained"
                       sx={{ padding: "4.5%" }}
+                      component={RouterLink}
+                      to="/dashboard/admin/users"
                     >
                       Đăng nhập
                     </ColorButton>
