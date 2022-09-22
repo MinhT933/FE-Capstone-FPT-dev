@@ -65,7 +65,7 @@ export default function NewPackageItem() {
             theme.palette.mode === "dark" ? "grey.800" : "grey.300",
           p: 1,
           m: 1,
-          borderRadius: 2,
+          // borderRadius: 2,
           fontSize: "0.875rem",
           fontWeight: "700",
           ...sx,
@@ -78,7 +78,7 @@ export default function NewPackageItem() {
   return (
     <Box
       sx={{
-        // borderRadius: 4,
+        borderRadius: 2,
         bgcolor: "background.paper",
         m: 1,
         // width: "80%",
@@ -87,24 +87,17 @@ export default function NewPackageItem() {
         justifyContent: "center",
         boxShadow: 12,
 
-        // marginLeft: "23%",
+        // marginLeft: "12%",
         // border: 1,
       }}
     >
       <Paper className={classes.pageContent}>
-        <PageHeader
-          title="Tạo mục thức ăn"
-          subTitle="Tinh hoa ẩm thực "
-          icon={getIcon("healthicons:i-schedule-school-date-time")}
-        />
-
-
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "90%" }}>
           <Box
             sx={{
               display: "grid",
-              gridTemplateRows: "repeat(3, 1fr)",
-              marginBottom: "5%",
+              // gridTemplateRows: "repeat(3, 1fr)",
+              marginBottom: "3%",
             }}
           >
             <Box>

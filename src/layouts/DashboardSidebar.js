@@ -87,26 +87,27 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         <Logo />
         <h1>Admin-Mesu</h1>
       </Box>
-
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                {account.displayName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                {account.role}
-              </Typography>
-            </Box>
-          </AccountStyle>
-        </Link>
+      <Box sx={{ backgroundColor: "white" }}>
+        <Box sx={{ mb: 5, mx: 2.5, backgroundColor: "white" }}>
+          <Link underline="none" component={RouterLink} to="#">
+            <AccountStyle>
+              <Avatar src={account.photoURL} alt="photoURL" />
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
+                  {account.displayName}
+                </Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  {account.role}
+                </Typography>
+              </Box>
+            </AccountStyle>
+          </Link>
+        </Box>
       </Box>
 
-      <NavSection navConfig={navConfig} />
+      <NavSection navConfig={navConfig} sx={{ backgroundColor: "white" }} />
 
-      <Box sx={{ flexGrow: 1 }} />
+      <Box sx={{ flexGrow: 1, backgroundColor: "white" }} />
 
       <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
