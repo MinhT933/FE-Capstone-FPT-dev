@@ -35,7 +35,7 @@ import PACKAGELIST from "../../_mock/packagsample";
 //Link routers
 
 // ---------------------------------------------------------------------- 
-// ở đây fix được tên tên table
+// ở đây fix được tên table
 // ko nhát thiết phải thêm table head ở dưới 
 
 const TABLE_HEAD = [
@@ -150,7 +150,7 @@ export default function PackageFood() {
 
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PACKAGELIST.length) : 0;
-  
+
   //sort 
   const filteredUsers = applySortFilter(
     PACKAGELIST,

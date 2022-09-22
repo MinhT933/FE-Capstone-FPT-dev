@@ -77,7 +77,7 @@ export default function NewPackageItem() {
           sx={{ flexGrow: 1 }}
           justifyContent="center"
           alignItems="center"
-          // marginLeft="35%"
+        // marginLeft="35%"
         >
           <Grid container spacing={2}>
             <Grid item xs={6}>

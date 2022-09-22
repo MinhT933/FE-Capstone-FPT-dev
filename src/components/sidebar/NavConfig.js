@@ -34,30 +34,42 @@ const navConfig = [
     icon: getIcon("eva:people-fill"),
     // s
   },
+
+  {
+    title: "Người giao hàng",
+    path: "/dashboard/admin/404",
+    icon: getIcon("carbon:delivery"),
+  },
+  {
+    title: "Lịch trình",
+    path: "/dashboard/kitchen/schedule",
+    icon: getIcon("ant-design:schedule-outlined"),
+  },
   {
     title: "Trạm",
     path: "/dashboard/admin/station",
     icon: getIcon("carbon:location-company"),
   },
+
   {
-    title: "Người giao hàng",
-    path: "/dashboard/admin/product",
-    icon: getIcon("carbon:delivery"),
-  },
-  {
-    title: "Lịch trình",
-    path: "/dashboard/kichen/schedule",
-    icon: getIcon("ant-design:schedule-outlined"),
-  },
-  {
-    title: "Quản lí đơn hàng",
-    path: "/dashboard/kichen/order",
+    title: "Admin quản lí đơn hàng",
+    path: "/dashboard/admin/adminorder",
     icon: getIcon("icon-park-outline:transaction-order"),
   },
 
   {
-    title: "bếp",
-    path: "/dashboard/admin/time",
+    title: "Admin xem bếp",
+    path: "/dashboard/admin/kitchen",
+    icon: getIcon("fa6-solid:kitchen-set"),
+  },
+  {
+    title: "Bếp quản lí đơn hàng",
+    path: "/dashboard/kitchen/order",
+    icon: getIcon("icon-park-outline:transaction-order"),
+  },
+  {
+    title: "Bếp xem bếp",
+    path: "/dashboard/kitchen/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
   // {

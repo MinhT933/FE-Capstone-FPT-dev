@@ -29,15 +29,14 @@ import { MarginRounded } from "@mui/icons-material";
 
 const initialValue = {
     id: 0,
-    stationName: "",
-    stationAddress: "",
-    createDate: "",
+    kitchenName: "",
+    kitchenAddress: "",
+    phone: "",
 
+    createDate: "",
     updateDate: new Date(),
 
-    description: "",
 
-    img: "",
     isActive: false,
 
 };
@@ -65,7 +64,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
     display: "center",
 }));
 
-export default function NewStation() {
+export default function NewKitchen() {
     const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
     const classes = useStyles();
 
@@ -115,14 +114,21 @@ export default function NewStation() {
                             <Controls.Input
                                 variant="outlined"
                                 label="Địa điểm"
-                                value={values.stationName}
+                                value={values.kitchenName}
                                 onChange={handleInputChange}
                             />
 
                             <Controls.Input
                                 variant="outlined"
                                 label="Địa chỉ"
-                                value={values.stationAddress}
+                                value={values.kitchenAddress}
+                                onChange={handleInputChange}
+                            />
+
+                            <Controls.Input
+                                variant="outlined"
+                                label="Điện thoại"
+                                value={values.phone}
                                 onChange={handleInputChange}
                             />
 
@@ -152,28 +158,6 @@ export default function NewStation() {
                                 </Grid>
                             </Box>
 
-                            {/* <Grid container spacing={4} columns={26}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <TimePicker
-
-                                        label="Mở cửa"
-                                        value={value}
-                                        onChange={handleChangeTime}
-                                        renderInput={(params) => <TextField {...params} sx={{ width: "40%" }} />}
-                                    />
-                                </LocalizationProvider>
-
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <TimePicker
-                                        label="Đóng cửa"
-                                        value={value}
-                                        onChange={handleChangeTime}
-                                        renderInput={(params) => <TextField {...params} sx={{ width: "40%" }} />}
-                                    />
-                                </LocalizationProvider>
-
-                            </Grid> */}
-
                             <Controls.RadioGroup
                                 name="Status"
                                 label="Trạng thái"
@@ -196,7 +180,7 @@ export default function NewStation() {
 
             <Box>
                 <Stack width="20%" justifyContent="center" marginLeft={"40%"} marginTop={"2%"}>
-                    <ColorButton variant="contained">Tạo địa điểm</ColorButton>
+                    <ColorButton variant="contained">Tạo bbếp</ColorButton>
                 </Stack>
             </Box>
 
