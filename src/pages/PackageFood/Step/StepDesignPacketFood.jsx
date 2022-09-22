@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import ConfirmInfo from "../ConfirmInfo";
 
 function getSteps() {
-  return ["Thông tin cơ bản", "Chọn Khung thời gian", "Create an ad"];
+  return ["Thông tin cơ bản", "Chọn Khung thời gian", "Xác nhận thông tin"];
 }
 
 function getStepContent(step) {
@@ -112,6 +112,7 @@ export default function StepDesignPacketFood() {
     <div className={classes.root}>
       <Box sx={{ width: "100%" }}>
         <Stepper
+          center
           nonLinear
           activeStep={activeStep}
           sx={{
@@ -178,7 +179,7 @@ export default function StepDesignPacketFood() {
               <Typography className={classes.instructions}>
                 {getStepContent(activeStep)}
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row" }}>
+              {/* <Box sx={{ display: "flex", flexDirection: "row" }}>
                 <ColorButton
                   color="inherit"
                   disabled={activeStep === 0}
@@ -189,7 +190,6 @@ export default function StepDesignPacketFood() {
                 </ColorButton>
                 <Box sx={{ flex: "1 1 auto" }} />
                 <ColorButton
-                  onClick={handleNext}
                   sx={{
                     mr: 1,
                   }}
@@ -211,7 +211,7 @@ export default function StepDesignPacketFood() {
                         : "Xác nhận"}
                     </ColorButton>
                   ))}
-              </Box>
+              </Box> */}
             </React.Fragment>
           )}
         </div>
