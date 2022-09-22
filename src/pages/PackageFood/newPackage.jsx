@@ -107,8 +107,10 @@ export default function NewPackage() {
         >
           <Grid
             container
+
             spacing={2}
             sx={{ marginLeft: "1%", marginTop: "1%", marginBottom: "2%" }}
+
           >
             <Grid item xs={6}>
               <Controls.Input

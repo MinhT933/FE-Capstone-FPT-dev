@@ -98,6 +98,7 @@ export default function NewPackageItem() {
           icon={getIcon("healthicons:i-schedule-school-date-time")}
         />
 
+
         <div style={{ width: "100%" }}>
           <Box
             sx={{
