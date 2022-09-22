@@ -25,8 +25,8 @@ export default function Router() {
   return useRoutes([
     {
       path: "/",
-      element: <DashboardLayout />,
-      children: [{ path: "/", element: <Home /> }],
+      element: <SignInOutContainer />,
+      children: [{ path: "/", element: <SignInOutContainer /> }],
     },
     {
       path: "/login",
@@ -48,7 +48,7 @@ export default function Router() {
       path: "/dashboard/admin",
       element: <DashboardLayout />,
       children: [
-        { path: "app", element: <Home /> },
+        { path: "app", element: <Page404 /> },
         { path: "users", element: <ProductList /> },
         { path: "product", element: <Food /> },
         { path: "404", element: <Page404 /> },
