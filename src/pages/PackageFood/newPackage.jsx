@@ -100,18 +100,11 @@ export default function NewPackage() {
           </Grid>
 
           <Grid item xs={6}>
-            <Controls.Input
-              variant="outlined"
-              label="Tổng ngày bán"
-              value={values.price}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.Input
-              variant="outlined"
-              label="Tổng số thức ăn"
-              value={values.price}
+            <Controls.InputTagCheckBox
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              label="Địa điểm giao {chưa có data từ từ em đỗ vào}"
+              value={values.name}
               onChange={handleInputChange}
             />
           </Grid>

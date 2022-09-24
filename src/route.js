@@ -50,7 +50,7 @@ export default function Router() {
       children: [
         { path: "app", element: <Page404 /> },
         { path: "users", element: <ProductList /> },
-        { path: "product", element: <Food /> },
+        { path: "food", element: <Food /> },
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
         { path: "newpackage", element: <StepDesignPacketFood /> },

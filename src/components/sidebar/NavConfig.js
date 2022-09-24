@@ -18,7 +18,7 @@ const navConfig = [
     children: [
       {
         title: "Thức ăn",
-        path: "/dashboard/admin/product",
+        path: "/dashboard/admin/food",
         icon: getIcon("ep:food"),
       },
       {
@@ -31,7 +31,6 @@ const navConfig = [
         path: "/dashboard/admin/package",
         icon: getIcon("eva:shopping-bag-fill"),
       },
-      
     ],
   },
   {
@@ -47,7 +46,7 @@ const navConfig = [
   },
   {
     title: "Người giao hàng",
-    path: "/dashboard/admin/product",
+    path: "/dashboard/admin/404",
     icon: getIcon("carbon:delivery"),
   },
   {

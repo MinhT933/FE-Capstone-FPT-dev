@@ -1,5 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 // material
 import {
@@ -32,7 +33,10 @@ import FOODLIST from "../../_mock/foodsample";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-
+import { useEffect } from "react";
+import { callAPIgetListFood } from "../../redux/action/acction";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -83,10 +87,8 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-const path = '/product';
-export default function Food(props) {
-
+const path = "/product";
+export default function Food() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -99,6 +101,25 @@ export default function Food(props) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const dispatch = useDispatch();
+
+  // lifecycle methods
+  // useEffect(() => {
+  //   return dispatch(callAPIgetListFood()), [dispatch];
+  // });
+
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetListFood());
+    };
+    callAPI();
+  }, [dispatch]);
+
+  //dispatch chấm dức dòng lập dzô tận :v
+  const food = useSelector((state) => {
+    return state.userReducer.listFood;
+  });
+  console.log(food);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -144,10 +165,7 @@ export default function Food(props) {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
-
-
   };
-
 
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
@@ -157,7 +175,6 @@ export default function Food(props) {
     getComparator(order, orderBy),
     filterName
   );
-
 
   const isUserNotFound = filteredUsers.length === 0;
   //setColor button
@@ -227,7 +244,7 @@ export default function Food(props) {
                       } = row;
 
                       const isItemSelected = selected.indexOf(name) !== -1;
-                      console.log(id);
+
                       return (
                         <TableRow
                           hover
@@ -304,9 +321,7 @@ export default function Food(props) {
           />
         </Card>
       </Container>
-      <Paper>
-
-      </Paper>
+      <Paper></Paper>
     </Page>
   );
 }
