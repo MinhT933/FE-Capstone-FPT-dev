@@ -48,6 +48,7 @@ export default function InputImg() {
         >
           Tải lên...
         </Button>
+        {/* css button input img */}
         <Box
           sx={{
             height: 165,
@@ -63,6 +64,7 @@ export default function InputImg() {
               key={i}
               src={i}
               onerror="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg"
+              alt="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg"
             />
           ))}
         </Box>
