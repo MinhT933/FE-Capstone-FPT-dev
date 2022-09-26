@@ -99,15 +99,16 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
           spacing={3}
           sx={{ pt: 5, borderRadius: 2, position: "relative" }}
         >
-          <Box
-            component="img"
-            src="
-            "
-            sx={{ width: 100, position: "absolute", top: -50 }}
-          />
+          <Box>
+            <img sx={{ width: 100, position: "absolute", top: -50, height: 100 }}
+              src="/static/shipper-1-1.png" />
+          </Box>
+
+
+
         </Stack>
-      </Box>
-    </Scrollbar>
+      </Box >
+    </Scrollbar >
   );
 
   return (

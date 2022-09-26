@@ -154,11 +154,20 @@ export default function StationList() {
         display: "center",
     }));
 
+    const Button1 = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText("#FFCC33"),
+        backgroundColor: "#FFCC33",
+
+        // display: "center"
+    }));;
+
     const isStationNotFound = filteredStations.length === 0;
 
     return (
         <Page title="User">
             <Container>
+
+
                 <Stack
                     direction="row"
                     alignItems="center"
@@ -177,6 +186,7 @@ export default function StationList() {
                         Thêm địa điểm
                     </ColorButton>
                 </Stack>
+
 
                 <Card>
                     <UserListToolbar
@@ -212,7 +222,7 @@ export default function StationList() {
                                                 updateDate,
                                             } = row;
                                             const isItemSelected = selected.indexOf(stationName) !== -1;
-                                           
+
                                             return (
                                                 <TableRow
                                                     hover
@@ -245,10 +255,28 @@ export default function StationList() {
                                                     <TableCell align="left">{createDate}</TableCell>
                                                     <TableCell align="left">{updateDate}</TableCell>
 
-                                                    <TableCell align="right">
-                                                        {/* //props */}
-                                                        <StationMoreMenu id={id} />
-                                                    </TableCell>
+                                                    {/* <ColorButton
+                                                        variant="contained"
+                                                        component={RouterLink}
+                                                        to="/dashboard/admin/newstation"
+
+                                                    >
+                                                        Cập nhật
+                                                    </ColorButton> */}
+                                                    <Button1 sx={{ margin: "center", marginTop: "7%" }}
+                                                        variant="outlined"
+                                                        component={RouterLink}
+                                                        to="/dashboard/admin/updatestation"
+
+                                                    >
+                                                        Cập nhật
+                                                    </Button1>
+
+
+                                                    {/* <TableCell align="right"> */}
+                                                    {/* //props */}
+                                                    {/* <StationMoreMenu id={id} /> */}
+                                                    {/* </TableCell> */}
                                                 </TableRow>
                                             );
                                         })}

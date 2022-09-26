@@ -17,17 +17,17 @@ import { sample } from 'lodash';
 
 
 const packagefood = [...Array(40)].map((_, index) => ({
-    id: faker.datatype.uuid(),
-    type: faker.datatype.uuid(),
+    id: sample(['#005160', '#456020', '#250000']),
+    type: sample(['Gói ăn nhanh', 'Gói ăn chay']),
     price: sample(['160.000', '200.000', '250.000']),
 
-    name: sample(['package 1', 'package 2', 'package 3']),
-    phone: faker.datatype.uuid(),
+    name: sample(['Thanh Nhi']),
+    phone: sample(['0901225688',]),
 
     createDate: faker.date.recent().toLocaleDateString(),
     address: sample(['đại học FBT', 'The Coffee House', 'Công ty TNHH XVXX']),
-    status: sample(['active', 'isactive']),
-   
+    status: sample(['Delivery', 'Not Delivery', 'Waiting']),
+
 }));
 
 export default packagefood;
