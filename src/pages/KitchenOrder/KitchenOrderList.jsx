@@ -23,24 +23,36 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
+
+
+
+import dayjs from 'dayjs';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import * as React from 'react';
+
+
+
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
-import KitchenMoreMenu from "./KitchenMoreMenu";
+// import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-import KITCHENLIST from "./KitchenSample";
+import KITCHENORDERLIST from "./KitchenOrderSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 // ----------------------------------------------------------------------
+// ở đây fix được tên tên table
+// ko nhát thiết phải thêm table head ở dưới 
 
 const TABLE_HEAD = [
-    { id: "kitchenName", label: "Địa điểm", alignRight: false },
-    { id: "kitchenAddress", label: "Địa chỉ", alignRight: false },
+    { id: "id", label: "Mã đơn", alignRight: false },
+    { id: "name", label: "Người đặt", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
-    { id: "ability", label: "Công suất", alignRight: false },
-    { id: "openTime", label: "Mở cửa", alignRight: false },
-    { id: "closeTime", label: "Đóng cửa", alignRight: false },
+    { id: "station", label: "Điểm giao", alignRight: false },
+    { id: "order", label: "Món ăn", alignRight: false },
+    { id: "note", label: "Ghi chú", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "createDate", label: "Ngày tạo", alignRight: false },
-    { id: "updateDate", label: "Cập nhật", alignRight: false },
     { id: "" },
 ];
 
@@ -78,7 +90,7 @@ function applySortFilter(array, comparator, query) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function KitchenList() {
+export default function KitchenOrderList() {
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -100,7 +112,7 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = KITCHENLIST.map((n) => n.kitchenName);
+            const newSelecteds = KITCHENORDERLIST.map((n) => n.kitchenName);
             setSelected(newSelecteds);
             return;
         }
@@ -139,10 +151,10 @@ export default function KitchenList() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENLIST.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENORDERLIST.length) : 0;
 
     const filteredKitchen = applySortFilter(
-        KITCHENLIST,
+        KITCHENORDERLIST,
         getComparator(order, orderBy),
         filterName
     );
@@ -165,6 +177,18 @@ export default function KitchenList() {
 
     const isKitchenNotFound = filteredKitchen.length === 0;
 
+
+    //LỊCH CHỌN NGÀY TRONG TUẦN
+    const isWeekend = (date) => {
+        const day = date.day();
+
+        return day === 0 || day === 6;
+    };
+
+    const [value, setValue] = React.useState(dayjs());
+
+
+
     return (
         <Page title="User">
             <Container>
@@ -174,17 +198,18 @@ export default function KitchenList() {
                     justifyContent="space-between"
                     mb={5}
                 >
-                    <Typography variant="h4" gutterBottom>
-                        {/* User */}
-                    </Typography>
-                    <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/admin/newkitchen"
-
-                    >
-                        Thêm địa điểm
-                    </ColorButton>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <StaticDatePicker
+                            orientation="landscape"
+                            openTo="day"
+                            value={value}
+                            shouldDisableDate={isWeekend}
+                            onChange={(newValue) => {
+                                setValue(newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
                 </Stack>
 
                 <Card>
@@ -201,7 +226,7 @@ export default function KitchenList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={KITCHENLIST.length}
+                                    rowCount={KITCHENORDERLIST.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
@@ -212,18 +237,15 @@ export default function KitchenList() {
                                         .map((row) => {
                                             const {
                                                 id,
-                                                kitchenName,
-                                                kitchenAddress,
+                                                name,
                                                 phone,
-                                                ability,
-                                                openTime,
-                                                closeTime,
+                                                station,
+                                                order,
+                                                note,
                                                 status,
-                                                createDate,
-                                                updateDate,
 
                                             } = row;
-                                            const isItemSelected = selected.indexOf(kitchenName) !== -1;
+                                            const isItemSelected = selected.indexOf(id) !== -1;
 
                                             return (
                                                 <TableRow
@@ -237,33 +259,28 @@ export default function KitchenList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, kitchenName)}
+                                                            onChange={(event) => handleClick(event, id)}
                                                         />
-                                                    </TableCell>
-                                                    <TableCell align="left">{kitchenName}</TableCell>
-                                                    <TableCell align="left">{kitchenAddress}</TableCell>
-
+                                                    </TableCell><TableCell align="left">{id}</TableCell>
+                                                    <TableCell align="left">{name}</TableCell>
                                                     <TableCell align="left">{phone}</TableCell>
-                                                    <TableCell align="left">{ability}</TableCell>
-                                                    <TableCell align="left">{openTime}</TableCell>
-                                                    <TableCell align="left">{closeTime}</TableCell>
+                                                    <TableCell align="left">{station}</TableCell>
+                                                    <TableCell align="left">{order}</TableCell>
+                                                    <TableCell align="left">{note}</TableCell>
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
                                                             color={
-                                                                (status === "Closed" && "error") || "success"
+                                                                (status === "Cooking" && "error") || "success"
                                                             }
                                                         >
                                                             {(status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{createDate}</TableCell>
-                                                    <TableCell align="left">{updateDate}</TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
                                                     <Button1 sx={{ marginTop: "7%", }}
                                                         variant="outlined"
-                                                        // display="TableCell"
                                                         component={RouterLink}
                                                         to="/dashboard/admin/updatekitchen"
 
@@ -303,7 +320,7 @@ export default function KitchenList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={KITCHENLIST.length}
+                        count={KITCHENORDERLIST.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

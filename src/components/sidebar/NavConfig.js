@@ -31,7 +31,7 @@ const navConfig = [
         path: "/dashboard/admin/package",
         icon: getIcon("eva:shopping-bag-fill"),
       },
-      
+
     ],
   },
   {
@@ -57,10 +57,17 @@ const navConfig = [
     icon: getIcon("carbon:location-company"),
   },
 
+
+  // {
+  //   title: "Admin quản lí đơn hàng",
+  //   path: "/dashboard/admin/adminorder",
+  //   icon: getIcon("icon-park-outline:transaction-order"),
+  // },
+
   {
     title: "Admin quản lí đơn hàng",
     path: "/dashboard/admin/adminorder",
-    icon: getIcon("icon-park-outline:transaction-order"),
+    icon: getIcon("eos-icons:subscription-management"),
   },
 
   {
@@ -68,15 +75,17 @@ const navConfig = [
     path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
+
+
   {
     title: "Bếp quản lí đơn hàng",
-    path: "/dashboard/kitchen/order",
-    icon: getIcon("icon-park-outline:transaction-order"),
+    path: "/dashboard/kitchen/kitchenorder",
+    icon: getIcon("eos-icons:subscription-management"),
   },
   {
     title: "Bếp xem bếp",
     path: "/dashboard/kitchen/kitchen",
-    icon: getIcon("fa6-solid:kitchen-set"),
+    icon: getIcon("mdi:card-account-details-star-outline"),
   },
   // {
   //   title: 'register',

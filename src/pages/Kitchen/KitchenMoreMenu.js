@@ -32,18 +32,18 @@ export default function KitchenMoreMenu(props) {
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-                <MenuItem sx={{ color: 'text.secondary' }}>
+                {/* <MenuItem sx={{ color: 'text.secondary' }}>
                     <ListItemIcon>
                         <Iconify icon="eva:trash-2-outline" width={24} height={24} />
                     </ListItemIcon>
                     <ListItemText primary="Cập nhật trạng thái" primaryTypographyProps={{ variant: 'body2' }} />
-                </MenuItem>
+                </MenuItem> */}
 
                 <MenuItem component={RouterLink} to={`${location.pathname}/${id}`} sx={{ color: 'text.secondary' }}>
                     <ListItemIcon>
                         <Iconify icon="eva:edit-fill" width={24} height={24} />
                     </ListItemIcon>
-                    <ListItemText primary="Cập nhật" primaryTypographyProps={{ variant: 'body2' }} />
+                    <ListItemText primary="Cập nhậttttt" primaryTypographyProps={{ variant: 'body2' }} />
                 </MenuItem>
             </Menu>
         </>

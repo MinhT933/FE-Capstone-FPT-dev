@@ -23,6 +23,9 @@ import AdminOrderList from "./pages/AdminOrder/AdminOrderList";
 import NewAdminOrder from "./pages/AdminOrder/NewAdminOrder";
 import StepDesignPacketFood from "./pages/PackageFood/Step/StepDesignPacketFood.jsx";
 import ListFoodGroup from "./pages/FoodGroup/ListFoodGroup.jsx";
+import UpdateStaion from "./pages/Station/UpdateStation.jsx";
+import UpdateKitchen from "./pages/Kitchen/UpdateKitchen.jsx";
+import KitchenOrderList from "./pages/KitchenOrder/KitchenOrderList.jsx";
 
 export default function Router() {
   return useRoutes([
@@ -64,16 +67,21 @@ export default function Router() {
         { path: "newfood", element: <NewFood /> },
         { path: "product/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
+        { path: "foodGroup", element: <ListFoodGroup /> },
+
 
         { path: "station", element: <StationList /> },
         { path: "newstation", element: <NewStation /> },
+        { path: "updatestation", element: <UpdateStaion /> },
 
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
+        { path: "updatekitchen", element: <UpdateKitchen /> },
 
         { path: "adminorder", element: <AdminOrderList /> },
         { path: "newadminorder", element: <NewAdminOrder /> },
-        { path: "foodGroup", element: <ListFoodGroup /> },
+
+
       ],
     },
 
@@ -84,6 +92,8 @@ export default function Router() {
       children: [
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
+        //kitchen xem đơn hàng
+        { path: "kitchenorder", element: <KitchenOrderList /> },
       ],
     },
 
