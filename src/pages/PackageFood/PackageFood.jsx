@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { sentenceCase } from "change-case";
 import { styled } from "@mui/material/styles";
+import { viVN } from "@mui/material/locale";
 
 import {
   Card,
@@ -31,7 +32,7 @@ import {
 } from "../../sections/@dashboard/user";
 // mock
 import PACKAGELIST from "../../_mock/packagsample";
-import { width } from '@mui/system';
+import { createTheme } from "@material-ui/core";
 
 //Link routers
 
@@ -105,6 +106,15 @@ export default function PackageFood() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const theme = createTheme(
+    {
+      palette: {
+        primary: { main: "#1976d2" },
+      },
+    },
+    viVN
+  );
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -173,8 +183,8 @@ export default function PackageFood() {
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
-     {/* fix width reposive table */}
-      <Container maxWidth={false}>
+      {/* fix width reposive table */}
+      <Container>
         <Stack
           direction="row"
           alignItems="center"
@@ -317,6 +327,11 @@ export default function PackageFood() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
           />
         </Card>
       </Container>

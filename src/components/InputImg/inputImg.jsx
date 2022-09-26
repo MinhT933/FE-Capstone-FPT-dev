@@ -4,7 +4,6 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Box } from "@mui/system";
-import { Icon } from "@iconify/react";
 import Iconify from "./../hook-form/Iconify";
 
 const Input = styled("input")({
@@ -12,18 +11,20 @@ const Input = styled("input")({
 });
 
 export default function InputImg() {
-  const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
   const [input, setInput] = useState([]);
+  const [selectedFile, setSelectedFile] = useState();
+  const [isFilePicked, setIsFilePicked] = useState(false);
 
   function _treat(e) {
     const { files } = e.target;
     let images = [];
     const selecteds = [...[...files]];
-
     selecteds.forEach((i) => images.push(URL.createObjectURL(i)));
+    console.log(selecteds);
 
     setInput(images);
   }
+
   return (
     <Stack
       direction="row"
@@ -59,13 +60,9 @@ export default function InputImg() {
             boxShadow: 8,
           }}
         >
+          {/* hiển thị hình lên  */}
           {input.map((i) => (
-            <img
-              key={i}
-              src={i}
-              onerror="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg"
-              alt="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg"
-            />
+            <img key={i} src={i} />
           ))}
         </Box>
       </label>

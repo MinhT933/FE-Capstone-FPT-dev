@@ -44,6 +44,7 @@ const TABLE_HEAD = [
   { id: "createday", label: "Ngày tạo", alignRight: false },
   { id: "updateday", label: "Ngày sửa", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
+  { id: "des", label: "Mô tả", alignRight: false },
   { id: "Update", label: "Cập nhập nhóm", alignRight: false },
   { id: "" },
 ];
@@ -183,7 +184,7 @@ export default function ListFoodGroup() {
               SetOpenPopUp(true);
             }}
           >
-            Thêm người dùng
+            Thêm nhóm thức ăn
           </ColorButton>
         </Stack>
 
@@ -195,7 +196,7 @@ export default function ListFoodGroup() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: "76rem" }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -254,12 +255,16 @@ export default function ListFoodGroup() {
                               {status}
                             </Label>
                           </TableCell>
+                          <TableCell align="left">
+                            chưa có data từ từ em đỗ vào
+                          </TableCell>
                           <TableCell>
                             <ColorButton
                               sx={{ width: "80%" }}
                               variant="contained"
                               component={RouterLink}
                               to="#"
+                              id="id"
                               onClick={() => {
                                 SetOpenPopUpDND(true);
                               }}
@@ -269,7 +274,7 @@ export default function ListFoodGroup() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <GroupMoreMenu id={id} />
+                            {/* <GroupMoreMenu id={id} /> */}
                           </TableCell>
                         </TableRow>
                       );
@@ -302,6 +307,11 @@ export default function ListFoodGroup() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            //fix languge
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
           />
         </Card>
       </Container>

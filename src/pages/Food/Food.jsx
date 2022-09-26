@@ -1,5 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 // material
 import {
@@ -28,11 +29,14 @@ import {
   UserMoreMenu,
 } from "../../sections/@dashboard/user";
 // mock
-import FOODLIST from "../../_mock/foodsample";
+// import food from "../../_mock/foodsample";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-
+import { useEffect } from "react";
+import { callAPIgetListFood } from "../../redux/action/acction";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -83,10 +87,8 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-const path = '/product';
-export default function Food(props) {
-
+const path = "/product";
+export default function Food() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -99,6 +101,36 @@ export default function Food(props) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const dispatch = useDispatch();
+
+  // lifecycle methods
+  // useEffect(() => {
+  //   return dispatch(callAPIgetListFood()), [dispatch];
+  // });
+
+  //gọi trên action.js ==> accctions.js
+  //đây khởi chạy lần đầu tiên gọi thằng gọi tra gg để useEffect()
+  // theo toa hiểu  ở đây useEffect sẽ được gọi mỗi khi components thay đổi
+  // kiểu cái gì mà ko có lần đầu tiên project cũng vậy cũng có lần đầu tiên gọi api chứu
+
+  // nó lifecycle gg.com để biết thêm thông tin
+
+  // cách search một vần đề why  + 'vấn đề ' in 'thư viện or component'
+  //vd: why slectBox not working in mui
+
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetListFood());
+    };
+    callAPI();
+  }, [dispatch]);
+
+  //dispatch chấm dức dòng lập dzô tận :v
+
+  //useSelector kéo data từ store(userReducer.js) zìa mà xài
+  const food = useSelector((state) => {
+    return state.userReducer.listFood;
+  });
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -108,7 +140,7 @@ export default function Food(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = FOODLIST.map((n) => n.name);
+      const newSelecteds = food.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -144,20 +176,16 @@ export default function Food(props) {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
-
-
   };
 
-
   // const emptyRows =
-  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODLIST.length) : 0;
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - food.length) : 0;
 
   const filteredUsers = applySortFilter(
-    FOODLIST,
+    food,
     getComparator(order, orderBy),
     filterName
   );
-
 
   const isUserNotFound = filteredUsers.length === 0;
   //setColor button
@@ -169,7 +197,6 @@ export default function Food(props) {
     },
     display: "center",
   }));
-
   return (
     <Page title="food">
       <Container>
@@ -205,12 +232,13 @@ export default function Food(props) {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={FOODLIST.length}
+                  rowCount={food.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
+                  {/* nhớ khởi tạo đúng tên file trong database */}
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
@@ -219,15 +247,15 @@ export default function Food(props) {
                         name,
                         price,
                         description,
-                        createDate,
-                        updateDate,
+                        createdAt,
+                        updatedAt,
                         status,
-                        datatype,
-                        avatarUrl,
+                        datatype = food[0].foodCategory.name,
+                        image,
                       } = row;
 
                       const isItemSelected = selected.indexOf(name) !== -1;
-                      console.log(id);
+
                       return (
                         <TableRow
                           hover
@@ -249,7 +277,7 @@ export default function Food(props) {
                               alignItems="center"
                               spacing={2}
                             >
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar alt={name} src={image} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
@@ -258,13 +286,17 @@ export default function Food(props) {
 
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
-                          <TableCell align="left">{createDate}</TableCell>
-                          <TableCell align="left">{updateDate}</TableCell>
+                          <TableCell align="left">
+                            {new Date(createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(updatedAt).toLocaleDateString()}
+                          </TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={
-                                (status === "active" && "error") || "success"
+                                (status === "inactive" && "error") || "success"
                               }
                             >
                               {status}
@@ -296,17 +328,20 @@ export default function Food(props) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={FOODLIST.length}
+            count={food.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
           />
         </Card>
       </Container>
-      <Paper>
-
-      </Paper>
+      <Paper></Paper>
     </Page>
   );
 }

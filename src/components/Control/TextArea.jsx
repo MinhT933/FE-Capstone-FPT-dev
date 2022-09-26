@@ -6,16 +6,12 @@ import { TextField } from "@mui/material";
 export default function TextArea(props) {
   const { name, label, values, onChange, placeholder } = props;
   const StyleBox = styled(Box)(({ theme }) => ({
-    py: 2,
-    gap: 2,
     alignItems: "center",
     flexWrap: "wrap",
     display: "grid",
-    gridTemplateColumns: { sm: "6fr 2fr" },
-    width: "86%",
   }));
   return (
-    <StyleBox>
+    <Box>
       <TextField
         placeholder={placeholder}
         label={label}
@@ -25,7 +21,9 @@ export default function TextArea(props) {
         value={values}
         name={name}
         onChange={onChange}
+        py={2}
+        gap={2}
       />
-    </StyleBox>
+    </Box>
   );
 }

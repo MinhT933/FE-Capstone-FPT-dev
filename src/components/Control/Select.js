@@ -7,15 +7,16 @@ import {
 } from "@mui/material";
 
 export default function Select(props) {
-  const { name, label, value,  onChange, options } = props;
-  //error = null,
+  const { name, label, value, onChange, options } = props;
   return (
-    <FormControl sx={{
-      display: "grid",
-      gridTemplateColumns: { sm: "6fr 1fr" },
-      
-    }} >
+    <FormControl
+      sx={{
+        display: "grid",
+        gridTemplateColumns: { sm: "6fr 1fr" },
+      }}
+    >
       <InputLabel>{label}</InputLabel>
+
       <MuiSelect
         labelId="demo-simple-select-label"
         id="demo-simple-select"
@@ -24,8 +25,6 @@ export default function Select(props) {
         value={value}
         onChange={onChange}
       >
-        <MenuItem value="">None</MenuItem>
-
         {options?.map((item) => (
           <MenuItem key={item.id} value={item.id}>
             {item.title}
