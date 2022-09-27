@@ -75,6 +75,11 @@ const navConfig = [
     path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
+  {
+    title: "Admin quản lí Người giao hàng",
+    path: "/dashboard/admin/adminshipper",
+    icon: getIcon("carbon:delivery"),
+  },
 
 
   {
@@ -86,6 +91,16 @@ const navConfig = [
     title: "Bếp xem bếp",
     path: "/dashboard/kitchen/kitchen",
     icon: getIcon("mdi:card-account-details-star-outline"),
+  },
+  {
+    title: "Bếp xem thông tin bếp",
+    path: "/dashboard/kitchen/kitchenprofile",
+    icon: getIcon("mdi:card-account-details-star-outline"),
+  },
+  {
+    title: "Bếp quản lí Người giao hàng",
+    path: "/dashboard/kitchen/kitchenshipper",
+    icon: getIcon("carbon:delivery"),
   },
   // {
   //   title: 'register',

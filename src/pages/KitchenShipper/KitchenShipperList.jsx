@@ -7,7 +7,7 @@ import {
     Card,
     Table,
     Stack,
-    // Avatar,
+    Avatar,
     Button,
     Checkbox,
     TableRow,
@@ -23,24 +23,23 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
-import KitchenMoreMenu from "./KitchenMoreMenu";
+
 // mock
-import KITCHENLIST from "./KitchenSample";
+import KITCHENSHIPPERLIST from "./KitchenShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "kitchenName", label: "Địa điểm", alignRight: false },
-    { id: "kitchenAddress", label: "Địa chỉ", alignRight: false },
+
+    { id: "name", label: "Họ Tên", alignRight: false },
+    { id: "id", label: "Mã tài xế", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
-    { id: "ability", label: "Công suất", alignRight: false },
-    { id: "openTime", label: "Mở cửa", alignRight: false },
-    { id: "closeTime", label: "Đóng cửa", alignRight: false },
+    { id: "NoPlate", label: "Biển số xe", alignRight: false },
+    { id: "VehicleType", label: "Loại xe", alignRight: false },
+    { id: "accountId", label: "Tên tài khoản", alignRight: false },
+    { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "createDate", label: "Ngày tạo", alignRight: false },
-    { id: "updateDate", label: "Cập nhật", alignRight: false },
     { id: "" },
 ];
 
@@ -72,7 +71,7 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.kitchenName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
@@ -86,7 +85,7 @@ export default function KitchenList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("kitchenName");
+    const [orderBy, setOrderBy] = useState("name");
 
     const [filterName, setFilterName] = useState("");
 
@@ -100,18 +99,18 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = KITCHENLIST.map((n) => n.kitchenName);
+            const newSelecteds = KITCHENSHIPPERLIST.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, kitchenName) => {
-        const selectedIndex = selected.indexOf(kitchenName);
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, kitchenName);
+            newSelected = newSelected.concat(selected, name);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -139,10 +138,10 @@ export default function KitchenList() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENLIST.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENSHIPPERLIST.length) : 0;
 
     const filteredKitchen = applySortFilter(
-        KITCHENLIST,
+        KITCHENSHIPPERLIST,
         getComparator(order, orderBy),
         filterName
     );
@@ -177,13 +176,21 @@ export default function KitchenList() {
                     <Typography variant="h4" gutterBottom>
                         {/* User */}
                     </Typography>
+                    {/* <ColorButton
+                        variant="contained"
+                        component={RouterLink}
+                        to="/dashboard/admin/newshipper"
+
+                    >
+                        Thêm tài xế
+                    </ColorButton> */}
                     <ColorButton
                         variant="contained"
                         component={RouterLink}
-                        to="/dashboard/admin/newkitchen"
+                        to="/dashboard/kitchen/requestshipper"
 
                     >
-                        Thêm bếp
+                        Yêu cầu thêm tài xế
                     </ColorButton>
                 </Stack>
 
@@ -201,7 +208,7 @@ export default function KitchenList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={KITCHENLIST.length}
+                                    rowCount={KITCHENSHIPPERLIST.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
@@ -212,18 +219,17 @@ export default function KitchenList() {
                                         .map((row) => {
                                             const {
                                                 id,
-                                                kitchenName,
-                                                kitchenAddress,
+                                                avatarUrl,
+                                                name,
                                                 phone,
-                                                ability,
-                                                openTime,
-                                                closeTime,
+                                                NoPlate,
+                                                VehicleType,
                                                 status,
-                                                createDate,
-                                                updateDate,
+                                                accountId,
+                                                kitchenID,
 
                                             } = row;
-                                            const isItemSelected = selected.indexOf(kitchenName) !== -1;
+                                            const isItemSelected = selected.indexOf(name) !== -1;
 
                                             return (
                                                 <TableRow
@@ -237,16 +243,30 @@ export default function KitchenList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, kitchenName)}
+                                                            onChange={(event) => handleClick(event, name)}
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">{kitchenName}</TableCell>
-                                                    <TableCell align="left">{kitchenAddress}</TableCell>
+
+                                                    <TableCell component="th" scope="row" padding="none">
+                                                        <Stack
+                                                            direction="row"
+                                                            alignItems="center"
+                                                            spacing={2}
+                                                        >
+                                                            <Avatar alt={name} src={avatarUrl} />
+                                                            <Typography variant="subtitle2" noWrap>
+                                                                {name}
+                                                            </Typography>
+                                                        </Stack>
+                                                    </TableCell>
+                                                    <TableCell align="left">{id}</TableCell>
+                                                    {/* <TableCell align="left">{name}</TableCell> */}
 
                                                     <TableCell align="left">{phone}</TableCell>
-                                                    <TableCell align="left">{ability}</TableCell>
-                                                    <TableCell align="left">{openTime}</TableCell>
-                                                    <TableCell align="left">{closeTime}</TableCell>
+                                                    <TableCell align="left">{NoPlate}</TableCell>
+                                                    <TableCell align="left">{VehicleType}</TableCell>
+                                                    <TableCell align="left">{accountId}</TableCell>
+                                                    <TableCell align="left">{kitchenID}</TableCell>
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
@@ -257,19 +277,17 @@ export default function KitchenList() {
                                                             {(status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{createDate}</TableCell>
-                                                    <TableCell align="left">{updateDate}</TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    <Button1 sx={{ marginTop: "7%", }}
+                                                    {/* <Button1 sx={{ marginTop: "7%", }}
                                                         variant="outlined"
                                                         // display="TableCell"
                                                         component={RouterLink}
-                                                        to="/dashboard/admin/updatekitchen"
+                                                        to="/dashboard/admin/updateshipper"
 
                                                     >
                                                         Cập nhật
-                                                    </Button1>
+                                                    </Button1> */}
 
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
@@ -303,7 +321,7 @@ export default function KitchenList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={KITCHENLIST.length}
+                        count={KITCHENSHIPPERLIST.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

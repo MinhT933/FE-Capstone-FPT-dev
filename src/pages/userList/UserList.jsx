@@ -235,6 +235,7 @@ export default function UserList() {
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, name)}
                             />
+                            
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack

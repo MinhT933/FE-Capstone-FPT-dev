@@ -57,10 +57,12 @@ const TABLE_HEAD = [
   { id: "price", label: "Giá", alignRight: false },
 
   { id: "name", label: "Người đặt", alignRight: false },
-  { id: "phone", label: "SĐT người đặt", alignRight: false },
+  { id: "phone", label: "Điện thoại", alignRight: false },
 
   { id: "createdate", label: "Ngày đặt", alignRight: false },
   { id: "address", label: "Địa điểm giao", alignRight: false },
+  { id: "startDelivery", label: "Bắt đầu", alignRight: false },
+  { id: "endDelivery", label: "Kết thúc", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
@@ -251,6 +253,8 @@ export default function KitchenOrderList() {
                         phone,
                         createDate,
                         address,
+                        startDelivery,
+                        endDelivery,
                         status,
 
                       } = row;
@@ -281,6 +285,10 @@ export default function KitchenOrderList() {
                           <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">{createDate}</TableCell>
                           <TableCell align="left">{address}</TableCell>
+
+                          <TableCell align="left">{startDelivery}</TableCell>
+                          <TableCell align="left">{endDelivery}</TableCell>
+
                           <TableCell align="left">
                             <Label
                               variant="ghost"

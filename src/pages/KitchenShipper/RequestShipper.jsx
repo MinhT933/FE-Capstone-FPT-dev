@@ -29,15 +29,13 @@ import { MarginRounded } from "@mui/icons-material";
 
 const initialValue = {
     id: 0,
-    kitchenName: "",
-    kitchenAddress: "",
+    name: "",
     phone: "",
-
-    createDate: "",
-    updateDate: new Date(),
-
-
-    isActive: false,
+    NoPlate: "",
+    VehicleType: "",
+    accountId: "",
+    kitchenID: "",
+    status: "",
 
 };
 const useStyles = styled((theme) => ({
@@ -64,7 +62,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
     display: "center",
 }));
 
-export default function NewKitchen() {
+export default function RequestShipper() {
     const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
     const classes = useStyles();
 
@@ -97,9 +95,9 @@ export default function NewKitchen() {
         }}>
             <PageHeader
                 display="left"
-                title="Thêm bếp"
+                title="Yêu cầu thêm tài xế "
                 // subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
-                icon={getIcon('emojione-monotone:pot-of-food')}
+                icon={getIcon('emojione-v1:double-exclamation-mark')}
             />
             <Box
                 space-around="space-around"
@@ -113,15 +111,15 @@ export default function NewKitchen() {
                         <Stack spacing={3}>
                             <Controls.Input
                                 variant="outlined"
-                                label="Địa điểm"
-                                value={values.kitchenName}
+                                label="Mã tài xế"
+                                value={values.id}
                                 onChange={handleInputChange}
                             />
 
                             <Controls.Input
                                 variant="outlined"
-                                label="Địa chỉ"
-                                value={values.kitchenAddress}
+                                label="Họ Tên"
+                                value={values.name}
                                 onChange={handleInputChange}
                             />
 
@@ -132,31 +130,35 @@ export default function NewKitchen() {
                                 onChange={handleInputChange}
                             />
 
-                            <Box sx={{ padding: "0" }}>
-                                <Grid container spacing={3} columns={24}>
-                                    <Grid item xs={10.35}>
-                                        <Item><LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <TimePicker
+                            <Controls.Input
+                                variant="NoPlate"
+                                label="Biển số xe"
+                                value={values.phone}
+                                onChange={handleInputChange}
+                            />
 
-                                                label="Mở cửa"
-                                                value={value}
-                                                onChange={handleChangeTime}
-                                                renderInput={(params) => <TextField {...params} />}
-                                            />
-                                        </LocalizationProvider></Item>
-                                    </Grid>
-                                    <Grid item xs={10.35}>
-                                        <Item><LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <TimePicker
-                                                label="Đóng cửa"
-                                                value={value}
-                                                onChange={handleChangeTime}
-                                                renderInput={(params) => <TextField {...params} />}
-                                            />
-                                        </LocalizationProvider></Item>
-                                    </Grid>
-                                </Grid>
-                            </Box>
+                            {/* <Grid item xs={6} >
+                                <Controls.Select
+                                    name="Nhóm Package"
+                                    label="Loại xe"
+                                    value={values.VehicleType}
+                                    onChange={handleInputChange}
+                                    options={UpdateService.motorcycle()}
+                                />
+                            </Grid> */}
+
+                            <Controls.Input
+                                variant="outlined"
+                                label="Tên tài khoản"
+                                value={values.accountId}
+                                onChange={handleInputChange}
+                            />
+                            <Controls.Input
+                                variant="outlined"
+                                label="Mã nhà bếp"
+                                value={values.kitchenID}
+                                onChange={handleInputChange}
+                            />
 
                             <Controls.RadioGroup
                                 name="Status"
@@ -180,7 +182,7 @@ export default function NewKitchen() {
 
             <Box>
                 <Stack width="20%" justifyContent="center" marginLeft={"40%"} marginTop={"2%"}>
-                    <ColorButton variant="contained">Tạo bếp</ColorButton>
+                    <ColorButton variant="contained">Gửi yêu cầu</ColorButton>
                 </Stack>
             </Box>
 
