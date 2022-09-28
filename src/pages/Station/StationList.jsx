@@ -1,5 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
@@ -26,8 +27,11 @@ import Page from "../../components/setPage/Page";
 import StationMoreMenu from "./StationMoreMenu";
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
 // mock
-import STATIONLIST from "./StationSample";
+// import STATIONLIST from "./StationSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { callAPIStation } from "../../redux/action/acction";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -90,6 +94,20 @@ export default function StationList() {
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    //========================== CALL API==========================
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        const callAPI = async () => {
+            await dispatch(callAPIStation());
+        };
+        callAPI();
+    }, [dispatch]);
+
+    const station = useSelector((state) => {
+        return state.userReducer.listStation;
+    });
+    console.log(station);
+    //========================== CALL API========================
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");
@@ -98,7 +116,7 @@ export default function StationList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = STATIONLIST.map((n) => n.stationName);
+            const newSelecteds = station.map((n) => n.stationName);
             setSelected(newSelecteds);
             return;
         }
@@ -137,10 +155,10 @@ export default function StationList() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - STATIONLIST.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - station.length) : 0;
 
     const filteredStations = applySortFilter(
-        STATIONLIST,
+        station,
         getComparator(order, orderBy),
         filterName
     );
@@ -202,7 +220,7 @@ export default function StationList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={STATIONLIST.length}
+                                    rowCount={station.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
@@ -303,7 +321,7 @@ export default function StationList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={STATIONLIST.length}
+                        count={station.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
