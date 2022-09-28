@@ -29,20 +29,21 @@ import StationMoreMenu from "./StationMoreMenu";
 // mock
 // import STATIONLIST from "./StationSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import { callAPIStation } from "../../redux/action/acction";
+
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { callAPIgetListStation } from "../../redux/action/acction";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "stationName", label: "Địa điểm", alignRight: false },
-    { id: "stationAddress", label: "Địa chỉ", alignRight: false },
+
+    { id: "id", label: "Mã trạm", alignRight: false },
+    { id: "name", label: "Địa điểm", alignRight: false },
+    { id: "address", label: "Địa chỉ", alignRight: false },
     { id: "openTime", label: "Mở cửa", alignRight: false },
     { id: "closeTime", label: "Đóng cửa", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "createDate", label: "Ngày tạo", alignRight: false },
-    { id: "updateDate", label: "Cập nhập", alignRight: false },
     { id: "" },
 ];
 
@@ -74,7 +75,7 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_stations) => _stations.stationName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_stations) => _stations.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
@@ -88,17 +89,19 @@ export default function StationList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("stationName");
+    const [orderBy, setOrderBy] = useState("name");
 
     const [filterName, setFilterName] = useState("");
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    //========================== CALL API==========================
+
+
+    //CALL API==================================================== 
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
-            await dispatch(callAPIStation());
+            await dispatch(callAPIgetListStation());
         };
         callAPI();
     }, [dispatch]);
@@ -106,8 +109,11 @@ export default function StationList() {
     const station = useSelector((state) => {
         return state.userReducer.listStation;
     });
-    console.log(station);
-    //========================== CALL API========================
+    //CALL API=====================================================
+
+
+
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");
@@ -116,18 +122,18 @@ export default function StationList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = station.map((n) => n.stationName);
+            const newSelecteds = station.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, stationName) => {
-        const selectedIndex = selected.indexOf(stationName);
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, stationName);
+            newSelected = newSelected.concat(selected, name);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -162,6 +168,9 @@ export default function StationList() {
         getComparator(order, orderBy),
         filterName
     );
+
+    const isStationNotFound = filteredStations.length === 0;
+
     //setColor button
     const ColorButton = styled(Button)(({ theme }) => ({
         color: theme.palette.getContrastText("#FFCC32"),
@@ -179,13 +188,10 @@ export default function StationList() {
         // display: "center"
     }));;
 
-    const isStationNotFound = filteredStations.length === 0;
 
     return (
-        <Page title="User">
+        <Page title="station">
             <Container>
-
-
                 <Stack
                     direction="row"
                     alignItems="center"
@@ -201,7 +207,7 @@ export default function StationList() {
                         to="/dashboard/admin/newstation"
 
                     >
-                        Thêm địa điểm
+                        Thêm trạm
                     </ColorButton>
                 </Stack>
 
@@ -231,15 +237,14 @@ export default function StationList() {
                                         .map((row) => {
                                             const {
                                                 id,
-                                                stationName,
-                                                stationAddress,
+                                                name,
+                                                phone,
+                                                address,
                                                 openTime,
                                                 closeTime,
                                                 status,
-                                                createDate,
-                                                updateDate,
                                             } = row;
-                                            const isItemSelected = selected.indexOf(stationName) !== -1;
+                                            const isItemSelected = selected.indexOf(name) !== -1;
 
                                             return (
                                                 <TableRow
@@ -253,11 +258,12 @@ export default function StationList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, stationName)}
+                                                            onChange={(event) => handleClick(event, name)}
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">{stationName}</TableCell>
-                                                    <TableCell align="left">{stationAddress}</TableCell>
+                                                    <TableCell align="left">{id}</TableCell>
+                                                    <TableCell align="left">{name}</TableCell>
+                                                    <TableCell align="left">{address}</TableCell>
                                                     <TableCell align="left">{openTime}</TableCell>
                                                     <TableCell align="left">{closeTime}</TableCell>
                                                     <TableCell align="left">
@@ -270,8 +276,6 @@ export default function StationList() {
                                                             {(status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{createDate}</TableCell>
-                                                    <TableCell align="left">{updateDate}</TableCell>
 
                                                     {/* <ColorButton
                                                         variant="contained"
