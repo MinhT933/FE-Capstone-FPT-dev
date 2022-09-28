@@ -5,7 +5,7 @@
 // const initialState = {
 //   user: {},
 //   listUser: []
-// }
+// } 
 
 // lưu trạng thái hiện tại và thực hiện một hành động để trả về một trạng thái mới
 // for example:
