@@ -62,7 +62,7 @@ export default function Router() {
         { path: "login", element: <Page404 /> },
         { path: "register", element: <Page404 /> },
         { path: "newfood", element: <NewFood /> },
-        { path: "product/:id", element: <EditFood /> },
+        { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
 
         { path: "station", element: <StationList /> },

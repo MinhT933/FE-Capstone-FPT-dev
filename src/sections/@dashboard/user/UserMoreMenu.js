@@ -16,7 +16,7 @@ import Iconify from "../../../components/hook-form/Iconify";
 export default function UserMoreMenu(props) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { id, path } = props;
+  const { id } = props;
   const location = useLocation();
 
   return (
