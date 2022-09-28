@@ -283,7 +283,6 @@ export default function Food() {
                               </Typography>
                             </Stack>
                           </TableCell>
-
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">{datatype}</TableCell>
                           <TableCell align="left">
@@ -303,15 +302,13 @@ export default function Food() {
                             </Label>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
-
                           <TableCell align="right">
-                            <UserMoreMenu id={id} path={path} />
+                            <UserMoreMenu id={id} />
                           </TableCell>
                         </TableRow>
                       );
                     })}
                 </TableBody>
-
                 {isUserNotFound && (
                   <TableBody>
                     <TableRow>
@@ -324,7 +321,6 @@ export default function Food() {
               </Table>
             </TableContainer>
           </Scrollbar>
-
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"

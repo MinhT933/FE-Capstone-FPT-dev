@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 
 export default function Select(props) {
-  const { name, label, value, onChange, options } = props;
+  const { name, label, value, onChange, options, defaultSelected } = props;
   return (
     <FormControl
       sx={{
@@ -20,11 +20,13 @@ export default function Select(props) {
       <MuiSelect
         labelId="demo-simple-select-label"
         id="demo-simple-select"
+        defaultSelected={defaultSelected}
         label={label}
         name={name}
         value={value}
         onChange={onChange}
       >
+        {/* <MenuItem>{defaultSelected}</MenuItem> */}
         {options?.map((item) => (
           <MenuItem key={item.id} value={item.id}>
             {item.title}
