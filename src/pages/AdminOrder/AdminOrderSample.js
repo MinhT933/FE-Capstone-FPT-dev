@@ -25,6 +25,8 @@ const packagefood = [...Array(40)].map((_, index) => ({
     phone: sample(['0901225688',]),
 
     createDate: faker.date.recent().toLocaleDateString(),
+    startDelivery: sample(['01/10/2022']),
+    endDelivery: sample(['06/10/2022']),
     address: sample(['đại học FBT', 'The Coffee House', 'Công ty TNHH XVXX']),
     status: sample(['Delivery', 'Not Delivery', 'Waiting']),
 

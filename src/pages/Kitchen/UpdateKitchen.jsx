@@ -98,8 +98,8 @@ export default function UpdateKitchen() {
         }}>
             <PageHeader
                 display="left"
-                title="Cập nhật địa điểm"
-                subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
+                title="Cập nhật bếp"
+                // subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
                 icon={getIcon('emojione-monotone:pot-of-food')}
             />
             <Box
