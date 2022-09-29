@@ -51,6 +51,8 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listStation = payload;
       // console.log(payload);
       break;
+    case PathAction.GET_FOOD:
+      state.food= payload;
     default:
       return state;
   }

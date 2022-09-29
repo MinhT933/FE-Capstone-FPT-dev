@@ -7,12 +7,11 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink} from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { yellow } from "@mui/material/colors";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 // import Link from "@mui/material/Link";
@@ -47,9 +46,13 @@ const Login = () => {
     display: "center",
   }));
 
+  const handleSubmit = async (e) => {};
+
   return (
     <Box
+
       sx={{ float: "right", width: "120%", flexGrow: 1 }}
+
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -67,7 +70,7 @@ const Login = () => {
               <div style={{ marginBottom: "8%" }}>
                 <h1> Đăng Nhập </h1>
               </div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <Grid container direction="column" spacing={2}>
                   <Grid item>
                     <TextField

@@ -12,8 +12,7 @@ const Input = styled("input")({
 
 export default function InputImg() {
   const [input, setInput] = useState([]);
-  const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
+
 
   function _treat(e) {
     const { files } = e.target;
