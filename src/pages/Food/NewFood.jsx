@@ -34,6 +34,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
   display: "center",
 }));
 
+//yub dùng để validation trong reactjs
+// khởi tạo schema để so sánh value(theo tao hiểu)
 const schema = yup.object().shape({
   name: yup.string().required().trim(),
   price: yup.string().required().trim(),
@@ -43,24 +45,35 @@ const schema = yup.object().shape({
 
 export default function NewFood() {
   const dispatch = useDispatch();
+  //khởi tạo lần đầu gọi thằng getlist cate để nó hiện thị lên selectbox ô select của tao á
+  // ctr+ click chuột vào callAPIgetListCategory để xem nó cách callAPI getlistCateFood no giống y chan
+  //call Food list vậy thay vị đổ vào bảng thì mình đỗ vào selectbox
   React.useEffect(() => {
     const getlistCateFood = async () => {
       await dispatch(callAPIgetListCategory());
     };
     getlistCateFood();
+    //disparch để kết thúc vào lặp vô tận loop infinity á
   }, [dispatch]);
 
+  //kéo data categoriesFood từ store zìa mà xài nè
   const categoriesFood = useSelector((state) => {
     return state.userReducer.listCategory;
   });
 
-  const getOptions = (id, title) => {
+  /// get list options để hiển thị lên ô selectbox
+  const getOptions = () => {
+    //tạo mảng rỗng để chứa data ở đây là name và id của categoriesFood
+    //hình dung nó giống nhà kho vậy á
+    // sau này trước khi muốn gọi cái gì đó phải tọa 1 mảng rỗng để bỏ vào
     const item = [];
+    // vòng food này để đẩy data từ categoriesFood v ào trong items ( vì nó có nhiều object) nên phải làm vậy
     for (var i = 0; i < categoriesFood.length; i++) {
       item.push({ id: categoriesFood[i].id, title: categoriesFood[i].name });
     }
 
     return item;
+    //trả về item đã có data muốn biết thì console.log ra mà xem
   };
 
   const Input = styled("input")({
@@ -68,14 +81,18 @@ export default function NewFood() {
   });
   //xử lí hình ảnh
   const [input, setInput] = useState([]);
+  //formData để lưu data
   const formData = new FormData();
-  const [selecteds, setselecteds] = useState(false);
 
+  //selected dùng để lí ảnh
 
+  //dùng use formik để validate giá trị  nhập vào
   const formik = useFormik({
+    //gắn schema để so sánh
     validationSchema: schema,
     validateOnMount: true,
     validateOnBlur: true,
+    //khởi tạo kho để bỏ data vào
     initialValues: {
       name: "",
       price: "",
@@ -84,45 +101,33 @@ export default function NewFood() {
       image: null,
     },
 
+    //onSubmit ngay từ cái tên đầu nó dùng đẩy data xuống BE
     onSubmit: async (values) => {
+      //formdata.append gg.com => nôm na à đẩy giá trị vào formdata có key là 1 chuỗi
+      //value là formik.values.(something you want ) nó giống như muốn vào nhà ai đó thì phải biết tên m trước
+      //sau đó mới biết về bản thân m sau nôm na vậy đó hi vọng m hiểu
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
       formData.append("price", formik.values.price);
       formData.append("foodCategoryId", formik.values.foodCategoryId);
-
-      //sử lí data lưu xuống dưới
-      // const data = {
-      //   name: formik.values.name,
-      //   price: formik.values.price,
-      //   description: formik.values.description,
-      //   foodCategoryId: formik.values.foodCategoryId,
-      //   image: formData,
-      // };
-      console.log(formik.values.categories);
+      //gọi API để đẩy data xuống
       const res = await API("POST", URL_API + "/foods", formData);
     },
   });
 
+  //cái này là sử lí image t box bỏ qua bên kia t xử lí khó quá nên t gôm bỏ zo đây T.T
   function _treat(e) {
     const { files } = e.target;
     let images = [];
     const selecteds = [...[...files]];
     formik.setFieldValue("image", e.target.files[0]);
-    // setselecteds(e.target.files[0]);
-    // setselecteds(true);
-
     return (
-      // xử lí hình ảnh cho nó hiển thị lên
       selecteds.forEach((i) => images.push(URL.createObjectURL(i))),
-      //form data đẩy file hình lên ==> formData.append chèn cặp giá trị key 'File'
-      //value là 'selecteds' muốn biết selecteds là gì console.log ra mà xem
       formData.append("File", selecteds),
       setInput(images)
     );
   }
-
-  // const { touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   const classes = useStyles();
 
@@ -145,6 +150,7 @@ export default function NewFood() {
           paddingLeft: "12%",
         }}
       >
+        {/* // à nhớ bỏ cái form ở đây thì nó mới hiểu và làm onsubmit đc */}
         <form onSubmit={formik.handleSubmit}>
           <Box
             sx={{ float: "left", width: "50%", flexGrow: 1, mt: "2rem" }}
@@ -152,29 +158,30 @@ export default function NewFood() {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid></Grid>
             <Grid container spacing={1.5}>
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
                   name="name"
                   label="Tên"
+                  // bỏ giá trị value vào đây để nó get giá trị đó xuống
+                  // nói chung là m nhập cái gì
+                  // thì nó bỏ xuống cái cái kho có tên mà m khởi tạo rồi đảy xuống BE
                   value={formik.values.name || ""}
+                  /// để nó ghi nhận sự thay đổi
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
                   onBlur={formik.handleBlur}
                 />
                 {/* nếu sai thì nó đỏ */}
-                {formik.touched.name && formik.errors.name ? (
+                {formik.touched.name && formik.errors.name && (
                   <FormHelperText
                     error={false}
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.name}
                   </FormHelperText>
-                ) : (
-                  <>hehe </>
                 )}
               </Grid>
               <Grid item xs={6}>
@@ -202,18 +209,17 @@ export default function NewFood() {
                   name="foodCategoryId"
                   label="Loại"
                   // defaultValue={categoriesFood[0].name}
+
                   value={formik.values.foodCategoryId}
                   onChange={(e) => {
+                    // map tên với adi hiện thị name nhưng chọn ẩn ở dưới là id
                     const a = categoriesFood.find(
                       (c) => c.id === e.target.value
                     );
-                    console.log(a);
-                    // formik.handleChange(a.name);
                     formik.setFieldValue("foodCategoryId", a.id);
-
-                    // console.log(e);
                   }}
                   onBlur={formik.handleBlur}
+                  //getOption để lấy giá trị category
                   options={getOptions()}
                 />
               </Grid>
@@ -287,7 +293,7 @@ export default function NewFood() {
               >
                 {/* hiển thị hình lên  */}
                 {input.map((i) => (
-                  <img key={i} src={i} />
+                  <img key={i} src={i} alt="" />
                 ))}
               </Box>
             </label>

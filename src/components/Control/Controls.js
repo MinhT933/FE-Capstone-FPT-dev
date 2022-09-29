@@ -4,23 +4,22 @@ import Select from "./Select";
 import Checkbox from "./Checkbox";
 import DatePicker from "./DatePicker";
 import Button from "./Button";
-import TextArea from './TextArea';
-import TimeInput from './TimeInput';
-import TagInput from './Taginput';
-import InputTagCheckBox from './InputTagCheckBox';
+import TextArea from "./TextArea";
+import TimeInput from "./TimeInput";
+import TagInput from "./Taginput";
+import InputTagCheckBox from "./InputTagCheckBox";
 
 const Controls = {
-    Input,
-    RadioGroup,
-    Select,
-    Checkbox,
-    DatePicker,
-    Button,
-    TextArea,
-    TimeInput,
-    TagInput,
-    InputTagCheckBox
-
-}
+  Input,
+  RadioGroup,
+  Select,
+  Checkbox,
+  DatePicker,
+  Button,
+  TextArea,
+  TimeInput,
+  TagInput,
+  InputTagCheckBox,
+};
 
 export default Controls;

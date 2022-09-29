@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Paper, Grid, Box, Button, styled } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
@@ -49,51 +49,43 @@ export default function EditFood() {
 
   const dispatch = useDispatch();
 
-  const [food, setFood] = React.useState({});
+  const [input, setInput] = useState(null);
 
-  const [nameCategory, setNameCategory] = React.useState({});
-
-  // const { name, price, description, foodCategoryId, image } = state;
+  const formData = new FormData();
 
   React.useEffect(() => {
     const getlistCateFood = async () => {
       await dispatch(callAPIgetListCategory());
     };
+    getlistCateFood();
     API("GET", URL_API + `/foods/${id}`)
       .then((res) => {
-        setFood(res.data.result);
-        // setNameCategory(res.data.result.category.name);
-        setNameCategory(res.data.result.foodCategory.id);
-        // console.log(food.foodCategory);
+        formik.setFieldValue("name", res.data.result.name);
+        formik.setFieldValue("image", res.data.result.image);
+        formik.setFieldValue("price", res.data.result.price);
+        formik.setFieldValue("description", res.data.result.description);
+        formik.setFieldValue("foodCategoryId", res.data.result.foodCategory.id);
       })
       .catch((error) => {
         console.log(error);
       });
-    getlistCateFood();
-  }, [dispatch]);
-
-  console.log(food);
+  }, []);
 
   const categoriesFood = useSelector((state) => {
     return state.userReducer.listCategory;
   });
-
-  const getOptions = (id, title) => {
+  // get_option
+  const getOptions = () => {
     const item = [];
     for (var i = 0; i < categoriesFood.length; i++) {
       item.push({ id: categoriesFood[i].id, title: categoriesFood[i].name });
     }
-
     return item;
   };
 
   const Input = styled("input")({
     display: "none",
   });
-  //xử lí hình ảnh
-  const [input, setInput] = useState([]);
-  const formData = new FormData();
-  const [selecteds, setselecteds] = useState(false);
 
   const formik = useFormik({
     validationSchema: schema,
@@ -103,40 +95,37 @@ export default function EditFood() {
       name: "",
       price: "",
       description: "",
-      foodCategoryId: "hehe",
+      foodCategoryId: "",
       image: null,
     },
-    // ${food.foodCategory?.id}
+
     onSubmit: async (values) => {
+      console.log(values);
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
       formData.append("price", formik.values.price);
       formData.append("foodCategoryId", formik.values.foodCategoryId);
-      // console.log(formik.values.categories);
-      //call api
-      const res = await API("POST", URL_API + "/foods", formData);
+
+      const res = await API(
+        "PUT",
+        URL_API + `/foods/update-food/${id}`,
+        formData
+      );
+      window.location.reload(true);
     },
   });
 
   function _treat(e) {
     const { files } = e.target;
-    let images = [];
-    const selecteds = [...[...files]];
+
     formik.setFieldValue("image", e.target.files[0]);
 
-    return (
-      // xử lí hình ảnh cho nó hiển thị lên
-      selecteds.forEach((i) => images.push(URL.createObjectURL(i))),
-      //form data đẩy file hình lên ==> formData.append chèn cặp giá trị key 'File'
-      //value là 'selecteds' muốn biết selecteds là gì console.log ra mà xem
-      formData.append("File", selecteds),
-      setInput(images)
-    );
+    setInput(URL.createObjectURL(e.target.files[0]));
   }
 
   const classes = useStyles();
-  console.log(formik.values.foodCategoryId);
+
   return (
     <Paper className={classes.pageContent}>
       <PageHeader
@@ -169,30 +158,12 @@ export default function EditFood() {
                 <Controls.Input
                   variant="outlined"
                   name="name"
-                  // label="Tên"
-                  // pla={food.name}
-                  defaultValue={food.name}
                   value={formik.values.name}
-                  // value="hihi"
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
                   onBlur={formik.handleBlur}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controls.Input
-                  variant="outlined"
-                  name="price"
-                  // label="Giá"
-                  // placeholder={food.price}
-                  defaultValue={food.price}
-                  value={formik.values.price}
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                  }}
-                  onBlur={formik.handleBlur}
-                />
+                />{" "}
                 {formik.touched.name && formik.errors.name && (
                   <FormHelperText
                     error={false}
@@ -203,22 +174,35 @@ export default function EditFood() {
                 )}
               </Grid>
               <Grid item xs={6}>
+                <Controls.Input
+                  variant="outlined"
+                  name="price"
+                  value={formik.values.price}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.price && formik.errors.price && (
+                  <FormHelperText
+                    error={false}
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.price}
+                  </FormHelperText>
+                )}
+              </Grid>
+              <Grid item xs={6}>
                 <Controls.Select
                   name="foodCategoryId"
-                  // label="loại"
-                  // renderValue={nameCategory}
+                  label="loại"
                   value={formik.values.foodCategoryId}
-                  // value="hehe"
-                  // defaultValue="hehe"
                   onChange={(e) => {
                     const a = categoriesFood.find(
                       (c) => c.id === e.target.value
                     );
-
-                    // set cho nó hiển thị lên
                     formik.setFieldValue("foodCategoryId", a.id);
                   }}
-                  defaultSelected={nameCategory}
                   onBlur={formik.handleBlur}
                   options={getOptions()}
                 />
@@ -229,9 +213,7 @@ export default function EditFood() {
                   maxRows={4}
                   multiline
                   variant="outlined"
-                  // label="Mô tả"
                   name="description"
-                  placeholder={food.description}
                   value={formik.values.description}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -293,8 +275,11 @@ export default function EditFood() {
                 }}
               >
                 {/* hiển thị hình lên  */}
-                {input != null && input.map((i) => <img key={i} src={i} />)}
-                <img src={food.image} />
+                {input != null ? (
+                  <img src={input} />
+                ) : (
+                  <img src={formik.values.image} />
+                )}
               </Box>
             </label>
           </Box>
