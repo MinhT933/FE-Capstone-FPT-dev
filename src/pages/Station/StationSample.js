@@ -19,26 +19,13 @@ const stations = [...Array(20)].map((_, index) => ({
     'Cong Vien PM QT',
     'Khu CN Cao Q9',
     'DH FPT',
-    'Cong Vien PM QT',
-    'Khu CN Cao Q9',
-    'DH FPT',
-    'Cong Vien PM QT',
-    'DH FPT',
   ]),
   stationAddress: sample([
     '265 Âu Cơ, Phường 5, Quận 11 ',
-    '407D Lê Văn Sỹ, Phường 2, Quận 3',
-    '193 Đ. Lê Văn Việt, Hiệp Phú, Quận 9',
-    '195 Xô Viết Nghệ Tĩnh, Phường 17, Bình Thạnh',
-    '193 Đ. Lê Văn Việt, Hiệp Phú, Quận 9',
-    '14 Phạm Ngọc Thạch, Phường 6, Quận 3',
-    '407D Lê Văn Sỹ, Phường 2, Quận 3',
-    '195 Xô Viết Nghệ Tĩnh, Phường 17, Bình Thạnh',
-    '2 Đ. Nguyễn Ảnh Thủ, Trung Mỹ Tây, Quận 12',
-    'DH FPT',
+    '407 Lê Văn Sỹ, Phường 2, Quận 3',
   ]),
   openTime: sample([
-    '6:00'
+    '9:00'
   ]),
   closeTime: sample([
     '12:00'

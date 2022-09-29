@@ -23,6 +23,18 @@ import AdminOrderList from "./pages/AdminOrder/AdminOrderList";
 import NewAdminOrder from "./pages/AdminOrder/NewAdminOrder";
 import StepDesignPacketFood from "./pages/PackageFood/Step/StepDesignPacketFood.jsx";
 import ListFoodGroup from "./pages/FoodGroup/ListFoodGroup.jsx";
+import UpdateStaion from "./pages/Station/UpdateStation.jsx";
+import UpdateKitchen from "./pages/Kitchen/UpdateKitchen.jsx";
+import KitchenOrderList from "./pages/KitchenOrder/KitchenOrderList.jsx";
+
+import KitchenShipperList from "./pages/KitchenShipper/KitchenShipperList.jsx";
+import RequestShipper from "./pages/KitchenShipper/RequestShipper.jsx";
+import KitchenProfile from "./pages/KitchenProfile/KitchenProfile.jsx";
+
+import AdminShipperList from "./pages/AdminShipper/AdminShipperList.jsx";
+import NewShipper from "./pages/AdminShipper/NewShipper.jsx";
+import UpdateShipper from "./pages/AdminShipper/UpdateShipper.jsx";
+
 
 export default function Router() {
   return useRoutes([
@@ -64,16 +76,31 @@ export default function Router() {
         { path: "newfood", element: <NewFood /> },
         { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
+        { path: "foodGroup", element: <ListFoodGroup /> },
 
+        //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },
         { path: "newstation", element: <NewStation /> },
+        { path: "updatestation", element: <UpdateStaion /> },
 
+        //admin quản lí Kitchen - CURD
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
+        { path: "updatekitchen", element: <UpdateKitchen /> },
 
+        //MANAGER quản lí đơn hàng - VIEW theo ERD
         { path: "adminorder", element: <AdminOrderList /> },
         { path: "newadminorder", element: <NewAdminOrder /> },
-        { path: "foodGroup", element: <ListFoodGroup /> },
+
+        //admin quản lí shipper
+        //CURD + chuyển shipper cho bếp
+        { path: "adminshipper", element: <AdminShipperList /> },
+
+        { path: "newshipper", element: <NewShipper /> },
+        { path: "updateshipper", element: <UpdateShipper /> },
+
+
+
       ],
     },
 
@@ -84,6 +111,16 @@ export default function Router() {
       children: [
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
+        //kitchen xem đơn hàng
+        { path: "kitchenorder", element: <KitchenOrderList /> },
+
+        //kitchen quản lí shipper
+        //View shipper của cửa hàng + Request shipper
+        { path: "kitchenshipper", element: <KitchenShipperList /> },
+        { path: "requestshipper", element: <RequestShipper /> },
+
+        //kitchen xem thông tin bếp
+        { path: "kitchenprofile", element: <KitchenProfile /> },
       ],
     },
 

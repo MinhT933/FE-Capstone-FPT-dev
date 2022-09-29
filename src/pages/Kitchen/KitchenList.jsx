@@ -35,9 +35,12 @@ const TABLE_HEAD = [
     { id: "kitchenName", label: "Địa điểm", alignRight: false },
     { id: "kitchenAddress", label: "Địa chỉ", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
+    { id: "ability", label: "Công suất", alignRight: false },
+    { id: "openTime", label: "Mở cửa", alignRight: false },
+    { id: "closeTime", label: "Đóng cửa", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
     { id: "createDate", label: "Ngày tạo", alignRight: false },
-    { id: "updateDate", label: "Cập nhập", alignRight: false },
+    { id: "updateDate", label: "Cập nhật", alignRight: false },
     { id: "" },
 ];
 
@@ -153,6 +156,13 @@ export default function KitchenList() {
         display: "center",
     }));
 
+    const Button1 = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText("#FFCC33"),
+        backgroundColor: "#FFCC33",
+
+        // display: "center"
+    }));;
+
     const isKitchenNotFound = filteredKitchen.length === 0;
 
     return (
@@ -173,7 +183,7 @@ export default function KitchenList() {
                         to="/dashboard/admin/newkitchen"
 
                     >
-                        Thêm địa điểm
+                        Thêm bếp
                     </ColorButton>
                 </Stack>
 
@@ -205,9 +215,13 @@ export default function KitchenList() {
                                                 kitchenName,
                                                 kitchenAddress,
                                                 phone,
+                                                ability,
+                                                openTime,
+                                                closeTime,
                                                 status,
                                                 createDate,
                                                 updateDate,
+
                                             } = row;
                                             const isItemSelected = selected.indexOf(kitchenName) !== -1;
 
@@ -228,7 +242,11 @@ export default function KitchenList() {
                                                     </TableCell>
                                                     <TableCell align="left">{kitchenName}</TableCell>
                                                     <TableCell align="left">{kitchenAddress}</TableCell>
+
                                                     <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{ability}</TableCell>
+                                                    <TableCell align="left">{openTime}</TableCell>
+                                                    <TableCell align="left">{closeTime}</TableCell>
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
@@ -241,11 +259,24 @@ export default function KitchenList() {
                                                     </TableCell>
                                                     <TableCell align="left">{createDate}</TableCell>
                                                     <TableCell align="left">{updateDate}</TableCell>
+                                                    {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    <TableCell align="right">
-                                                        {/* //props */}
-                                                        <KitchenMoreMenu id={id} />
-                                                    </TableCell>
+                                                    <Button1 sx={{ marginTop: "7%", }}
+                                                        variant="outlined"
+                                                        // display="TableCell"
+                                                        component={RouterLink}
+                                                        to="/dashboard/admin/updatekitchen"
+
+                                                    >
+                                                        Cập nhật
+                                                    </Button1>
+
+                                                    {/* <TableCell align="right"> */}
+                                                    {/* //props */}
+                                                    {/* <KitchenMoreMenu id={id} /> */}
+                                                    {/* </TableCell> */}
+
+
                                                 </TableRow>
                                             );
                                         })}

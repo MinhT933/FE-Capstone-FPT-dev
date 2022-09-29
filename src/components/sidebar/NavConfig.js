@@ -56,10 +56,17 @@ const navConfig = [
     icon: getIcon("carbon:location-company"),
   },
 
+
+  // {
+  //   title: "Admin quản lí đơn hàng",
+  //   path: "/dashboard/admin/adminorder",
+  //   icon: getIcon("icon-park-outline:transaction-order"),
+  // },
+
   {
     title: "Admin quản lí đơn hàng",
     path: "/dashboard/admin/adminorder",
-    icon: getIcon("icon-park-outline:transaction-order"),
+    icon: getIcon("eos-icons:subscription-management"),
   },
 
   {
@@ -68,14 +75,31 @@ const navConfig = [
     icon: getIcon("fa6-solid:kitchen-set"),
   },
   {
+    title: "Admin quản lí Người giao hàng",
+    path: "/dashboard/admin/adminshipper",
+    icon: getIcon("carbon:delivery"),
+  },
+
+
+  {
     title: "Bếp quản lí đơn hàng",
-    path: "/dashboard/kitchen/order",
-    icon: getIcon("icon-park-outline:transaction-order"),
+    path: "/dashboard/kitchen/kitchenorder",
+    icon: getIcon("eos-icons:subscription-management"),
   },
   {
     title: "Bếp xem bếp",
     path: "/dashboard/kitchen/kitchen",
-    icon: getIcon("fa6-solid:kitchen-set"),
+    icon: getIcon("mdi:card-account-details-star-outline"),
+  },
+  {
+    title: "Bếp xem thông tin bếp",
+    path: "/dashboard/kitchen/kitchenprofile",
+    icon: getIcon("mdi:card-account-details-star-outline"),
+  },
+  {
+    title: "Bếp quản lí Người giao hàng",
+    path: "/dashboard/kitchen/kitchenshipper",
+    icon: getIcon("carbon:delivery"),
   },
   // {
   //   title: 'register',

@@ -43,6 +43,18 @@ export const getDay = () => [
   { title: "Sa", year: 1972 },
 ];
 
+export const motorcycle = () => [
+  { id: "1", title: "Yamaha" },
+  { id: "2", title: "Honda" },
+  { id: "3", title: "Airblade" },
+  { id: "4", title: "Exciter" },
+  { id: "5", title: "SH" },
+  { id: "6", title: "Nouvo" },
+  { id: "7", title: "Suzuki" },
+];
+
+
+
 export const selectName = () => [
   {
     id: "1",

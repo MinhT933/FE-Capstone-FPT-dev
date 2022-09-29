@@ -1,13 +1,21 @@
+
+// ---------------------------------------------------------------------- 
+// ở đây fix được tên tên table
+// ko nhát thiết phải thêm table head ở dưới 
+
+
+
+// ----------------------------------------------------------------------
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { sentenceCase } from "change-case";
 import { styled } from "@mui/material/styles";
-
+// material
 import {
   Card,
   Table,
   Stack,
+  // Avatar,
   Button,
   Checkbox,
   TableRow,
@@ -23,18 +31,24 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from "../../sections/@dashboard/user";
+// import NewStationPopup from "src/pages/Station/NewStationPopup";
+// import KitchenMoreMenu from "./KitchenMoreMenu";
+
+
+import dayjs from 'dayjs';
+// import TextField from '@mui/material/TextField';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import * as React from 'react';
+
+
 // mock
-import ADMINORDERLIST from "../../pages/AdminOrder/AdminOrderSample";
+import ADMINORDERLIST from "./AdminOrderSample";
+import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
-//Link routers
-
-// ---------------------------------------------------------------------- 
-// ở đây fix được tên têng table
+// ----------------------------------------------------------------------
+// ở đây fix được tên tên table
 // ko nhát thiết phải thêm table head ở dưới 
 
 const TABLE_HEAD = [
@@ -43,14 +57,15 @@ const TABLE_HEAD = [
   { id: "price", label: "Giá", alignRight: false },
 
   { id: "name", label: "Người đặt", alignRight: false },
-  { id: "phone", label: "SĐT người đặt", alignRight: false },
+  { id: "phone", label: "Điện thoại", alignRight: false },
 
   { id: "createdate", label: "Ngày đặt", alignRight: false },
   { id: "address", label: "Địa điểm giao", alignRight: false },
+  { id: "startDelivery", label: "Bắt đầu", alignRight: false },
+  { id: "endDelivery", label: "Kết thúc", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
-
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
@@ -79,20 +94,21 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_kitchen) => _kitchen.kitchenName.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function AdminOrderList() {
+export default function KitchenOrderList() {
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("kitchenName");
 
   const [filterName, setFilterName] = useState("");
 
@@ -106,18 +122,18 @@ export default function AdminOrderList() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = ADMINORDERLIST.map((n) => n.name);
+      const newSelecteds = ADMINORDERLIST.map((n) => n.kitchenName);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, kitchenName) => {
+    const selectedIndex = selected.indexOf(kitchenName);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, kitchenName);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -144,11 +160,10 @@ export default function AdminOrderList() {
     setFilterName(event.target.value);
   };
 
-  // const emptyRows =
-  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PACKAGELIST.length) : 0;
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ADMINORDERLIST.length) : 0;
 
-  //sort 
-  const filteredUsers = applySortFilter(
+  const filteredKitchen = applySortFilter(
     ADMINORDERLIST,
     getComparator(order, orderBy),
     filterName
@@ -163,30 +178,50 @@ export default function AdminOrderList() {
     display: "center",
   }));
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const Button1 = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC33"),
+    backgroundColor: "#FFCC33",
+
+    // display: "center"
+  }));;
+
+  const isKitchenNotFound = filteredKitchen.length === 0;
+
+  //LỊCH CHỌN NGÀY TRONG TUẦN
+  const isWeekend = (date) => {
+    const day = date.day();
+
+    return day === 0 || day === 6;
+  };
+
+  const [value, setValue] = React.useState(dayjs());
+
   return (
-    <Page title="package">
+    <Page title="User">
       <Container>
-        <Stack
+
+        {/* node_modulenpm install */}
+        {/* <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           mb={5}
-        >
-          <Typography variant="h4" gutterBottom>
-            {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
-          </Typography>
+        > */}
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <StaticDatePicker
+            orientation="landscape"
+            openTo="day"
+            value={value}
+            shouldDisableDate={isWeekend}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider> */}
 
-          <ColorButton
-            variant="contained"
-            component={RouterLink}
-            // startIcon={<Iconify icon="eva:plus-fill" />}
+        {/* </Stack> */}
 
-            to="/dashboard/admin/newadminorder"
-          >
-            Cập nhập đơn hàng
-          </ColorButton>
-        </Stack>
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -195,7 +230,7 @@ export default function AdminOrderList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1800 }}>
+            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -206,24 +241,24 @@ export default function AdminOrderList() {
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
-
                 <TableBody>
-                  {filteredUsers
+                  {filteredKitchen
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
                         id,
                         type,
                         price,
-
                         name,
                         phone,
-
                         createDate,
                         address,
+                        startDelivery,
+                        endDelivery,
                         status,
+
                       } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      const isItemSelected = selected.indexOf(id) !== -1;
 
                       return (
                         <TableRow
@@ -237,40 +272,61 @@ export default function AdminOrderList() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) => handleClick(event, id)}
                             />
                           </TableCell>
+
+
                           <TableCell align="left">{id}</TableCell>
+
                           <TableCell align="left">{type}</TableCell>
                           <TableCell align="left">{price}</TableCell>
-
-                          <TableCell align="left">{price}</TableCell>
-
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{phone}</TableCell>
-
                           <TableCell align="left">{createDate}</TableCell>
-
                           <TableCell align="left">{address}</TableCell>
+
+                          <TableCell align="left">{startDelivery}</TableCell>
+                          <TableCell align="left">{endDelivery}</TableCell>
+
                           <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={
-                                (status === "active" && "error") || "success"
+                                (status === "Not Delivery" && "error") || "success"
                               }
                             >
-                              {sentenceCase(status)}
+                              {(status)}
                             </Label>
                           </TableCell>
-                          <TableCell align="right">
-                            <UserMoreMenu />
-                          </TableCell>
+                          {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
+
+                          {/* <Button1 sx={{ marginTop: "7%", }}
+                            variant="outlined"
+                            component={RouterLink}
+                            to="/dashboard/admin/updatekitchen"
+
+                          >
+                            Cập nhật
+                          </Button1> */}
+
+                          {/* <TableCell align="right"> */}
+                          {/* //props */}
+                          {/* <KitchenMoreMenu id={id} /> */}
+                          {/* </TableCell> */}
+
+
                         </TableRow>
                       );
                     })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
                 </TableBody>
 
-                {isUserNotFound && (
+                {isKitchenNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -282,8 +338,9 @@ export default function AdminOrderList() {
               </Table>
             </TableContainer>
           </Scrollbar>
+
           <TablePagination
-            rowsPerPageOptions={[25, 10, 5]}
+            rowsPerPageOptions={[5, 10, 20]}
             component="div"
             count={ADMINORDERLIST.length}
             rowsPerPage={rowsPerPage}
@@ -293,6 +350,7 @@ export default function AdminOrderList() {
           />
         </Card>
       </Container>
+      {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
     </Page>
   );
 }

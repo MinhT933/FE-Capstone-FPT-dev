@@ -7,7 +7,7 @@ import {
     Card,
     Table,
     Stack,
-    // Avatar,
+    Avatar,
     Button,
     Checkbox,
     TableRow,
@@ -23,22 +23,23 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-import StationMoreMenu from "./StationMoreMenu";
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
+
 // mock
-import STATIONLIST from "./StationSample";
+import ADMINSHIPPERLIST from "./AdminShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "stationName", label: "Địa điểm", alignRight: false },
-    { id: "stationAddress", label: "Địa chỉ", alignRight: false },
-    { id: "openTime", label: "Mở cửa", alignRight: false },
-    { id: "closeTime", label: "Đóng cửa", alignRight: false },
+
+    { id: "name", label: "Họ Tên", alignRight: false },
+    { id: "id", label: "Mã tài xế", alignRight: false },
+    { id: "phone", label: "Điện thoại", alignRight: false },
+    { id: "NoPlate", label: "Biển số xe", alignRight: false },
+    { id: "VehicleType", label: "Loại xe", alignRight: false },
+    { id: "accountId", label: "Tên tài khoản", alignRight: false },
+    { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "createDate", label: "Ngày tạo", alignRight: false },
-    { id: "updateDate", label: "Cập nhập", alignRight: false },
     { id: "" },
 ];
 
@@ -70,13 +71,13 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_stations) => _stations.stationName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function StationList() {
+export default function KitchenList() {
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -84,7 +85,7 @@ export default function StationList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("stationName");
+    const [orderBy, setOrderBy] = useState("name");
 
     const [filterName, setFilterName] = useState("");
 
@@ -98,18 +99,18 @@ export default function StationList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = STATIONLIST.map((n) => n.stationName);
+            const newSelecteds = ADMINSHIPPERLIST.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, stationName) => {
-        const selectedIndex = selected.indexOf(stationName);
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, stationName);
+            newSelected = newSelected.concat(selected, name);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -137,10 +138,10 @@ export default function StationList() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - STATIONLIST.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ADMINSHIPPERLIST.length) : 0;
 
-    const filteredStations = applySortFilter(
-        STATIONLIST,
+    const filteredKitchen = applySortFilter(
+        ADMINSHIPPERLIST,
         getComparator(order, orderBy),
         filterName
     );
@@ -161,13 +162,11 @@ export default function StationList() {
         // display: "center"
     }));;
 
-    const isStationNotFound = filteredStations.length === 0;
+    const isKitchenNotFound = filteredKitchen.length === 0;
 
     return (
         <Page title="User">
             <Container>
-
-
                 <Stack
                     direction="row"
                     alignItems="center"
@@ -177,16 +176,23 @@ export default function StationList() {
                     <Typography variant="h4" gutterBottom>
                         {/* User */}
                     </Typography>
+                    {/* <ColorButton
+                        variant="contained"
+                        component={RouterLink}
+                        to="/dashboard/admin/newshipper"
+
+                    >
+                        Thêm tài xế
+                    </ColorButton> */}
                     <ColorButton
                         variant="contained"
                         component={RouterLink}
-                        to="/dashboard/admin/newstation"
+                        to="/dashboard/admin/newshipper"
 
                     >
-                        Thêm địa điểm
+                        Thêm tài xế
                     </ColorButton>
                 </Stack>
-
 
                 <Card>
                     <UserListToolbar
@@ -202,26 +208,28 @@ export default function StationList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={STATIONLIST.length}
+                                    rowCount={ADMINSHIPPERLIST.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {filteredStations
+                                    {filteredKitchen
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
                                                 id,
-                                                stationName,
-                                                stationAddress,
-                                                openTime,
-                                                closeTime,
+                                                avatarUrl,
+                                                name,
+                                                phone,
+                                                NoPlate,
+                                                VehicleType,
                                                 status,
-                                                createDate,
-                                                updateDate,
+                                                accountId,
+                                                kitchenID,
+
                                             } = row;
-                                            const isItemSelected = selected.indexOf(stationName) !== -1;
+                                            const isItemSelected = selected.indexOf(name) !== -1;
 
                                             return (
                                                 <TableRow
@@ -235,13 +243,30 @@ export default function StationList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, stationName)}
+                                                            onChange={(event) => handleClick(event, name)}
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">{stationName}</TableCell>
-                                                    <TableCell align="left">{stationAddress}</TableCell>
-                                                    <TableCell align="left">{openTime}</TableCell>
-                                                    <TableCell align="left">{closeTime}</TableCell>
+
+                                                    <TableCell component="th" scope="row" padding="none">
+                                                        <Stack
+                                                            direction="row"
+                                                            alignItems="center"
+                                                            spacing={2}
+                                                        >
+                                                            <Avatar alt={name} src={avatarUrl} />
+                                                            <Typography variant="subtitle2" noWrap>
+                                                                {name}
+                                                            </Typography>
+                                                        </Stack>
+                                                    </TableCell>
+                                                    <TableCell align="left">{id}</TableCell>
+                                                    {/* <TableCell align="left">{name}</TableCell> */}
+
+                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{NoPlate}</TableCell>
+                                                    <TableCell align="left">{VehicleType}</TableCell>
+                                                    <TableCell align="left">{accountId}</TableCell>
+                                                    <TableCell align="left">{kitchenID}</TableCell>
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
@@ -252,31 +277,24 @@ export default function StationList() {
                                                             {(status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{createDate}</TableCell>
-                                                    <TableCell align="left">{updateDate}</TableCell>
+                                                    {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    {/* <ColorButton
-                                                        variant="contained"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/newstation"
-
-                                                    >
-                                                        Cập nhật
-                                                    </ColorButton> */}
-                                                    <Button1 sx={{ margin: "center", marginTop: "7%" }}
+                                                    <Button1 sx={{ marginTop: "7%", }}
                                                         variant="outlined"
+                                                        // display="TableCell"
                                                         component={RouterLink}
-                                                        to="/dashboard/admin/updatestation"
+                                                        to="/dashboard/admin/updateshipper"
 
                                                     >
                                                         Cập nhật
                                                     </Button1>
 
-
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
-                                                    {/* <StationMoreMenu id={id} /> */}
+                                                    {/* <KitchenMoreMenu id={id} /> */}
                                                     {/* </TableCell> */}
+
+
                                                 </TableRow>
                                             );
                                         })}
@@ -287,7 +305,7 @@ export default function StationList() {
                                     )}
                                 </TableBody>
 
-                                {isStationNotFound && (
+                                {isKitchenNotFound && (
                                     <TableBody>
                                         <TableRow>
                                             <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -303,7 +321,7 @@ export default function StationList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={STATIONLIST.length}
+                        count={ADMINSHIPPERLIST.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

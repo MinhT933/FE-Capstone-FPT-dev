@@ -23,22 +23,36 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-import StationMoreMenu from "./StationMoreMenu";
+
+
+
+import dayjs from 'dayjs';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import * as React from 'react';
+
+
+
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
+// import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-import STATIONLIST from "./StationSample";
+import KITCHENORDERLIST from "./KitchenOrderSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 // ----------------------------------------------------------------------
+// ở đây fix được tên tên table
+// ko nhát thiết phải thêm table head ở dưới 
 
 const TABLE_HEAD = [
-    { id: "stationName", label: "Địa điểm", alignRight: false },
-    { id: "stationAddress", label: "Địa chỉ", alignRight: false },
-    { id: "openTime", label: "Mở cửa", alignRight: false },
-    { id: "closeTime", label: "Đóng cửa", alignRight: false },
+    { id: "id", label: "Mã đơn", alignRight: false },
+    { id: "name", label: "Người đặt", alignRight: false },
+    { id: "phone", label: "Điện thoại", alignRight: false },
+    { id: "station", label: "Điểm giao", alignRight: false },
+    { id: "order", label: "Món ăn", alignRight: false },
+    { id: "note", label: "Ghi chú", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "createDate", label: "Ngày tạo", alignRight: false },
-    { id: "updateDate", label: "Cập nhập", alignRight: false },
     { id: "" },
 ];
 
@@ -70,13 +84,13 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_stations) => _stations.stationName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.kitchenName.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function StationList() {
+export default function KitchenOrderList() {
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -84,7 +98,7 @@ export default function StationList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("stationName");
+    const [orderBy, setOrderBy] = useState("kitchenName");
 
     const [filterName, setFilterName] = useState("");
 
@@ -98,18 +112,18 @@ export default function StationList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = STATIONLIST.map((n) => n.stationName);
+            const newSelecteds = KITCHENORDERLIST.map((n) => n.kitchenName);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, stationName) => {
-        const selectedIndex = selected.indexOf(stationName);
+    const handleClick = (event, kitchenName) => {
+        const selectedIndex = selected.indexOf(kitchenName);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, stationName);
+            newSelected = newSelected.concat(selected, kitchenName);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -137,10 +151,10 @@ export default function StationList() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - STATIONLIST.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENORDERLIST.length) : 0;
 
-    const filteredStations = applySortFilter(
-        STATIONLIST,
+    const filteredKitchen = applySortFilter(
+        KITCHENORDERLIST,
         getComparator(order, orderBy),
         filterName
     );
@@ -161,32 +175,42 @@ export default function StationList() {
         // display: "center"
     }));;
 
-    const isStationNotFound = filteredStations.length === 0;
+    const isKitchenNotFound = filteredKitchen.length === 0;
+
+
+    //LỊCH CHỌN NGÀY TRONG TUẦN
+    const isWeekend = (date) => {
+        const day = date.day();
+
+        return day === 0 || day === 6;
+    };
+
+    const [value, setValue] = React.useState(dayjs());
+
+
 
     return (
         <Page title="User">
             <Container>
-
-
                 <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
                     mb={5}
                 >
-                    <Typography variant="h4" gutterBottom>
-                        {/* User */}
-                    </Typography>
-                    <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/admin/newstation"
-
-                    >
-                        Thêm địa điểm
-                    </ColorButton>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <StaticDatePicker
+                            orientation="landscape"
+                            openTo="day"
+                            value={value}
+                            shouldDisableDate={isWeekend}
+                            onChange={(newValue) => {
+                                setValue(newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
                 </Stack>
-
 
                 <Card>
                     <UserListToolbar
@@ -202,26 +226,26 @@ export default function StationList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={STATIONLIST.length}
+                                    rowCount={KITCHENORDERLIST.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {filteredStations
+                                    {filteredKitchen
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
                                                 id,
-                                                stationName,
-                                                stationAddress,
-                                                openTime,
-                                                closeTime,
+                                                name,
+                                                phone,
+                                                station,
+                                                order,
+                                                note,
                                                 status,
-                                                createDate,
-                                                updateDate,
+
                                             } = row;
-                                            const isItemSelected = selected.indexOf(stationName) !== -1;
+                                            const isItemSelected = selected.indexOf(id) !== -1;
 
                                             return (
                                                 <TableRow
@@ -235,48 +259,41 @@ export default function StationList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, stationName)}
+                                                            onChange={(event) => handleClick(event, id)}
                                                         />
-                                                    </TableCell>
-                                                    <TableCell align="left">{stationName}</TableCell>
-                                                    <TableCell align="left">{stationAddress}</TableCell>
-                                                    <TableCell align="left">{openTime}</TableCell>
-                                                    <TableCell align="left">{closeTime}</TableCell>
+                                                    </TableCell><TableCell align="left">{id}</TableCell>
+                                                    <TableCell align="left">{name}</TableCell>
+                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{station}</TableCell>
+                                                    <TableCell align="left">{order}</TableCell>
+                                                    <TableCell align="left">{note}</TableCell>
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
                                                             color={
-                                                                (status === "Closed" && "error") || "success"
+                                                                (status === "Cooking" && "error") || "success"
                                                             }
                                                         >
                                                             {(status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{createDate}</TableCell>
-                                                    <TableCell align="left">{updateDate}</TableCell>
+                                                    {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    {/* <ColorButton
-                                                        variant="contained"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/newstation"
-
-                                                    >
-                                                        Cập nhật
-                                                    </ColorButton> */}
-                                                    <Button1 sx={{ margin: "center", marginTop: "7%" }}
+                                                    <Button1 sx={{ marginTop: "7%", }}
                                                         variant="outlined"
                                                         component={RouterLink}
-                                                        to="/dashboard/admin/updatestation"
+                                                        to="/dashboard/admin/updatekitchen"
 
                                                     >
                                                         Cập nhật
                                                     </Button1>
 
-
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
-                                                    {/* <StationMoreMenu id={id} /> */}
+                                                    {/* <KitchenMoreMenu id={id} /> */}
                                                     {/* </TableCell> */}
+
+
                                                 </TableRow>
                                             );
                                         })}
@@ -287,7 +304,7 @@ export default function StationList() {
                                     )}
                                 </TableBody>
 
-                                {isStationNotFound && (
+                                {isKitchenNotFound && (
                                     <TableBody>
                                         <TableRow>
                                             <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -303,7 +320,7 @@ export default function StationList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={STATIONLIST.length}
+                        count={KITCHENORDERLIST.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

@@ -29,14 +29,15 @@ import { MarginRounded } from "@mui/icons-material";
 
 const initialValue = {
     id: 0,
-    kitchenName: "",
-    kitchenAddress: "",
-    phone: "",
-
+    stationName: "",
+    stationAddress: "",
     createDate: "",
+
     updateDate: new Date(),
 
+    description: "",
 
+    img: "",
     isActive: false,
 
 };
@@ -64,7 +65,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
     display: "center",
 }));
 
-export default function NewKitchen() {
+export default function UpdateKitchen() {
     const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
     const classes = useStyles();
 
@@ -97,7 +98,7 @@ export default function NewKitchen() {
         }}>
             <PageHeader
                 display="left"
-                title="Thêm bếp"
+                title="Cập nhật bếp"
                 // subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
                 icon={getIcon('emojione-monotone:pot-of-food')}
             />
@@ -158,6 +159,42 @@ export default function NewKitchen() {
                                 </Grid>
                             </Box>
 
+                            {/* <Grid container spacing={4} columns={26}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <TimePicker
+
+                                        label="Mở cửa"
+                                        value={value}
+                                        onChange={handleChangeTime}
+                                        renderInput={(params) => <TextField {...params} sx={{ width: "40%" }} />}
+                                    />
+                                </LocalizationProvider>
+
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <TimePicker
+                                        label="Đóng cửa"
+                                        value={value}
+                                        onChange={handleChangeTime}
+                                        renderInput={(params) => <TextField {...params} sx={{ width: "40%" }} />}
+                                    />
+                                </LocalizationProvider>
+
+                            </Grid> */}
+
+                            <Controls.Input
+                                variant="outlined"
+                                label="Công suất"
+                                value={values.ability}
+                                onChange={handleInputChange}
+                            />
+                            <Controls.Input
+                                variant="outlined"
+                                label="Cập nhật"
+                                value={values.updateDate}
+                                onChange={handleInputChange}
+                            />
+
+
                             <Controls.RadioGroup
                                 name="Status"
                                 label="Trạng thái"
@@ -180,7 +217,7 @@ export default function NewKitchen() {
 
             <Box>
                 <Stack width="20%" justifyContent="center" marginLeft={"40%"} marginTop={"2%"}>
-                    <ColorButton variant="contained">Tạo bếp</ColorButton>
+                    <ColorButton variant="contained">Cập nhật bếp</ColorButton>
                 </Stack>
             </Box>
 
