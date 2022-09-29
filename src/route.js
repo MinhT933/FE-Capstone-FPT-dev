@@ -1,15 +1,13 @@
-import Home from "./pages/home/home.jsx";
+
 import ProductList from "./pages/userList/UserList";
 import { Navigate, useRoutes } from "react-router-dom";
 import DashboardLayout from "./layouts/DashboardLayout.js";
 import Page404 from "./pages/NotFound/Page404";
 import Food from "./pages/Food/Food";
 import PackageFood from "./pages/PackageFood/PackageFood";
-import NewPackage from "./pages/PackageFood/newPackage";
 import NewFood from "./pages/Food/NewFood.jsx";
 import EditFood from "./pages/Food/EditFood.jsx";
 import UserDetail from "./pages/userList/UserDetail";
-import ScheduleFood from "./pages/Schedule/ScheduleFood";
 import FindAccount from "./pages/Login/FindAccount.js";
 import SignInOutContainer from "./pages/Login/index.js";
 import VerifyPhone from "./pages/Login/VerifyPhone.js";
@@ -34,7 +32,6 @@ import KitchenProfile from "./pages/KitchenProfile/KitchenProfile.jsx";
 import AdminShipperList from "./pages/AdminShipper/AdminShipperList.jsx";
 import NewShipper from "./pages/AdminShipper/NewShipper.jsx";
 import UpdateShipper from "./pages/AdminShipper/UpdateShipper.jsx";
-
 
 export default function Router() {
   return useRoutes([
@@ -98,9 +95,6 @@ export default function Router() {
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
-
-
-
       ],
     },
 

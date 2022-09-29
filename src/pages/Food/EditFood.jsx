@@ -238,7 +238,7 @@ export default function EditFood() {
                   mb={"2rem"}
                 >
                   <ColorButton variant="contained" type="submit">
-                    Tạo thực phẩm
+                    Xác Nhận
                   </ColorButton>
                 </Stack>
               </Box>

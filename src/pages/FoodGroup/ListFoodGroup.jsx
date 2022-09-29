@@ -7,7 +7,6 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
   Checkbox,
   TableRow,
@@ -32,7 +31,6 @@ import {
 import FOODGROUP from "../../_mock/GroupExample";
 import NewUserPopup from "../../components/PopUp/NewUserPopup";
 import NewFoodGroup from "./NewFoodGroup";
-import GroupMoreMenu from "../../sections/@dashboard/GroupFood/GroupMoreMenu";
 import DnDFoodGroup from "./DnDFoodGroup";
 
 // ----------------------------------------------------------------------

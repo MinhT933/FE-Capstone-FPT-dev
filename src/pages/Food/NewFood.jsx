@@ -113,6 +113,7 @@ export default function NewFood() {
       formData.append("foodCategoryId", formik.values.foodCategoryId);
       //gọi API để đẩy data xuống
       const res = await API("POST", URL_API + "/foods", formData);
+      window.location.reload(true);
     },
   });
 

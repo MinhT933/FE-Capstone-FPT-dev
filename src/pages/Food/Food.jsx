@@ -42,7 +42,7 @@ import { useSelector } from "react-redux";
 const TABLE_HEAD = [
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
-  { id: "type", label: "phân loại", alignRight: false },
+  { id: "type", label: "Phân loại", alignRight: false },
 
   { id: "createdate", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
@@ -102,6 +102,8 @@ export default function Food() {
 
   const dispatch = useDispatch();
 
+  const [categoryName, setcategoryName] = useState({});
+
   // lifecycle methods
   // useEffect(() => {
   //   return dispatch(callAPIgetListFood()), [dispatch];
@@ -128,8 +130,20 @@ export default function Food() {
 
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
   const food = useSelector((state) => {
+    // console.log(state.userReducer.listFood.foodCategory);
     return state.userReducer.listFood;
   });
+  // console.log(food.foodCategory.name);
+  // setcategoryName = food.foodCategory.name;
+  function resolveName() {
+    const nameCate = [];
+    for (var i = 0; i <= food.length; i++) {
+      nameCate.push(food[i].foodCategory.name);
+    }
+    return nameCate;
+  }
+
+  // console.log(food[4].foodCategory.name);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -251,7 +265,7 @@ export default function Food() {
                         createdAt,
                         updatedAt,
                         status,
-                        datatype = food[0].foodCategory.name,
+                        datatype,
                         image,
                       } = row;
 
