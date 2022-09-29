@@ -65,13 +65,12 @@ export const callAPIgetListCategory = () => {
 //       try {
 //         const res = await API('GET',URL_API + "/foods/")
 //       } catch (error) {
-        
+
 //       }
 // }
 
-
 //-------------------------------------------
-export const callAPIStation = () => {
+export const callAPIgetListStation = () => {
   return async (dispatch) => {
     try {
       const res = await API("GET", URL_API + "/stations", null, null);
@@ -87,3 +86,20 @@ export const callAPIStation = () => {
     }
   };
 };
+
+// export const callAPIgetListShipper = () => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await API("GET", URL_API + "/foods", null, null);
+//       dispatch(
+//         createAction({
+//           type: PathAction.GET_LIST_SHIPPER,
+//           payload: res.data.result,
+//         })
+//       );
+//       console.log(res.data.result);
+//     } catch (err) {
+//       console.log({ err });
+//     }
+//   };
+// };

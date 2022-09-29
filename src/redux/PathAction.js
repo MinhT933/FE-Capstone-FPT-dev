@@ -4,4 +4,7 @@
 export const GET_LIST_FOOD = "GET_LIST_FOOD";
 export const GET_FOOD = "GET_FOOD";
 export const GET_LIST_FOODCATEGORY = "GET_LIST_FOODCATEGORY";
+
 export const GET_LIST_STATIONS = "GET_LIST_STATIONS";
+
+export const GET_LIST_SHIPPER = "GET_LIST_SHIPPER";

@@ -5,7 +5,7 @@
 // const initialState = {
 //   user: {},
 //   listUser: []
-// }
+// } 
 
 // lưu trạng thái hiện tại và thực hiện một hành động để trả về một trạng thái mới
 // for example:
@@ -27,7 +27,7 @@ const initialState = {
   food: [],
   listFood: [],
   listCategory: [],
-  ListStation: [],
+  listStation: [],
 };
 export default function userReducer(state = initialState, { type, payload }) {
   switch (type) {
@@ -48,7 +48,7 @@ export default function userReducer(state = initialState, { type, payload }) {
       // console.log(payload);
       break;
     case PathAction.GET_LIST_STATIONS:
-      state.listCategory = payload;
+      state.listStation = payload;
       // console.log(payload);
       break;
     case PathAction.GET_FOOD:
