@@ -33,7 +33,6 @@ import {
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import { useEffect } from "react";
 import { callAPIgetListFood } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
