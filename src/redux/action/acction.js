@@ -71,7 +71,7 @@ export const callAPIgetListCategory = () => {
 
 
 //-------------------------------------------
-export const callAPIStation = () => {
+export const callAPIgetListStation = () => {
   return async (dispatch) => {
     try {
       const res = await API("GET", URL_API + "/stations", null, null);
