@@ -42,6 +42,26 @@ export const callAPIgetListFood = () => {
     }
   };
 };
+
+//------------------  ------------------------------  ----------------------
+
+export const callAPIGetListPackage = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/packages", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PACKAGE_FOOD,
+          payload: res.data.result,
+        })
+      );
+      // console.log(res.data.result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 //----------------------------------------------
 export const callAPIgetListCategory = () => {
   return async (dispatch) => {
@@ -65,10 +85,9 @@ export const callAPIgetListCategory = () => {
 //       try {
 //         const res = await API('GET',URL_API + "/foods/")
 //       } catch (error) {
-        
+
 //       }
 // }
-
 
 //-------------------------------------------
 export const callAPIStation = () => {
@@ -81,7 +100,56 @@ export const callAPIStation = () => {
           payload: res.data.result,
         })
       );
-      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+//----------------------------------------------------------------
+
+export const callAPIgetGroupFood = (req, res) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/food-groups");
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_GROUP_FOOD,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+//---------------------------------------------------------------
+export const callAPIgetTimeFrame = (req, res) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/time-frame");
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_TIME_FRAME,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+//---------------------------------------------------
+export const callAPIgetPackagebyID   = (req, res) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/time-frame");
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_TIME_FRAME,
+          payload: res.data.result,
+        })
+      );
     } catch (err) {
       console.log({ err });
     }

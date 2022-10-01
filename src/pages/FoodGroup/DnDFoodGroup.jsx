@@ -7,47 +7,16 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/system";
-import { Typography } from "@mui/material";
-import Controls from "../../components/Control/Controls";
+import { TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import * as UpdateService from "../../utils/UpdateService/UpdateService";
 import UseCreateForm from "../../components/PopUp/useForm";
 import Button from "@mui/material/Button";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { TextField } from "@material-ui/core";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiCssBaseline: {
-      "@global": {
-        "*::-webkit-scrollbar": {
-          width: "10px",
-        },
-        "*::-webkit-scrollbar-track": {
-          background: "#red",
-        },
-        "*::-webkit-scrollbar-thumb": {
-          background: "red",
-          borderRadius: "2px",
-        },
-      },
-    },
-  },
-});
+import { Dialog, DialogContent} from "@mui/material";
 
 const stateName = {
   id: 0,
   name: "",
 };
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 
 export default function DnDFoodGroup(props) {
   const { OpenPopUpDND, SetOpenPopUpDND } = props;

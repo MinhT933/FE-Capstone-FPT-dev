@@ -31,15 +31,18 @@ import {
 // mock
 // import food from "../../_mock/foodsample";
 
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 import { callAPIgetListFood } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import Iconify from "../../components/hook-form/Iconify";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: "images", name: "Hình", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
   { id: "type", label: "Phân loại", alignRight: false },
@@ -48,8 +51,7 @@ const TABLE_HEAD = [
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
-
-  { id: "" },
+  { id: "SetStatus", label: "Thay đổi trạng thái", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -85,8 +87,11 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
+//getICon
+const getIcon = (name) => (
+  <Iconify icon={name} width={15} height={15} color={"red"} />
+);
 
-const path = "/product";
 export default function Food() {
   const [page, setPage] = useState(0);
 
@@ -100,14 +105,9 @@ export default function Food() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [categoryName, setcategoryName] = useState([]);
+
   const dispatch = useDispatch();
-
-  const [categoryName, setcategoryName] = useState({});
-
-  // lifecycle methods
-  // useEffect(() => {
-  //   return dispatch(callAPIgetListFood()), [dispatch];
-  // });
 
   //gọi trên action.js ==> accctions.js
   //đây khởi chạy lần đầu tiên gọi thằng gọi tra gg để useEffect()
@@ -126,24 +126,21 @@ export default function Food() {
     callAPI();
   }, [dispatch]);
 
+  const handleDelete = (id) => {
+    API("PUT", URL_API + `/foods/update-status/${id}`).then((res) => {
+      try {
+        dispatch(callAPIgetListFood());
+      } catch (err) {
+        alert("ban faild " + id);
+      }
+    }, []);
+  };
   //dispatch chấm dức dòng lập dzô tận :v
 
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
   const food = useSelector((state) => {
-    // console.log(state.userReducer.listFood.foodCategory);
     return state.userReducer.listFood;
   });
-  // console.log(food.foodCategory.name);
-  // setcategoryName = food.foodCategory.name;
-  function resolveName() {
-    const nameCate = [];
-    for (var i = 0; i <= food.length; i++) {
-      nameCate.push(food[i].foodCategory.name);
-    }
-    return nameCate;
-  }
-
-  // console.log(food[4].foodCategory.name);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -194,22 +191,14 @@ export default function Food() {
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - food.length) : 0;
 
-  const filteredUsers = applySortFilter(
+  const filterFood = applySortFilter(
     food,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isUserNotFound = filteredUsers.length === 0;
-  //setColor button
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC32"),
-    backgroundColor: "#FFCC33",
-    "&:hover": {
-      backgroundColor: "#ffee32",
-    },
-    display: "center",
-  }));
+  const isUserNotFound = filterFood.length === 0;
+
   return (
     <Page title="food">
       <Container>
@@ -222,13 +211,12 @@ export default function Food() {
           <Typography variant="h4" gutterBottom>
             {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
-          <ColorButton
+          <ButtonCustomize
             variant="contained"
             component={RouterLink}
             to="/dashboard/admin/newfood"
-          >
-            Thêm thức ăn
-          </ColorButton>
+            nameButton=" Thêm thức ăn"
+          />
         </Stack>
 
         <Card>
@@ -239,7 +227,7 @@ export default function Food() {
           />
 
           <Scrollbar>
-            <TableContainer>
+            <TableContainer sx={{ minWidth: 1200 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -252,7 +240,7 @@ export default function Food() {
                 />
                 <TableBody>
                   {/* nhớ khởi tạo đúng tên file trong database */}
-                  {filteredUsers
+                  {filterFood
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
@@ -263,7 +251,7 @@ export default function Food() {
                         createdAt,
                         updatedAt,
                         status,
-                        datatype,
+                        foodCategory,
                         image,
                       } = row;
 
@@ -284,20 +272,18 @@ export default function Food() {
                               onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                            >
-                              <Avatar alt={name} src={image} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
+                          <TableCell>
+                            <Avatar alt={name} src={image} />
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="subtitle2" noWrap>
+                              {name}
+                            </Typography>
                           </TableCell>
                           <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">{datatype}</TableCell>
+                          <TableCell align="left">
+                            {foodCategory.name}
+                          </TableCell>
                           <TableCell align="left">
                             {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
@@ -308,13 +294,19 @@ export default function Food() {
                             <Label
                               variant="ghost"
                               color={
-                                (status === "inactive" && "error") || "success"
+                                (status === "inActive" && "error") || "success"
                               }
                             >
                               {status}
                             </Label>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
+                          <TableCell align="left">
+                            <ButtonCustomize
+                              nameButton="Cập nhập"
+                              onClick={() => handleDelete(id)}
+                            />
+                          </TableCell>
                           <TableCell align="right">
                             <UserMoreMenu id={id} />
                           </TableCell>

@@ -7,7 +7,7 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import React, { useState } from "react";
@@ -56,18 +56,19 @@ const Login = () => {
       alignItems="center"
     >
       <div>
-        <Container maxWidth="sm">
-          <Grid
-            container
-            spacing={2}
-            direction="column"
-            justifyContent="center"
-            style={{ minHeight: "100vh" }}
-          >
-            <Paper elevation={3} sx={{ padding: 10, marginBottom: 0.5 }}>
-              <div style={{ marginBottom: "8%" }}>
-                <h1> Đăng Nhập </h1>
-              </div>
+        {/* <Container maxWidth="sm"> */}
+        <Grid
+          container
+          spacing={2}
+          direction="column"
+          justifyContent="center"
+          style={{ minHeight: "100vh" }}
+        >
+          <Paper elevation={3} sx={{ padding: 10, marginBottom: 0.5 }}>
+            <div style={{ marginBottom: "8%" }}>
+              <h1> Đăng Nhập </h1>
+            </div>
+            <>
               <form onSubmit={handleSubmit}>
                 <Grid container direction="column" spacing={2}>
                   <Grid item>
@@ -139,7 +140,7 @@ const Login = () => {
                     </Grid>
                     <div></div>
                   </Grid>
-                  <Grid item>
+                  <Grid item sx={3}>
                     <ColorButton
                       type="submit"
                       fullWidth
@@ -153,9 +154,10 @@ const Login = () => {
                   </Grid>
                 </Grid>
               </form>
-            </Paper>
-          </Grid>
-        </Container>
+            </>
+          </Paper>
+        </Grid>
+        {/* </Container> */}
       </div>
     </Box>
   );
