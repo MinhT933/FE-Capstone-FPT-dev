@@ -28,7 +28,7 @@ import { MarginRounded } from "@mui/icons-material";
 
 
 const initialValue = {
-    id: 0,
+    id: "",
     name: "",
     phone: "",
     NoPlate: "",

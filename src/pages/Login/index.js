@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 // import Typography from '@material-ui/core/Typography';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import './format.css'
 
 import { width } from '@mui/system';
 import Login from './login';
@@ -19,6 +20,10 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
+const WidthLogin = styled('div')(({ theme }) => ({
+    width: '5000 px',
+    marginLeft: 20,
+}));
 
 const SignInOutContainer = () => {
     const [value, setValue] = useState(0)
@@ -69,10 +74,17 @@ const SignInOutContainer = () => {
                     </Paper>
                 </Grid>
 
-                <Grid item xs={1} >
-                    <Box style={{ marginBottom: "25%", }}>
+                <Grid item xs={2} >
+                    <WidthLogin>
+                        <div className='format-login'>
+                            {/* <Box style={{ marginBottom: "100%", }}> */}
+                                <Login handleChange={handleChange} />
+                            {/* </Box> */}
+                        </div>
+                    </WidthLogin>
+                    {/* <Box style={{ marginBottom: "25%", }}>
                         <Login handleChange={handleChange} />
-                    </Box>
+                    </Box> */}
                 </Grid>
 
 

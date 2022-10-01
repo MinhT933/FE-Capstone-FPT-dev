@@ -24,7 +24,17 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Paper from "@mui/material/Paper";
 
 
-
+//api
+import API from "./../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+//validate
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { useSelector } from "react-redux";
+import { callAPIgetListCategory, callAPIgetListStation } from "./../../redux/action/acction";
+import { useDispatch } from "react-redux";
+import { FormHelperText } from "@material-ui/core";
+import { useState } from "react";
 
 const initialValue = {
     id: 0,
@@ -64,7 +74,77 @@ const ColorButton = styled(Button)(({ theme }) => ({
     display: "center",
 }));
 
+//callAPIforCreateStation========================================
+const schema = yup.object().shape({
+    name: yup.string().required().trim(),
+    address: yup.string().required().trim(),
+    opentime: yup.string().required().trim(),
+    closetime: yup.string().required().trim(),
+    status: yup.string().required().trim(),
+});
+
+//callAPIforCreateStation========================================
 export default function NewStation() {
+    //callAPIforCreateStation========================================
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        const getlistStation = async () => {
+            await dispatch(callAPIgetListStation());
+        };
+        getlistStation();
+    }, [dispatch]);
+
+    const station = useSelector((state) => {
+        return state.userReducer.listStation;
+    });
+
+    const Input = styled("input")({
+        display: "none",
+    });
+    //xử lí hình ảnh
+    const [input, setInput] = useState([]);
+    //formData để lưu data
+    const formData = new FormData();
+    const formik = useFormik({
+        //gắn schema để so sánh
+        validationSchema: schema,
+        validateOnMount: true,
+        validateOnBlur: true,
+        //khởi tạo kho để bỏ data vào
+        initialValues: {
+            name: "",
+            price: "",
+            description: "",
+            foodCategoryId: "",
+            image: null,
+        },
+
+        onSubmit: async (values) => {
+            formData.append("image", formik.values.image);
+            formData.append("name", formik.values.name);
+            formData.append("address", formik.values.address);
+            formData.append("opentime", formik.values.opentime);
+            formData.append("closetime", formik.values.closetime);
+            formData.append("status", formik.values.status);
+            //gọi API để đẩy data xuống
+            const res = await API("POST", URL_API + "/stations", formData);
+        },
+    });
+
+    function _treat(e) {
+        const { files } = e.target;
+        let images = [];
+        const selecteds = [...[...files]];
+        formik.setFieldValue("image", e.target.files[0]);
+        return (
+            selecteds.forEach((i) => images.push(URL.createObjectURL(i))),
+            formData.append("File", selecteds),
+            setInput(images)
+        );
+    }
+
+    //callAPIforCreateStation========================================
+
     const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
     const classes = useStyles();
 
@@ -108,6 +188,7 @@ export default function NewStation() {
                 justifyContent="left"
                 alignItems="left"
             >
+
                 <Grid container spacing={4} columns={20}>
                     <Grid item xs={8} marginLeft="10%">
                         <Stack spacing={3}>
@@ -195,7 +276,7 @@ export default function NewStation() {
 
             <Box>
                 <Stack width="20%" justifyContent="center" marginLeft={"40%"} marginTop={"2%"}>
-                    <ColorButton variant="contained">Tạo địa điểm</ColorButton>
+                    <ColorButton variant="contained" >Tạo địa điểm</ColorButton>
                 </Stack>
             </Box>
 

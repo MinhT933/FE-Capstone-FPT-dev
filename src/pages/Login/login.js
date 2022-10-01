@@ -50,7 +50,9 @@ const Login = () => {
 
   return (
     <Box
-      sx={{ float: "right", width: "50%", flexGrow: 1 }}
+
+      sx={{ float: "right", width: "120%", flexGrow: 1 }}
+
       display="flex"
       justifyContent="center"
       alignItems="center"

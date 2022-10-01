@@ -34,6 +34,7 @@ const useStyles = styled("Paper")(({ theme }) => ({
 }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
+
 //yub dùng để validation trong reactjs
 // khởi tạo schema để so sánh value(theo tao hiểu)
 const schema = yup.object().shape({
@@ -145,20 +146,20 @@ export default function NewFood() {
         subTitle="Tinh hoa ẩm thực "
         icon={getIcon("emojione-monotone:pot-of-food")}
       />
+      <form onSubmit={formik.handleSubmit}>
+        <Box
+          sx={{
+            borderRadius: 2,
+            bgcolor: "background.paper",
+            m: 1,
+            display: "flex",
+            justifyContent: "center",
+            boxShadow: 12,
+            paddingLeft: "12%",
+          }}
+        >
+          {/* // à nhớ bỏ cái form ở đây thì nó mới hiểu và làm onsubmit đc */}
 
-      <Box
-        sx={{
-          borderRadius: 2,
-          bgcolor: "background.paper",
-          m: 1,
-          display: "flex",
-          justifyContent: "center",
-          boxShadow: 12,
-          paddingLeft: "12%",
-        }}
-      >
-        {/* // à nhớ bỏ cái form ở đây thì nó mới hiểu và làm onsubmit đc */}
-        <form onSubmit={formik.handleSubmit}>
           <Box
             sx={{ float: "left", width: "50%", flexGrow: 1, mt: "2rem" }}
             display="flex"
@@ -307,8 +308,9 @@ export default function NewFood() {
               </Box>
             </label>
           </Box>
-        </form>
-      </Box>
+
+        </Box>
+      </form>
     </Paper>
   );
 }
