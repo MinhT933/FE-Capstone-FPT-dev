@@ -17,9 +17,9 @@ const enhancer = composeEnhancers(
   // other store enhancers if any
 );
 const store = createStore(rootReducer, enhancer);
-// const rootElement = document.getElementById('root');
-// const root = createRoot(rootElement);
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+root.render(
   
     <Provider store={store}>
        <HelmetProvider>
@@ -27,7 +27,7 @@ ReactDOM.render(
     </HelmetProvider>
     </Provider>,
  
-   document.getElementById('root')
+  //  document.getElementById('root')
 );
 
 // If you want to enable client cache, register instead.

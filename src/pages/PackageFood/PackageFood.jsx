@@ -2,15 +2,12 @@ import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { sentenceCase } from "change-case";
-import { styled } from "@mui/material/styles";
-import { viVN } from "@mui/material/locale";
+import * as React from "react";
 
 import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
   Checkbox,
   TableRow,
   TableBody,
@@ -30,20 +27,20 @@ import {
   UserListToolbar,
   UserMoreMenu,
 } from "../../sections/@dashboard/user";
-// mock
-import PACKAGELIST from "../../_mock/packagsample";
-import { createTheme } from "@material-ui/core";
+
+import { callAPIGetListPackage } from "../../redux/action/acction";
+
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
 
 //Link routers
 
-
-// ---------------------------------------------------------------------- 
+// ----------------------------------------------------------------------
 // ở đây fix được tên table
-// ko nhát thiết phải thêm table head ở dưới 
-
+// ko nhát thiết phải thêm table head ở dưới
 
 const TABLE_HEAD = [
-  { id: "images", name: "Hình", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
   { id: "type", label: "Phân loại", alignRight: false },
@@ -53,10 +50,9 @@ const TABLE_HEAD = [
   { id: "endSale", label: "Ngày không Bán", alignRight: false },
   { id: "totalMeal", label: "Tổng buổi ăn", alignRight: false },
   { id: "totalfood", label: "Tổng số thức ăn", alignRight: false },
-
   { id: "areaSale", label: "Địa điểm bán", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
-  { id: "" },
+  { id: "Description", label: "Description", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -106,14 +102,18 @@ export default function PackageFood() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const theme = createTheme(
-    {
-      palette: {
-        primary: { main: "#1976d2" },
-      },
-    },
-    viVN
-  );
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIGetListPackage());
+    };
+    callAPI();
+  }, [dispatch]);
+
+  const packagefood = useSelector((state) => {
+    return state.userReducer.listFoodPackage;
+  });
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -123,7 +123,7 @@ export default function PackageFood() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = PACKAGELIST.map((n) => n.name);
+      const newSelecteds = packagefood.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -162,28 +162,17 @@ export default function PackageFood() {
   };
 
   // const emptyRows =
-  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PACKAGELIST.length) : 0;
-
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - packagefood.length) : 0;
 
   const filteredUsers = applySortFilter(
-    PACKAGELIST,
+    packagefood,
     getComparator(order, orderBy),
     filterName
   );
-  //setColor button
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC32"),
-    backgroundColor: "#FFCC33",
-    "&:hover": {
-      backgroundColor: "#ffee32",
-    },
-    display: "center",
-  }));
 
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
-      {/* fix width reposive table */}
       <Container>
         <Stack
           direction="row"
@@ -195,15 +184,12 @@ export default function PackageFood() {
             {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
 
-          <ColorButton
+          <ButtonCustomize
             variant="contained"
             component={RouterLink}
-            // startIcon={<Iconify icon="eva:plus-fill" />}
-
             to="/dashboard/admin/newpackage"
-          >
-            Thêm Gói Ăn
-          </ColorButton>
+            nameButton="Thêm Gói Ăn"
+          />
         </Stack>
         <Card>
           <UserListToolbar
@@ -219,7 +205,7 @@ export default function PackageFood() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={PACKAGELIST.length}
+                  rowCount={packagefood.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -234,16 +220,14 @@ export default function PackageFood() {
                         name,
                         price,
                         description,
-                        createDate,
-                        updateDate,
+                        createdAt,
+                        updatedAt,
                         startSale,
                         endSale,
                         totalMeal,
-                        totalfood,
-                        areaSale,
+                        totalFood,
+                        totalStation,
                         status,
-                        datatype,
-                        avatarUrl,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -262,31 +246,25 @@ export default function PackageFood() {
                               onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell>
-                          {/* fix cái hình và tên ở table */}
-                          <TableCell>
-                            <Avatar alt={name} src={avatarUrl} />
-                          </TableCell>
-                          <TableCell>
-                            {/* <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                              // component="th" scope="row" padding="none"
-                            > */}
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                            {/* </Stack> */}
-                          </TableCell>
+
+                          <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">{datatype}</TableCell>
-                          <TableCell align="left">{createDate}</TableCell>
-                          <TableCell align="left">{updateDate}</TableCell>
-                          <TableCell align="left">{startSale}</TableCell>
-                          <TableCell align="left">{endSale}</TableCell>
+                          <TableCell align="left">{description}</TableCell>
+                          <TableCell align="left">
+                            {new Date(createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(updatedAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(startSale).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(endSale).toLocaleDateString()}
+                          </TableCell>
                           <TableCell align="left">{totalMeal}</TableCell>
-                          <TableCell align="left">{totalfood}</TableCell>
-                          <TableCell align="left">{areaSale}</TableCell>
+                          <TableCell align="left">{totalFood}</TableCell>
+                          <TableCell align="left">{totalStation}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
@@ -300,7 +278,7 @@ export default function PackageFood() {
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            <UserMoreMenu id = {id} />
                           </TableCell>
                         </TableRow>
                       );
@@ -322,7 +300,7 @@ export default function PackageFood() {
           <TablePagination
             rowsPerPageOptions={[25, 10, 5]}
             component="div"
-            count={PACKAGELIST.length}
+            count={packagefood.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
