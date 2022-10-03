@@ -10,4 +10,8 @@ export const GET_LIST_GROUP_FOOD = "GET_LIST_GROUP_FOOD";
 export const GET_LIST_TIME_FRAME = "GET_LIST_TIME_FRAME";
 export const GET_PACKAGE_FOOD = "GET_PACKAGE_FOOD";
 export const GET_LIST_SHIPPER = "GET_LIST_SHIPPER";
+export const REFRESH_TOKEN = "REFRESH_TOKEN";
+/// gởi đi message 
+export const SET_MESSAGE = "SET_MESSAGE";
+export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 

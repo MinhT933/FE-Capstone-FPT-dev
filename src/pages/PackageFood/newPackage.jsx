@@ -108,8 +108,7 @@ export default function NewPackage() {
     onSubmit: async (values) => {
       const a = new Date(valueEndTime).toLocaleDateString().split("/");
       const b = new Date(valueStarTime).toLocaleDateString().split("/");
-
-      console.log(values);
+      console.log(b);
 
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
@@ -119,7 +118,7 @@ export default function NewPackage() {
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
       formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
-      formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
+      formData.append("startSale", `0${b[2]}-${b[1]}-${b[0]}`);
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
 

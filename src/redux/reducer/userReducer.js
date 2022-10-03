@@ -5,7 +5,7 @@
 // const initialState = {
 //   user: {},
 //   listUser: []
-// } 
+// }
 
 // lưu trạng thái hiện tại và thực hiện một hành động để trả về một trạng thái mới
 // for example:
@@ -34,6 +34,13 @@ const initialState = {
   listTimeFrame: [],
   listStation: [],
 };
+
+// const initialStateAuthen = admin
+//   ? { isLoggedIn: true, admin }
+//   : { isLoggedIn: false, admin: null };
+
+// const admin = JSON.parse(localStorage.getItem("admin"));
+
 export default function userReducer(state = initialState, { type, payload }) {
   switch (type) {
     case PathAction.GET_LIST_FOOD:
@@ -64,8 +71,12 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listGroupFood = payload;
     case PathAction.GET_LIST_TIME_FRAME:
       state.listTimeFrame = payload;
-
       break;
+    // case PathAction.REFRESH_TOKEN:
+    //   return {
+    //     ...state,
+    //     admin: { ...admin, accessToken: payload },
+    //   };
     default:
       return state;
   }

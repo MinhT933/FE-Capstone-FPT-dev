@@ -10,6 +10,7 @@ import { HelmetProvider } from "react-helmet-async";
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import 'simplebar/src/simplebar.css';
+import SetupInterceptors from './service/setupInterceptors';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 const enhancer = composeEnhancers(
@@ -30,6 +31,7 @@ root.render(
   //  document.getElementById('root')
 );
 
+SetupInterceptors(store);
 // If you want to enable client cache, register instead.
 serviceWorker.unregister();
 

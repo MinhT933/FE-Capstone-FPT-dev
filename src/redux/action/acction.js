@@ -140,7 +140,7 @@ export const callAPIgetTimeFrame = (req, res) => {
   };
 };
 //---------------------------------------------------
-export const callAPIgetPackagebyID   = (req, res) => {
+export const callAPIgetPackagebyID = (req, res) => {
   return async (dispatch) => {
     try {
       const res = await API("GET", URL_API + "/time-frame");
@@ -172,3 +172,32 @@ export const callAPIgetPackagebyID   = (req, res) => {
 //     }
 //   };
 // };
+//----------------------------------------------------------------
+
+export const LoginAthen = (user, pass) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + "//auths/login-in/admin",
+        user,
+        pass
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_TIME_FRAME,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+export const refreshToken = (accessToken) => (dispatch) => {
+  dispatch({
+    type: PathAction.REFRESH_TOKEN,
+    payload: accessToken,
+  });
+};
