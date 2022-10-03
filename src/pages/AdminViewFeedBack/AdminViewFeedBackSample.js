@@ -19,22 +19,20 @@ import { sample } from 'lodash';
 // address: VARCHAR(200)
 // ability: INT
 // ----------------------------------------------------------------------
-const KitchenOrder = [...Array(20)].map((_, index) => ({
+const AdminViewFeedBack = [...Array(20)].map((_, index) => ({
     id: sample(['#000012',]),
     name: sample(['Thanh Nhi',]),
 
     phone: sample(['0901225688',]),
 
-    station: sample([
-        'ĐH FPT Q9',
+    kitchen: sample([
+        'Bếp quận Bình Thạnh',
     ]),
 
     order: sample(['Cơm']),
-    note: sample(['Không hành']),
-
-    status: sample(['Cooking', 'Done']),
+    status: sample(['Ngon quá!', 'Mặn lắm à nha']),
 })
 
 );
 
-export default KitchenOrder;
+export default AdminViewFeedBack;

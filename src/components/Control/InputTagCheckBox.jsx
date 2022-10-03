@@ -21,6 +21,8 @@ const MenuProps = {
   },
 };
 
+
+
 export default function InputTagCheckBox(props) {
   const [groupfoodOption, setgroupfoodOption] = React.useState([]);
 
@@ -92,6 +94,7 @@ export default function InputTagCheckBox(props) {
           input={<OutlinedInput label={label} />}
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
+          
         >
           {groupFood.map((item) => (
             <MenuItem key={item.id} value={item.name}>

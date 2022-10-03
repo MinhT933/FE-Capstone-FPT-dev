@@ -56,7 +56,6 @@ const navConfig = [
     icon: getIcon("carbon:location-company"),
   },
 
-
   // {
   //   title: "Admin quản lí đơn hàng",
   //   path: "/dashboard/admin/adminorder",
@@ -79,13 +78,26 @@ const navConfig = [
     path: "/dashboard/admin/adminshipper",
     icon: getIcon("carbon:delivery"),
   },
-
+  //=========================================================
+  {
+    title: "Admin xem đánh giá",
+    path: "/dashboard/admin/adminviewfeedback",
+    icon: getIcon("teenyicons:star-circle-outline"),
+  },
+  //=========================================================
+  {
+    title: "Bếp chuẩn bị món ăn",
+    path: "/dashboard/kitchen/kitchenorder",
+    icon: getIcon("ic:outline-restaurant-menu"),
+  },
 
   {
     title: "Bếp quản lí đơn hàng",
-    path: "/dashboard/kitchen/kitchenorder",
+    path: "/dashboard/kitchen/kitcheviewnorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
+
+  //=========================================================
   {
     title: "Bếp xem bếp",
     path: "/dashboard/kitchen/kitchen",

@@ -19,7 +19,7 @@ import { sample } from 'lodash';
 // address: VARCHAR(200)
 // ability: INT
 // ----------------------------------------------------------------------
-const KitchenOrder = [...Array(20)].map((_, index) => ({
+const KitchenViewOrder = [...Array(20)].map((_, index) => ({
     id: sample(['#000012',]),
     name: sample(['Thanh Nhi',]),
 
@@ -37,4 +37,4 @@ const KitchenOrder = [...Array(20)].map((_, index) => ({
 
 );
 
-export default KitchenOrder;
+export default KitchenViewOrder;

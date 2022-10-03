@@ -33,6 +33,8 @@ import NewShipper from "./pages/AdminShipper/NewShipper";
 import UpdateShipper from "./pages/AdminShipper/UpdateShipper";
 import NewPackage from "./pages/PackageFood/newPackage";
 import EditPackage from "./pages/PackageFood/EditPackage";
+import AdminViewFeedBackList from './pages/AdminViewFeedBack/AdminViewFeedBackList';
+import KitchenViewOrderList from './pages/KitchenViewOrder/KitchenViewOrderList';
 
 export default function Router() {
   return useRoutes([
@@ -68,7 +70,7 @@ export default function Router() {
         { path: "food", element: <Food /> },
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
-        { path: "package/:id", element: <EditPackage/> },
+        { path: "package/:id", element: <EditPackage /> },
         { path: "newpackage", element: <NewPackage /> },
         { path: "login", element: <Page404 /> },
         { path: "register", element: <Page404 /> },
@@ -97,6 +99,9 @@ export default function Router() {
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
+
+        //admin xem đánh giá bếp
+        { path: "adminviewfeedback", element: <AdminViewFeedBackList /> },
       ],
     },
 
@@ -107,6 +112,10 @@ export default function Router() {
       children: [
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
+
+        //kitchen xem chuẩn bị món ăn
+        { path: "kitcheviewnorder", element: <KitchenViewOrderList /> },
+
         //kitchen xem đơn hàng
         { path: "kitchenorder", element: <KitchenOrderList /> },
 
@@ -119,7 +128,6 @@ export default function Router() {
         { path: "kitchenprofile", element: <KitchenProfile /> },
       ],
     },
-
     // {
     //   path: "/dashboard/kitchen",
     //   element: <DashboardLayout />,
