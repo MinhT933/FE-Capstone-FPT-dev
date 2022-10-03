@@ -3,33 +3,41 @@ import { FormControl } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from 'dayjs';
-import TextField from '@mui/material/TextField';
+import dayjs from "dayjs";
+import TextField from "@mui/material/TextField";
+
+
 export default function DatePicker(props) {
-  const [value, setValue] = React.useState(dayjs("2014-08-18T21:11:54"));
 
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
-  const {name}= props
-  console.log(name);
+  // const [value, setValue] = React.useState(dayjs("2022-10-18T21:11:5"));
 
+  // const handleChange = (newValue) => {
+  //   setValue(newValue);
+  //   // console.log(newValue);
+  // };
+  // console.log(value);
+
+  // console.log(value);
+  const { label, name, value, onChange } = props;
+  // console.log(<DesktopDatePicker />);
   return (
-    <FormControl  sx={{
-      display: "grid",
-      gridTemplateColumns: { sm: "6fr 1fr" },
-      
-    }}>
+    <FormControl
+      sx={{
+        display: "grid",
+        gridTemplateColumns: { sm: "6fr 1fr" },
+      }}
+    >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDatePicker
-          label={name}
-          inputFormat="MM/DD/YYYY"
+          name={name}
+          label={label}
+          inputFormat="YYYY-MM-DD"
           value={value}
-          onChange={handleChange}
+          onChange={onChange}
+          minDate={new Date()}
           renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>
     </FormControl>
   );
 }
-

@@ -1,14 +1,11 @@
 import * as React from "react";
-import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import NewPackage from "./../newPackage";
-import { makeStyles } from "@material-ui/core/styles";
 import StepButton from "@mui/material/StepButton";
-import palette from "./../../../theme/palette";
 import NewPackageItem from "../NewPacketItem";
 
 import { styled } from "@mui/material/styles";
@@ -31,16 +28,7 @@ function getStepContent(step) {
   }
 }
 
-const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText("#FFCC32"),
-  backgroundColor: "#FFCC32",
-  "&:hover": {
-    backgroundColor: "#ffee32",
-  },
-  display: "center",
-}));
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = styled((theme) => ({
   root: {
     width: "100%",
   },
@@ -48,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   instructions: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(6),
     marginBottom: theme.spacing(2),
   },
 }));
