@@ -7,17 +7,22 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 // import Link from "@mui/material/Link";
 import { Link } from "react-router-dom";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import React, { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  let navigate = useNavigate();
+
   const [values, setValues] = useState({
     email: "",
     pass: "",
@@ -37,22 +42,11 @@ const Login = () => {
     return event.preventDefault();
   };
 
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#5dc9bc"),
-    backgroundColor: "#ffeb3b",
-    "&:hover": {
-      backgroundColor: "#5dc9bc",
-    },
-    display: "center",
-  }));
-
   const handleSubmit = async (e) => {};
 
   return (
     <Box
-
       sx={{ float: "right", width: "120%", flexGrow: 1 }}
-
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -143,16 +137,15 @@ const Login = () => {
                     <div></div>
                   </Grid>
                   <Grid item sx={3}>
-                    <ColorButton
+                    <ButtonCustomize
                       type="submit"
                       fullWidth
                       variant="contained"
                       sx={{ padding: "4.5%" }}
                       component={RouterLink}
                       to="/dashboard/admin/users"
-                    >
-                      Đăng nhập
-                    </ColorButton>
+                      nameButton="Đăng nhập"
+                    />
                   </Grid>
                 </Grid>
               </form>
