@@ -8,7 +8,7 @@ import * as PathAction from "./../PathAction";
 /// gọi axios
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
-// import axios from "axios";
+import axios from "axios";
 
 // hàm này được gọi là hàm khởi tạo để dùng chung nè
 //type là kiểu dữ liệu truyền vào
