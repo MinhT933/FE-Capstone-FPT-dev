@@ -32,6 +32,8 @@ import KitchenProfile from "./pages/KitchenProfile/KitchenProfile.jsx";
 import AdminShipperList from "./pages/AdminShipper/AdminShipperList.jsx";
 import NewShipper from "./pages/AdminShipper/NewShipper.jsx";
 import UpdateShipper from "./pages/AdminShipper/UpdateShipper.jsx";
+import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList";
+import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBackList";
 
 export default function Router() {
   return useRoutes([
@@ -95,6 +97,9 @@ export default function Router() {
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
+
+        //admin xem đánh giá bếp
+        { path: "adminviewfeedback", element: <AdminViewFeedBackList /> },
       ],
     },
 
@@ -105,6 +110,10 @@ export default function Router() {
       children: [
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
+
+        //kitchen xem chuẩn bị món ăn
+        { path: "kitcheviewnorder", element: <KitchenViewOrderList /> },
+
         //kitchen xem đơn hàng
         { path: "kitchenorder", element: <KitchenOrderList /> },
 

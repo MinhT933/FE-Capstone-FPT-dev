@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import ConfirmInfo from "../ConfirmInfo";
 
 function getSteps() {
-  return ["Thông tin cơ bản", "Chọn Khung thời gian", "Xác nhận thông tin"];
+  return ["Thông tin cơ bản", "Chọn khung thời gian", "Xác nhận thông tin"];
 }
 
 function getStepContent(step) {
@@ -82,8 +82,8 @@ export default function StepDesignPacketFood() {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          getSteps.findIndex((step, i) => !(i in completed))
+        // find the first step that has been completed
+        getSteps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
