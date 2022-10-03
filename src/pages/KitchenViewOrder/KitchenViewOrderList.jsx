@@ -34,11 +34,18 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import * as React from 'react';
 
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+
 
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
 // import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-import KITCHENORDERLIST from "./KitchenOrderSample";
+import KITCHENVIEWORDERLIST from "./KitchenViewOrderSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolBar";
 
@@ -47,13 +54,13 @@ import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolBa
 // ko nhát thiết phải thêm table head ở dưới 
 
 const TABLE_HEAD = [
-    { id: "id", label: "Tên món", alignRight: false },
-    { id: "name", label: "Số lượng", alignRight: false },
-    // { id: "phone", label: "Điện thoại", alignRight: false },
-    // { id: "station", label: "Điểm giao", alignRight: false },
-    // { id: "order", label: "Món ăn", alignRight: false },
-    // { id: "note", label: "Ghi chú", alignRight: false },
-    // { id: "status", label: "Trạng thái", alignRight: false },
+    { id: "id", label: "Mã đơn", alignRight: false },
+    { id: "name", label: "Người đặt", alignRight: false },
+    { id: "phone", label: "Điện thoại", alignRight: false },
+    { id: "station", label: "Điểm giao", alignRight: false },
+    { id: "order", label: "Món ăn", alignRight: false },
+    { id: "note", label: "Ghi chú", alignRight: false },
+    { id: "status", label: "Trạng thái", alignRight: false },
     { id: "" },
 ];
 
@@ -91,7 +98,7 @@ function applySortFilter(array, comparator, query) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function KitchenOrderList() {
+export default function KitchenViewOrderList() {
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -113,7 +120,7 @@ export default function KitchenOrderList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = KITCHENORDERLIST.map((n) => n.kitchenName);
+            const newSelecteds = KITCHENVIEWORDERLIST.map((n) => n.kitchenName);
             setSelected(newSelecteds);
             return;
         }
@@ -152,10 +159,10 @@ export default function KitchenOrderList() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENORDERLIST.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENVIEWORDERLIST.length) : 0;
 
     const filteredKitchen = applySortFilter(
-        KITCHENORDERLIST,
+        KITCHENVIEWORDERLIST,
         getComparator(order, orderBy),
         filterName
     );
@@ -188,18 +195,48 @@ export default function KitchenOrderList() {
 
     const [value, setValue] = React.useState(dayjs());
 
+    //CHỌN BỮA ĂN
+    const [meal, setMeal] = React.useState('');
 
+    const handleChange = (event) => {
+        setMeal(event.target.value);
+    };
 
     return (
         <Page title="User">
             <Container>
+                {/* CHỌN BỮA ĂN */}
+                {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="demo-simple-select-helper-label">Buổi</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-helper-label"
+                        id="demo-simple-select-helper"
+                        value={meal}
+                        label="Buổi"
+                        onChange={handleChange}
+                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Sáng</MenuItem>
+                        <MenuItem value={20}>Trưa</MenuItem>
+                        <MenuItem value={30}>Tối</MenuItem>
+                    </Select>
+                </FormControl> */}
+
+                {/* LỊCH CHỌN NGÀY TRONG TUẦN */}
                 <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
                     mb={5}
                 >
-                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+                    <Typography variant="h4" gutterBottom>
+                        {/* User */}
+                    </Typography>
+
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <StaticDatePicker
                             orientation="landscape"
                             openTo="day"
@@ -210,8 +247,28 @@ export default function KitchenOrderList() {
                             }}
                             renderInput={(params) => <TextField {...params} />}
                         />
-                    </LocalizationProvider> */}
+                    </LocalizationProvider>
+
+                    {/* 
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-helper-label">Buổi</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-helper-label"
+                            id="demo-simple-select-helper"
+                            value={meal}
+                            label="Buổi"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Sáng</MenuItem>
+                            <MenuItem value={20}>Trưa</MenuItem>
+                            <MenuItem value={30}>Tối</MenuItem>
+                        </Select>
+                    </FormControl> */}
                 </Stack>
+
 
                 <Card>
                     <KitchenListToolbar
@@ -227,7 +284,7 @@ export default function KitchenOrderList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={KITCHENORDERLIST.length}
+                                    rowCount={KITCHENVIEWORDERLIST.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
@@ -264,9 +321,7 @@ export default function KitchenOrderList() {
                                                         />
                                                     </TableCell><TableCell align="left">{id}</TableCell>
                                                     <TableCell align="left">{name}</TableCell>
-
-
-                                                    {/* <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{phone}</TableCell>
                                                     <TableCell align="left">{station}</TableCell>
                                                     <TableCell align="left">{order}</TableCell>
                                                     <TableCell align="left">{note}</TableCell>
@@ -279,18 +334,17 @@ export default function KitchenOrderList() {
                                                         >
                                                             {(status)}
                                                         </Label>
-                                                    </TableCell>*/}
-
+                                                    </TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    {/* <Button1 sx={{ marginTop: "7%", }}
+                                                    <Button1 sx={{ marginTop: "7%", }}
                                                         variant="outlined"
                                                         component={RouterLink}
                                                         to="/dashboard/admin/updatekitchen"
 
                                                     >
                                                         Cập nhật
-                                                    </Button1>  */}
+                                                    </Button1>
 
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
@@ -324,7 +378,7 @@ export default function KitchenOrderList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={KITCHENORDERLIST.length}
+                        count={KITCHENVIEWORDERLIST.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

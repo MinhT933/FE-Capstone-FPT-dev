@@ -1,18 +1,21 @@
 import * as React from "react";
+import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import NewPackage from "./../newPackage";
+import { makeStyles } from "@material-ui/core/styles";
 import StepButton from "@mui/material/StepButton";
+import palette from "./../../../theme/palette";
 import NewPackageItem from "../NewPacketItem";
 
 import { styled } from "@mui/material/styles";
 import ConfirmInfo from "../ConfirmInfo";
 
 function getSteps() {
-  return ["Thông tin cơ bản", "Chọn Khung thời gian", "Xác nhận thông tin"];
+  return ["Thông tin cơ bản", "Chọn khung thời gian", "Xác nhận thông tin"];
 }
 
 function getStepContent(step) {
@@ -28,7 +31,16 @@ function getStepContent(step) {
   }
 }
 
-const useStyles = styled((theme) => ({
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText("#FFCC32"),
+  backgroundColor: "#FFCC32",
+  "&:hover": {
+    backgroundColor: "#ffee32",
+  },
+  display: "center",
+}));
+
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
@@ -36,7 +48,7 @@ const useStyles = styled((theme) => ({
     marginRight: theme.spacing(1),
   },
   instructions: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
   },
 }));
@@ -70,8 +82,8 @@ export default function StepDesignPacketFood() {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          getSteps.findIndex((step, i) => !(i in completed))
+        // find the first step that has been completed
+        getSteps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };

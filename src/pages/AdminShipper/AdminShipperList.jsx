@@ -174,7 +174,7 @@ export default function KitchenList() {
                     mb={5}
                 >
                     <Typography variant="h4" gutterBottom>
-                        {/* User */}
+                    {/* User */}
                     </Typography>
                     {/* <ColorButton
                         variant="contained"

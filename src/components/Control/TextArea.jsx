@@ -13,7 +13,6 @@ export default function TextArea(props) {
   return (
     <Box>
       <TextField
-        sx={{ width: "16rem" }}
         placeholder={placeholder}
         label={label}
         multiline

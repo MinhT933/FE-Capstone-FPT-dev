@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Paper,
-  Grid,
-  Box,
-  Button,
-  styled,
-  FormHelperText,
-} from "@mui/material";
+import { Paper, Grid, Box, Button, styled } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 //componets
@@ -21,19 +14,25 @@ import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { callAPIgetListCategory } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
-// import { FormHelperText } from "@mui/material";
-import { CustomizedToast } from "./../../components/Toast/ToastCustom";
-import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import { FormHelperText } from "@material-ui/core";
 
 //styles paper
-const useStyles = styled("Paper")(({ theme }) => ({
+const useStyles = styled((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(9),
   },
 }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
-
+/// css button
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText("#FFCC32"),
+  backgroundColor: "#FFCC32",
+  "&:hover": {
+    backgroundColor: "#ffee32",
+  },
+  display: "center",
+}));
 
 //yub dùng để validation trong reactjs
 // khởi tạo schema để so sánh value(theo tao hiểu)
@@ -113,14 +112,8 @@ export default function NewFood() {
       formData.append("price", formik.values.price);
       formData.append("foodCategoryId", formik.values.foodCategoryId);
       //gọi API để đẩy data xuống
-      try {
-        const res = await API("POST", URL_API + "/foods", formData);
-        CustomizedToast({
-          message: `Đã thêm món ${formik.values.name}`,
-          type: "SUCCESS",
-        });
-        window.location.reload(true);
-      } catch (error) {}
+      const res = await API("POST", URL_API + "/foods", formData);
+      window.location.reload(true);
     },
   });
 
@@ -137,10 +130,10 @@ export default function NewFood() {
     );
   }
 
-  // const classes = useStyles();
+  const classes = useStyles();
 
   return (
-    <Paper>
+    <Paper className={classes.pageContent}>
       <PageHeader
         title="Thêm thức ăn"
         subTitle="Tinh hoa ẩm thực "
@@ -262,16 +255,14 @@ export default function NewFood() {
                   ml={"10rem"}
                   mb={"2rem"}
                 >
-                  <ButtonCustomize
-                    variant="contained"
-                    type="submit"
-                    nameButton="Tạo thực phẩm"
-                  />
+                  <ColorButton variant="contained" type="submit">
+                    Tạo thực phẩm
+                  </ColorButton>
                 </Stack>
               </Box>
             </Grid>
           </Box>
-          <Box sx={{ float: "left", width: "40%", mt: "2rem", ml: "5rem" }}>
+          <Box sx={{ float: "left", width: "40%", mt: "2rem" }}>
             <label htmlFor="contained-button-file">
               <Input
                 accept="image/*"
@@ -303,7 +294,7 @@ export default function NewFood() {
               >
                 {/* hiển thị hình lên  */}
                 {input.map((i) => (
-                  <img key={i} src={i} alt="hihi" />
+                  <img key={i} src={i} alt="" />
                 ))}
               </Box>
             </label>

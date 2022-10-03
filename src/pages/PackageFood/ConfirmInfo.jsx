@@ -1,9 +1,22 @@
 import React from "react";
-import { Typography, Grid } from "@mui/material";
-
+import { Typography, Grid, ListItemText } from "@mui/material";
+import { List } from "@mui/icons-material";
+import { ListItem } from "@mui/material";
 import Box from "@mui/material/Box";
-import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import PageHeader from "../../components/PageHeader";
+import Iconify from "../../components/hook-form/Iconify";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
 
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText("#FFCC32"),
+  backgroundColor: "#FFCC33",
+  "&:hover": {
+    backgroundColor: "#ffee32",
+  },
+  display: "center",
+}));
+const getIcon = (name) => <Iconify icon={name} width={30} height={30} />;
 export default function ConfirmInfo(props) {
   // const { classes } = props;
   return (
@@ -17,7 +30,6 @@ export default function ConfirmInfo(props) {
           boxShadow: 12,
           marginLeft: "0.75%",
           marginRight: "0.75%",
-          marginTop: "3%",
         }}
       >
         <Grid container spacing={16} sx={{ paddingTop: "3%" }}>
@@ -62,11 +74,7 @@ export default function ConfirmInfo(props) {
                 <Typography gutterBottom>thứ 2 , thứ 3 , thứ 4</Typography>
               </Grid>
               <Grid sm={5} sx={{ mt: 20, mb: 5 }}>
-                <ButtonCustomize
-                  sx={{ width: "80%" }}
-                  nameButton="Xác nhận"
-                  type="submit"
-                />
+                <ColorButton sx={{ width: "80%" }}>Xác nhận</ColorButton>
               </Grid>
             </Grid>
           </Grid>
@@ -76,3 +84,37 @@ export default function ConfirmInfo(props) {
     </React.Fragment>
   );
 }
+
+// const addresses = [
+//   "1 Material-UI Drive",
+//   "Reactville",
+//   "Anytown",
+//   "99999",
+//   "USA",
+// ];
+// const TimeFrame = [
+//   { name: " Buổi trong ngày  ", detail: "Trưa ,tối" },
+//   { name: "Ngày trong tuần", detail: "thứ 2 , thứ 3 , thứ 4" },
+// ];
+
+// const styles = (theme) => ({
+//   listItem: {
+//     padding: `${theme.spacing.unit}px 0`,
+//   },
+//   total: {
+//     fontWeight: "700",
+//   },
+//   title: {
+//     marginTop: theme.spacing.unit * 2,
+//   },
+// });
+//   setColor button
+
+// const products = [
+//   { name: "Product 1", desc: "A nice thing", price: "$9.99" },
+//   { name: "Product 2", desc: "Another thing", price: "$3.45" },
+//   { name: "Product 3", desc: "Something else", price: "$6.51" },
+//   { name: "Product 4", desc: "Best thing of all", price: "$14.11" },
+//   { name: "Shipping", desc: "", price: "Free" },
+// ];
+// //

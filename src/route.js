@@ -1,38 +1,39 @@
+
 import ProductList from "./pages/userList/UserList";
 import { Navigate, useRoutes } from "react-router-dom";
-import DashboardLayout from "./layouts/DashboardLayout";
+import DashboardLayout from "./layouts/DashboardLayout.js";
 import Page404 from "./pages/NotFound/Page404";
 import Food from "./pages/Food/Food";
 import PackageFood from "./pages/PackageFood/PackageFood";
-import NewFood from "./pages/Food/NewFood";
-import EditFood from "./pages/Food/EditFood";
+import NewFood from "./pages/Food/NewFood.jsx";
+import EditFood from "./pages/Food/EditFood.jsx";
 import UserDetail from "./pages/userList/UserDetail";
-import FindAccount from "./pages/Login/FindAccount";
-import SignInOutContainer from "./pages/Login/index";
-import VerifyPhone from "./pages/Login/VerifyPhone";
-import ChangePassword from "./pages/Login/ChangePassword";
+import FindAccount from "./pages/Login/FindAccount.js";
+import SignInOutContainer from "./pages/Login/index.js";
+import VerifyPhone from "./pages/Login/VerifyPhone.js";
+import ChangePassword from "./pages/Login/ChangePassword.js";
 
 import StationList from "./pages/Station/StationList";
-import NewStation from "./pages/Station/NewStation";
+import NewStation from "./pages/Station/NewStation.jsx";
 import KitchenList from "./pages/Kitchen/KitchenList";
 import NewKitchen from "./pages/Kitchen/NewKitchen";
 import AdminOrderList from "./pages/AdminOrder/AdminOrderList";
 import NewAdminOrder from "./pages/AdminOrder/NewAdminOrder";
-import StepDesignPacketFood from "./pages/PackageFood/Step/StepDesignPacketFood";
-import ListFoodGroup from "./pages/FoodGroup/ListFoodGroup";
-import UpdateStaion from "./pages/Station/UpdateStation";
-import UpdateKitchen from "./pages/Kitchen/UpdateKitchen";
-import KitchenOrderList from "./pages/KitchenOrder/KitchenOrderList";
+import StepDesignPacketFood from "./pages/PackageFood/Step/StepDesignPacketFood.jsx";
+import ListFoodGroup from "./pages/FoodGroup/ListFoodGroup.jsx";
+import UpdateStaion from "./pages/Station/UpdateStation.jsx";
+import UpdateKitchen from "./pages/Kitchen/UpdateKitchen.jsx";
+import KitchenOrderList from "./pages/KitchenOrder/KitchenOrderList.jsx";
 
-import KitchenShipperList from "./pages/KitchenShipper/KitchenShipperList";
-import RequestShipper from "./pages/KitchenShipper/RequestShipper";
-import KitchenProfile from "./pages/KitchenProfile/KitchenProfile";
+import KitchenShipperList from "./pages/KitchenShipper/KitchenShipperList.jsx";
+import RequestShipper from "./pages/KitchenShipper/RequestShipper.jsx";
+import KitchenProfile from "./pages/KitchenProfile/KitchenProfile.jsx";
 
-import AdminShipperList from "./pages/AdminShipper/AdminShipperList";
-import NewShipper from "./pages/AdminShipper/NewShipper";
-import UpdateShipper from "./pages/AdminShipper/UpdateShipper";
-import NewPackage from "./pages/PackageFood/newPackage";
-import EditPackage from "./pages/PackageFood/EditPackage";
+import AdminShipperList from "./pages/AdminShipper/AdminShipperList.jsx";
+import NewShipper from "./pages/AdminShipper/NewShipper.jsx";
+import UpdateShipper from "./pages/AdminShipper/UpdateShipper.jsx";
+import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList";
+import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBackList";
 
 export default function Router() {
   return useRoutes([
@@ -68,8 +69,7 @@ export default function Router() {
         { path: "food", element: <Food /> },
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
-        { path: "package/:id", element: <EditPackage/> },
-        { path: "newpackage", element: <NewPackage /> },
+        { path: "newpackage", element: <StepDesignPacketFood /> },
         { path: "login", element: <Page404 /> },
         { path: "register", element: <Page404 /> },
         { path: "newfood", element: <NewFood /> },
@@ -89,7 +89,7 @@ export default function Router() {
 
         //MANAGER quản lí đơn hàng - VIEW theo ERD
         { path: "adminorder", element: <AdminOrderList /> },
-        // { path: "newadminorder", element: <NewAdminOrder /> },
+        { path: "newadminorder", element: <NewAdminOrder /> },
 
         //admin quản lí shipper
         //CURD + chuyển shipper cho bếp
@@ -97,6 +97,9 @@ export default function Router() {
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
+
+        //admin xem đánh giá bếp
+        { path: "adminviewfeedback", element: <AdminViewFeedBackList /> },
       ],
     },
 
@@ -107,6 +110,10 @@ export default function Router() {
       children: [
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
+
+        //kitchen xem chuẩn bị món ăn
+        { path: "kitcheviewnorder", element: <KitchenViewOrderList /> },
+
         //kitchen xem đơn hàng
         { path: "kitchenorder", element: <KitchenOrderList /> },
 

@@ -25,6 +25,7 @@ import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
 
+import Rating from "@mui/material/Rating";
 
 import dayjs from 'dayjs';
 import TextField from '@mui/material/TextField';
@@ -34,11 +35,18 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import * as React from 'react';
 
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+
 
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
 // import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-import KITCHENORDERLIST from "./KitchenOrderSample";
+import ADMINVIEWFEEDBACKLIST from "./AdminViewFeedBackSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolBar";
 
@@ -47,13 +55,13 @@ import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolBa
 // ko nhát thiết phải thêm table head ở dưới 
 
 const TABLE_HEAD = [
-    { id: "id", label: "Tên món", alignRight: false },
-    { id: "name", label: "Số lượng", alignRight: false },
-    // { id: "phone", label: "Điện thoại", alignRight: false },
-    // { id: "station", label: "Điểm giao", alignRight: false },
-    // { id: "order", label: "Món ăn", alignRight: false },
-    // { id: "note", label: "Ghi chú", alignRight: false },
-    // { id: "status", label: "Trạng thái", alignRight: false },
+    { id: "id", label: "Mã đơn", alignRight: false },
+    { id: "name", label: "Người đặt", alignRight: false },
+    { id: "phone", label: "Điện thoại", alignRight: false },
+    { id: "kitchen", label: "Bếp", alignRight: false },
+    { id: "order", label: "Món ăn", alignRight: false },
+    { id: "star", label: "Đánh giá", alignRight: false },
+    { id: "status", label: "Nhận xét", alignRight: false },
     { id: "" },
 ];
 
@@ -91,7 +99,7 @@ function applySortFilter(array, comparator, query) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function KitchenOrderList() {
+export default function AdminViewFeedBackList() {
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -113,7 +121,7 @@ export default function KitchenOrderList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = KITCHENORDERLIST.map((n) => n.kitchenName);
+            const newSelecteds = ADMINVIEWFEEDBACKLIST.map((n) => n.kitchenName);
             setSelected(newSelecteds);
             return;
         }
@@ -152,10 +160,10 @@ export default function KitchenOrderList() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENORDERLIST.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ADMINVIEWFEEDBACKLIST.length) : 0;
 
     const filteredKitchen = applySortFilter(
-        KITCHENORDERLIST,
+        ADMINVIEWFEEDBACKLIST,
         getComparator(order, orderBy),
         filterName
     );
@@ -188,7 +196,15 @@ export default function KitchenOrderList() {
 
     const [value, setValue] = React.useState(dayjs());
 
+    //CHỌN BỮA ĂN
+    const [meal, setMeal] = React.useState('');
 
+    const handleChange = (event) => {
+        setMeal(event.target.value);
+    };
+
+    //ĐÁNH GIÁ NGÔI SAO
+    const [valueStar] = React.useState(3);
 
     return (
         <Page title="User">
@@ -199,18 +215,10 @@ export default function KitchenOrderList() {
                     justifyContent="space-between"
                     mb={5}
                 >
-                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <StaticDatePicker
-                            orientation="landscape"
-                            openTo="day"
-                            value={value}
-                            shouldDisableDate={isWeekend}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider> */}
+
+                    <Typography variant="h4" gutterBottom>
+                        {/* User */}
+                    </Typography>
                 </Stack>
 
                 <Card>
@@ -227,7 +235,7 @@ export default function KitchenOrderList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={KITCHENORDERLIST.length}
+                                    rowCount={ADMINVIEWFEEDBACKLIST.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
@@ -240,9 +248,9 @@ export default function KitchenOrderList() {
                                                 id,
                                                 name,
                                                 phone,
-                                                station,
+                                                kitchen,
                                                 order,
-                                                note,
+                                                star,
                                                 status,
 
                                             } = row;
@@ -264,13 +272,20 @@ export default function KitchenOrderList() {
                                                         />
                                                     </TableCell><TableCell align="left">{id}</TableCell>
                                                     <TableCell align="left">{name}</TableCell>
-
-
-                                                    {/* <TableCell align="left">{phone}</TableCell>
-                                                    <TableCell align="left">{station}</TableCell>
+                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{kitchen}</TableCell>
                                                     <TableCell align="left">{order}</TableCell>
-                                                    <TableCell align="left">{note}</TableCell>
-                                                    <TableCell align="left">
+
+                                                    <TableCell align="left">{status}</TableCell>
+                                                    {/*  <TableCell align="left">{star}</TableCell> */}
+                                                    {/* <Typography component="legend">Read only</Typography> */}
+                                                    <Rating name="read-only" value={valueStar} readOnly
+                                                        sx={{
+                                                            "& > legend": { mt: 3 }
+                                                        }} />
+
+
+                                                    {/* <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
                                                             color={
@@ -279,8 +294,7 @@ export default function KitchenOrderList() {
                                                         >
                                                             {(status)}
                                                         </Label>
-                                                    </TableCell>*/}
-
+                                                    </TableCell> */}
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
                                                     {/* <Button1 sx={{ marginTop: "7%", }}
@@ -290,7 +304,7 @@ export default function KitchenOrderList() {
 
                                                     >
                                                         Cập nhật
-                                                    </Button1>  */}
+                                                    </Button1> */}
 
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
@@ -324,7 +338,7 @@ export default function KitchenOrderList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={KITCHENORDERLIST.length}
+                        count={ADMINVIEWFEEDBACKLIST.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

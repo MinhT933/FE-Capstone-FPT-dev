@@ -14,23 +14,28 @@ import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { callAPIgetListCategory } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
-// import { FormHelperText } from "@material-ui/core";
-import { useNavigate, useParams } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import ButtonCustomize from "../../components/Button/ButtonCustomize";
-import FormHelperText from "@mui/material/FormHelperText";
+import { FormHelperText } from "@material-ui/core";
+import { useParams } from "react-router-dom";
 
 //-------------------------------------------------------------------
 
 //styles paper
-const useStyles = styled("Paper")(({ theme }) => ({
+const useStyles = styled((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(9),
   },
 }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+/// csss button
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText("#FFCC32"),
+  backgroundColor: "#FFCC32",
+  "&:hover": {
+    backgroundColor: "#ffee32",
+  },
+  display: "center",
+}));
 
 const schema = yup.object().shape({
   name: yup.string().required().trim(),
@@ -45,8 +50,6 @@ export default function EditFood() {
   const dispatch = useDispatch();
 
   const [input, setInput] = useState(null);
-
-  const navigate = useNavigate();
 
   const formData = new FormData();
 
@@ -97,37 +100,34 @@ export default function EditFood() {
     },
 
     onSubmit: async (values) => {
+      console.log(values);
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
       formData.append("price", formik.values.price);
       formData.append("foodCategoryId", formik.values.foodCategoryId);
-      try {
-        const res = await API(
-          "PUT",
-          URL_API + `/foods/update-food/${id}`,
-          formData
-        );
 
-        CustomizedToast({
-          message: `Cập nhập ${formik.values.name}`,
-          type: "SUCCESS",
-        });
-        navigate("/dashboard/admin/food");
-      } catch (err) {
-        CustomizedToast({ message: "Cập nhập thất bại rồi ", type: "ERROR" });
-      }
+      const res = await API(
+        "PUT",
+        URL_API + `/foods/update-food/${id}`,
+        formData
+      );
+      window.location.reload(true);
     },
   });
 
   function _treat(e) {
+    const { files } = e.target;
+
     formik.setFieldValue("image", e.target.files[0]);
 
     setInput(URL.createObjectURL(e.target.files[0]));
   }
 
+  const classes = useStyles();
+
   return (
-    <Paper>
+    <Paper className={classes.pageContent}>
       <PageHeader
         title="Điều chỉnh món ăn"
         subTitle="Tinh hoa ẩm thực "
@@ -158,13 +158,12 @@ export default function EditFood() {
                 <Controls.Input
                   variant="outlined"
                   name="name"
-                  label="Tên"
                   value={formik.values.name}
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
                   onBlur={formik.handleBlur}
-                />
+                />{" "}
                 {formik.touched.name && formik.errors.name && (
                   <FormHelperText
                     error={false}
@@ -177,7 +176,6 @@ export default function EditFood() {
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
-                  label="Giá"
                   name="price"
                   value={formik.values.price}
                   onChange={(e) => {
@@ -216,7 +214,6 @@ export default function EditFood() {
                   multiline
                   variant="outlined"
                   name="description"
-                  label="Mô tả"
                   value={formik.values.description}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -240,11 +237,9 @@ export default function EditFood() {
                   ml={"18rem"}
                   mb={"2rem"}
                 >
-                  <ButtonCustomize
-                    variant="contained"
-                    type="submit"
-                    nameButton=" Xác Nhận"
-                  />
+                  <ColorButton variant="contained" type="submit">
+                    Xác Nhận
+                  </ColorButton>
                 </Stack>
               </Box>
             </Grid>
