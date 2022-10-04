@@ -160,7 +160,7 @@ export const callAPIgetPackagebyID = (req, res) => {
 export const LoginAthenAdmin = (user, navigate) => {
   return async (dispatch) => {
     try {
-      const res = await API("POST", URL_API + "/auths/login-in/admin", user);
+      const res = await API("POST", URL_API + "/auths/login/admin", user);
       localStorage.setItem("token", res.data.result.access_token);
       dispatch(
         createAction({
@@ -181,7 +181,7 @@ export const LoginAthenAdmin = (user, navigate) => {
 export const LoginAthenManager = (user, navigate) => {
   return async (dispatch) => {
     try {
-      const res = await API("POST", URL_API + "/auths/login-in/manager", user);
+      const res = await API("POST", URL_API + "/auths/login/manager", user);
       // console.log(res.data.result);
       localStorage.setItem("token", res.data.result.access_token);
       dispatch(
@@ -203,7 +203,7 @@ export const LoginAthenManager = (user, navigate) => {
 export const LoginAthenKitchen = (user, navigate) => {
   return async (dispatch) => {
     try {
-      const res = await API("POST", URL_API + "/auths/login-in/kitchen", user);
+      const res = await API("POST", URL_API + "/auths/login/kitchen", user);
       // console.log(res.data.result);
       localStorage.setItem("token", res.data.result.access_token);
       dispatch(

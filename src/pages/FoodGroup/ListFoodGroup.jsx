@@ -32,6 +32,7 @@ import FOODGROUP from "../../_mock/GroupExample";
 import NewUserPopup from "../../components/PopUp/NewUserPopup";
 import NewFoodGroup from "./NewFoodGroup";
 import DnDFoodGroup from "./DnDFoodGroup";
+import jwt_decode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
@@ -111,6 +112,9 @@ export default function ListFoodGroup() {
     setSelected([]);
   };
 
+  const token = localStorage.getItem("token");
+  var decoded = jwt_decode(token);
+
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -174,16 +178,18 @@ export default function ListFoodGroup() {
           <Typography variant="h4" gutterBottom>
             {/* User */}
           </Typography>
-          <ColorButton
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            onClick={() => {
-              SetOpenPopUp(true);
-            }}
-          >
-            Thêm nhóm thức ăn
-          </ColorButton>
+          {decoded.role === "manager" && (
+            <ColorButton
+              variant="contained"
+              component={RouterLink}
+              to="#"
+              onClick={() => {
+                SetOpenPopUp(true);
+              }}
+            >
+              Thêm nhóm thức ăn
+            </ColorButton>
+          )}
         </Stack>
 
         <Card>

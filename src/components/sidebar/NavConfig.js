@@ -8,33 +8,33 @@ import AccountPopover from "./../topbar/AccountPopover";
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 const navConfigManager = [
+  // {
+  //   title: "Trang Chủ",
+  //   path: "/dashboard/admin/app",
+  //   icon: getIcon("eva:pie-chart-2-fill"),
+  //   // component: Home
+  // },
   {
-    title: "Trang Chủ",
-    path: "/dashboard/admin/app",
-    icon: getIcon("eva:pie-chart-2-fill"),
-    // component: Home
+    // title: "Sản phẩm",
+    // icon: getIcon("tabler:building-warehouse"),
+    // children: [
+    //   {
+    title: "Thức ăn",
+    path: "/dashboard/manager/food",
+    icon: getIcon("ep:food"),
   },
   {
-    title: "Sản phẩm",
-    icon: getIcon("tabler:building-warehouse"),
-    children: [
-      {
-        title: "Thức ăn",
-        path: "/dashboard/admin/food",
-        icon: getIcon("ep:food"),
-      },
-      {
-        title: "Nhóm thức ăn",
-        path: "/dashboard/admin/foodGroup",
-        icon: getIcon("clarity:blocks-group-line"),
-      },
-      {
-        title: "Gói ăn",
-        path: "/dashboard/admin/package",
-        icon: getIcon("eva:shopping-bag-fill"),
-      },
-    ],
+    title: "Nhóm thức ăn",
+    path: "/dashboard/manager/foodGroup",
+    icon: getIcon("clarity:blocks-group-line"),
   },
+  {
+    title: "Gói ăn",
+    path: "/dashboard/manager/package",
+    icon: getIcon("eva:shopping-bag-fill"),
+  },
+  // ],
+  // },
 ];
 
 const navConfigAdmin = [
