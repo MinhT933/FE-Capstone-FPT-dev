@@ -23,6 +23,10 @@ import Scrollbar from "../components/hook-form/Scrollbar";
 //
 
 import navConfig from "./../components/sidebar/NavConfig";
+import navConfigKichen from "./../components/sidebar/NavConfig";
+import navConfigManager from "./../components/sidebar/NavConfig";
+
+import navConfigAdmin from "./../components/sidebar/NavConfig";
 import NavSection from "./../components/hook-form/NavSection";
 import Logo from "./../components/Logo";
 import useResponsive from "./../hooks/useResponsive";
@@ -105,7 +109,13 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Box>
       </Box>
 
-      <NavSection navConfig={navConfig} sx={{ backgroundColor: "white" }} />
+      <NavSection
+        navConfig={navConfig}
+        navConfigAdmin={navConfigAdmin}
+        navConfigKichen={navConfigKichen}
+        navConfigManager={navConfigManager}
+        sx={{ backgroundColor: "white" }}
+      />
 
       <Box sx={{ flexGrow: 1, backgroundColor: "white" }} />
 

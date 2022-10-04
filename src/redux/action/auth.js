@@ -23,9 +23,9 @@ export const register = (username, email, password) => (dispatch) => {
         error.message ||
         error.toString();
 
-      dispatch({
-        type: REGISTER_FAIL,
-      });
+      // dispatch({
+      //   type: REGISTER_FAIL,
+      // });
 
       dispatch({
         type: PathAction.SET_MESSAGE,

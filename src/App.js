@@ -13,7 +13,7 @@ function App() {
         <ScrollToTop />
         <ToastContainerConfig />
         {/* <BaseOptionChartStyle /> */}
-        <Router />
+        <Router  />
       </ThemeProvider>
     </BrowserRouter>
   );

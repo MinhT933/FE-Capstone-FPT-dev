@@ -7,9 +7,12 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import NewPackage from "../newPackage";
-import NewPackageItem from "../NewPacketItem";
+import NewPackage from "../../PackageFood/newPackage";
+import NewPackageItem from "../../PackageFood/NewPacketItem";
 import { styled } from "@mui/styles";
+import Login from "../login";
+import LoginManager from "../LoginManager";
+import Loginkichen from "../Loginkichen";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -61,28 +64,30 @@ export default function TabsPacket() {
       {...props}
       TabIndicatorProps={{
         children: <span className="MuiTabs-indicatorSpan" />,
+        // backgroundColor: "red",
       }}
     />
   ))({
     "& .MuiTabs-indicator": {
       display: "flex",
-      height: 3,
+      height: 2,
       justifyContent: "center",
+      backgroundColor: "yellow",
     },
   });
 
   return (
-    <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
-      <AppBar position="static">
+    <Box sx={{ bgcolor: "background.paper", width: "115%" }}>
+      <AppBar position="static" sx={{ bgcolor: "#ffff" }}>
         <StyledTabs
           value={value}
           onChange={handleChange}
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Thiết kế gói ắn" {...a11yProps(0)} />
-          <Tab label="thiết kế mục gói ăn " {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Quản trị " {...a11yProps(0)} />
+          <Tab label="Quản lí " {...a11yProps(1)} />
+          <Tab label="Bếp" {...a11yProps(2)} />
         </StyledTabs>
       </AppBar>
       <SwipeableViews
@@ -91,13 +96,19 @@ export default function TabsPacket() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <NewPackage />
+          <Box sx={{ marginLeft: "5%" }}>
+            <Login handleChange={handleChange} />
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <NewPackageItem />
+          <Box sx={{ marginLeft: "5%" }}>
+            <LoginManager handleChange={handleChange} />
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <NewPackageItem />
+          <Box sx={{ marginLeft: "5%" }}>
+            <Loginkichen handleChange={handleChange} />
+          </Box>
         </TabPanel>
       </SwipeableViews>
     </Box>

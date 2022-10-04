@@ -1,5 +1,5 @@
 import ProductList from "./pages/userList/UserList";
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Page404 from "./pages/NotFound/Page404";
 import Food from "./pages/Food/Food";
@@ -33,8 +33,37 @@ import NewShipper from "./pages/AdminShipper/NewShipper";
 import UpdateShipper from "./pages/AdminShipper/UpdateShipper";
 import NewPackage from "./pages/PackageFood/newPackage";
 import EditPackage from "./pages/PackageFood/EditPackage";
-import AdminViewFeedBackList from './pages/AdminViewFeedBack/AdminViewFeedBackList';
-import KitchenViewOrderList from './pages/KitchenViewOrder/KitchenViewOrderList';
+import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBackList";
+import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList";
+import { useEffect } from "react";
+import { useState } from "react";
+import jwt_decode from "jwt-decode";
+
+const ProtectedRouteAuthor = ({ condition, role, children }) => {
+  if (condition === role) {
+    return { children };
+  }
+  return <Navigate to="/" replace />;
+};
+
+const ProtectedRouteAuthen = ({ redirectPath = "/login", role }) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to={redirectPath} replace />;
+  }
+  var decoded = jwt_decode(token);
+  console.log(decoded);
+  if (token && !decoded.role) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  return (
+    <ProtectedRouteAuthor condition={decoded.role} role={role}>
+      <Outlet />
+    </ProtectedRouteAuthor>
+  );
+};
 
 export default function Router() {
   return useRoutes([
@@ -61,13 +90,17 @@ export default function Router() {
     },
 
     //Role Admin
+    //
     {
       path: "/dashboard/admin",
       element: <DashboardLayout />,
       children: [
         { path: "app", element: <Page404 /> },
         { path: "users", element: <ProductList /> },
-        { path: "food", element: <Food /> },
+        {
+          path: "food",
+          element: <Food />,
+        },
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
         { path: "package/:id", element: <EditPackage /> },
@@ -101,7 +134,57 @@ export default function Router() {
         { path: "updateshipper", element: <UpdateShipper /> },
 
         //admin xem đánh giá bếp
-        { path: "adminviewfeedback", element: <AdminViewFeedBackList /> },
+        {
+          path: "adminviewfeedback",
+          element: (
+            // <ProtectedRouteAuthen role="manager">
+            <AdminViewFeedBackList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+      ],
+    },
+    //Role Manager
+    {
+      path: "/dashboard/manager",
+      element: <DashboardLayout />,
+      children: [
+        // { path: "users", element: <ProductList /> },
+        {
+          path: "food",
+          element: <Food />,
+        },
+        { path: "404", element: <Page404 /> },
+        { path: "package", element: <PackageFood /> },
+        { path: "package/:id", element: <EditPackage /> },
+        { path: "newpackage", element: <NewPackage /> },
+        { path: "login", element: <Page404 /> },
+        { path: "register", element: <Page404 /> },
+        { path: "newfood", element: <NewFood /> },
+        { path: "food/:id", element: <EditFood /> },
+        { path: "users/:id", element: <UserDetail /> },
+        { path: "foodGroup", element: <ListFoodGroup /> },
+
+        //admin quản lí Trạm - CURD
+        { path: "station", element: <StationList /> },
+        { path: "newstation", element: <NewStation /> },
+        { path: "updatestation", element: <UpdateStaion /> },
+
+        //admin quản lí Kitchen - CURD
+        { path: "kitchen", element: <KitchenList /> },
+        { path: "newkitchen", element: <NewKitchen /> },
+        { path: "updatekitchen", element: <UpdateKitchen /> },
+
+        //MANAGER quản lí đơn hàng - VIEW theo ERD
+        { path: "adminorder", element: <AdminOrderList /> },
+        // { path: "newadminorder", element: <NewAdminOrder /> },
+
+        //admin quản lí shipper
+        //CURD + chuyển shipper cho bếp
+        { path: "adminshipper", element: <AdminShipperList /> },
+
+        { path: "newshipper", element: <NewShipper /> },
+        { path: "updateshipper", element: <UpdateShipper /> },
       ],
     },
 
@@ -109,34 +192,75 @@ export default function Router() {
     {
       path: "/dashboard/kitchen",
       element: <DashboardLayout />,
+
       children: [
-        { path: "kitchen", element: <KitchenList /> },
-        { path: "newkitchen", element: <NewKitchen /> },
+        {
+          path: "Listkitchen",
+          element: (
+            // <ProtectedRouteAuthen>
+            <KitchenList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "newkitchen",
+          element: (
+            <ProtectedRouteAuthen>
+              <NewKitchen />,
+            </ProtectedRouteAuthen>
+          ),
+        },
 
         //kitchen xem chuẩn bị món ăn
-        { path: "kitcheviewnorder", element: <KitchenViewOrderList /> },
+        {
+          path: "kitcheviewnorder",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <KitchenViewOrderList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
 
         //kitchen xem đơn hàng
-        { path: "kitchenorder", element: <KitchenOrderList /> },
+        {
+          path: "kitchenorder",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <KitchenOrderList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
 
         //kitchen quản lí shipper
         //View shipper của cửa hàng + Request shipper
-        { path: "kitchenshipper", element: <KitchenShipperList /> },
-        { path: "requestshipper", element: <RequestShipper /> },
+        {
+          path: "kitchenshipper",
+          element: (
+            // <ProtectedRouteAuthen role="admin">
+            <KitchenShipperList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "requestshipper",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <RequestShipper />
+            // </ProtectedRouteAuthen>
+          ),
+        },
 
         //kitchen xem thông tin bếp
-        { path: "kitchenprofile", element: <KitchenProfile /> },
+        {
+          path: "kitchenprofile",
+          element: (
+            // <ProtectedRouteAuthen role="admin">
+            <KitchenProfile />
+            // </ProtectedRouteAuthen>
+          ),
+        },
       ],
     },
-    // {
-    //   path: "/dashboard/kitchen",
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { path: "schedule", element: <ScheduleFood /> },
-    //     { path: "order", element: <Page404 /> },
-    //   ],
-    // },
-
     { path: "*", element: <Navigate to="404" replace /> },
   ]);
 }

@@ -135,8 +135,8 @@ export default function Food() {
       }
     }, []);
   };
-  //dispatch chấm dức dòng lập dzô tận :v
 
+  const token = localStorage.getItem("token");
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
   const food = useSelector((state) => {
     return state.userReducer.listFood;
@@ -211,12 +211,15 @@ export default function Food() {
           <Typography variant="h4" gutterBottom>
             {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
-          <ButtonCustomize
-            variant="contained"
-            component={RouterLink}
-            to="/dashboard/admin/newfood"
-            nameButton=" Thêm thức ăn"
-          />
+
+          {token.role === "manager" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/admin/newfood"
+              nameButton=" Thêm thức ăn"
+            />
+          )}
         </Stack>
 
         <Card>

@@ -18,6 +18,10 @@ import {
 //
 import Iconify from "./Iconify";
 
+import jwt_decode from "jwt-decode";
+
+import { Navigate, Outlet, useRoutes } from "react-router-dom";
+
 // ----------------------------------------------------------------------
 
 const ListItemStyle = styled((props) => (
@@ -159,21 +163,47 @@ function NavItem({ item, active }) {
 
 NavSection.propTypes = {
   navConfig: PropTypes.array,
+  navConfigAdmin: PropTypes.array,
 };
 
 //NavSection
-export default function NavSection({ navConfig, ...other }) {
+export default function NavSection({
+  navConfig,
+  navConfigAdmin,
+  navConfigKichen,
+  navConfigManager,
+  ...other
+}) {
   const { pathname } = useLocation();
+
+  const checkRole = () => {
+    const token = localStorage.getItem("token");
+    var decoded = jwt_decode(token);
+
+    switch (decoded.role) {
+      case "admin":
+        return navConfig.navConfigAdmin;
+        break;
+      case "manager":
+        return navConfig.navConfigManager;
+        break;
+      case "kitchen":
+        return navConfig.navConfigKichen;
+        break;
+    }
+  };
 
   const match = (path) =>
     path ? !!matchPath({ path, end: false }, pathname) : false;
   return (
     <Box {...other} sx={{ backgroundColor: "white" }}>
-      <List disablePadding sx={{ p: 1 }}>
-        {navConfig.map((item) => (
-          <NavItem key={item.title} item={item} active={match} />
-        ))}
-      </List>
+      {
+        <List disablePadding sx={{ p: 1 }}>
+          {checkRole()?.map((item) => (
+            <NavItem key={item.title} item={item} active={match} />
+          ))}
+        </List>
+      }
     </Box>
   );
 }

@@ -33,6 +33,7 @@ const initialState = {
   listGroupFood: [],
   listTimeFrame: [],
   listStation: [],
+  currentUser: [],
 };
 
 // const initialStateAuthen = admin
@@ -71,6 +72,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listGroupFood = payload;
     case PathAction.GET_LIST_TIME_FRAME:
       state.listTimeFrame = payload;
+      break;
+    case PathAction.LOGIN_USER:
+      state.currentUser = payload;
       break;
     // case PathAction.REFRESH_TOKEN:
     //   return {
