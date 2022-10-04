@@ -24,14 +24,14 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { LoginAthenAdmin } from "./../../redux/action/acction";
+import { LoginAthenKitchen } from "./../../redux/action/acction";
 /////
 
 const schema = yup.object().shape({
   phone: yup.string().required().trim(),
   password: yup.string().required().trim(),
 });
-const Login = () => {
+const Loginkichen = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -47,11 +47,11 @@ const Login = () => {
 
     onSubmit: async (values) => {
       console.log(values);
-      const adminData = {
+      const kitchenData = {
         phone: formik.values.phone,
         password: formik.values.password,
       };
-      dispatch(LoginAthenAdmin(adminData, navigate));
+      dispatch(LoginAthenKitchen(kitchenData, navigate));
     },
   });
 
@@ -212,4 +212,4 @@ const Login = () => {
 };
 
 ////fix git hub1qwedqweqw
-export default Login;
+export default Loginkichen;

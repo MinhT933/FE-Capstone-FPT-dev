@@ -43,16 +43,16 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 const TABLE_HEAD = [
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
-  { id: "type", label: "Phân loại", alignRight: false },
+  { id: "type", label: "Khung thời gian", alignRight: false },
   { id: "createdate", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
   { id: "startSale", label: "Ngày bán", alignRight: false },
-  { id: "endSale", label: "Ngày không Bán", alignRight: false },
+  { id: "endSale", label: "Ngày kết thúc bán", alignRight: false },
   { id: "totalMeal", label: "Tổng buổi ăn", alignRight: false },
   { id: "totalfood", label: "Tổng số thức ăn", alignRight: false },
   { id: "areaSale", label: "Địa điểm bán", alignRight: false },
-  { id: "status", label: "Status", alignRight: false },
-  { id: "Description", label: "Description", alignRight: false },
+  { id: "status", label: "Trạng thái", alignRight: false },
+  { id: "Description", label: "Mô tả", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -101,6 +101,8 @@ export default function PackageFood() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const token = localStorage.getItem("token");
 
   const dispatch = useDispatch();
 
@@ -184,12 +186,14 @@ export default function PackageFood() {
             {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
 
-          <ButtonCustomize
-            variant="contained"
-            component={RouterLink}
-            to="/dashboard/admin/newpackage"
-            nameButton="Thêm Gói Ăn"
-          />
+          {token === "manger" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/admin/newpackage"
+              nameButton="Thêm Gói Ăn"
+            />
+          )}
         </Stack>
         <Card>
           <UserListToolbar
@@ -228,6 +232,7 @@ export default function PackageFood() {
                         totalFood,
                         totalStation,
                         status,
+                        timeFrame,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -249,7 +254,7 @@ export default function PackageFood() {
 
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">{description}</TableCell>
+                          <TableCell align="left">{timeFrame.name}</TableCell>
                           <TableCell align="left">
                             {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
@@ -278,7 +283,7 @@ export default function PackageFood() {
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu id = {id} />
+                            <UserMoreMenu id={id} />
                           </TableCell>
                         </TableRow>
                       );

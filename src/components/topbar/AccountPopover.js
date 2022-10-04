@@ -16,7 +16,9 @@ import {
 import MenuPopover from "../../components/hook-form/MenuPopover";
 // mocks_
 import account from "../../_mock/account";
-
+import { useDispatch } from "react-redux";
+import { LogOut } from "../../redux/action/acction";
+import { useNavigate } from "react-router-dom";
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -42,6 +44,9 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const anchorRef = useRef(null);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -50,6 +55,11 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = () => {
+    const token = localStorage.getItem("token");
+    dispatch(LogOut(token, navigate));
   };
 
   return (
@@ -117,10 +127,10 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <MenuItem
-          onClick={handleClose}
+          onClick={handleLogout}
           sx={{ m: 1 }}
-          component={RouterLink}
-          to="/"
+          // component={RouterLink}
+          // to="/"
         >
           Logout
         </MenuItem>

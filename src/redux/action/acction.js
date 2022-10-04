@@ -9,6 +9,7 @@ import * as PathAction from "./../PathAction";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import axios from "axios";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 // hàm này được gọi là hàm khởi tạo để dùng chung nè
 //type là kiểu dữ liệu truyền vào
@@ -156,6 +157,90 @@ export const callAPIgetPackagebyID = (req, res) => {
   };
 };
 
+export const LoginAthenAdmin = (user, navigate) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("POST", URL_API + "/auths/login-in/admin", user);
+      localStorage.setItem("token", res.data.result.access_token);
+      dispatch(
+        createAction({
+          type: PathAction.LOGIN_USER,
+          payload: res.data.result,
+        })
+      );
+      navigate("/dashboard/admin");
+    } catch (error) {
+      CustomizedToast({
+        message: "Tên đăng nhập hoặc mật khẩu sai",
+        type: "ERROR",
+      });
+    }
+  };
+};
+
+export const LoginAthenManager = (user, navigate) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("POST", URL_API + "/auths/login-in/manager", user);
+      // console.log(res.data.result);
+      localStorage.setItem("token", res.data.result.access_token);
+      dispatch(
+        createAction({
+          type: PathAction.LOGIN_USER,
+          payload: res.data.result,
+        })
+      );
+      navigate("/dashboard/manager/food");
+    } catch (error) {
+      CustomizedToast({
+        message: "Tên đăng nhập hoặc mật khẩu sai",
+        type: "ERROR",
+      });
+    }
+  };
+};
+
+export const LoginAthenKitchen = (user, navigate) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("POST", URL_API + "/auths/login-in/kitchen", user);
+      // console.log(res.data.result);
+      localStorage.setItem("token", res.data.result.access_token);
+      dispatch(
+        createAction({
+          type: PathAction.LOGIN_USER,
+          payload: res.data.result,
+        })
+      );
+      navigate("/dashboard/kitchen/Listkitchen");
+    } catch (error) {
+      CustomizedToast({
+        message: "Tên đăng nhập hoặc mật khẩu sai",
+        type: "ERROR",
+      });
+    }
+  };
+};
+export const LogOut = (token, navigate) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("POST", URL_API + "/auths/logout", null, token);
+      // console.log(res.data.result);
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const refreshToken = (accessToken) => (dispatch) => {
+  dispatch({
+    type: PathAction.REFRESH_TOKEN,
+    payload: accessToken,
+  });
+};
+
 // export const callAPIgetListShipper = () => {
 //   return async (dispatch) => {
 //     try {
@@ -173,31 +258,3 @@ export const callAPIgetPackagebyID = (req, res) => {
 //   };
 // };
 //----------------------------------------------------------------
-
-export const LoginAthen = (user, pass) => {
-  return async (dispatch) => {
-    try {
-      const res = await API(
-        "GET",
-        URL_API + "//auths/login-in/admin",
-        user,
-        pass
-      );
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_TIME_FRAME,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {
-      console.log({ err });
-    }
-  };
-};
-
-export const refreshToken = (accessToken) => (dispatch) => {
-  dispatch({
-    type: PathAction.REFRESH_TOKEN,
-    payload: accessToken,
-  });
-};
