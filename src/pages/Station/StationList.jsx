@@ -306,6 +306,11 @@ export default function StationList() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
           />
         </Card>
       </Container>

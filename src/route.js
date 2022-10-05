@@ -33,13 +33,13 @@ import NewShipper from "./pages/AdminShipper/NewShipper";
 import UpdateShipper from "./pages/AdminShipper/UpdateShipper";
 import NewPackage from "./pages/PackageFood/newPackage";
 import EditPackage from "./pages/PackageFood/EditPackage";
-import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBackList";
 import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList";
 import { useEffect } from "react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
 import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
 import NewPackageItem from "./pages/PackageFood/NewPacketItem";
+import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 
 const ProtectedRouteAuthor = ({ condition, role, children }) => {
   if (condition === role) {

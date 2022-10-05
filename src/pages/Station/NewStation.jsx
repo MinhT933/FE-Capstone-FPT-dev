@@ -75,6 +75,7 @@ export default function NewStation() {
   const [input, setInput] = useState([]);
   const [opentime, setOpentime] = useState([dayjs("2022-10-18T21:11:5")]);
   const [closetime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
+  
   const token = localStorage.getItem("token");
   //formData để lưu data
   const formData = new FormData();
@@ -111,7 +112,7 @@ export default function NewStation() {
           type: "SUCCESS",
         });
       } catch (error) {
-        CustomizedToast({ message: "thêm thất bại", type: "ERROR" });
+        CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
       }
     },
   });
