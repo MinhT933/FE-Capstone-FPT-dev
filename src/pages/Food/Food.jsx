@@ -132,6 +132,7 @@ export default function Food() {
   const token = localStorage.getItem("token");
   var decoded = jwt_decode(token);
   console.log(decoded);
+
   const handleDelete = (id) => {
     API("PUT", URL_API + `/foods/update-status/${id}`, null, token).then(
       (res) => {
