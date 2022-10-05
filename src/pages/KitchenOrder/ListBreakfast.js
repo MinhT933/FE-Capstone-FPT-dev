@@ -1,36 +1,36 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+// import { Link as RouterLink } from "react-router-dom";
+// import { styled } from "@mui/material/styles";
 // material check xong mai xoa
 import {
     Card,
     Table,
     Stack,
     // Avatar,
-    Button,
+    // Button,
     Checkbox,
     TableRow,
     TableBody,
     TableCell,
     Container,
-    Typography,
+    // Typography,
     TableContainer,
-    TablePagination,
+    // TablePagination,
 } from "@mui/material";
 // components
-import Label from "../../components/label/label";
-import Scrollbar from "../../components/hook-form/Scrollbar";
+// import Label from "../../components/label/label";
+// import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
 
 
 import dayjs from 'dayjs';
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+// import TextField from '@mui/material/TextField';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import * as React from 'react';
 
 import Iconify from "../../components/hook-form/Iconify";
@@ -40,8 +40,11 @@ import Iconify from "../../components/hook-form/Iconify";
 // import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
 import KITCHENORDERLIST from "./KitchenOrderSample";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import KitchenListToolbar from './../../sections/@dashboard/user/KitchenListToolbar';
+import {
+    UserListHead,
+    // UserListToolbar,
+} from "../../sections/@dashboard/user";
+// import KitchenListToolbar from './../../sections/@dashboard/user/KitchenListToolbar';
 import MealListToolBar from "../../sections/@dashboard/user/MealListToolBar";
 import PageHeader from "../../components/PageHeader";
 
@@ -100,7 +103,7 @@ export default function ListBreakfast() {
     const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 
-    const [OpenPopUp, SetOpenPopUp] = useState(false);
+    // const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
     const [order, setOrder] = useState("asc");
@@ -146,14 +149,14 @@ export default function ListBreakfast() {
         setSelected(newSelected);
     };
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+    // const handleChangePage = (event, newPage) => {
+    //     setPage(newPage);
+    // };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
+    // const handleChangeRowsPerPage = (event) => {
+    //     setRowsPerPage(parseInt(event.target.value, 10));
+    //     setPage(0);
+    // };
 
     const handleFilterByName = (event) => {
         setFilterName(event.target.value);
@@ -168,40 +171,40 @@ export default function ListBreakfast() {
         filterName
     );
     //setColor button
-    const ColorButton = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC32"),
-        backgroundColor: "#FFCC33",
-        "&:hover": {
-            backgroundColor: "#ffee32",
-        },
-        display: "center",
-    }));
+    // const ColorButton = styled(Button)(({ theme }) => ({
+    //     color: theme.palette.getContrastText("#FFCC32"),
+    //     backgroundColor: "#FFCC33",
+    //     "&:hover": {
+    //         backgroundColor: "#ffee32",
+    //     },
+    //     display: "center",
+    // }));
 
-    const Button1 = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC33"),
-        backgroundColor: "#FFCC33",
+    // const Button1 = styled(Button)(({ theme }) => ({
+    //     color: theme.palette.getContrastText("#FFCC33"),
+    //     backgroundColor: "#FFCC33",
 
-        // display: "center"
-    }));;
+    //     // display: "center"
+    // }));;
 
     const isKitchenNotFound = filteredKitchen.length === 0;
 
 
     //LỊCH CHỌN NGÀY TRONG TUẦN
-    const isWeekend = (date) => {
-        const day = date.day();
+    // const isWeekend = (date) => {
+    //     const day = date.day();
 
-        return day === 0 || day === 6;
-    };
+    //     return day === 0 || day === 6;
+    // };
 
-    const [value, setValue] = React.useState(dayjs());
+    // const [value, setValue] = React.useState(dayjs());
 
 
 
     return (
         <Page title="User">
 
-            <Container sx={{ minWidth: 350, width: 350 }}>
+            <Container sx={{ minWidth: 350, width: 380 }}>
 
                 <PageHeader
                     title="SÁNG"
@@ -236,7 +239,6 @@ export default function ListBreakfast() {
                         filterName={filterName}
                         onFilterName={handleFilterByName}
                     />
-
 
                     <TableContainer sx={{ minWidth: 350, width: 350 }}>
                         <Table>

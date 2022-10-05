@@ -204,7 +204,7 @@ export default function KitchenViewOrderList() {
     };
 
     return (
-        <Page title="User">
+        <Page title="Kitchen">
             <Container>
                 {/* CHỌN BỮA ĂN */}
                 {/* <FormControl sx={{ m: 1, minWidth: 120 }}>

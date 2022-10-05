@@ -56,7 +56,7 @@ export default function KitchenOrderList() {
     // const [spacing, setSpacing] = React.useState(2);
 
     return (
-        <Page title="User">
+        <Page title="Kitchen">
             <Container>
 
                 <Stack
@@ -93,7 +93,7 @@ export default function KitchenOrderList() {
                 </Stack>
 
 
-                <Grid sx={{ flexGrow: 1, marginLeft: '5%' }} container spacing={2}>
+                <Grid sx={{ flexGrow: 1, marginLeft: '0%' }} container spacing={2}>
                     <Grid>
                         <ListBreakfast />
                     </Grid>

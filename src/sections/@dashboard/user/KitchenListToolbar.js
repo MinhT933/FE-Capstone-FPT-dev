@@ -135,12 +135,6 @@ export default function KitchenListToolbar({
           </IconButton>
         </Tooltip>
       ) : (
-        // <Tooltip title="Filter list">
-        //     <IconButton>
-        //         <Iconify icon="ic:round-filter-list" />
-        //     </IconButton>
-        // </Tooltip>
-
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="demo-simple-select-helper-label">Buổi</InputLabel>
           <Select

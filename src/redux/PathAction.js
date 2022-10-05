@@ -1,10 +1,14 @@
 //example: export const GET_LIST_USER = "GET_LIST_USER";
-// dùng để lưu các actions bắn các action này vào userReducer
-//buowc1 tạo path để 2 đứa actions và userReducer giao tiếp với nhau
+//dùng để lưu các actions bắn các action này vào userReducer
+//bước 1 tạo path để 2 đứa actions và userReducer giao tiếp với nhau
 export const GET_LIST_FOOD = "GET_LIST_FOOD";
 export const GET_FOOD = "GET_FOOD";
 export const GET_LIST_FOODCATEGORY = "GET_LIST_FOODCATEGORY";
+
 export const GET_LIST_STATIONS = "GET_LIST_STATIONS";
+export const GET_LIST_USER = "GET_LIST_USER";
+export const GET_LIST_KITCHEN = "GET_LIST_KITCHEN";
+
 export const GET_LIST_PACKAGE_FOOD = "GET_LIST_PACKAGE_FOOD";
 export const GET_LIST_GROUP_FOOD = "GET_LIST_GROUP_FOOD";
 export const GET_LIST_TIME_FRAME = "GET_LIST_TIME_FRAME";
