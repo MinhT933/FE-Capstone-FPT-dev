@@ -38,6 +38,7 @@ import Iconify from "../../components/hook-form/Iconify";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
@@ -128,17 +129,22 @@ export default function Food() {
     callAPI();
   }, [dispatch]);
 
+  const token = localStorage.getItem("token");
+  var decoded = jwt_decode(token);
+  console.log(decoded);
   const handleDelete = (id) => {
-    API("PUT", URL_API + `/foods/update-status/${id}`).then((res) => {
-      try {
-        dispatch(callAPIgetListFood());
-      } catch (err) {
-        alert("ban faild " + id);
-      }
-    }, []);
+    API("PUT", URL_API + `/foods/update-status/${id}`, null, token).then(
+      (res) => {
+        try {
+          dispatch(callAPIgetListFood());
+        } catch (err) {
+          alert("ban faild " + id);
+        }
+      },
+      []
+    );
   };
 
-  const token = localStorage.getItem("token");
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
   const food = useSelector((state) => {
     return state.userReducer.listFood;
@@ -214,7 +220,7 @@ export default function Food() {
             {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
           </Typography>
 
-          {token.role === "manager" && (
+          {decoded.role === "manager" && (
             <ButtonCustomize
               variant="contained"
               component={RouterLink}
@@ -307,10 +313,12 @@ export default function Food() {
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
                           <TableCell align="left">
-                            <ButtonCustomize
-                              nameButton="Cập nhập"
-                              onClick={() => handleDelete(id)}
-                            />
+                            {decoded.role === "manager" && (
+                              <ButtonCustomize
+                                nameButton="Cập nhập"
+                                onClick={() => handleDelete(id, token)}
+                              />
+                            )}
                           </TableCell>
                           <TableCell align="right">
                             <UserMoreMenu id={id} />

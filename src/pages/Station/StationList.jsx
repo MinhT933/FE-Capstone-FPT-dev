@@ -33,13 +33,16 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { callAPIgetListStation } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "id", label: "Mã trạm", alignRight: false },
+  // { id: "id", label: "Mã trạm", alignRight: false },
   { id: "name", label: "Địa điểm", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
+  { id: "phone", label: "Số điện thoại", alignRight: false },
   { id: "openTime", label: "Mở cửa", alignRight: false },
   { id: "closeTime", label: "Đóng cửa", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
@@ -163,18 +166,9 @@ export default function StationList() {
     getComparator(order, orderBy),
     filterName
   );
-
+  const token = localStorage.getItem("token");
+  const decoded = jwt_decode(token);
   const isStationNotFound = filteredStations.length === 0;
-
-  //setColor button
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC32"),
-    backgroundColor: "#FFCC33",
-    "&:hover": {
-      backgroundColor: "#ffee32",
-    },
-    display: "center",
-  }));
 
   const Button1 = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC33"),
@@ -195,13 +189,14 @@ export default function StationList() {
           <Typography variant="h4" gutterBottom>
             {/* User */}
           </Typography>
-          <ColorButton
-            variant="contained"
-            component={RouterLink}
-            to="/dashboard/admin/newstation"
-          >
-            Thêm trạm
-          </ColorButton>
+          {decoded.role === "admin" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/admin/newstation"
+              nameButton="Thêm trạm"
+            />
+          )}
         </Stack>
 
         <Card>
@@ -212,7 +207,7 @@ export default function StationList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 1000 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -253,9 +248,10 @@ export default function StationList() {
                               onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell>
-                          <TableCell align="left">{id}</TableCell>
+                          {/* <TableCell align="left">{id}</TableCell> */}
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">{openTime}</TableCell>
                           <TableCell align="left">{closeTime}</TableCell>
                           <TableCell align="left">
@@ -268,28 +264,17 @@ export default function StationList() {
                               {status}
                             </Label>
                           </TableCell>
-
-                          {/* <ColorButton
-                                                        variant="contained"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/newstation"
-
-                                                    >
-                                                        Cập nhật
-                                                    </ColorButton> */}
-                          <Button1
-                            sx={{ margin: "center", marginTop: "7%" }}
-                            variant="outlined"
-                            component={RouterLink}
-                            to="/dashboard/admin/updatestation"
-                          >
-                            Cập nhật
-                          </Button1>
-
-                          {/* <TableCell align="right"> */}
-                          {/* //props */}
-                          {/* <StationMoreMenu id={id} /> */}
-                          {/* </TableCell> */}
+                          <TableCell>
+                            {decoded.role === "admin" && (
+                              <ButtonCustomize
+                                variant="outlined"
+                                component={RouterLink}
+                                to="/dashboard/admin/updatestation"
+                                nameButton="Cập nhật"
+                                width="5rem"
+                              />
+                            )}
+                          </TableCell>
                         </TableRow>
                       );
                     })}

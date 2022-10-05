@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Button, Stack } from "@mui/material";
 
 export default function ButtonCustomize(props) {
-  const { nameButton, onClick, component, to, type } = props;
+  const { nameButton, onClick, component, to, type, width, marginTop } = props;
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC32"),
     backgroundColor: "#FFCC32",
@@ -13,7 +13,13 @@ export default function ButtonCustomize(props) {
     display: "center",
   }));
   return (
-    <ColorButton type={type} onClick={onClick} component={component} to={to}>
+    <ColorButton
+      type={type}
+      onClick={onClick}
+      component={component}
+      to={to}
+      sx={{ width: { width }, marginTop: { marginTop } }}
+    >
       {nameButton}
     </ColorButton>
   );
