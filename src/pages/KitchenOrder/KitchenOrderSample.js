@@ -20,8 +20,14 @@ import { sample } from 'lodash';
 // ability: INT
 // ----------------------------------------------------------------------
 const KitchenOrder = [...Array(20)].map((_, index) => ({
-    id: sample(['#000012',]),
-    name: sample(['Thanh Nhi',]),
+    id: sample(['Phở bò',
+        'Cơm gà chiên',
+        'Mì xào hải sản',
+        'Bún bò huế thập cẩm',
+        'Bánh bao xá xíu',
+        'Bánh bao thập cẩm',
+    ]),
+    name: sample(['100', '75', '96']),
 
     phone: sample(['0901225688',]),
 

@@ -201,7 +201,7 @@ export default function ListLunch() {
     return (
         <Page title="User">
 
-            <Container sx={{ minWidth: 350, width: 350 }}>
+            <Container sx={{ minWidth: 350, width: 380 }}>
 
                 <PageHeader
                     title="TRƯA"

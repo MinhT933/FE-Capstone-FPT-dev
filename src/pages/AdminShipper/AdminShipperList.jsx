@@ -1,3 +1,4 @@
+import * as React from "react";
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -25,18 +26,23 @@ import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
 // mock
-import ADMINSHIPPERLIST from "./AdminShipperSample";
+// import ADMINSHIPPERLIST from "./AdminShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
+import { callAPIgetListShipper } from "../../redux/action/acction";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import Iconify from "../../components/hook-form/Iconify";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-
-    { id: "name", label: "Họ Tên", alignRight: false },
+    { id: "fullName", label: "Họ Tên", alignRight: false },
     { id: "id", label: "Mã tài xế", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
-    { id: "NoPlate", label: "Biển số xe", alignRight: false },
-    { id: "VehicleType", label: "Loại xe", alignRight: false },
+    { id: "noPlate", label: "Biển số xe", alignRight: false },
+    { id: "vehicleType", label: "Loại xe", alignRight: false },
     { id: "accountId", label: "Tên tài khoản", alignRight: false },
     { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
@@ -71,13 +77,37 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function KitchenList() {
+export default function AdminShipperList() {
+    //CallAPIgetListShipper=====================================
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        const callAPI = async () => {
+            await dispatch(callAPIgetListShipper());
+        };
+        callAPI();
+    }, [dispatch]);
+
+    const handleDelete = (id) => {
+        API("PUT", URL_API + `/shippers/update-status/${id}`).then((res) => {
+            try {
+                dispatch(callAPIgetListShipper());
+            } catch (err) {
+                alert("ban faild " + id);
+            }
+        }, []);
+    };
+
+    const token = localStorage.getItem("token");
+    const shipper = useSelector((state) => {
+        return state.userReducer.listShipper;
+    });
+    //CallAPIgetListShipper=====================================
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -85,7 +115,7 @@ export default function KitchenList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("name");
+    const [orderBy, setOrderBy] = useState("fullName");
 
     const [filterName, setFilterName] = useState("");
 
@@ -99,18 +129,18 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = ADMINSHIPPERLIST.map((n) => n.name);
+            const newSelecteds = shipper.map((n) => n.fullName);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
+    const handleClick = (event, fullName) => {
+        const selectedIndex = selected.indexOf(fullName);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
+            newSelected = newSelected.concat(selected, fullName);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -137,11 +167,11 @@ export default function KitchenList() {
         setFilterName(event.target.value);
     };
 
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ADMINSHIPPERLIST.length) : 0;
+    // const emptyRows =
+    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ADMINSHIPPERLIST.length) : 0;
 
     const filteredKitchen = applySortFilter(
-        ADMINSHIPPERLIST,
+        shipper,
         getComparator(order, orderBy),
         filterName
     );
@@ -165,7 +195,7 @@ export default function KitchenList() {
     const isKitchenNotFound = filteredKitchen.length === 0;
 
     return (
-        <Page title="User">
+        <Page title="Manager Shipper">
             <Container>
                 <Stack
                     direction="row"
@@ -176,22 +206,17 @@ export default function KitchenList() {
                     <Typography variant="h4" gutterBottom>
                         {/* User */}
                     </Typography>
-                    {/* <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/admin/newshipper"
 
-                    >
-                        Thêm tài xế
-                    </ColorButton> */}
-                    <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/admin/newshipper"
+                    {token.role === "manager" && (
+                        <ColorButton
+                            variant="contained"
+                            component={RouterLink}
+                            to="/dashboard/admin/newshipper"
 
-                    >
-                        Thêm tài xế
-                    </ColorButton>
+                        >
+                            Thêm tài xế
+                        </ColorButton>
+                    )}
                 </Stack>
 
                 <Card>
@@ -208,11 +233,12 @@ export default function KitchenList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={ADMINSHIPPERLIST.length}
+                                    rowCount={shipper.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
                                 />
+
                                 <TableBody>
                                     {filteredKitchen
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -220,16 +246,16 @@ export default function KitchenList() {
                                             const {
                                                 id,
                                                 avatarUrl,
-                                                name,
+                                                fullName,
                                                 phone,
-                                                NoPlate,
-                                                VehicleType,
+                                                noPlate,
+                                                vehicleType,
                                                 status,
                                                 accountId,
                                                 kitchenID,
 
                                             } = row;
-                                            const isItemSelected = selected.indexOf(name) !== -1;
+                                            const isItemSelected = selected.indexOf(fullName) !== -1;
 
                                             return (
                                                 <TableRow
@@ -243,7 +269,7 @@ export default function KitchenList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, name)}
+                                                            onChange={(event) => handleClick(event, fullName)}
                                                         />
                                                     </TableCell>
 
@@ -253,18 +279,18 @@ export default function KitchenList() {
                                                             alignItems="center"
                                                             spacing={2}
                                                         >
-                                                            <Avatar alt={name} src={avatarUrl} />
+                                                            <Avatar alt={fullName} src={avatarUrl} />
                                                             <Typography variant="subtitle2" noWrap>
-                                                                {name}
+                                                                {fullName}
                                                             </Typography>
                                                         </Stack>
                                                     </TableCell>
                                                     <TableCell align="left">{id}</TableCell>
-                                                    {/* <TableCell align="left">{name}</TableCell> */}
+                                                    {/* <TableCell align="left">{fullName}</TableCell> */}
 
                                                     <TableCell align="left">{phone}</TableCell>
-                                                    <TableCell align="left">{NoPlate}</TableCell>
-                                                    <TableCell align="left">{VehicleType}</TableCell>
+                                                    <TableCell align="left">{noPlate}</TableCell>
+                                                    <TableCell align="left">{vehicleType}</TableCell>
                                                     <TableCell align="left">{accountId}</TableCell>
                                                     <TableCell align="left">{kitchenID}</TableCell>
                                                     <TableCell align="left">
@@ -298,11 +324,11 @@ export default function KitchenList() {
                                                 </TableRow>
                                             );
                                         })}
-                                    {emptyRows > 0 && (
+                                    {/* {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
                                             <TableCell colSpan={6} />
                                         </TableRow>
-                                    )}
+                                    )} */}
                                 </TableBody>
 
                                 {isKitchenNotFound && (
@@ -321,11 +347,16 @@ export default function KitchenList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={ADMINSHIPPERLIST.length}
+                        count={shipper.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        // fix languge in footer tables
+                        labelRowsPerPage={"Số hàng trên một trang"}
+                        labelDisplayedRows={({ from, to, count }) => {
+                            return "" + from + "-" + to + " của " + count;
+                        }}
                     />
                 </Card>
             </Container>
