@@ -38,12 +38,14 @@ import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList"
 import { useEffect } from "react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
+import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
+import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 
 const ProtectedRouteAuthor = ({ condition, role, children }) => {
   if (condition === role) {
     return { children };
   }
-  return <Navigate to="/" replace />;
+  return <Navigate to="/login" replace />;
 };
 
 const ProtectedRouteAuthen = ({ redirectPath = "/login", role }) => {
@@ -103,12 +105,10 @@ export default function Router() {
         },
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
-        { path: "package/:id", element: <EditPackage /> },
+        // { path: "package/:id", element: <EditPackage /> },
         { path: "newpackage", element: <NewPackage /> },
-        { path: "login", element: <Page404 /> },
-        { path: "register", element: <Page404 /> },
         { path: "newfood", element: <NewFood /> },
-        { path: "food/:id", element: <EditFood /> },
+        // { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
 
@@ -164,6 +164,8 @@ export default function Router() {
         { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
+        { path: "timeframe", element: <Timeframe /> },
+        { path: "newpackageITem", element: <NewPackageItem /> },
 
         //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },

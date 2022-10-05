@@ -34,7 +34,6 @@ const useStyles = styled("Paper")(({ theme }) => ({
 }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
-
 //yub dùng để validation trong reactjs
 // khởi tạo schema để so sánh value(theo tao hiểu)
 const schema = yup.object().shape({
@@ -167,7 +166,7 @@ export default function NewFood() {
             alignItems="center"
           >
             <Grid container spacing={1.5}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Input
                   variant="outlined"
                   name="name"
@@ -192,7 +191,7 @@ export default function NewFood() {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Input
                   variant="outlined"
                   name="price"
@@ -212,7 +211,7 @@ export default function NewFood() {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Select
                   name="foodCategoryId"
                   label="Loại"
@@ -231,10 +230,12 @@ export default function NewFood() {
                   options={getOptions()}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.TextArea
-                  row={2}
-                  maxRows={4}
+                  columns={12}
+                  width="24.5rem"
+                  row={6}
+                  maxRows={6}
                   multiline
                   variant="outlined"
                   label="Mô tả"
@@ -308,7 +309,6 @@ export default function NewFood() {
               </Box>
             </label>
           </Box>
-
         </Box>
       </form>
     </Paper>
