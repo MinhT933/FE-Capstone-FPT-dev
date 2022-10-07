@@ -11,7 +11,7 @@ import Controls from "./../../components/Control/Controls";
 import { FormHelperText } from "@mui/material";
 
 import dayjs from "dayjs";
-
+import IconButton from "@mui/material/IconButton";
 import { useFormik } from "formik";
 import { styled } from "@mui/material/styles";
 import PageHeader from "../../components/PageHeader";
@@ -24,6 +24,8 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import NewTimeFrame from "./NewTimeFrame";
 
 const schema = yup.object().shape({
   name: yup.string().required().trim(),
@@ -45,6 +47,7 @@ const useStyles = styled("Paper")(({ theme }) => ({
 }));
 
 export default function NewPackage() {
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
   //xử lí hình ảnh
   const [input, setInput] = useState([]);
 
@@ -313,7 +316,7 @@ export default function NewPackage() {
                 />
                 {formik.touched.endSale && formik.errors.endSale && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.endSale}
@@ -321,26 +324,48 @@ export default function NewPackage() {
                 )}
               </Grid>
               <Grid item xs={6}>
-                <Controls.Select
-                  name="timeFrameID"
-                  label="Chọn khung thời gian"
-                  value={formik.values.timeFrameID}
-                  onChange={(e) => {
-                    const a = timeframe.find((c) => c.id === e.target.value);
-                    formik.setFieldValue("timeFrameID", a.id);
-                    console.log(a);
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
                   }}
-                  onBlur={formik.handleBlur}
-                  options={getTimeFrameOptions()}
-                />
-                {formik.touched.timeFrameID && formik.errors.timeFrameID && (
-                  <FormHelperText
-                    error={false}
-                    id="standard-weight-helper-text-username-login"
+                >
+                  <Box>
+                    <Controls.Select
+                      name="timeFrameID"
+                      label="Chọn khung thời gian"
+                      width="13rem"
+                      value={formik.values.timeFrameID}
+                      onChange={(e) => {
+                        const a = timeframe.find(
+                          (c) => c.id === e.target.value
+                        );
+                        formik.setFieldValue("timeFrameID", a.id);
+                      }}
+                      onBlur={formik.handleBlur}
+                      options={getTimeFrameOptions()}
+                    />
+                    {formik.touched.timeFrameID && formik.errors.timeFrameID && (
+                      <FormHelperText
+                        error
+                        id="standard-weight-helper-text-username-login"
+                      >
+                        {formik.errors.timeFrameID}
+                      </FormHelperText>
+                    )}
+                  </Box>
+                  <Box
+                    sx={{ mr: "20%", height: "15%", width: "15%", mt: "3%" }}
                   >
-                    {formik.errors.timeFrameID}
-                  </FormHelperText>
-                )}
+                    <IconButton
+                      onClick={() => {
+                        SetOpenPopUp(true);
+                      }}
+                    >
+                      <AddCircleOutlineIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
               </Grid>
 
               <Grid item xs={6}>
@@ -425,6 +450,7 @@ export default function NewPackage() {
           </Box>
         </form>
       </Box>
+      <NewTimeFrame OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp} />
     </Paper>
   );
 }

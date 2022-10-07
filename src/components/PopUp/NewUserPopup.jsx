@@ -61,7 +61,6 @@ export default function NewUserPopup(props) {
         </DialogTitle>
 
         <DialogContent>
-         
             <Grid
               container
               rowSpacing={4}

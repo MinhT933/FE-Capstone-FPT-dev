@@ -153,7 +153,7 @@ export default function EditFood() {
           >
             <Grid></Grid>
             <Grid container spacing={1.5}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Input
                   variant="outlined"
                   name="name"
@@ -173,7 +173,7 @@ export default function EditFood() {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Input
                   variant="outlined"
                   label="Giá"
@@ -193,7 +193,7 @@ export default function EditFood() {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Select
                   name="foodCategoryId"
                   label="loại"
@@ -208,7 +208,7 @@ export default function EditFood() {
                   options={getOptions()}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.TextArea
                   width="24.5rem"
                   row={2}

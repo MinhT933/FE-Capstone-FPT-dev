@@ -1,5 +1,5 @@
 import { Card, Paper, Typography } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 import React from "react";
 // import { Paper, Card, Typography, makeStyles } from '@material-ui/core'
 
@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
   pageHeader: {
     padding: theme.spacing(4),
     display: "flex",
-    marginBottom: theme.spacing(2),
     justifyContent: "center",
   },
   pageIcon: {

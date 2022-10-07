@@ -84,6 +84,8 @@ export default function NewFood() {
   //formData để lưu data
   const formData = new FormData();
 
+  const token = localStorage.getItem("token");
+
   //selected dùng để lí ảnh
 
   //dùng use formik để validate giá trị  nhập vào
@@ -113,7 +115,7 @@ export default function NewFood() {
       formData.append("foodCategoryId", formik.values.foodCategoryId);
       //gọi API để đẩy data xuống
       try {
-        const res = await API("POST", URL_API + "/foods", formData);
+        const res = await API("POST", URL_API + "/foods", formData, token);
         CustomizedToast({
           message: `Đã thêm món ${formik.values.name}`,
           type: "SUCCESS",
@@ -135,8 +137,6 @@ export default function NewFood() {
       setInput(images)
     );
   }
-
-  // const classes = useStyles();
 
   return (
     <Paper>
@@ -237,6 +237,7 @@ export default function NewFood() {
                   row={6}
                   maxRows={6}
                   multiline
+                  width="24.5rem"
                   variant="outlined"
                   label="Mô tả"
                   name="description"

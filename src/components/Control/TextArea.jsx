@@ -4,7 +4,10 @@ import { styled } from "@mui/system";
 import { TextField } from "@mui/material";
 
 export default function TextArea(props) {
+
+
   const { name, label, value, onChange, placeholder, defaultValue, width } = props;
+
   const StyleBox = styled(Box)(({ theme }) => ({
     alignItems: "center",
     flexWrap: "wrap",
@@ -13,7 +16,9 @@ export default function TextArea(props) {
   return (
     <Box>
       <TextField
+
         sx={{ width: {width} }}
+
         placeholder={placeholder}
         label={label}
         multiline

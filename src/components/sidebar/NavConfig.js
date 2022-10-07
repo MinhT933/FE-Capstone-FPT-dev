@@ -48,11 +48,11 @@ const navConfigAdmin = [
     title: "Sản phẩm",
     icon: getIcon("tabler:building-warehouse"),
     children: [
-      {
-        title: "Thức ăn",
-        path: "/dashboard/admin/food",
-        icon: getIcon("ep:food"),
-      },
+      // {
+      //   title: "Thức ăn",
+      //   path: "/dashboard/admin/food",
+      //   icon: getIcon("ep:food"),
+      // },
       {
         title: "Nhóm thức ăn",
         path: "/dashboard/admin/foodGroup",

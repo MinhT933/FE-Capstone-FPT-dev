@@ -216,6 +216,14 @@ export default function PackageFood() {
               nameButton="Thêm Gói Ăn"
             />
           )}
+          {/* {decoded.role === "manager" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/manager/timeFrame"
+              nameButton="Tạo khung thời gian"
+            />
+          )} */}
         </Stack>
         <Card>
           <UserListToolbar
