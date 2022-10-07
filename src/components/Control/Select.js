@@ -5,9 +5,10 @@ import {
   Select as MuiSelect,
   MenuItem,
 } from "@mui/material";
+import ButtonCustomize from "../Button/ButtonCustomize";
 
 export default function Select(props) {
-  const { name, label, value, onChange, options, defaultValue } = props;
+  const { name, label, value, onChange, options, defaultValue, width } = props;
 
   return (
     <FormControl
@@ -26,13 +27,18 @@ export default function Select(props) {
         onChange={onChange}
         defaultValue={defaultValue}
         multiline
+        sx={{ width: width}}
       >
+        {/* <MenuItem>
+          <ButtonCustomize nameButton="tạo" />
+        </MenuItem> */}
         {options?.map((item) => (
           <MenuItem key={item.id} value={item.id}>
             {item.title}
           </MenuItem>
         ))}
       </MuiSelect>
+      {/* <MuiSelect>hihi</MuiSelect> */}
     </FormControl>
   );
 }

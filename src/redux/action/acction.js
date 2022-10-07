@@ -19,7 +19,7 @@ export const createAction = ({ type, payload }) => {
 };
 //B2: ở đây tao tạo một hàm gọi ( around function) để call API
 
-export const callAPIgetListFood = () => {
+export const callAPIgetListFood = (token) => {
   return async (dispatch) => {
     try {
       //res (resonse) ở đây theo tao biết là nhận vào data mà api đã gọi
@@ -27,7 +27,7 @@ export const callAPIgetListFood = () => {
       // muốn biết thì xuống dưới consle.log(res) ra xem nó trả về cái gì
       /// API là path của API dùng để gọi nó lên 'GET' là phương thức
       // hay trong anh văn gọi là 'mê thót (methods)' đó
-      const res = await API("GET", URL_API + "/foods", null, null);
+      const res = await API("GET", URL_API + "/foods", null, token);
       // hàm dispatch hiểu nôm na là lưu store type và các value gắn cùng
       // gg search đi
       dispatch(

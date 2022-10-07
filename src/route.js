@@ -38,6 +38,7 @@ import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList"
 import { useEffect } from "react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
+import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 
 const ProtectedRouteAuthor = ({ condition, role, children }) => {
   if (condition === role) {
@@ -164,6 +165,7 @@ export default function Router() {
         { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
+        { path: "timeFrame", element: <NewPackageItem /> },
 
         //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },

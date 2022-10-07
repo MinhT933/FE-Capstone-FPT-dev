@@ -106,8 +106,6 @@ export default function Food() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [categoryName, setcategoryName] = useState([]);
-
   const dispatch = useDispatch();
 
   //gọi trên action.js ==> accctions.js
@@ -120,15 +118,16 @@ export default function Food() {
   // cách search một vần đề why  + 'vấn đề ' in 'thư viện or component'
   //vd: why slectBox not working in mui
 
+  const token = localStorage.getItem("token");
+  var decoded = jwt_decode(token);
+
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIgetListFood());
+      await dispatch(callAPIgetListFood(token));
     };
     callAPI();
   }, [dispatch]);
 
-  const token = localStorage.getItem("token");
-  var decoded = jwt_decode(token);
   console.log(decoded);
   const handleDelete = (id) => {
     API("PUT", URL_API + `/foods/update-status/${id}`, null, token).then(

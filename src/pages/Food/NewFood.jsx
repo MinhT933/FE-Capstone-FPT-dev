@@ -34,7 +34,6 @@ const useStyles = styled("Paper")(({ theme }) => ({
 }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
-
 //yub dùng để validation trong reactjs
 // khởi tạo schema để so sánh value(theo tao hiểu)
 const schema = yup.object().shape({
@@ -85,6 +84,8 @@ export default function NewFood() {
   //formData để lưu data
   const formData = new FormData();
 
+  const token = localStorage.getItem("token");
+
   //selected dùng để lí ảnh
 
   //dùng use formik để validate giá trị  nhập vào
@@ -114,7 +115,7 @@ export default function NewFood() {
       formData.append("foodCategoryId", formik.values.foodCategoryId);
       //gọi API để đẩy data xuống
       try {
-        const res = await API("POST", URL_API + "/foods", formData);
+        const res = await API("POST", URL_API + "/foods", formData, token);
         CustomizedToast({
           message: `Đã thêm món ${formik.values.name}`,
           type: "SUCCESS",
@@ -136,8 +137,6 @@ export default function NewFood() {
       setInput(images)
     );
   }
-
-  // const classes = useStyles();
 
   return (
     <Paper>
@@ -167,7 +166,7 @@ export default function NewFood() {
             alignItems="center"
           >
             <Grid container spacing={1.5}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Input
                   variant="outlined"
                   name="name"
@@ -192,7 +191,7 @@ export default function NewFood() {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Input
                   variant="outlined"
                   name="price"
@@ -212,7 +211,7 @@ export default function NewFood() {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.Select
                   name="foodCategoryId"
                   label="Loại"
@@ -231,11 +230,12 @@ export default function NewFood() {
                   options={getOptions()}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Controls.TextArea
                   row={2}
                   maxRows={4}
                   multiline
+                  width="24.5rem"
                   variant="outlined"
                   label="Mô tả"
                   name="description"
@@ -308,7 +308,6 @@ export default function NewFood() {
               </Box>
             </label>
           </Box>
-
         </Box>
       </form>
     </Paper>
