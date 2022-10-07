@@ -63,7 +63,7 @@ export const callAPIGetListPackage = () => {
   };
 };
 
-//----------------------------------------------
+//----------------------------------------------------------------
 export const callAPIgetListCategory = () => {
   return async (dispatch) => {
     try {
@@ -90,25 +90,7 @@ export const callAPIgetListCategory = () => {
 //       }
 // }
 
-//-------------------------------------------
-export const callAPIgetListStation = () => {
-  return async (dispatch) => {
-    try {
-      const res = await API("GET", URL_API + "/stations", null, null);
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_STATIONS,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {
-      console.log({ err });
-    }
-  };
-};
-
 //----------------------------------------------------------------
-
 export const callAPIgetGroupFood = (req, res) => {
   return async (dispatch) => {
     try {
@@ -140,7 +122,7 @@ export const callAPIgetTimeFrame = (req, res) => {
     }
   };
 };
-//---------------------------------------------------
+//----------------------------------------------------------------
 export const callAPIgetPackagebyID = (req, res) => {
   return async (dispatch) => {
     try {
@@ -156,7 +138,7 @@ export const callAPIgetPackagebyID = (req, res) => {
     }
   };
 };
-
+//----------------------------------------------------------------
 export const LoginAthenAdmin = (user, navigate) => {
   return async (dispatch) => {
     try {
@@ -177,7 +159,7 @@ export const LoginAthenAdmin = (user, navigate) => {
     }
   };
 };
-
+//----------------------------------------------------------------
 export const LoginAthenManager = (user, navigate) => {
   return async (dispatch) => {
     try {
@@ -199,7 +181,7 @@ export const LoginAthenManager = (user, navigate) => {
     }
   };
 };
-
+//----------------------------------------------------------------
 export const LoginAthenKitchen = (user, navigate) => {
   return async (dispatch) => {
     try {
@@ -221,6 +203,7 @@ export const LoginAthenKitchen = (user, navigate) => {
     }
   };
 };
+//----------------------------------------------------------------
 export const LogOut = (token, navigate) => {
   return async (dispatch) => {
     try {
@@ -240,14 +223,49 @@ export const refreshToken = (accessToken) => (dispatch) => {
     payload: accessToken,
   });
 };
+//----------------------------------------------------------------
 
-// export const callAPIgetListShipper = () => {
+export const callAPIgetListStation = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/stations", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_STATIONS,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+//----------------------------------------------------------------
+export const callAPIgetListShipper = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/shippers", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_SHIPPER,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+//----------------------------------------------------------------
+// export const callAPIgetListUser = () => {
 //   return async (dispatch) => {
 //     try {
 //       const res = await API("GET", URL_API + "/foods", null, null);
 //       dispatch(
 //         createAction({
-//           type: PathAction.GET_LIST_SHIPPER,
+//           type: PathAction.GET_LIST_USER,
 //           payload: res.data.result,
 //         })
 //       );
@@ -257,4 +275,23 @@ export const refreshToken = (accessToken) => (dispatch) => {
 //     }
 //   };
 // };
+//----------------------------------------------------------------
+export const callAPIgetListKitchen = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/kitchens", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_KITCHEN,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+//----------------------------------------------------------------
+//----------------------------------------------------------------
 //----------------------------------------------------------------

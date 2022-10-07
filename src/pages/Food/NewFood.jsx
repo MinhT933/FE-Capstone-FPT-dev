@@ -232,8 +232,10 @@ export default function NewFood() {
               </Grid>
               <Grid item xs={12}>
                 <Controls.TextArea
-                  row={2}
-                  maxRows={4}
+                  columns={12}
+                  width="24.5rem"
+                  row={6}
+                  maxRows={6}
                   multiline
                   width="24.5rem"
                   variant="outlined"

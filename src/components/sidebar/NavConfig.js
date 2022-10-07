@@ -73,7 +73,7 @@ const navConfigAdmin = [
 
   {
     title: "Người giao hàng",
-    path: "/dashboard/admin/404",
+    path: "/dashboard/admin/adminshipper",
     icon: getIcon("carbon:delivery"),
   },
   {
@@ -106,11 +106,11 @@ const navConfigAdmin = [
 ];
 
 const navConfigKichen = [
-  {
-    title: "Bếp xem bếp",
-    path: "/dashboard/kitchen/Listkitchen",
-    icon: getIcon("mdi:card-account-details-star-outline"),
-  },
+  // {
+  //   title: "Bếp xem bếp",
+  //   path: "/dashboard/kitchen/Listkitchen",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
   {
     title: "Bếp xem thông tin bếp",
     path: "/dashboard/kitchen/kitchenprofile",
@@ -120,6 +120,11 @@ const navConfigKichen = [
     title: "Bếp quản lí Người giao hàng",
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
+  },
+  {
+    title: "Bếp chuẩn bị món ăn",
+    path: "/dashboard/kitchen/kitchenorder",
+    icon: getIcon("ic:outline-restaurant-menu"),
   },
 ];
 const navConfig = [
@@ -209,11 +214,11 @@ const navConfig = [
   },
 
   //=========================================================
-  {
-    title: "Bếp xem bếp",
-    path: "/dashboard/kitchen/kitchen",
-    icon: getIcon("mdi:card-account-details-star-outline"),
-  },
+  // {
+  //   title: "Bếp xem bếp",
+  //   path: "/dashboard/kitchen/kitchen",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
   {
     title: "Bếp xem thông tin bếp",
     path: "/dashboard/kitchen/kitchenprofile",

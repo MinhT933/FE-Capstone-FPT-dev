@@ -106,6 +106,10 @@ export default function Food() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+
+  const [categoryName, setcategoryName] = useState([]);
+
+
   const dispatch = useDispatch();
 
   //gọi trên action.js ==> accctions.js
@@ -129,6 +133,7 @@ export default function Food() {
   }, [dispatch]);
 
   console.log(decoded);
+
   const handleDelete = (id) => {
     API("PUT", URL_API + `/foods/update-status/${id}`, null, token).then(
       (res) => {
@@ -146,7 +151,7 @@ export default function Food() {
   const food = useSelector((state) => {
     return state.userReducer.listFood;
   });
-
+  //========================================================
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");

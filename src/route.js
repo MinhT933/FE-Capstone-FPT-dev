@@ -33,18 +33,23 @@ import NewShipper from "./pages/AdminShipper/NewShipper";
 import UpdateShipper from "./pages/AdminShipper/UpdateShipper";
 import NewPackage from "./pages/PackageFood/newPackage";
 import EditPackage from "./pages/PackageFood/EditPackage";
-import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBackList";
 import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList";
 import { useEffect } from "react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
+
 import NewPackageItem from "./pages/PackageFood/NewPacketItem";
+
+import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
+import NewPackageItem from "./pages/PackageFood/NewPacketItem";
+import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
+
 
 const ProtectedRouteAuthor = ({ condition, role, children }) => {
   if (condition === role) {
     return { children };
   }
-  return <Navigate to="/" replace />;
+  return <Navigate to="/login" replace />;
 };
 
 const ProtectedRouteAuthen = ({ redirectPath = "/login", role }) => {
@@ -104,12 +109,10 @@ export default function Router() {
         },
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
-        { path: "package/:id", element: <EditPackage /> },
+        // { path: "package/:id", element: <EditPackage /> },
         { path: "newpackage", element: <NewPackage /> },
-        { path: "login", element: <Page404 /> },
-        { path: "register", element: <Page404 /> },
         { path: "newfood", element: <NewFood /> },
-        { path: "food/:id", element: <EditFood /> },
+        // { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
 
@@ -165,7 +168,11 @@ export default function Router() {
         { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
+
         { path: "timeFrame", element: <NewPackageItem /> },
+
+        { path: "newpackageITem", element: <NewPackageItem /> },
+
 
         //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },
