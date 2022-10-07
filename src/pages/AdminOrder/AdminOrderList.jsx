@@ -3,8 +3,6 @@
 // ở đây fix được tên tên table
 // ko nhát thiết phải thêm table head ở dưới 
 
-
-
 // ----------------------------------------------------------------------
 import { filter } from "lodash";
 import { useState } from "react";
@@ -26,6 +24,21 @@ import {
   TableContainer,
   TablePagination,
 } from "@mui/material";
+
+//callAPI
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import * as React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { callAPIgetListKitchen } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
+
 // components
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
@@ -40,7 +53,7 @@ import dayjs from 'dayjs';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import * as React from 'react';
+
 
 
 // mock
@@ -319,11 +332,11 @@ export default function KitchenOrderList() {
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
 
                 {isKitchenNotFound && (
@@ -347,6 +360,11 @@ export default function KitchenOrderList() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
           />
         </Card>
       </Container>

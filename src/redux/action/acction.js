@@ -293,5 +293,42 @@ export const callAPIgetListKitchen = () => {
   };
 };
 //----------------------------------------------------------------
+export const callAPIKitchenGetListOrder = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/orders", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.KITCHEN_GET_LIST_ORDER,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
 //----------------------------------------------------------------
+export const callAPIAdminGetListOrder = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/orders", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.ADMIN_GET_LIST_ORDER,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+
+
+//----------------------------------------------------------------
+
 //----------------------------------------------------------------

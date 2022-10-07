@@ -1,14 +1,12 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-// material
 import {
     Card,
     Table,
     Stack,
     // Avatar,
-    Button,
+    // Button,
+    Paper,
     Checkbox,
     TableRow,
     TableBody,
@@ -16,34 +14,28 @@ import {
     Container,
     Typography,
     TableContainer,
-    TablePagination,
+    // TablePagination,
 } from "@mui/material";
 // components
-import Label from "../../components/label/label";
-import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
 
 
 import dayjs from 'dayjs';
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import * as React from 'react';
 
 import Iconify from "../../components/hook-form/Iconify";
 
-
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
-// import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
 import KITCHENORDERLIST from "./KitchenOrderSample";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import KitchenListToolbar from './../../sections/@dashboard/user/KitchenListToolbar';
+import {
+    UserListHead,
+    // UserListToolbar,
+} from "../../sections/@dashboard/user";
 import MealListToolBar from "../../sections/@dashboard/user/MealListToolBar";
 import PageHeader from "../../components/PageHeader";
+import { Grid } from "@mui/joy";
 
 
 
@@ -54,11 +46,6 @@ import PageHeader from "../../components/PageHeader";
 const TABLE_HEAD = [
     { id: "id", label: "Tên món" },
     { id: "name", label: "Số lượng", alignRight: false },
-    // { id: "phone", label: "Điện thoại", alignRight: false },
-    // { id: "station", label: "Điểm giao", alignRight: false },
-    // { id: "order", label: "Món ăn", alignRight: false },
-    // { id: "note", label: "Ghi chú", alignRight: false },
-    // { id: "status", label: "Trạng thái", alignRight: false },
     { id: "" },
 ];
 
@@ -90,24 +77,24 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.kitchenName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ListLunch() {
+export default function ListBreakfast() {
     const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 
-    const [OpenPopUp, SetOpenPopUp] = useState(false);
+    // const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
     const [order, setOrder] = useState("asc");
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("kitchenName");
+    const [orderBy, setOrderBy] = useState("name");
 
     const [filterName, setFilterName] = useState("");
 
@@ -121,18 +108,18 @@ export default function ListLunch() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = KITCHENORDERLIST.map((n) => n.kitchenName);
+            const newSelecteds = KITCHENORDERLIST.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, kitchenName) => {
-        const selectedIndex = selected.indexOf(kitchenName);
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, kitchenName);
+            newSelected = newSelected.concat(selected, name);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -146,99 +133,73 @@ export default function ListLunch() {
         setSelected(newSelected);
     };
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
 
     const handleFilterByName = (event) => {
         setFilterName(event.target.value);
     };
 
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENORDERLIST.length) : 0;
 
     const filteredKitchen = applySortFilter(
         KITCHENORDERLIST,
         getComparator(order, orderBy),
         filterName
     );
-    //setColor button
-    const ColorButton = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC32"),
-        backgroundColor: "#FFCC33",
-        "&:hover": {
-            backgroundColor: "#ffee32",
-        },
-        display: "center",
-    }));
-
-    const Button1 = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC33"),
-        backgroundColor: "#FFCC33",
-
-        // display: "center"
-    }));;
-
     const isKitchenNotFound = filteredKitchen.length === 0;
 
 
-    //LỊCH CHỌN NGÀY TRONG TUẦN
-    const isWeekend = (date) => {
-        const day = date.day();
-
-        return day === 0 || day === 6;
-    };
-
-    const [value, setValue] = React.useState(dayjs());
-
-
-
     return (
-        <Page title="User">
+        <Page title="Breakfast">
 
-            <Container sx={{ minWidth: 350, width: 380 }}>
+            <Container sx={{ minWidth: 380, width: 380 }}>
 
-                <PageHeader
-                    title="TRƯA"
+                {/* <PageHeader
+                    title="SÁNG"
                     // icon={getIcon("line-md:moon-alt-to-sunny-outline-loop-transition")}
-                    // icon={getIcon("emojione:sun-behind-cloud")}
-                    icon={getIcon("emojione:sun")}
+                    icon={getIcon("emojione:sun-behind-cloud")}
+                // icon={getIcon("emojione:sun")}
                 // icon={getIcon("emojione:crescent-moon")}
-                />
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                // mb={1}
-                >
-                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <StaticDatePicker
-                            orientation="landscape"
-                            openTo="day"
-                            value={value}
-                            shouldDisableDate={isWeekend}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider> */}
-                </Stack>
-
+                /> */}
                 <Card>
-                    <MealListToolBar
+                    <Paper
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        sx={{
+                            background: "#FFCC33",
+                            color: "black",
+                            // height: "50%",
+                            // width: "33%",
+                        }}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={6}>
+                                <Typography variant="h4" gutterBottom
+                                    sx={{
+                                        // display: "flex",
+                                        marginLeft: "65%",
+                                        marginTop: "9%",
+                                    }}>
+                                    TRƯA
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={2}>
+                                <Card sx={{
+                                    display: "inline-block",
+                                    padding: "20%",
+                                    marginTop: "14%",
+                                    marginLeft: "45%",
+                                }}>{getIcon("emojione:sun")}</Card>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+
+                    {/* <MealListToolBar
                         numSelected={selected.length}
                         filterName={filterName}
                         onFilterName={handleFilterByName}
-                    />
+                    /> */}
 
-
-                    <TableContainer sx={{ minWidth: 350, width: 350 }}>
+                    <TableContainer sx={{ minWidth: 390, width: 390 }}>
                         <Table>
                             <UserListHead
                                 order={order}
@@ -280,11 +241,7 @@ export default function ListLunch() {
                                             </TableRow>
                                         );
                                     })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
+
                             </TableBody>
 
                             {isKitchenNotFound && (
@@ -301,7 +258,6 @@ export default function ListLunch() {
 
                 </Card>
             </Container>
-            {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
+        </Page >
     );
 }

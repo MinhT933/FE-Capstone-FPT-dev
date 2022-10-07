@@ -9,6 +9,8 @@ import {
     Stack,
     // Avatar,
     Button,
+    Box,
+    Paper,
     Checkbox,
     TableRow,
     TableBody,
@@ -19,6 +21,10 @@ import {
     TablePagination,
 } from "@mui/material";
 // components
+
+import DatePicker from "../../components/Control/DatePicker";
+
+
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
@@ -55,7 +61,7 @@ import AdminListToolbar from "../../sections/@dashboard/user/AdminListToolBar";
 
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
-// ko nhát thiết phải thêm table head ở dưới
+// ko nhất thiết phải thêm table head ở dưới
 
 const TABLE_HEAD = [
     { id: "id", label: "Mã đơn", alignRight: false },
@@ -220,20 +226,68 @@ export default function AdminViewFeedBackList() {
     return (
         <Page title="Feedback">
             <Container>
+
                 <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
-                    mb={5}
+                    mb={1}
                 >
-                    <Typography variant="h4" gutterBottom>
-                        {/* User */}
-                    </Typography>
+                    <Paper sx={{
+                        background: "#FFCC33",
+                        color: "black",
+                        height: "50%",
+                        width: "33%",
+                    }}>
+                        <Typography variant="h3" gutterBottom
+                            sx={{
+                                display: "flex",
+                                marginLeft: "7%",
+                                marginTop: "2%",
+                            }}>
+                            Đánh giá theo tuần
+                        </Typography>
+
+                    </Paper>
 
                 </Stack>
+                <Typography variant="subtitle2"
+                    sx={{
+                        display: "flex",
+                        marginLeft: "7%",
+                        marginTop: "2%",
+                    }}>
+                    Tính theo tổng đánh giá cho từng bếp
+                </Typography>
 
-                <Card>
-                    <AdminListToolbar
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    mb={3}
+                >
+                    <FormControl sx={{ width: "25%", }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                label="Chọn ngày trong tuần"
+                                value={value}
+                                onChange={(newValue) => {
+                                    setValue(newValue);
+                                }}
+                                inputFormat="DD-MM-YYYY"
+                                renderInput={({ inputRef, inputProps, InputProps }) => (
+                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                        <input ref={inputRef} {...inputProps} />
+                                        {InputProps?.endAdornment}
+                                    </Box>
+                                )}
+                            />
+                        </LocalizationProvider>
+                    </FormControl>
+                </Stack>
+
+                <Card Card >
+                    <UserListToolbar
                         numSelected={selected.length}
                         filterName={filterName}
                         onFilterName={handleFilterByName}
@@ -287,15 +341,16 @@ export default function AdminViewFeedBackList() {
                                                     <TableCell align="left">{kitchen}</TableCell>
                                                     <TableCell align="left">{order}</TableCell>
 
-
-                                                    <Rating
-                                                        name="read-only"
-                                                        value={valueStar}
-                                                        readOnly
-                                                        sx={{
-                                                            "& > legend": { mt: 3 },
-                                                        }}
-                                                    />
+                                                    <TableCell align="left">
+                                                        <Rating
+                                                            name="read-only"
+                                                            value={valueStar}
+                                                            readOnly
+                                                            sx={{
+                                                                "& > legend": { mt: 3 },
+                                                            }}
+                                                        />
+                                                    </TableCell>
                                                 </TableRow>
                                             );
                                         })}
@@ -333,9 +388,9 @@ export default function AdminViewFeedBackList() {
                             return "" + from + "-" + to + " của " + count;
                         }}
                     />
-                </Card>
-            </Container>
+                </Card >
+            </Container >
             {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
+        </Page >
     );
 }
