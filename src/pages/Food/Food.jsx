@@ -140,7 +140,7 @@ export default function Food() {
         try {
           dispatch(callAPIgetListFood());
         } catch (err) {
-          alert("ban faild " + id);
+          alert("Ban faild " + id);
         }
       },
       []
@@ -314,6 +314,7 @@ export default function Food() {
                             </Label>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
+                          
                           <TableCell align="left">
                             {decoded.role === "manager" && (
                               <ButtonCustomize
@@ -322,6 +323,7 @@ export default function Food() {
                               />
                             )}
                           </TableCell>
+
                           <TableCell align="right">
                             <UserMoreMenu id={id} />
                           </TableCell>

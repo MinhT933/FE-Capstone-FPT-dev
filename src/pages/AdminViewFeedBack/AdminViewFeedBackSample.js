@@ -27,9 +27,13 @@ const AdminViewFeedBack = [...Array(20)].map((_, index) => ({
 
     kitchen: sample([
         'Bếp quận Bình Thạnh',
+        'Bếp quận 2',
+        'Bếp quận 9',
+        'Bếp quận 10',
+        'Bếp quận 12',
     ]),
 
-    order: sample(['Cơm']),
+    order: sample(['Gói ăn nhanh', 'Gói ăn chay']),
     status: sample(['Ngon quá!', 'Mặn lắm à nha']),
 })
 

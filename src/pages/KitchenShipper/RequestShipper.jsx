@@ -111,31 +111,31 @@ export default function RequestShipper() {
                         <Stack spacing={3}>
                             <Controls.Input
                                 variant="outlined"
-                                label="Mã tài xế"
+                                label="Số lượng"
                                 value={values.id}
                                 onChange={handleInputChange}
                             />
 
                             <Controls.Input
                                 variant="outlined"
-                                label="Họ Tên"
+                                label="Lí do"
                                 value={values.name}
                                 onChange={handleInputChange}
                             />
 
-                            <Controls.Input
+                            {/* <Controls.Input
                                 variant="outlined"
                                 label="Điện thoại"
                                 value={values.phone}
                                 onChange={handleInputChange}
-                            />
+                            /> */}
 
-                            <Controls.Input
+                            {/* <Controls.Input
                                 variant="NoPlate"
                                 label="Biển số xe"
                                 value={values.phone}
                                 onChange={handleInputChange}
-                            />
+                            /> */}
 
                             {/* <Grid item xs={6} >
                                 <Controls.Select
@@ -147,12 +147,12 @@ export default function RequestShipper() {
                                 />
                             </Grid> */}
 
-                            <Controls.Input
+                            {/* <Controls.Input
                                 variant="outlined"
                                 label="Tên tài khoản"
                                 value={values.accountId}
                                 onChange={handleInputChange}
-                            />
+                            /> */}
                             <Controls.Input
                                 variant="outlined"
                                 label="Mã nhà bếp"
@@ -160,12 +160,12 @@ export default function RequestShipper() {
                                 onChange={handleInputChange}
                             />
 
-                            <Controls.RadioGroup
+                            {/* <Controls.RadioGroup
                                 name="Status"
                                 label="Trạng thái"
                                 value={values.status}
                                 onChange={handleInputChange}
-                                items={Status} />
+                                items={Status} /> */}
 
                         </Stack>
                     </Grid>

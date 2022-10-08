@@ -25,16 +25,18 @@ import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
-// mock
-// import ADMINSHIPPERLIST from "./AdminShipperSample";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-
+//callAPI
 import { callAPIgetListShipper } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Iconify from "../../components/hook-form/Iconify";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
+
+// mock
+// import ADMINSHIPPERLIST from "./AdminShipperSample";
+import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -44,7 +46,7 @@ const TABLE_HEAD = [
     { id: "noPlate", label: "Biển số xe", alignRight: false },
     { id: "vehicleType", label: "Loại xe", alignRight: false },
     { id: "accountId", label: "Tên tài khoản", alignRight: false },
-    // { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
+    { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
     { id: "" },
 ];
@@ -252,7 +254,7 @@ export default function AdminShipperList() {
                                                 vehicleType,
                                                 status,
                                                 accountId,
-                                                // kitchenID,
+                                                kitchenID,
 
                                             } = row;
                                             const isItemSelected = selected.indexOf(fullName) !== -1;
@@ -305,15 +307,17 @@ export default function AdminShipperList() {
                                                     </TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    <Button1 sx={{ marginTop: "7%", }}
-                                                        variant="outlined"
-                                                        // display="TableCell"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/updateshipper"
+                                                    <TableCell align="left">
+                                                        <Button1
+                                                            variant="outlined"
+                                                            // display="TableCell"
+                                                            component={RouterLink}
+                                                            to="/dashboard/admin/updateshipper"
 
-                                                    >
-                                                        Cập nhật
-                                                    </Button1>
+                                                        >
+                                                            Cập nhật
+                                                        </Button1>
+                                                    </TableCell>
 
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
