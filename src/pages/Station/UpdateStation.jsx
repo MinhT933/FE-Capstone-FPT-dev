@@ -1,6 +1,6 @@
 import React from "react";
 // import { Paper } from "@mui/material";
-import PageHeader from "./../../components/PageHeader";
+import PageHeader from "../../components/PageHeader";
 
 import { styled } from "@mui/material/styles";
 import { Grid } from "@mui/material";
@@ -11,9 +11,9 @@ import Iconify from '../../components/hook-form/Iconify';
 
 import Button from "@mui/material/Button";
 import UseCreateForm from "../../components/PopUp/useForm";
-import Controls from "./../../components/Control/Controls";
+import Controls from "../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
-import InputImg from './../../components/InputImg/inputImg';
+import InputImg from '../../components/InputImg/inputImg';
 
 //time
 import dayjs from "dayjs";

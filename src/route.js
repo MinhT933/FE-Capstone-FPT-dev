@@ -38,10 +38,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
 
-import NewPackageItem from "./pages/PackageFood/NewPacketItem";
+// import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 
 import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
-import NewPackageItem from "./pages/PackageFood/NewPacketItem";
+// import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 
 
@@ -169,9 +169,9 @@ export default function Router() {
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
 
-        { path: "timeFrame", element: <NewPackageItem /> },
+        // { path: "timeFrame", element: <NewPackageItem /> },
 
-        { path: "newpackageITem", element: <NewPackageItem /> },
+        // { path: "newpackageITem", element: <NewPackageItem /> },
 
 
         //admin quản lí Trạm - CURD

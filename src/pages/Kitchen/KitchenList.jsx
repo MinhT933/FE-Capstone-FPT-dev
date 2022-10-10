@@ -47,15 +47,15 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "name", label: "Địa điểm", alignRight: false },
+    // { id: "name", label: "Địa điểm", alignRight: false },
     { id: "address", label: "Địa chỉ", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
     { id: "ability", label: "Công suất", alignRight: false },
-    { id: "openTime", label: "Mở cửa", alignRight: false },
-    { id: "closeTime", label: "Đóng cửa", alignRight: false },
+    // { id: "openTime", label: "Mở cửa", alignRight: false },
+    // { id: "closeTime", label: "Đóng cửa", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
     { id: "createdAt", label: "Ngày tạo", alignRight: false },
-    { id: "updateAt", label: "Cập nhật", alignRight: false },
+    { id: "updatedAt", label: "Cập nhật", alignRight: false },
     { id: "" },
 ];
 
@@ -208,7 +208,8 @@ export default function KitchenList() {
     const Button1 = styled(Button)(({ theme }) => ({
         color: theme.palette.getContrastText("#FFCC33"),
         backgroundColor: "#FFCC33",
-
+        // width: "50%",
+        // height: "70%",
         // display: "center"
     }));;
 
@@ -269,7 +270,7 @@ export default function KitchenList() {
                                                 closeTime,
                                                 status,
                                                 createdAt,
-                                                updateAt,
+                                                updatedAt,
 
                                             } = row;
                                             const isItemSelected = selected.indexOf(name) !== -1;
@@ -277,7 +278,8 @@ export default function KitchenList() {
                                             return (
                                                 <TableRow
                                                     hover
-                                                    key={id}
+                                                    // key={id}
+                                                    key={name}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={isItemSelected}
@@ -289,27 +291,27 @@ export default function KitchenList() {
                                                             onChange={(event) => handleClick(event, name)}
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">{name}</TableCell>
+                                                    {/* <TableCell align="left">{name}</TableCell> */}
                                                     <TableCell align="left">{address}</TableCell>
 
-                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{row.account.phone}</TableCell>
                                                     <TableCell align="left">{ability}</TableCell>
-                                                    <TableCell align="left">{openTime}</TableCell>
-                                                    <TableCell align="left">{closeTime}</TableCell>
+                                                    {/* <TableCell align="left">{openTime}</TableCell> */}
+                                                    {/* <TableCell align="left">{closeTime}</TableCell> */}
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
                                                             color={
                                                                 // (status === "Closed" && "error") || "success"
-                                                                (status === "active" && "error") || "success"
+                                                                (row.account.status === "Closed" && "error") || "success"
 
                                                             }
                                                         >
-                                                            {(status)}
+                                                            {(row.account.status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{createdAt}</TableCell>
-                                                    <TableCell align="left">{updateAt}</TableCell>
+                                                    <TableCell align="left">{row.account.createdAt}</TableCell>
+                                                    <TableCell align="left">{row.account.updatedAt}</TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
 

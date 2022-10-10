@@ -237,7 +237,7 @@ export default function AdminViewFeedBackList() {
                         background: "#FFCC33",
                         color: "black",
                         height: "50%",
-                        width: "33%",
+                        width: "29%",
                     }}>
                         <Typography variant="h3" gutterBottom
                             sx={{
@@ -257,7 +257,7 @@ export default function AdminViewFeedBackList() {
                         marginLeft: "7%",
                         marginTop: "2%",
                     }}>
-                    Tính theo tổng đánh giá cho từng bếp
+                    {/* Tính theo tổng đánh giá cho từng bếp */}
                 </Typography>
 
                 <Stack
