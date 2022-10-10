@@ -6,12 +6,12 @@ import Iconify from "../hook-form/Iconify";
 //   type: string;
 // }
 
-const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+// const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 export const CustomizedToast = ({ message, type }) => {
   switch (type) {
     case "SUCCESS":
-      toast.success(`👌 ${message}`, {
-        position: "top-right",
+      toast.success(`${message}`, {
+        position: "bottom-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -22,7 +22,7 @@ export const CustomizedToast = ({ message, type }) => {
       break;
     case "ERROR":
       toast.error(` ${message}`, {
-        position: "top-right",
+        position: "bottom-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -33,7 +33,7 @@ export const CustomizedToast = ({ message, type }) => {
       break;
     case "LOADING":
       toast.loading(` ${message}`, {
-        position: "top-right",
+        position: "bottom-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -42,5 +42,7 @@ export const CustomizedToast = ({ message, type }) => {
         progress: undefined,
       });
       break;
+
+    default:
   }
 };

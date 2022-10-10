@@ -30,6 +30,7 @@ import navConfigAdmin from "./../components/sidebar/NavConfig";
 import NavSection from "./../components/hook-form/NavSection";
 import Logo from "./../components/Logo";
 import useResponsive from "./../hooks/useResponsive";
+import jwt_decode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +57,22 @@ const AccountStyle = styled("div")(({ theme }) => ({
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
+};
+const token = localStorage.getItem("token");
+
+const decoded = jwt_decode(token);
+
+const handleRole = () => {
+  let role = "";
+  if (decoded.role === "admin") {
+    role = "Quản trị";
+  } else if (decoded.role === "manager") {
+    role = "Quản lí";
+  } else if (decoded.role === "kitchen") {
+    role = "Bếp";
+  }
+  console.log(role);
+  return role;
 };
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
@@ -86,10 +103,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           py: 3,
           display: "inline-flex",
           backgroundColor: "white",
+          marginLeft: 5,
         }}
       >
         <Logo />
-        <h1>Admin-Mesu</h1>
+        <h1>Mesup</h1>
       </Box>
       <Box sx={{ backgroundColor: "white" }}>
         <Box sx={{ mb: 5, mx: 2.5, backgroundColor: "white" }}>
@@ -127,8 +145,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         >
           <Box
             component="img"
-            src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t39.30808-6/302918650_3266017480383457_2186236725953791994_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=730e14&_nc_ohc=Tp-EINlGlcIAX-yq8kj&_nc_ht=scontent.fsgn2-5.fna&oh=00_AT9wnAyZ5meOWF3OoSNdddep9JYEqdLfy9gzOTd7bexIiw&oe=631AD9CD"
-            sx={{ width: 100, position: "absolute", top: -50 }}
+            src="/static/logo7.png"
+            alt="dâdad"
+            sx={{ width: 200, position: "absolute", top: -90 }}
           />
         </Stack>
       </Box>

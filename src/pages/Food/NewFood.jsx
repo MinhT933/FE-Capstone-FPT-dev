@@ -184,7 +184,7 @@ export default function NewFood() {
                 {/* nếu sai thì nó đỏ */}
                 {formik.touched.name && formik.errors.name && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.name}

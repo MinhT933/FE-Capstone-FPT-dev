@@ -17,7 +17,10 @@ import { styled } from "@mui/material/styles";
 import PageHeader from "../../components/PageHeader";
 import Iconify from "./../../components/hook-form/Iconify";
 import { useState } from "react";
-import { callAPIgetTimeFrame } from "../../redux/action/acction";
+import {
+  callAPIgetCatePackage,
+  callAPIgetTimeFrame,
+} from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
@@ -28,14 +31,17 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import NewTimeFrame from "./NewTimeFrame";
 
 const schema = yup.object().shape({
-  name: yup.string().required().trim(),
-  price: yup.string().required().trim(),
-  totalStation: yup.string().required().trim(),
-  totalMeal: yup.string().required().trim(),
-  description: yup.string().required().trim(),
-  totalDate: yup.string().required().trim(),
+  name: yup.string().required("Vui lòng nhập tên").trim(),
+  price: yup
+    .number()
+    .moreThan(0, "giá phải lớn hơn ko")
+    .required("Vui lòng nhập lại giá"),
+  totalStation: yup.string().required("nhập tổng số đỉa điểm giao").trim(),
+  totalMeal: yup.string().required("Vui lòng nhập bữa ăn").trim(),
+  description: yup.string().required("Vui lòng nhập mô tả").trim(),
+  totalDate: yup.string().required("Vui lòng nhập tổng ngày").trim(),
   timeFrameID: yup.string().required().trim(),
-  totalFood: yup.string().required().trim(),
+  totalFood: yup.string().required("Vui lòng nhập tổng số thức ăn").trim(),
 });
 
 //styles paper
@@ -64,19 +70,15 @@ export default function NewPackage() {
   const Input = styled("input")({
     display: "none",
   });
+
   //formData để lưu data
   const formData = new FormData();
-  const now = new Date().toLocaleDateString();
-
-  React.useEffect(() => {
-    const getTimeFrame = async () => {
-      await dispatch(callAPIgetTimeFrame());
-    };
-    getTimeFrame();
-  }, [dispatch]);
-
   const timeframe = useSelector((state) => {
     return state.userReducer.listTimeFrame;
+  });
+
+  const category = useSelector((state) => {
+    return state.userReducer.listCategoryPackage;
   });
 
   const getTimeFrameOptions = () => {
@@ -87,9 +89,22 @@ export default function NewPackage() {
     return TimeFrameData;
   };
 
-  // const handleChange = (newValue) => {
-  //   setValue(newValue);
-  // };
+  const getcategoryOptions = () => {
+    const CategoryData = [];
+    for (var i = 0; i < category.length; i++) {
+      CategoryData.push({ id: category[i].id, title: category[i].name });
+    }
+    return CategoryData;
+  };
+  // console.log(CategoryData);
+
+  React.useEffect(() => {
+    const getTimeFrame = async () => {
+      await dispatch(callAPIgetTimeFrame());
+      await dispatch(callAPIgetCatePackage());
+    };
+    getTimeFrame();
+  }, [dispatch]);
 
   const formik = useFormik({
     validationSchema: schema,
@@ -111,8 +126,8 @@ export default function NewPackage() {
     onSubmit: async (values) => {
       const a = new Date(valueEndTime).toLocaleDateString().split("/");
       const b = new Date(valueStarTime).toLocaleDateString().split("/");
-      console.log(b);
-
+      const startDate = new Date(valueStarTime).toLocaleDateString();
+      const endDate = new Date(valueEndTime).toLocaleDateString();
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -124,16 +139,21 @@ export default function NewPackage() {
       formData.append("startSale", `0${b[2]}-${b[1]}-${b[0]}`);
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
+      formData.append("categoryID", formik.values.categoryID);
 
       try {
-        const res = await API("POST", URL_API + "/packages", formData);
-        CustomizedToast({
-          message: `Đã thêm món ${formik.values.name}`,
-          type: "SUCCESS",
-        });
-        window.location.reload(true);
+        if (endDate > startDate) {
+          const res = await API("POST", URL_API + "/packages", formData);
+          CustomizedToast({
+            message: `Đã thêm món ${formik.values.name}`,
+            type: "SUCCESS",
+          });
+          window.location.reload(true);
+        } else if (endDate < startDate) {
+          CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
+        }
       } catch (error) {
-        CustomizedToast({ message: "thấp bại rồi", type: "ERROR" });
+        CustomizedToast({ message: "Thấp bại rồi", type: "ERROR" });
       }
     },
   });
@@ -144,11 +164,25 @@ export default function NewPackage() {
     setInput(URL.createObjectURL(e.target.files[0]));
   }
 
+  const timeframeid = formik.values.timeFrameID;
+  React.useEffect(() => {
+    API("GET", URL_API + `/time-frame/${timeframeid}`, null, null).then(
+      (res) => {
+        let dateFilter = res.data.result.dateFilter;
+        for (const key in dateFilter) {
+          if (Object.hasOwnProperty.call(dateFilter, key)) {
+            const element = dateFilter[key];
+          }
+        }
+      }
+    );
+  });
+
   const getIcon = (name) => <Iconify icon={name} width={24} height={24} />;
   return (
     <Paper>
       <PageHeader
-        title="Thiết ké gói ăn"
+        title="Thiết kế gói ăn"
         subTitle="Điền các thông tin  "
         icon={getIcon("ant-design:setting-filled")}
       />
@@ -184,7 +218,7 @@ export default function NewPackage() {
                 />
                 {formik.touched.name && formik.errors.name && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.name}
@@ -196,7 +230,7 @@ export default function NewPackage() {
                   variant="outlined"
                   label="Giá"
                   name="price"
-                  value={formik.values.price}
+                  value={formik.values.price || ""}
                   onChange={(event) => {
                     formik.handleChange(event);
                   }}
@@ -204,7 +238,7 @@ export default function NewPackage() {
                 />
                 {formik.touched.price && formik.errors.price && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.price}
@@ -216,7 +250,7 @@ export default function NewPackage() {
                   variant="outlined"
                   label="Tổng số thức ăn"
                   name="totalFood"
-                  value={formik.values.totalFood}
+                  value={formik.values.totalFood || ""}
                   onChange={(event) => {
                     formik.handleChange(event);
                   }}
@@ -234,9 +268,9 @@ export default function NewPackage() {
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
-                  label="Các địa điểm giao hàng"
+                  label="Số địa điểm giao hàng"
                   name="totalStation"
-                  value={formik.values.totalStation}
+                  value={formik.values.totalStation || ""}
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
@@ -244,7 +278,7 @@ export default function NewPackage() {
                 />
                 {formik.touched.totalStation && formik.errors.totalStation && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.totalMeal}
@@ -256,7 +290,7 @@ export default function NewPackage() {
                   variant="outlined"
                   label="Tổng buổi"
                   name="totalMeal"
-                  value={formik.values.totalMeal}
+                  value={formik.values.totalMeal || ""}
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
@@ -284,7 +318,7 @@ export default function NewPackage() {
                 />
                 {formik.touched.totalMeal && formik.errors.totalMeal && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.totalMeal}
@@ -304,7 +338,7 @@ export default function NewPackage() {
                 />
                 {formik.touched.totalDate && formik.errors.totalDate && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.totalDate}
@@ -331,6 +365,20 @@ export default function NewPackage() {
                     {formik.errors.endSale}
                   </FormHelperText>
                 )}
+              </Grid>
+              {/* ///categoryID */}
+              <Grid item xs={6}>
+                <Controls.Select
+                  name="categoryID"
+                  label="Chọn loại package"
+                  value={formik.values.categoryID}
+                  onChange={(e) => {
+                    const a = category.find((c) => c.id === e.target.value);
+                    formik.setFieldValue("categoryID", a.id);
+                  }}
+                  onBlur={formik.handleBlur}
+                  options={getcategoryOptions()}
+                />
               </Grid>
               <Grid item xs={6}>
                 <Box
@@ -382,6 +430,7 @@ export default function NewPackage() {
                   variant="outlined"
                   placeholder="Mô tả"
                   name="description"
+                  width="16rem"
                   value={formik.values.description}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -390,7 +439,7 @@ export default function NewPackage() {
                 />
                 {formik.touched.description && formik.errors.description && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.description}
@@ -442,13 +491,13 @@ export default function NewPackage() {
                     maxHeight: { xs: 233, md: 167 },
                     maxWidth: { xs: 350, md: 250 },
                     marginTop: "10%",
-                    boxShadow: 8,
+                    // boxShadow: 8,
                     marginLeft: "11%",
                   }}
                 >
                   {/* hiển thị hình lên  */}
                   {input != null ? (
-                    <img src={input} />
+                    <img src={input} alt="" />
                   ) : (
                     <img src={formik.values.image} alt="hihi" />
                   )}
@@ -462,15 +511,3 @@ export default function NewPackage() {
     </Paper>
   );
 }
-
-// function _treat(e) {
-//   const { files } = e.target;
-//   let images = [];
-//   const selecteds = [...[...files]];
-//   formik.setFieldValue("image", e.target.files[0]);
-//   return (
-//     selecteds.forEach((i) => images.push(URL.createObjectURL(i))),
-//     formData.append("File", selecteds),
-//     setInput(images)
-//   );
-// }
