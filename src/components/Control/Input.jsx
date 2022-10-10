@@ -37,6 +37,7 @@ export default function Input(props) {
           marginLeft: { marginLeft },
           marginTop: { marginTop },
           marginBottom: { marginBottom },
+        
         }}
       />
     </Box>

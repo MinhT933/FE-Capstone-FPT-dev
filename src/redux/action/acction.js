@@ -8,10 +8,10 @@ import * as PathAction from "./../PathAction";
 /// gọi axios
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
-import axios from "axios";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 // hàm này được gọi là hàm khởi tạo để dùng chung nè
+const token = localStorage.getItem("token");
 //type là kiểu dữ liệu truyền vào
 //payload giá trị tham số mà action creator truyền lên.
 export const createAction = ({ type, payload }) => {
@@ -80,15 +80,22 @@ export const callAPIgetListCategory = () => {
   };
 };
 
-//----------------------------------------------------------------
-// export default callAPIgetListFood = () =>{
-// return async((dispatch) =>{
-//       try {
-//         const res = await API('GET',URL_API + "/foods/")
-//       } catch (error) {
+export const callAPIgetListStation = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/stations", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_STATIONS,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
 
-//       }
-// }
 
 //----------------------------------------------------------------
 export const callAPIgetGroupFood = (req, res) => {
@@ -138,7 +145,41 @@ export const callAPIgetPackagebyID = (req, res) => {
     }
   };
 };
-//----------------------------------------------------------------
+
+
+export const callAPIgetCatePackage = (req, res) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/package-categories");
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_CATE_PACKAGE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+export const callAPIgetTimeFramebyID = (id) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/time-frame/");
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_CATE_PACKAGE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+
 export const LoginAthenAdmin = (user, navigate) => {
   return async (dispatch) => {
     try {
@@ -277,28 +318,6 @@ export const callAPIAdminCreateShipper = (token) => {
   };
 };
 
-
-//----------------------------------------------------------------
-
-
-//----------------------------------------------------------------
-// export const callAPIgetListUser = () => {
-//   return async (dispatch) => {
-//     try {
-//       const res = await API("GET", URL_API + "/foods", null, null);
-//       dispatch(
-//         createAction({
-//           type: PathAction.GET_LIST_USER,
-//           payload: res.data.result,
-//         })
-//       );
-//       console.log(res.data.result);
-//     } catch (err) {
-//       console.log({ err });
-//     }
-//   };
-// };
-//----------------------------------------------------------------
 export const callAPIgetListKitchen = () => {
   return async (dispatch) => {
     try {
@@ -368,4 +387,3 @@ export const callAPIgetProfileKitchen = () => {
     }
   };
 };
-//----------------------------------------------------------------

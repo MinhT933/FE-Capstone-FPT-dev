@@ -43,6 +43,7 @@ const initialState = {
   profileKitchen: [],
 
   currentUser: [],
+  listCategoryPackage: [],
 };
 
 // const initialStateAuthen = admin
@@ -67,7 +68,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_LIST_FOODCATEGORY:
       state.listCategory = payload;
-
+      break;
+    case PathAction.GET_LIST_CATE_PACKAGE:
+      state.listCategoryPackage = payload;
       break;
     //=====================================================
     case PathAction.GET_LIST_STATIONS:
@@ -105,10 +108,13 @@ export default function userReducer(state = initialState, { type, payload }) {
     //=====================================================
     case PathAction.GET_FOOD:
       state.food = payload;
+      break;
     case PathAction.GET_LIST_PACKAGE_FOOD:
       state.listFoodPackage = payload;
+      break;
     case PathAction.GET_LIST_GROUP_FOOD:
       state.listGroupFood = payload;
+      break;
     case PathAction.GET_LIST_TIME_FRAME:
       state.listTimeFrame = payload;
       break;

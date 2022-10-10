@@ -8,11 +8,16 @@ import Box from "@mui/material/Box";
 
 import Iconify from "../../components/hook-form/Iconify";
 
+
+import Controls from "./../../components/Control/Controls";
+import Stack from "@mui/material/Stack";
+
 import Button from "@mui/material/Button";
 import UseCreateForm from "../../components/PopUp/useForm";
 import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
 import InputImg from "./../../components/InputImg/inputImg";
+
 
 //time
 import dayjs from "dayjs";
@@ -28,6 +33,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 //validate
 import { useFormik } from "formik";
 import * as yup from "yup";
+
 import { useSelector } from "react-redux";
 import {
   callAPIgetListCategory,
@@ -42,14 +48,7 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 /// csss button
-const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText("#FFCC32"),
-  backgroundColor: "#FFCC32",
-  "&:hover": {
-    backgroundColor: "#ffee32",
-  },
-  display: "center",
-}));
+
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
@@ -72,13 +71,17 @@ export default function NewStation() {
     display: "none",
   });
   //xử lí hình ảnh
-  const [input, setInput] = useState([]);
+
   const [opentime, setOpentime] = useState([dayjs("2022-10-18T21:11:5")]);
   const [closetime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
+  const token = localStorage.getItem("token");
+
+
   
   const token = localStorage.getItem("token");
   //formData để lưu data
   const formData = new FormData();
+
   const formik = useFormik({
     //gắn schema để so sánh
     validationSchema: schema,
@@ -88,7 +91,7 @@ export default function NewStation() {
     initialValues: {
       name: "",
       address: "",
-      //   image: null,
+    
       phone: "",
       opentime: "",
       closetime: "",
@@ -112,7 +115,11 @@ export default function NewStation() {
           type: "SUCCESS",
         });
       } catch (error) {
+
+
+
         CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
+
       }
     },
   });

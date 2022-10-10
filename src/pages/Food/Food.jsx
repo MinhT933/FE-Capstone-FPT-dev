@@ -130,7 +130,7 @@ export default function Food() {
       await dispatch(callAPIgetListFood(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, []);
 
   console.log(decoded);
 

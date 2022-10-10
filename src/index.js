@@ -5,12 +5,12 @@ import rootReducer from './redux/store/store';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import {createRoot} from 'react-dom/client';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import { HelmetProvider } from "react-helmet-async";
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import 'simplebar/src/simplebar.css';
-import SetupInterceptors from './service/setupInterceptors';
+// import SetupInterceptors from './service/setupInterceptors';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 const enhancer = composeEnhancers(
@@ -31,7 +31,7 @@ root.render(
   //  document.getElementById('root')
 );
 
-SetupInterceptors(store);
+// SetupInterceptors(store);
 // If you want to enable client cache, register instead.
 serviceWorker.unregister();
 

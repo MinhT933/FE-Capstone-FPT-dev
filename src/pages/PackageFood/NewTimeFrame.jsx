@@ -1,57 +1,190 @@
 import React, { useState } from "react";
-import { Paper } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { URL_API } from "../../Axios/URL_API/URL";
-import API from "../../Axios/API/API";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
 import PageHeader from "../../components/PageHeader";
 import DialogTitle from "@mui/material/DialogTitle";
 import Iconify from "../../components/hook-form/Iconify";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import Controls from "./../../components/Control/Controls";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
-import { set } from "date-fns";
+import Controls from "./../../components/Control/Controls";
+import FormHelperText from "@mui/material/FormHelperText";
+import API from "../../Axios/API/API";
+import { URL_API } from "../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 const shema = yup.object().shape({
-  name: yup.string().required(" vui lòng nhập tên"),
+  name: yup.string().required(" Vui điền đầy đủ thông tin"),
 });
+
 export default function NewTimeFrame(props) {
   const { OpenPopUp, SetOpenPopUp } = props;
 
-  let [mon, setMon] = useState(false);
+  const token = localStorage.getItem("token");
 
-  let [tue, setTue] = useState(false);
+  const [checkedList, setCheckedList] = useState([]);
 
-  let [wed, setWeb] = useState(false);
+  const [data, setData] = useState([
+    {
+      id: 2,
+      label: "T2",
+      name: "mon",
+      value: false,
+      lessons: [
+        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        {
+          namel: "lunch",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+        {
+          namel: "after",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+      ],
+    },
+    {
+      id: 3,
+      label: "T3",
+      name: "tues",
+      value: false,
+      lessons: [
+        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "lunch", value: false, id: Math.floor(Math.random() * 99999) },
+        {
+          namel: "after",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+      ],
+    },
+    {
+      id: 4,
+      label: "T4",
+      name: "wed",
+      value: false,
+      lessons: [
+        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        {
+          namel: "lunch",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+        {
+          namel: "after",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+      ],
+    },
+    {
+      id: 5,
+      label: "T5",
+      name: "thur",
+      value: false,
+      lessons: [
+        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        {
+          namel: "lunch",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+        {
+          namel: "after",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+      ],
+    },
+    {
+      id: 6,
+      label: "T6",
+      name: "fri",
+      value: false,
+      lessons: [
+        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        {
+          namel: "lunch",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+        {
+          namel: "after",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+      ],
+    },
+    {
+      id: 7,
+      label: "T7",
+      name: "sat",
+      value: false,
+      lessons: [
+        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        {
+          namel: "lunch",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+        {
+          namel: "after",
+          value: false,
+          id: Math.floor(Math.random() * 99999),
+        },
+      ],
+    },
+  ]);
+  // const i = [];
 
-  let [thur, setThur] = useState(false);
+  const handleCase = (item) => {
+    let text = "";
+    for (const i of item.lessons) {
+      if (item.value === false) {
+        text = "000";
+      } else if (item.value === true) {
+        if (i.value === true) {
+          text += "1";
+        } else {
+          text += "0";
+        }
+      }
+    }
+    return text;
+  };
 
-  let [fri, setFri] = useState(false);
-
-  let [sat, setSat] = useState(false);
-
-  const handlechageMonday = (e) => {
-    setMon(e.target.checked);
+  const handleBit = () => {
+    let mon = "";
+    let tues = "";
+    let wed = "";
+    let thur = "";
+    let fri = "";
+    let sat = "";
+    for (const item of data) {
+      if (item.name === "mon") {
+        mon = handleCase(item);
+      } else if (item.name === "tues") {
+        tues = handleCase(item);
+      } else if (item.name === "wed") {
+        wed = handleCase(item);
+      } else if (item.name === "thur") {
+        thur = handleCase(item);
+      } else if (item.name === "fri") {
+        fri = handleCase(item);
+      } else if (item.name === "sat") {
+        sat = handleCase(item);
+      }
+    }
+    let result = "";
+    return (result = mon + tues + wed + thur + fri + sat);
   };
 
   const handleClose = () => {
     SetOpenPopUp(false);
   };
-
-  console.log(mon, tue, wed, thur, fri, sat);
 
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
 
@@ -62,34 +195,85 @@ export default function NewTimeFrame(props) {
     initialValues: {
       name: "",
     },
+
     onSubmit: async (values) => {
-      // const data = [
-      // ]
+      const data = {
+        name: formik.values.name,
+        dateFilter: handleBit(),
+      };
+      try {
+        const res = await API("POST", URL_API + "/time-frame", data, token);
+        CustomizedToast({
+          message: `Đã thêm khung thời gian ${formik.values.name}`,
+          type: "SUCCESS",
+        });
+        SetOpenPopUp(false);
+        window.location.reload();
+      } catch (error) {
+        CustomizedToast({
+          message: "Thêm thất bại Vui lòng kiểm tra thông tin",
+          type: "ERROR",
+        });
+      }
     },
   });
 
-  function Item(props) {
-    const { sx, ...other } = props;
-    return (
-      <Box
-        sx={{
-          bgcolor: (theme) =>
-            theme.palette.mode === "dark" ? "#101010" : "#fff",
-          color: (theme) =>
-            theme.palette.mode === "dark" ? "grey.300" : "grey.800",
-          borderColor: (theme) =>
-            theme.palette.mode === "dark" ? "grey.800" : "grey.300",
-          p: 1,
-          m: 1,
-          fontSize: "0.875rem",
-          fontWeight: "700",
-          ...sx,
-        }}
-        {...other}
-      />
-    );
-  }
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+  const onChangeSelectAll = (e) => {
+    const { checked, name } = e.target;
+    const collection = [];
+    const tmp = [...data];
+    if (checked) {
+      ///che lại vì fix ko đc
+
+      // for (const item of tmp) {
+      //   for (const i of item.lessons) {
+      //     if (item.name === name) {
+      //       collection.push(i.id);
+      //     }
+      //   }
+      // }
+      for (let index = 0; index < tmp.length; index++) {
+        for (let a = 0; a < tmp[index].lessons.length; a++) {
+          if (tmp[index].name === name) {
+            collection.push(tmp.id);
+            tmp[index].lessons[a].value = checked;
+          }
+        }
+      }
+    }
+    setData(tmp);
+    const index = tmp.findIndex((item) => {
+      return item.name === name;
+    });
+    tmp[index].value = checked;
+
+    setCheckedList(collection);
+  };
+
+  const handleCheckboxClick = (e) => {
+    const { value, checked } = e.target;
+    console.log(checkedList);
+    const a = [...checkedList];
+
+    a.push(+value);
+    const tmp = [...data];
+    for (let index = 0; index < tmp.length; index++) {
+      for (let a = 0; a < tmp[index].lessons.length; a++) {
+        if (tmp[index].lessons[a].id === +value) {
+          tmp[index].value = checked;
+          tmp[index].lessons[a].value = checked;
+          // console.log(tmp[index].lessons[a].namel);
+        }
+      }
+    }
+    setData(tmp);
+    if (checked) {
+      setCheckedList(a);
+    } else {
+      setCheckedList(checkedList.filter((item) => item !== +value));
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -101,218 +285,142 @@ export default function NewTimeFrame(props) {
       }}
     >
       <Paper>
-        <div style={{ width: "90%" }}>
-          <Box
-            sx={{
-              display: "grid",
-              marginBottom: "3%",
-              maxHeight: 1250,
-            }}
+        <Box
+          sx={{
+            display: "grid",
+            marginBottom: "3%",
+          }}
+        >
+          <Dialog
+            open={OpenPopUp}
+            onClose={handleClose}
+            style={{ minHeight: "80vh", maxHeight: "120vh" }}
           >
-            <Dialog
-              open={OpenPopUp}
-              onClose={handleClose}
-              style={{ maxHeight: 1250 }}
-            >
-              <DialogTitle>
-                <PageHeader
-                  title="Tạo Khung thời gian"
-                  subTitle="Chọn ngày và buổi cho gói ăn"
-                  icon={getIcon("uil:schedule")}
+            <DialogTitle>
+              <PageHeader
+                title="Tạo Khung thời gian"
+                subTitle="Chọn ngày và buổi cho gói ăn"
+                icon={getIcon("uil:schedule")}
+              />
+            </DialogTitle>
+            <form onSubmit={formik.handleSubmit}>
+              <Box
+                sx={{
+                  borderRadius: 2,
+                  bgcolor: "background.paper",
+                  m: 3,
+                  mt: 1,
+                  justifyContent: "center",
+                  boxShadow: 12,
+                  // paddingLeft: "12%",
+                  // spacing:6
+                }}
+              >
+                <Controls.Input
+                  label="Tên khung thời gian"
+                  name="name"
+                  width="70%"
+                  marginLeft="29%"
+                  marginTop="8%"
+                  marginBottom="8%"
+                  value={formik.values.name}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
                 />
-              </DialogTitle>
-              <form>
+                {formik.touched.name && formik.errors.name && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.name}
+                  </FormHelperText>
+                )}
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    gap={5}
+                    xs={2}
+                    sx={{ marginTop: "4.24rem" }}
+                  >
+                    <Typography variant="p" gutterBottom>
+                      Sáng
+                    </Typography>
+                    <Typography variant="p" gutterBottom>
+                      Trưa
+                    </Typography>
+                    <Typography variant="p" gutterBottom>
+                      Chiều
+                    </Typography>
+                  </Grid>
+                  {data.map((itemData) => {
+                    return (
+                      <Grid item xs={1.5}>
+                        <Grid
+                          container
+                          direction="column"
+                          justifyContent="center"
+                          alignItems="center"
+                          gap={4}
+                          // spacing={6}
+                          paddingLeft={0}
+                        >
+                          <Typography variant="p" gutterBottom>
+                            {itemData.label}
+                          </Typography>
+                          <Checkbox
+                            checked={itemData.value}
+                            name={itemData.name}
+                            sx={{
+                              color: "black",
+                              "&.Mui-checked": {
+                                color: "#FFCC32",
+                              },
+                              display: "none",
+                            }}
+                            onChange={onChangeSelectAll}
+                          />
+                          {itemData.lessons.map((lesson) => {
+                            return (
+                              <Checkbox
+                                value={lesson.id}
+                                onChange={handleCheckboxClick}
+                                checked={checkedList.includes(lesson.id)}
+                                sx={{
+                                  color: "black",
+                                  "&.Mui-checked": {
+                                    color: "#FFCC32",
+                                  },
+                                }}
+                              />
+                            );
+                          })}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
                 <Box
                   sx={{
-                    borderRadius: 2,
-                    bgcolor: "background.paper",
-                    m: 4,
-                    mt: 0.1,
-                    justifyContent: "center",
-                    boxShadow: 12,
-                    // paddingLeft: "12%",
+                    marginLeft: "42%",
+                    paddingBottom: "1rem",
+                    marginTop: "1rem",
                   }}
                 >
-                  <TableContainer component={Paper}>
-                    <Controls.Input
-                      variant="outlined"
-                      name="name"
-                      label="Tên"
-                      width="60%"
-                      marginLeft="1rem"
-                      marginTop="1rem"
-                      marginBottom="0.5rem"
-                    />
-                    <Table sx={{ minWidth: 450 }} aria-label="simple table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Thứ 2</TableCell>
-                          <TableCell align="right">Thứ 3</TableCell>
-                          <TableCell align="right">Thứ 4</TableCell>
-                          <TableCell align="right">Thứ 5</TableCell>
-                          <TableCell align="right">Thứ 6</TableCell>
-                          <TableCell align="right">Thứ 7</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell>
-                            <Checkbox
-                              name="mon"
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onClick={handlechageMonday}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <Checkbox
-                              name="tue"
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {
-                                setTue(e.target.checked);
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <Checkbox
-                              name="Wed"
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {
-                                setWeb(e.target.checked);
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <Checkbox
-                              name="Thur"
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {
-                                setThur(e.target.checked);
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <Checkbox
-                              name="Fri"
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {
-                                setFri(e.target.checked);
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <Checkbox
-                              name="Sat"
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {
-                                setSat(e.target.checked);
-                              }}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <Box sx={{ display: "flex", ml: 2.5, mb: 2, mt: 0.6 }}>
-                    <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">
-                        Chọn buổi
-                      </FormLabel>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                      >
-                        <FormControlLabel
-                          value="morning"
-                          control={
-                            <Checkbox
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {}}
-                            />
-                          }
-                          label="Sáng"
-                        />
-                        <FormControlLabel
-                          value="lunch"
-                          control={
-                            <Checkbox
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {}}
-                            />
-                          }
-                          label="Trưa"
-                        />
-                        <FormControlLabel
-                          value="affternoon"
-                          control={
-                            <Checkbox
-                              sx={{
-                                color: "black",
-                                "&.Mui-checked": {
-                                  color: "#FFCC32",
-                                },
-                              }}
-                              onChange={(e) => {}}
-                            />
-                          }
-                          label="Chiều"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </Box>
-                  <Box
-                    sx={{
-                      marginLeft: "42%",
-                      paddingBottom: "1rem",
-                    }}
-                  >
-                    <ButtonCustomize nameButton="tạo" />
-                  </Box>
+                  <ButtonCustomize nameButton="tạo" type="submit" />
                 </Box>
-              </form>
-            </Dialog>
-          </Box>
-        </div>
+              </Box>
+            </form>
+          </Dialog>
+        </Box>
       </Paper>
     </Box>
   );
