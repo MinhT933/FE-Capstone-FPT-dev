@@ -17,7 +17,7 @@ export default function DatePicker(props) {
   // console.log(value);
 
   // console.log(value);
-  const { label, name, value, onChange } = props;
+  const { label, name, value, onChange, inputFormat } = props;
 
   // const CustomPickersDay = styled(DesktopDatePicker, {
   //   '&.Mui-selected':{
@@ -36,7 +36,9 @@ export default function DatePicker(props) {
         <DesktopDatePicker
           name={name}
           label={label}
-          inputFormat="YYYY-MM-DD"
+          // inputFormat="YYYY-MM-DD"
+          // inputFormat="DD-MM-YYYY"
+          inputFormat={inputFormat}
           value={value}
           onChange={onChange}
           minDate={new Date()}

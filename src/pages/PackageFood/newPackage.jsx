@@ -73,6 +73,7 @@ export default function NewPackage() {
 
   //formData để lưu data
   const formData = new FormData();
+
   const timeframe = useSelector((state) => {
     return state.userReducer.listTimeFrame;
   });
@@ -324,6 +325,7 @@ export default function NewPackage() {
                     {formik.errors.totalMeal}
                   </FormHelperText>
                 )}
+
               </Grid>
               <Grid item xs={6}>
                 <Controls.Input
@@ -355,7 +357,7 @@ export default function NewPackage() {
                   onChange={(e) => {
                     setValueEndtime(e);
                   }}
-                  onBlur={formik.handleBlur}
+                 
                 />
                 {formik.touched.endSale && formik.errors.endSale && (
                   <FormHelperText
@@ -427,6 +429,7 @@ export default function NewPackage() {
 
               <Grid item xs={6}>
                 <Controls.TextArea
+                  width="16rem"
                   variant="outlined"
                   placeholder="Mô tả"
                   name="description"

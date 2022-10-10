@@ -33,8 +33,11 @@ import { callAPIGetListPackage } from "../../redux/action/acction";
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
+
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import API from "./../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
 
 //Link routers
 
@@ -48,7 +51,7 @@ const TABLE_HEAD = [
   { id: "price", label: "Giá", alignRight: false },
   { id: "type", label: "Khung thời gian", alignRight: false },
   { id: "createdate", label: "Ngày thêm", alignRight: false },
-  { id: "updatedate", label: "Ngày ngày sửa", alignRight: false },
+  { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "startSale", label: "Ngày bán", alignRight: false },
   { id: "endSale", label: "Ngày kết thúc bán", alignRight: false },
   { id: "totalMeal", label: "Tổng buổi ăn", alignRight: false },
@@ -104,9 +107,6 @@ export default function PackageFood() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const token = localStorage.getItem("token");
-  const decoded = jwt_decode(token);
 
   const dispatch = useDispatch();
 
@@ -176,6 +176,17 @@ export default function PackageFood() {
     filterName
   );
 
+  const token = localStorage.getItem("token");
+  const decoded = jwt_decode(token);
+  const handleAcceptRequest = (id) => {
+    API("PUT", URL_API + `/packages/confirm/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIGetListPackage());
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  };
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
@@ -183,13 +194,20 @@ export default function PackageFood() {
         <Stack
           direction="row"
           alignItems="center"
-          justifyContent="space-between"
+          // justifyContent="space-between"
+          justifyContent="right"
+          spacing="1rem"
           mb={5}
         >
-          <Typography variant="h4" gutterBottom>
-            {/* <Icon icon="emojione-monotone:pot-of-food" fontSize={100} /> */}
-          </Typography>
-
+          <Typography variant="h4" gutterBottom></Typography>
+          {decoded.role === "manager" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/manager/newpackageITem"
+              nameButton="Thêm khung thời gian"
+            />
+          )}
           {decoded.role === "manager" && (
             <ButtonCustomize
               variant="contained"
@@ -289,14 +307,21 @@ export default function PackageFood() {
                             <Label
                               variant="ghost"
                               color={
-                                (status === "active" && "error") || "success"
+                                (status === "inactive" && "error") || "success"
                               }
                             >
                               {sentenceCase(status)}
                             </Label>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
-
+                          {decoded.role === "admin" && (
+                            <TableCell align="left">
+                              <ButtonCustomize
+                                nameButton="Chấp nhận"
+                                onClick={() => handleAcceptRequest(id, token)}
+                              />
+                            </TableCell>
+                          )}
                           <TableCell align="right">
                             <UserMoreMenu id={id} />
                           </TableCell>

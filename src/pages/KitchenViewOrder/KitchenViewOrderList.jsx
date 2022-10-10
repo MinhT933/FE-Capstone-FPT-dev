@@ -8,6 +8,8 @@ import {
     Table,
     Stack,
     // Avatar,
+    Paper,
+    Box,
     Button,
     Checkbox,
     TableRow,
@@ -24,15 +26,23 @@ import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
-
+//callAPI
+import * as React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { callAPIKitchenGetListOrder } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
 
 import dayjs from 'dayjs';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import * as React from 'react';
 
+import DatePicker from "../../components/Control/DatePicker";
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -93,13 +103,45 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.kitchenName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
 
 export default function KitchenViewOrderList() {
+    //callAPIKitchenGetListOrder========================================
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        const callAPI = async () => {
+            await dispatch(callAPIKitchenGetListOrder());
+        };
+        callAPI();
+    }, [dispatch]);
+
+    const token = localStorage.getItem("token");
+    var decoded = jwt_decode(token);
+    console.log(decoded);
+
+    const handleDelete = (id) => {
+        API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
+            (res) => {
+                try {
+                    dispatch(callAPIKitchenGetListOrder());
+                } catch (err) {
+                    alert("Ban faild " + id);
+                }
+            },
+            []
+        );
+    };
+
+    const kitchen = useSelector((state) => {
+        return state.userReducer.listKitchen;
+    });
+
+    //callAPIKitchenGetListOrder========================================
+
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -107,7 +149,7 @@ export default function KitchenViewOrderList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("kitchenName");
+    const [orderBy, setOrderBy] = useState("name");
 
     const [filterName, setFilterName] = useState("");
 
@@ -121,18 +163,18 @@ export default function KitchenViewOrderList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = KITCHENVIEWORDERLIST.map((n) => n.kitchenName);
+            const newSelecteds = KITCHENVIEWORDERLIST.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, kitchenName) => {
-        const selectedIndex = selected.indexOf(kitchenName);
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, kitchenName);
+            newSelected = newSelected.concat(selected, name);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -159,8 +201,8 @@ export default function KitchenViewOrderList() {
         setFilterName(event.target.value);
     };
 
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENVIEWORDERLIST.length) : 0;
+    // const emptyRows =
+    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENVIEWORDERLIST.length) : 0;
 
     const filteredKitchen = applySortFilter(
         KITCHENVIEWORDERLIST,
@@ -204,54 +246,58 @@ export default function KitchenViewOrderList() {
     };
 
     return (
-        <Page title="User">
+        <Page title="Kitchen">
             <Container>
-                {/* CHỌN BỮA ĂN */}
-                {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="demo-simple-select-helper-label">Buổi</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-helper-label"
-                        id="demo-simple-select-helper"
-                        value={meal}
-                        label="Buổi"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Sáng</MenuItem>
-                        <MenuItem value={20}>Trưa</MenuItem>
-                        <MenuItem value={30}>Tối</MenuItem>
-                    </Select>
-                </FormControl> */}
-
-                {/* LỊCH CHỌN NGÀY TRONG TUẦN */}
                 <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
-                    mb={5}
+                    mb={3}
                 >
+                    <Paper sx={{
+                        background: "#FFCC33",
+                        color: "black",
+                        height: "50%",
+                        width: "33%",
+                    }}>
+                        <Typography variant="h3" gutterBottom
+                            sx={{
+                                display: "flex",
+                                marginLeft: "7%",
+                                marginTop: "2%",
+                            }}>
+                            Đơn hàng trong ngày
+                        </Typography>
+                    </Paper>
+                </Stack>
 
-                    <Typography variant="h4" gutterBottom>
-                        {/* User */}
-                    </Typography>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    mb={3}
+                >
+                    <FormControl sx={{ width: "25%", }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                label="Chọn ngày"
+                                value={value}
+                                onChange={(newValue) => {
+                                    setValue(newValue);
+                                }}
+                                inputFormat="DD-MM-YYYY"
+                                renderInput={({ inputRef, inputProps, InputProps }) => (
+                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                        <input ref={inputRef} {...inputProps} />
+                                        {InputProps?.endAdornment}
+                                    </Box>
+                                )}
+                            />
+                        </LocalizationProvider>
+                    </FormControl>
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <StaticDatePicker
-                            orientation="landscape"
-                            openTo="day"
-                            value={value}
-                            shouldDisableDate={isWeekend}
-                            onChange={(newValue) => {
-                                setValue(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-
-                    {/* 
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    {/* CHỌN BỮA ĂN */}
+                    <FormControl sx={{ minWidth: 120, marginRight: "67%", }}>
                         <InputLabel id="demo-simple-select-helper-label">Buổi</InputLabel>
                         <Select
                             labelId="demo-simple-select-helper-label"
@@ -267,12 +313,11 @@ export default function KitchenViewOrderList() {
                             <MenuItem value={20}>Trưa</MenuItem>
                             <MenuItem value={30}>Tối</MenuItem>
                         </Select>
-                    </FormControl> */}
+                    </FormControl>
                 </Stack>
 
-
                 <Card>
-                    <KitchenListToolbar
+                    <UserListToolbar
                         numSelected={selected.length}
                         filterName={filterName}
                         onFilterName={handleFilterByName}
@@ -338,14 +383,26 @@ export default function KitchenViewOrderList() {
                                                     </TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    <Button1 sx={{ marginTop: "7%", }}
+                                                    <TableCell align="left">
+                                                        {decoded.role === "kitchen" && (
+                                                            <ButtonCustomize
+                                                                nameButton="Cập nhập"
+                                                                onClick={() => handleDelete(id, token)}
+                                                            />
+                                                        )}
+                                                    </TableCell>
+
+                                                    {/* <Button1 sx={{ marginTop: "7%", }}
                                                         variant="outlined"
                                                         component={RouterLink}
                                                         to="/dashboard/admin/updatekitchen"
 
                                                     >
-                                                        Cập nhật
-                                                    </Button1>
+                                                        Cập nhập
+                                                    </Button1> */}
+
+
+
 
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
@@ -356,11 +413,11 @@ export default function KitchenViewOrderList() {
                                                 </TableRow>
                                             );
                                         })}
-                                    {emptyRows > 0 && (
+                                    {/* {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
                                             <TableCell colSpan={6} />
                                         </TableRow>
-                                    )}
+                                    )} */}
                                 </TableBody>
 
                                 {isKitchenNotFound && (
@@ -384,6 +441,11 @@ export default function KitchenViewOrderList() {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        // fix languge in footer tables
+                        labelRowsPerPage={"Số hàng trên một trang"}
+                        labelDisplayedRows={({ from, to, count }) => {
+                            return "" + from + "-" + to + " của " + count;
+                        }}
                     />
                 </Card>
             </Container>

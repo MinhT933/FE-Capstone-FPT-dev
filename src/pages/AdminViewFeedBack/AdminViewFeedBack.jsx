@@ -7,8 +7,10 @@ import {
     Card,
     Table,
     Stack,
-    Avatar,
+    // Avatar,
     Button,
+    Box,
+    Paper,
     Checkbox,
     TableRow,
     TableBody,
@@ -18,38 +20,56 @@ import {
     TableContainer,
     TablePagination,
 } from "@mui/material";
-
-//callAPI
-import * as React from "react";
-import { callAPIgetListShipper } from "../../redux/action/acction";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import Iconify from "../../components/hook-form/Iconify";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
-
 // components
+
+import DatePicker from "../../components/Control/DatePicker";
+
+
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
+import Rating from "@mui/material/Rating";
+
+import dayjs from "dayjs";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import * as React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { callAPIgetListStation } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
+
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
+// import NewStationPopup from "src/pages/Station/NewStationPopup";
+// import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-// import KITCHENSHIPPERLIST from "./KitchenShipperSample";
+import ADMINVIEWFEEDBACKLIST from "./AdminViewFeedBackSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import KitchenListToolbar from '../../sections/@dashboard/user/KitchenListToolbar';
+import AdminListToolbar from "../../sections/@dashboard/user/AdminListToolBar";
+
 
 // ----------------------------------------------------------------------
+// ở đây fix được tên tên table
+// ko nhất thiết phải thêm table head ở dưới
 
 const TABLE_HEAD = [
-
-    { id: "fullName", label: "Họ Tên", alignRight: false },
-    { id: "id", label: "Mã tài xế", alignRight: false },
+    { id: "id", label: "Mã đơn", alignRight: false },
+    { id: "name", label: "Người đặt", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
-    { id: "noPlate", label: "Biển số xe", alignRight: false },
-    { id: "vehicleType", label: "Loại xe", alignRight: false },
-    { id: "email", label: "Tên tài khoản", alignRight: false },
-    // { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
-    { id: "status", label: "Trạng thái", alignRight: false },
+    { id: "kitchen", label: "Bếp", alignRight: false },
+    { id: "order", label: "Gói ăn", alignRight: false },
+    { id: "star", label: "Đánh giá", alignRight: false },
     { id: "" },
 ];
 
@@ -81,39 +101,14 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_stations) =>
+                _stations.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
 
-export default function KitchenList() {
-
-    //CallAPIgetListShipper=====================================
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-        const callAPI = async () => {
-            await dispatch(callAPIgetListShipper());
-        };
-        callAPI();
-    }, [dispatch]);
-
-    const handleDelete = (id) => {
-        API("PUT", URL_API + `/shippers/update-status/${id}`).then((res) => {
-            try {
-                dispatch(callAPIgetListShipper());
-            } catch (err) {
-                alert("ban faild " + id);
-            }
-        }, []);
-    };
-
-    const token = localStorage.getItem("token");
-    const shipper = useSelector((state) => {
-        return state.userReducer.listShipper;
-    });
-    //CallAPIgetListShipper=====================================
-
+export default function AdminViewFeedBackList() {
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -121,11 +116,25 @@ export default function KitchenList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("fullName");
+    const [orderBy, setOrderBy] = useState("name");
 
     const [filterName, setFilterName] = useState("");
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    //CALL API====================================================
+    // const dispatch = useDispatch();
+    // React.useEffect(() => {
+    //     const callAPI = async () => {
+    //         await dispatch(callAPIgetListFeedback());
+    //     };
+    //     callAPI();
+    // }, [dispatch]);
+
+    // const station = useSelector((state) => {
+    //     return state.userReducer.listFeedback;
+    // });
+    //CALL API=====================================================
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -135,18 +144,18 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = shipper.map((n) => n.fullName);
+            const newSelecteds = ADMINVIEWFEEDBACKLIST.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, fullName) => {
-        const selectedIndex = selected.indexOf(fullName);
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, fullName);
+            newSelected = newSelected.concat(selected, name);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -174,13 +183,18 @@ export default function KitchenList() {
     };
 
     // const emptyRows =
-    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - shipper.length) : 0;
+    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - station.length) : 0;
 
-    const filteredKitchen = applySortFilter(
-        shipper,
+    const filteredStations = applySortFilter(
+        ADMINVIEWFEEDBACKLIST,
+        // station,
         getComparator(order, orderBy),
         filterName
     );
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token);
+    const isStationNotFound = filteredStations.length === 0;
+
     //setColor button
     const ColorButton = styled(Button)(({ theme }) => ({
         color: theme.palette.getContrastText("#FFCC32"),
@@ -196,41 +210,83 @@ export default function KitchenList() {
         backgroundColor: "#FFCC33",
 
         // display: "center"
-    }));;
+    }));
+    //LỊCH CHỌN NGÀY TRONG TUẦN
+    const isWeekend = (date) => {
+        const day = date.day();
 
-    const isKitchenNotFound = filteredKitchen.length === 0;
+        return day === 0 || day === 6;
+    };
+
+    const [value, setValue] = React.useState(dayjs());
+
+    //ĐÁNH GIÁ NGÔI SAO
+    const [valueStar] = React.useState(3);
 
     return (
-        <Page title="User">
+        <Page title="Feedback">
             <Container>
+
                 <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
-                    mb={5}
+                    mb={1}
                 >
-                    <Typography variant="h4" gutterBottom>
-                        {/* User */}
-                    </Typography>
-                    {/* <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/admin/newshipper"
+                    <Paper sx={{
+                        background: "#FFCC33",
+                        color: "black",
+                        height: "50%",
+                        width: "29%",
+                    }}>
+                        <Typography variant="h3" gutterBottom
+                            sx={{
+                                display: "flex",
+                                marginLeft: "7%",
+                                marginTop: "2%",
+                            }}>
+                            Đánh giá theo tuần
+                        </Typography>
 
-                    >
-                        Thêm tài xế
-                    </ColorButton> */}
-                    <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/kitchen/requestshipper"
+                    </Paper>
 
-                    >
-                        Yêu cầu thêm tài xế
-                    </ColorButton>
+                </Stack>
+                <Typography variant="subtitle2"
+                    sx={{
+                        display: "flex",
+                        marginLeft: "7%",
+                        marginTop: "2%",
+                    }}>
+                    {/* Tính theo tổng đánh giá cho từng bếp */}
+                </Typography>
+
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    mb={3}
+                >
+                    <FormControl sx={{ width: "25%", }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                label="Chọn ngày trong tuần"
+                                value={value}
+                                onChange={(newValue) => {
+                                    setValue(newValue);
+                                }}
+                                inputFormat="DD-MM-YYYY"
+                                renderInput={({ inputRef, inputProps, InputProps }) => (
+                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                        <input ref={inputRef} {...inputProps} />
+                                        {InputProps?.endAdornment}
+                                    </Box>
+                                )}
+                            />
+                        </LocalizationProvider>
+                    </FormControl>
                 </Stack>
 
-                <Card>
+                <Card Card >
                     <UserListToolbar
                         numSelected={selected.length}
                         filterName={filterName}
@@ -238,36 +294,30 @@ export default function KitchenList() {
                     />
 
                     <Scrollbar>
-                        <TableContainer sx={{ minWidth: 800 }}>
+                        <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
                                 <UserListHead
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={shipper.length}
+                                    rowCount={ADMINVIEWFEEDBACKLIST.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {filteredKitchen
+                                    {filteredStations
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
                                                 id,
-                                                avatarUrl,
-                                                fullName,
+                                                name,
                                                 phone,
-                                                noPlate,
-                                                vehicleType,
-                                                status,
-                                                email,
-                                                // kitchenID,
-
+                                                kitchen,
+                                                order,
+                                                star,
                                             } = row;
-
-                                            console.log(row);
-                                            const isItemSelected = selected.indexOf(fullName) !== -1;
+                                            const isItemSelected = selected.indexOf(name) !== -1;
 
                                             return (
                                                 <TableRow
@@ -281,58 +331,26 @@ export default function KitchenList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
+                                                            onChange={(event) => handleClick(event, name)}
                                                         />
                                                     </TableCell>
-
-                                                    <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar alt={fullName} src={avatarUrl} />
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {row.profile.fullName}
-                                                            </Typography>
-                                                        </Stack>
-                                                    </TableCell>
+                                                    {/* <TableCell align="left">{id}</TableCell> */}
                                                     <TableCell align="left">{id}</TableCell>
-                                                    {/* <TableCell align="left">{fullName}</TableCell> */}
+                                                    <TableCell align="left">{name}</TableCell>
+                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{kitchen}</TableCell>
+                                                    <TableCell align="left">{order}</TableCell>
 
-                                                    <TableCell align="left">{row.account.phone}</TableCell>
-                                                    <TableCell align="left">{noPlate}</TableCell>
-                                                    <TableCell align="left">{vehicleType}</TableCell>
-                                                    <TableCell align="left">{row.profile.email}</TableCell>
-                                                    {/* <TableCell align="left">{kitchenID}</TableCell> */}
                                                     <TableCell align="left">
-                                                        <Label
-                                                            variant="ghost"
-                                                            color={
-                                                                (status === "Closed" && "error") || "success"
-                                                            }
-                                                        >
-                                                            {(status)}
-                                                        </Label>
+                                                        <Rating
+                                                            name="read-only"
+                                                            value={valueStar}
+                                                            readOnly
+                                                            sx={{
+                                                                "& > legend": { mt: 3 },
+                                                            }}
+                                                        />
                                                     </TableCell>
-                                                    {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
-
-                                                    {/* <Button1 sx={{ marginTop: "7%", }}
-                                                        variant="outlined"
-                                                        // display="TableCell"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/updateshipper"
-
-                                                    >
-                                                        Cập nhật
-                                                    </Button1> */}
-
-                                                    {/* <TableCell align="right"> */}
-                                                    {/* //props */}
-                                                    {/* <KitchenMoreMenu id={id} /> */}
-                                                    {/* </TableCell> */}
-
-
                                                 </TableRow>
                                             );
                                         })}
@@ -343,7 +361,7 @@ export default function KitchenList() {
                                     )} */}
                                 </TableBody>
 
-                                {isKitchenNotFound && (
+                                {isStationNotFound && (
                                     <TableBody>
                                         <TableRow>
                                             <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -359,7 +377,7 @@ export default function KitchenList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={shipper.length}
+                        count={ADMINVIEWFEEDBACKLIST.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -370,9 +388,9 @@ export default function KitchenList() {
                             return "" + from + "-" + to + " của " + count;
                         }}
                     />
-                </Card>
-            </Container>
+                </Card >
+            </Container >
             {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
+        </Page >
     );
 }

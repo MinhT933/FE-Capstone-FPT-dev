@@ -18,6 +18,21 @@ import {
     TableContainer,
     TablePagination,
 } from "@mui/material";
+
+//callAPI
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import * as React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { callAPIgetListKitchen } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
+
 // components
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
@@ -26,21 +41,21 @@ import Page from "../../components/setPage/Page";
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
 import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-import KITCHENLIST from "./KitchenSample";
+// import KITCHENLIST from "./KitchenSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "kitchenName", label: "Địa điểm", alignRight: false },
-    { id: "kitchenAddress", label: "Địa chỉ", alignRight: false },
+    // { id: "name", label: "Địa điểm", alignRight: false },
+    { id: "address", label: "Địa chỉ", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
     { id: "ability", label: "Công suất", alignRight: false },
-    { id: "openTime", label: "Mở cửa", alignRight: false },
-    { id: "closeTime", label: "Đóng cửa", alignRight: false },
+    // { id: "openTime", label: "Mở cửa", alignRight: false },
+    // { id: "closeTime", label: "Đóng cửa", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "createDate", label: "Ngày tạo", alignRight: false },
-    { id: "updateDate", label: "Cập nhật", alignRight: false },
+    { id: "createdAt", label: "Ngày tạo", alignRight: false },
+    { id: "updatedAt", label: "Cập nhật", alignRight: false },
     { id: "" },
 ];
 
@@ -72,13 +87,47 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.kitchenName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
 
 export default function KitchenList() {
+
+    //callAPIgetListKitchen========================================
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        const callAPI = async () => {
+            await dispatch(callAPIgetListKitchen());
+        };
+        callAPI();
+    }, [dispatch]);
+
+    const token = localStorage.getItem("token");
+    var decoded = jwt_decode(token);
+    console.log(decoded);
+
+    const handleDelete = (id) => {
+        API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
+            (res) => {
+                try {
+                    dispatch(callAPIgetListKitchen());
+                } catch (err) {
+                    alert("Ban faild " + id);
+                }
+            },
+            []
+        );
+    };
+
+    const kitchen = useSelector((state) => {
+        return state.userReducer.listKitchen;
+    });
+
+    //callAPIgetListKitchen========================================
+
+
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
 
@@ -100,7 +149,7 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = KITCHENLIST.map((n) => n.kitchenName);
+            const newSelecteds = kitchen.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
@@ -138,11 +187,11 @@ export default function KitchenList() {
         setFilterName(event.target.value);
     };
 
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENLIST.length) : 0;
+    // const emptyRows =
+    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - kitchen.length) : 0;
 
     const filteredKitchen = applySortFilter(
-        KITCHENLIST,
+        kitchen,
         getComparator(order, orderBy),
         filterName
     );
@@ -159,7 +208,8 @@ export default function KitchenList() {
     const Button1 = styled(Button)(({ theme }) => ({
         color: theme.palette.getContrastText("#FFCC33"),
         backgroundColor: "#FFCC33",
-
+        // width: "50%",
+        // height: "70%",
         // display: "center"
     }));;
 
@@ -201,7 +251,7 @@ export default function KitchenList() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={KITCHENLIST.length}
+                                    rowCount={kitchen.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
@@ -212,23 +262,24 @@ export default function KitchenList() {
                                         .map((row) => {
                                             const {
                                                 id,
-                                                kitchenName,
-                                                kitchenAddress,
+                                                name,
+                                                address,
                                                 phone,
                                                 ability,
                                                 openTime,
                                                 closeTime,
                                                 status,
-                                                createDate,
-                                                updateDate,
+                                                createdAt,
+                                                updatedAt,
 
                                             } = row;
-                                            const isItemSelected = selected.indexOf(kitchenName) !== -1;
+                                            const isItemSelected = selected.indexOf(name) !== -1;
 
                                             return (
                                                 <TableRow
                                                     hover
-                                                    key={id}
+                                                    // key={id}
+                                                    key={name}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={isItemSelected}
@@ -237,39 +288,45 @@ export default function KitchenList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, kitchenName)}
+                                                            onChange={(event) => handleClick(event, name)}
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">{kitchenName}</TableCell>
-                                                    <TableCell align="left">{kitchenAddress}</TableCell>
+                                                    {/* <TableCell align="left">{name}</TableCell> */}
+                                                    <TableCell align="left">{address}</TableCell>
 
-                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{row.account.phone}</TableCell>
                                                     <TableCell align="left">{ability}</TableCell>
-                                                    <TableCell align="left">{openTime}</TableCell>
-                                                    <TableCell align="left">{closeTime}</TableCell>
+                                                    {/* <TableCell align="left">{openTime}</TableCell> */}
+                                                    {/* <TableCell align="left">{closeTime}</TableCell> */}
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
                                                             color={
-                                                                (status === "Closed" && "error") || "success"
+                                                                // (status === "Closed" && "error") || "success"
+                                                                (row.account.status === "Closed" && "error") || "success"
+
                                                             }
                                                         >
-                                                            {(status)}
+                                                            {(row.account.status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{createDate}</TableCell>
-                                                    <TableCell align="left">{updateDate}</TableCell>
+                                                    <TableCell align="left">{row.account.createdAt}</TableCell>
+                                                    <TableCell align="left">{row.account.updatedAt}</TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
-                                                    <Button1 sx={{ marginTop: "7%", }}
-                                                        variant="outlined"
-                                                        // display="TableCell"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/updatekitchen"
 
-                                                    >
-                                                        Cập nhật
-                                                    </Button1>
+                                                    <TableCell align="left">
+                                                        <Button1
+                                                            variant="outlined"
+                                                            // display="TableCell"
+                                                            component={RouterLink}
+                                                            to="/dashboard/admin/updatekitchen"
+
+                                                        >
+                                                            Cập nhật
+                                                        </Button1>
+                                                    </TableCell>
+
 
                                                     {/* <TableCell align="right"> */}
                                                     {/* //props */}
@@ -280,11 +337,11 @@ export default function KitchenList() {
                                                 </TableRow>
                                             );
                                         })}
-                                    {emptyRows > 0 && (
+                                    {/* {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
                                             <TableCell colSpan={6} />
                                         </TableRow>
-                                    )}
+                                    )} */}
                                 </TableBody>
 
                                 {isKitchenNotFound && (
@@ -303,12 +360,18 @@ export default function KitchenList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={KITCHENLIST.length}
+                        count={kitchen.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        // fix languge in footer tables
+                        labelRowsPerPage={"Số hàng trên một trang"}
+                        labelDisplayedRows={({ from, to, count }) => {
+                            return "" + from + "-" + to + " của " + count;
+                        }}
                     />
+
                 </Card>
             </Container>
             {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}

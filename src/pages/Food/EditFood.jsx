@@ -125,7 +125,6 @@ export default function EditFood() {
 
     setInput(URL.createObjectURL(e.target.files[0]));
   }
-
   return (
     <Paper>
       <PageHeader
@@ -211,6 +210,7 @@ export default function EditFood() {
               </Grid>
               <Grid item xs={12}>
                 <Controls.TextArea
+                  width="24.5rem"
                   row={2}
                   maxRows={4}
                   multiline

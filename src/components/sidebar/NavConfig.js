@@ -73,7 +73,7 @@ const navConfigAdmin = [
 
   {
     title: "Người giao hàng",
-    path: "/dashboard/admin/404",
+    path: "/dashboard/admin/adminshipper",
     icon: getIcon("carbon:delivery"),
   },
   {
@@ -82,45 +82,96 @@ const navConfigAdmin = [
     icon: getIcon("carbon:location-company"),
   },
   {
-    title: "Admin quản lí đơn hàng",
+    title: "Quản lí đơn hàng",
     path: "/dashboard/admin/adminorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
 
   {
-    title: "Admin xem bếp",
+    title: "Quản lí bếp",
     path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
-  {
-    title: "Admin quản lí Người giao hàng",
-    path: "/dashboard/admin/adminshipper",
-    icon: getIcon("carbon:delivery"),
-  },
+  // {
+  //   title: "Admin quản lí Người giao hàng",
+  //   path: "/dashboard/admin/adminshipper",
+  //   icon: getIcon("carbon:delivery"),
+  // },
   //=========================================================
   {
-    title: "Admin xem đánh giá",
+    title: "Xem đánh giá bếp",
     path: "/dashboard/admin/adminviewfeedback",
     icon: getIcon("teenyicons:star-circle-outline"),
   },
+
+  //===================================
+
+
+  // XÓA SAU
+
+  {
+    title: "Bếp chuẩn bị món ăn",
+    path: "/dashboard/kitchen/kitchenorder",
+    icon: getIcon("ic:outline-restaurant-menu"),
+  },
+
+  {
+    title: "Bếp quản lí đơn hàng",
+    path: "/dashboard/kitchen/kitcheviewnorder",
+    icon: getIcon("eos-icons:subscription-management"),
+  },
+
+  // {
+  //   title: "Bếp quản lí Người giao hàng",
+  //   path: "/dashboard/kitchen/kitchenshipper",
+  //   icon: getIcon("carbon:delivery"),
+  // },
+  // {
+  //   title: "Bếp xem thông tin bếp",
+  //   path: "/dashboard/kitchen/kitchenprofile",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
+
+  // XÓA SAU
+
+  //===================================
+
+
+
+
+
+
 ];
 
 const navConfigKichen = [
+  // {
+  //   title: "Bếp xem bếp",
+  //   path: "/dashboard/kitchen/Listkitchen",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
   {
-    title: "Bếp xem bếp",
-    path: "/dashboard/kitchen/Listkitchen",
-    icon: getIcon("mdi:card-account-details-star-outline"),
+    title: "Bếp chuẩn bị món ăn",
+    path: "/dashboard/kitchen/kitchenorder",
+    icon: getIcon("ic:outline-restaurant-menu"),
+  },
+
+  {
+    title: "Bếp quản lí đơn hàng",
+    path: "/dashboard/kitchen/kitcheviewnorder",
+    icon: getIcon("eos-icons:subscription-management"),
+  },
+
+  {
+    title: "Bếp quản lí Người giao hàng",
+    path: "/dashboard/kitchen/kitchenshipper",
+    icon: getIcon("carbon:delivery"),
   },
   {
     title: "Bếp xem thông tin bếp",
     path: "/dashboard/kitchen/kitchenprofile",
     icon: getIcon("mdi:card-account-details-star-outline"),
   },
-  {
-    title: "Bếp quản lí Người giao hàng",
-    path: "/dashboard/kitchen/kitchenshipper",
-    icon: getIcon("carbon:delivery"),
-  },
+
 ];
 const navConfig = [
   {
@@ -209,11 +260,11 @@ const navConfig = [
   },
 
   //=========================================================
-  {
-    title: "Bếp xem bếp",
-    path: "/dashboard/kitchen/kitchen",
-    icon: getIcon("mdi:card-account-details-star-outline"),
-  },
+  // {
+  //   title: "Bếp xem bếp",
+  //   path: "/dashboard/kitchen/kitchen",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
   {
     title: "Bếp xem thông tin bếp",
     path: "/dashboard/kitchen/kitchenprofile",

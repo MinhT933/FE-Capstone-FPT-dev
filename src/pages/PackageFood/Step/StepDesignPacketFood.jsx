@@ -20,7 +20,7 @@ function getStepContent(step) {
     case 0:
       return <NewPackage />;
     case 1:
-      // return <NewPackageItem />;
+    // return <NewPackageItem />;
     case 2:
       return <ConfirmInfo />;
     default:
@@ -70,8 +70,8 @@ export default function StepDesignPacketFood() {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          getSteps.findIndex((step, i) => !(i in completed))
+        // find the first step that has been completed
+        getSteps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
