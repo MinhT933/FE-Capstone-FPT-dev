@@ -266,21 +266,21 @@ export const refreshToken = (accessToken) => (dispatch) => {
 };
 //----------------------------------------------------------------
 
-export const callAPIgetListStation = () => {
-  return async (dispatch) => {
-    try {
-      const res = await API("GET", URL_API + "/stations", null, null);
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_STATIONS,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {
-      console.log({ err });
-    }
-  };
-};
+// export const callAPIgetListStation = () => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await API("GET", URL_API + "/stations", null, null);
+//       dispatch(
+//         createAction({
+//           type: PathAction.GET_LIST_STATIONS,
+//           payload: res.data.result,
+//         })
+//       );
+//     } catch (err) {
+//       console.log({ err });
+//     }
+//   };
+// };
 
 //----------------------------------------------------------------
 export const callAPIgetListShipper = () => {

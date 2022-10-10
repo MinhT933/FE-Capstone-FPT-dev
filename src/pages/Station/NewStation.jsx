@@ -8,16 +8,8 @@ import Box from "@mui/material/Box";
 
 import Iconify from "../../components/hook-form/Iconify";
 
-
 import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
-
-import Button from "@mui/material/Button";
-import UseCreateForm from "../../components/PopUp/useForm";
-import Controls from "./../../components/Control/Controls";
-import Stack from "@mui/material/Stack";
-import InputImg from "./../../components/InputImg/inputImg";
-
 
 //time
 import dayjs from "dayjs";
@@ -49,7 +41,6 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 /// csss button
 
-
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
   name: yup.string().required().trim(),
@@ -76,9 +67,6 @@ export default function NewStation() {
   const [closetime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
   const token = localStorage.getItem("token");
 
-
-  
-  const token = localStorage.getItem("token");
   //formData để lưu data
   const formData = new FormData();
 
@@ -91,7 +79,7 @@ export default function NewStation() {
     initialValues: {
       name: "",
       address: "",
-    
+
       phone: "",
       opentime: "",
       closetime: "",
@@ -115,11 +103,7 @@ export default function NewStation() {
           type: "SUCCESS",
         });
       } catch (error) {
-
-
-
         CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
-
       }
     },
   });
