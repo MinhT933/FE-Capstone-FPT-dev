@@ -105,7 +105,7 @@ export default function NewPackage() {
       await dispatch(callAPIgetCatePackage());
     };
     getTimeFrame();
-  }, [dispatch]);
+  }, []);
 
   const formik = useFormik({
     validationSchema: schema,
@@ -129,6 +129,7 @@ export default function NewPackage() {
       const b = new Date(valueStarTime).toLocaleDateString().split("/");
       const startDate = new Date(valueStarTime).toLocaleDateString();
       const endDate = new Date(valueEndTime).toLocaleDateString();
+
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -141,6 +142,7 @@ export default function NewPackage() {
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
+      // console.log(endDate > startDate);
 
       try {
         if (endDate > startDate) {
@@ -153,6 +155,7 @@ export default function NewPackage() {
         } else if (endDate < startDate) {
           CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
         }
+        console.log(endDate > startDate);
       } catch (error) {
         CustomizedToast({ message: "Thấp bại rồi", type: "ERROR" });
       }
@@ -165,19 +168,19 @@ export default function NewPackage() {
     setInput(URL.createObjectURL(e.target.files[0]));
   }
 
-  const timeframeid = formik.values.timeFrameID;
-  React.useEffect(() => {
-    API("GET", URL_API + `/time-frame/${timeframeid}`, null, null).then(
-      (res) => {
-        let dateFilter = res.data.result.dateFilter;
-        for (const key in dateFilter) {
-          if (Object.hasOwnProperty.call(dateFilter, key)) {
-            const element = dateFilter[key];
-          }
-        }
-      }
-    );
-  });
+  // const timeframeid = formik.values.timeFrameID;
+  // React.useEffect(() => {
+  //   API("GET", URL_API + `/time-frame/${timeframeid}`, null, null).then(
+  //     (res) => {
+  //       let dateFilter = res.data.result.dateFilter;
+  //       for (const key in dateFilter) {
+  //         if (Object.hasOwnProperty.call(dateFilter, key)) {
+  //           const element = dateFilter[key];
+  //         }
+  //       }
+  //     }
+  //   );
+  // });
 
   const getIcon = (name) => <Iconify icon={name} width={24} height={24} />;
   return (
@@ -311,21 +314,13 @@ export default function NewPackage() {
                   variant="outlined"
                   name="startSale"
                   label="Ngày mở bán"
+                  // inputFormat="yyyy-MM-dd"
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.totalMeal && formik.errors.totalMeal && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.totalMeal}
-                  </FormHelperText>
-                )}
-
               </Grid>
               <Grid item xs={6}>
                 <Controls.Input
@@ -357,16 +352,7 @@ export default function NewPackage() {
                   onChange={(e) => {
                     setValueEndtime(e);
                   }}
-                 
                 />
-                {formik.touched.endSale && formik.errors.endSale && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.endSale}
-                  </FormHelperText>
-                )}
               </Grid>
               {/* ///categoryID */}
               <Grid item xs={6}>
@@ -433,7 +419,6 @@ export default function NewPackage() {
                   variant="outlined"
                   placeholder="Mô tả"
                   name="description"
-                 
                   value={formik.values.description}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -512,5 +497,6 @@ export default function NewPackage() {
       </Box>
       <NewTimeFrame OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp} />
     </Paper>
+    // <h1>hihi</h1>
   );
 }
