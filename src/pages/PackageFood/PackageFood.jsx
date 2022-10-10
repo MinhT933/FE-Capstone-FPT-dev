@@ -200,19 +200,12 @@ export default function PackageFood() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom></Typography>
+
           {decoded.role === "manager" && (
             <ButtonCustomize
               variant="contained"
               component={RouterLink}
-              to="/dashboard/manager/newpackageITem"
-              nameButton="Thêm khung thời gian"
-            />
-          )}
-          {decoded.role === "manager" && (
-            <ButtonCustomize
-              variant="contained"
-              component={RouterLink}
-              to="/dashboard/admin/newpackage"
+              to="/dashboard/manager/newpackage"
               nameButton="Thêm Gói Ăn"
             />
           )}

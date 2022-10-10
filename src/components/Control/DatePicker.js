@@ -36,9 +36,9 @@ export default function DatePicker(props) {
         <DesktopDatePicker
           name={name}
           label={label}
-          // inputFormat="YYYY-MM-DD"
+          inputFormat="YYYY-MM-DD"
           // inputFormat="DD-MM-YYYY"
-          inputFormat={inputFormat}
+          // inputFormat={inputFormat}
           value={value}
           onChange={onChange}
           minDate={new Date()}

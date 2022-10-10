@@ -49,6 +49,8 @@ import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 
 
 
+
+
 const ProtectedRouteAuthor = ({ condition, role, children }) => {
   if (condition === role) {
     return { children };
@@ -153,6 +155,7 @@ export default function Router() {
       ],
     },
     //Role Manager
+    ///dashboard/manager/newpackage
     {
       path: "/dashboard/manager",
       element: <DashboardLayout />,
@@ -173,8 +176,9 @@ export default function Router() {
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
 
-        { path: "timeFrame", element: <NewTimeFrame/> },
+        { path: "timeFrame", element: <NewTimeFrame /> },
 
+    
 
         //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },
