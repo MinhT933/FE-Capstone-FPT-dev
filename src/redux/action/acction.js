@@ -11,7 +11,7 @@ import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 // hàm này được gọi là hàm khởi tạo để dùng chung nè
-const token = localStorage.getItem("token");
+// const token = localStorage.getItem("token");
 //type là kiểu dữ liệu truyền vào
 //payload giá trị tham số mà action creator truyền lên.
 export const createAction = ({ type, payload }) => {

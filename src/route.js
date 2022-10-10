@@ -37,14 +37,8 @@ import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList"
 import { useEffect } from "react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
-
 import NewTimeFrame from "./pages/PackageFood/NewTimeFrame";
-
-
-// import NewPackageItem from "./pages/PackageFood/NewPacketItem";
-
 import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
-// import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 
 
