@@ -37,6 +37,7 @@ export default function DatePicker(props) {
           name={name}
           label={label}
           inputFormat="YYYY-MM-DD"
+          //
           // inputFormat="DD-MM-YYYY"
           // inputFormat={inputFormat}
           value={value}
