@@ -433,7 +433,7 @@ export default function NewPackage() {
                   variant="outlined"
                   placeholder="Mô tả"
                   name="description"
-                  width="16rem"
+                 
                   value={formik.values.description}
                   onChange={(e) => {
                     formik.handleChange(e);
