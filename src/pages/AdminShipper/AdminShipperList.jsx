@@ -41,12 +41,12 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 const TABLE_HEAD = [
     { id: "fullName", label: "Họ Tên", alignRight: false },
-    { id: "id", label: "Mã tài xế", alignRight: false },
+    // { id: "id", label: "Mã tài xế", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
     { id: "noPlate", label: "Biển số xe", alignRight: false },
     { id: "vehicleType", label: "Loại xe", alignRight: false },
-    { id: "accountId", label: "Tên tài khoản", alignRight: false },
-    { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
+    { id: "email", label: "Tên tài khoản", alignRight: false },
+    { id: "kitchenID", label: "Bếp", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
     { id: "" },
 ];
@@ -209,16 +209,15 @@ export default function AdminShipperList() {
                         {/* User */}
                     </Typography>
 
-                    {token.role === "manager" && (
-                        <ColorButton
-                            variant="contained"
-                            component={RouterLink}
-                            to="/dashboard/admin/newshipper"
-
-                        >
-                            Thêm tài xế
-                        </ColorButton>
-                    )}
+                    {/* {token.role === "admin" && ( */}
+                    <ColorButton
+                        variant="contained"
+                        component={RouterLink}
+                        to="/dashboard/admin/newshipper"
+                    >
+                        Thêm tài xế
+                    </ColorButton>
+                    {/* )} */}
                 </Stack>
 
                 <Card>
@@ -253,7 +252,7 @@ export default function AdminShipperList() {
                                                 noPlate,
                                                 vehicleType,
                                                 status,
-                                                accountId,
+                                                email,
                                                 kitchenID,
 
                                             } = row;
@@ -283,18 +282,18 @@ export default function AdminShipperList() {
                                                         >
                                                             <Avatar alt={fullName} src={avatarUrl} />
                                                             <Typography variant="subtitle2" noWrap>
-                                                                {fullName}
+                                                                {row.profile.fullName}
                                                             </Typography>
                                                         </Stack>
                                                     </TableCell>
-                                                    <TableCell align="left">{id}</TableCell>
+                                                    {/* <TableCell align="left">{id}</TableCell> */}
                                                     {/* <TableCell align="left">{fullName}</TableCell> */}
 
-                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{row.account.phone}</TableCell>
                                                     <TableCell align="left">{noPlate}</TableCell>
                                                     <TableCell align="left">{vehicleType}</TableCell>
-                                                    <TableCell align="left">{accountId}</TableCell>
-                                                    {/* <TableCell align="left">{kitchenID}</TableCell> */}
+                                                    <TableCell align="left">{row.profile.email}</TableCell>
+                                                    <TableCell align="left">{kitchenID}</TableCell>
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"

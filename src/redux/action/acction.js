@@ -258,6 +258,29 @@ export const callAPIgetListShipper = () => {
     }
   };
 };
+
+//----------------------------------------------------------------
+export const callAPIAdminCreateShipper = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("POST", URL_API + "/auths/register/shipper", null, token);
+      dispatch(
+        createAction({
+          type: PathAction.CREATE_SHIPPER,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+
+//----------------------------------------------------------------
+
+
 //----------------------------------------------------------------
 // export const callAPIgetListUser = () => {
 //   return async (dispatch) => {
@@ -327,8 +350,22 @@ export const callAPIAdminGetListOrder = () => {
   };
 };
 
-
-
 //----------------------------------------------------------------
 
+export const callAPIgetProfileKitchen = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/kitchens/01", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.KITCHEN_GET_PROFILE,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
 //----------------------------------------------------------------

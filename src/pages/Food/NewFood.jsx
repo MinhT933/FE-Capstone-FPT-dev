@@ -65,9 +65,9 @@ export default function NewFood() {
   const getOptions = () => {
     //tạo mảng rỗng để chứa data ở đây là name và id của categoriesFood
     //hình dung nó giống nhà kho vậy á
-    // sau này trước khi muốn gọi cái gì đó phải tọa 1 mảng rỗng để bỏ vào
+    // sau này trước khi muốn gọi cái gì đó phải tạo 1 mảng rỗng để bỏ vào
     const item = [];
-    // vòng food này để đẩy data từ categoriesFood v ào trong items ( vì nó có nhiều object) nên phải làm vậy
+    // vòng food này để đẩy data từ categoriesFood vào trong items ( vì nó có nhiều object) nên phải làm vậy
     for (var i = 0; i < categoriesFood.length; i++) {
       item.push({ id: categoriesFood[i].id, title: categoriesFood[i].name });
     }
@@ -121,7 +121,7 @@ export default function NewFood() {
           type: "SUCCESS",
         });
         window.location.reload(true);
-      } catch (error) {}
+      } catch (error) { }
     },
   });
 
@@ -273,6 +273,8 @@ export default function NewFood() {
               </Box>
             </Grid>
           </Box>
+
+
           <Box sx={{ float: "left", width: "40%", mt: "2rem", ml: "5rem" }}>
             <label htmlFor="contained-button-file">
               <Input
@@ -310,6 +312,7 @@ export default function NewFood() {
               </Box>
             </label>
           </Box>
+
         </Box>
       </form>
     </Paper>
