@@ -58,22 +58,6 @@ DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
 };
-const token = localStorage.getItem("token");
-
-const decoded = jwt_decode(token);
-
-const handleRole = () => {
-  let role = "";
-  if (decoded.role === "admin") {
-    role = "Quản trị";
-  } else if (decoded.role === "manager") {
-    role = "Quản lí";
-  } else if (decoded.role === "kitchen") {
-    role = "Bếp";
-  }
-  console.log(role);
-  return role;
-};
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
@@ -103,7 +87,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           py: 3,
           display: "inline-flex",
           backgroundColor: "white",
-          marginLeft: 5,
+          // marginLeft: 5,
         }}
       >
         <Logo />

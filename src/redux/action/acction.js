@@ -11,7 +11,7 @@ import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 // hàm này được gọi là hàm khởi tạo để dùng chung nè
-const token = localStorage.getItem("token");
+
 //type là kiểu dữ liệu truyền vào
 //payload giá trị tham số mà action creator truyền lên.
 export const createAction = ({ type, payload }) => {
@@ -96,7 +96,6 @@ export const callAPIgetListStation = () => {
   };
 };
 
-
 //----------------------------------------------------------------
 export const callAPIgetGroupFood = (req, res) => {
   return async (dispatch) => {
@@ -146,7 +145,6 @@ export const callAPIgetPackagebyID = (req, res) => {
   };
 };
 
-
 export const callAPIgetCatePackage = (req, res) => {
   return async (dispatch) => {
     try {
@@ -166,11 +164,12 @@ export const callAPIgetCatePackage = (req, res) => {
 export const callAPIgetTimeFramebyID = (id) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/time-frame/");
+      const res = await API("GET", URL_API + `/time-frame/${id}`, null, null);
+      console.log(res);
       dispatch(
         createAction({
-          type: PathAction.GET_LIST_CATE_PACKAGE,
-          payload: res.data.result,
+          type: PathAction.GET_LIST_TIME_FRAME_BY_ID,
+          payload: res.data.result.dateFilter,
         })
       );
     } catch (err) {
@@ -178,7 +177,6 @@ export const callAPIgetTimeFramebyID = (id) => {
     }
   };
 };
-
 
 export const LoginAthenAdmin = (user, navigate) => {
   return async (dispatch) => {
@@ -304,7 +302,12 @@ export const callAPIgetListShipper = () => {
 export const callAPIAdminCreateShipper = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("POST", URL_API + "/auths/register/shipper", null, token);
+      const res = await API(
+        "POST",
+        URL_API + "/auths/register/shipper",
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.CREATE_SHIPPER,

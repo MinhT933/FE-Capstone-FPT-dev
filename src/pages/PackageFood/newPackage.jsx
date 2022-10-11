@@ -162,25 +162,44 @@ export default function NewPackage() {
     },
   });
 
+  const [filter, setFilter] = useState("");
+  const [bit, setBit] = useState([]);
+
+  const handClickTimeFrame = (id) => {
+    const count = 3;
+    const temp = [];
+  
+    API("GET", URL_API + `/time-frame/${id}`, null, null)
+      .then((res) => {
+        setFilter(res.data.result.dateFilter);
+        //coppy chuỗi zào mảng tên là data
+        const data = [...filter];
+        for (let index = 0; index < data.length; index += count) {
+          let slice = data.slice(index, index + count);
+          temp.push(slice);
+        }
+        setBit(temp);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return temp;
+  };
+  console.log(bit);
+  // const handleRenderLession = () => {
+  //   // for (let index = 0; index < bit.length; index++) {
+  //   //   const element = bit[index];
+  //   //   console.log(element);
+  //   // }
+  // };
+
   function _treat(e) {
     formik.setFieldValue("image", e.target.files[0]);
 
     setInput(URL.createObjectURL(e.target.files[0]));
   }
 
-  // const timeframeid = formik.values.timeFrameID;
-  // React.useEffect(() => {
-  //   API("GET", URL_API + `/time-frame/${timeframeid}`, null, null).then(
-  //     (res) => {
-  //       let dateFilter = res.data.result.dateFilter;
-  //       for (const key in dateFilter) {
-  //         if (Object.hasOwnProperty.call(dateFilter, key)) {
-  //           const element = dateFilter[key];
-  //         }
-  //       }
-  //     }
-  //   );
-  // });
+  // console.log(bit);
 
   const getIcon = (name) => <Iconify icon={name} width={24} height={24} />;
   return (
@@ -388,6 +407,7 @@ export default function NewPackage() {
                         formik.setFieldValue("timeFrameID", a.id);
                       }}
                       onBlur={formik.handleBlur}
+                      onClick={handClickTimeFrame(formik.values.timeFrameID)}
                       options={getTimeFrameOptions()}
                     />
                     {formik.touched.timeFrameID && formik.errors.timeFrameID && (
