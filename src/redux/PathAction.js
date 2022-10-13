@@ -10,7 +10,6 @@ export const GET_LIST_USER = "GET_LIST_USER";
 export const GET_LIST_KITCHEN = "GET_LIST_KITCHEN";
 export const KITCHEN_GET_PROFILE = "KITCHEN_GET_PROFILE";
 
-
 export const KITCHEN_GET_LIST_ORDER = "KITCHEN_GET_LIST_ORDER";
 export const ADMIN_GET_LIST_ORDER = "ADMIN_GET_LIST_ORDER";
 
@@ -23,6 +22,7 @@ export const CREATE_SHIPPER = "CREATE_SHIPPER";
 
 export const REFRESH_TOKEN = "REFRESH_TOKEN";
 
+export const GET_LIST_TIME_FRAME_BY_ID = "GET_LIST_TIME_FRAME_BY_ID";
 
 /// gởi đi message
 export const SET_MESSAGE = "SET_MESSAGE";

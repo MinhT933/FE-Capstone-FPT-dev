@@ -40,41 +40,27 @@ import jwt_decode from "jwt-decode";
 
 import NewTimeFrame from "./pages/PackageFood/NewTimeFrame";
 
-
 // import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 
 import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
 // import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 
-
-
-
-
-const ProtectedRouteAuthor = ({ condition, role, children }) => {
-  if (condition === role) {
-    return { children };
-  }
-  return <Navigate to="/login" replace />;
-};
-
-const ProtectedRouteAuthen = ({ redirectPath = "/login", role }) => {
+const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
     return <Navigate to={redirectPath} replace />;
   }
   var decoded = jwt_decode(token);
-  console.log(decoded);
   if (token && !decoded.role) {
     return <Navigate to={redirectPath} replace />;
   }
+  if (roles.includes(decoded.role)) {
+    return <>{children}</>;
+  }
 
-  return (
-    <ProtectedRouteAuthor condition={decoded.role} role={role}>
-      <Outlet />
-    </ProtectedRouteAuthor>
-  );
+  return <Navigate to="/" replace />;
 };
 
 export default function Router() {
@@ -105,14 +91,15 @@ export default function Router() {
     //
     {
       path: "/dashboard/admin",
-      element: <DashboardLayout />,
+      element: (
+        <ProtectedRouteAuthen roles={["admin", "manager"]}>
+          <DashboardLayout />
+        </ProtectedRouteAuthen>
+      ),
       children: [
         { path: "app", element: <Page404 /> },
         { path: "users", element: <ProductList /> },
-        {
-          path: "food",
-          element: <Food />,
-        },
+
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
         // { path: "package/:id", element: <EditPackage /> },
@@ -178,8 +165,6 @@ export default function Router() {
 
         { path: "timeFrame", element: <NewTimeFrame /> },
 
-    
-
         //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },
         { path: "newstation", element: <NewStation /> },
@@ -206,7 +191,11 @@ export default function Router() {
     //Role Kitchen
     {
       path: "/dashboard/kitchen",
-      element: <DashboardLayout />,
+      element: (
+        <ProtectedRouteAuthen roles={["kitchen"]}>
+          <DashboardLayout />
+        </ProtectedRouteAuthen>
+      ),
 
       children: [
         {
@@ -220,10 +209,10 @@ export default function Router() {
         {
           path: "newkitchen",
           element: (
-            <ProtectedRouteAuthen>
-              <NewKitchen />,
-            </ProtectedRouteAuthen>
+            // <ProtectedRouteAuthen>
+            <NewKitchen />
           ),
+          // </ProtectedRouteAuthen>
         },
 
         //kitchen xem chuẩn bị món ăn
