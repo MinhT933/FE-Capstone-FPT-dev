@@ -123,7 +123,7 @@ export default function NewFood() {
           type: "SUCCESS",
         });
         window.location.reload(true);
-      } catch (error) { }
+      } catch (error) {}
     },
   });
 
@@ -239,7 +239,6 @@ export default function NewFood() {
                   row={6}
                   maxRows={6}
                   multiline
-                  width="24.5rem"
                   variant="outlined"
                   label="Mô tả"
                   name="description"
@@ -275,7 +274,6 @@ export default function NewFood() {
               </Box>
             </Grid>
           </Box>
-
 
           <Box sx={{ float: "left", width: "40%", mt: "2rem", ml: "5rem" }}>
             <label htmlFor="contained-button-file">
@@ -314,7 +312,6 @@ export default function NewFood() {
               </Box>
             </label>
           </Box>
-
         </Box>
       </form>
     </Paper>

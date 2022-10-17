@@ -24,6 +24,7 @@ import { GET_LIST_GROUP_FOOD } from "./../PathAction";
 //nhận 2 tham số State và action
 //dây là store
 // đây tạo giá trị khởi tạo cho nó
+
 const initialState = {
   food: [],
   listFood: [],
@@ -32,6 +33,7 @@ const initialState = {
   listFoodPackage: [],
   listGroupFood: [],
   listTimeFrame: [],
+  TimeFrame: [],
 
   listStation: [],
   station: [],
@@ -135,13 +137,14 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.LOGIN_USER:
       state.currentUser = payload;
       break;
+    case PathAction.GET_LIST_TIME_FRAME_BY_ID:
+      state.TimeFrame = payload;
     // case PathAction.REFRESH_TOKEN:
     //   return {
     //     ...state,
     //     admin: { ...admin, accessToken: payload },
     //   };
     default:
-      return state;
   }
   return { ...state };
 }
