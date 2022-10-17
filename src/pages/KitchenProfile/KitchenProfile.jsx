@@ -15,6 +15,9 @@ import {
     Paper,
     Container,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { callAPIgetListKitchen, callAPIgetProfileKitchen } from "../../redux/action/acction";
+import { useSelector } from "react-redux";
 
 const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC32"),
@@ -25,8 +28,31 @@ const ColorButton = styled(Button)(({ theme }) => ({
     display: "center",
 }));
 const getIcon = (name) => <Iconify icon={name} width={30} height={30} />;
+
+
+const token = localStorage.getItem("token");
+
 export default function KitchenProfile(props) {
     // const { classes } = props;
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        const getlistKitchen = async () => {
+            await dispatch(callAPIgetProfileKitchen(token));
+        };
+        getlistKitchen();
+    }, []);
+
+
+    // "id": "4f0b492d-d646-4e2b-9b39-1c453e4e6c9f",
+    // "fullName": "Aaliyah",
+    // "DOB": "1959-02-06T16:12:48.000Z",
+    // "avatar": "/images/default.png",
+    // "email": "kitchen@gmail.com"
+    const profile = useSelector((state) => {
+        return state.userReducer.profileKitchen;
+    })
+    console.log(profile);
+
     return (
 
 
@@ -47,9 +73,10 @@ export default function KitchenProfile(props) {
                         <Typography variant="h6" gutterBottom>
                             Thông tin bếp
                         </Typography>
-                        <Typography gutterBottom>Địa điểm: Khu CN Cao</Typography>
+                        <Typography gutterBottom>Địa điểm: {profile.fullName}</Typography>
                         <Typography gutterBottom>Địa chỉ: D1, quận 9, Hồ Chí Minh </Typography>
                         <Typography gutterBottom>Điện thoại : 1900 8088</Typography>
+                        <Typography gutterBottom>Email: {profile.email}</Typography>
                         <Typography gutterBottom>Công suất : 220</Typography>
 
                         <Typography gutterBottom>Ngày tạo: 28/09/2022</Typography>
@@ -74,7 +101,7 @@ export default function KitchenProfile(props) {
                                 <Typography gutterBottom>10:00</Typography>
                             </Grid>
                             <Grid sm={5} sx={{ mt: 20, mb: 5 }}>
-                                <ColorButton sx={{ width: "80%" }}>Xác nhận</ColorButton>
+                                {/* <ColorButton sx={{ width: "80%" }}>Xác nhận</ColorButton> */}
                             </Grid>
                         </Grid>
                     </Grid>
