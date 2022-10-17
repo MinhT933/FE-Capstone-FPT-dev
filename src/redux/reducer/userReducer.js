@@ -36,7 +36,11 @@ const initialState = {
   TimeFrame: [],
 
   listStation: [],
+  station: [],
+
   listKitchen: [],
+  kitchen: [],
+
   listShipper: [],
   shipper: [],
 
@@ -79,6 +83,10 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listStation = payload;
       // console.log(payload);
       break;
+
+    // case PathAction.CREATE_STATION:
+    //   state.station = payload;
+    //   break;
     //=====================================================
     case PathAction.GET_LIST_USER:
       state.listUser = payload;
@@ -87,13 +95,21 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_LIST_KITCHEN:
       state.listKitchen = payload;
       break;
+
+    // case PathAction.CREATE_KITCHEN:
+    //   state.kitchen = payload;
+    //   break;
     //=====================================================
     case PathAction.GET_LIST_SHIPPER:
       state.listShipper = payload;
       break;
-    //=====================================================
+
     case PathAction.CREATE_SHIPPER:
       state.shipper = payload;
+      break;
+
+    case PathAction.KITCHEN_GET_PROFILE:
+      state.profileKitchen = payload;
       break;
     //=====================================================
     case PathAction.KITCHEN_GET_LIST_ORDER:
@@ -104,9 +120,7 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listOrder = payload;
       break;
     //=====================================================
-    case PathAction.KITCHEN_GET_PROFILE:
-      state.profileKitchen = payload;
-      break;
+
     //=====================================================
     case PathAction.GET_FOOD:
       state.food = payload;

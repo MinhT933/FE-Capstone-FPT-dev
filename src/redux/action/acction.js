@@ -80,6 +80,7 @@ export const callAPIgetListCategory = () => {
   };
 };
 
+
 export const callAPIgetListStation = () => {
   return async (dispatch) => {
     try {
@@ -95,6 +96,7 @@ export const callAPIgetListStation = () => {
     }
   };
 };
+
 
 //----------------------------------------------------------------
 export const callAPIgetGroupFood = (req, res) => {
@@ -263,17 +265,33 @@ export const refreshToken = (accessToken) => (dispatch) => {
   });
 };
 //----------------------------------------------------------------
+export const callAPIgetListStation = () => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/stations", null, null);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_STATIONS,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
 
-// export const callAPIgetListStation = () => {
+// export const callAPIAdminCreateStation = (token) => {
 //   return async (dispatch) => {
 //     try {
-//       const res = await API("GET", URL_API + "/stations", null, null);
+//       const res = await API("POST", URL_API + "/stations", null, token);
 //       dispatch(
 //         createAction({
-//           type: PathAction.GET_LIST_STATIONS,
+//           type: PathAction.CREATE_STATION,
 //           payload: res.data.result,
 //         })
 //       );
+//       console.log(res.data.result);
 //     } catch (err) {
 //       console.log({ err });
 //     }
@@ -281,10 +299,10 @@ export const refreshToken = (accessToken) => (dispatch) => {
 // };
 
 //----------------------------------------------------------------
-export const callAPIgetListShipper = () => {
+export const callAPIgetListShipper = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/shippers", null, null);
+      const res = await API("GET", URL_API + "/shippers", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_SHIPPER,
@@ -298,7 +316,6 @@ export const callAPIgetListShipper = () => {
   };
 };
 
-//----------------------------------------------------------------
 export const callAPIAdminCreateShipper = (token) => {
   return async (dispatch) => {
     try {
@@ -321,10 +338,11 @@ export const callAPIAdminCreateShipper = (token) => {
   };
 };
 
-export const callAPIgetListKitchen = () => {
+//----------------------------------------------------------------
+export const callAPIgetListKitchen = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/kitchens", null, null);
+      const res = await API("GET", URL_API + "/kitchens", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_KITCHEN,
@@ -337,6 +355,25 @@ export const callAPIgetListKitchen = () => {
     }
   };
 };
+
+
+
+// export const callAPIAdminCreateKitchen = (token) => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await API("POST", URL_API + "/auths/register/kitchen", null, token);
+//       dispatch(
+//         createAction({
+//           type: PathAction.CREATE_KITCHEN,
+//           payload: res.data.result,
+//         })
+//       );
+//       console.log(res.data.result);
+//     } catch (err) {
+//       console.log({ err });
+//     }
+//   };
+// };
 //----------------------------------------------------------------
 export const callAPIKitchenGetListOrder = () => {
   return async (dispatch) => {
@@ -373,11 +410,10 @@ export const callAPIAdminGetListOrder = () => {
 };
 
 //----------------------------------------------------------------
-
-export const callAPIgetProfileKitchen = () => {
+export const callAPIgetProfileKitchen = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/kitchens/01", null, null);
+      const res = await API("GET", URL_API + "/profiles/my", null, token);
       dispatch(
         createAction({
           type: PathAction.KITCHEN_GET_PROFILE,

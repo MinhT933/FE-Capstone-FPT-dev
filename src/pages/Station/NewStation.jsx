@@ -12,7 +12,6 @@ import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
 
 //time
-//
 import dayjs from "dayjs";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -29,7 +28,6 @@ import * as yup from "yup";
 
 import { useSelector } from "react-redux";
 import {
-  callAPIgetListCategory,
   callAPIgetListStation,
 } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
@@ -44,8 +42,8 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
-  name: yup.string().required().trim(),
-  address: yup.string().required().trim(),
+  name: yup.string().required("Điền đầy đủ thông tin").trim(),
+  address: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 
 //callAPIforCreateStation========================================
@@ -123,6 +121,8 @@ export default function NewStation() {
     color: theme.palette.text.secondary,
   }));
   console.log(new Date(opentime).toTimeString());
+
+
   return (
     <Paper
       elevation={3}
@@ -164,7 +164,7 @@ export default function NewStation() {
                     error
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.description}
+                    {formik.errors.name}
                   </FormHelperText>
                 )}
 
@@ -178,6 +178,8 @@ export default function NewStation() {
                   }}
                   onBlur={formik.handleBlur}
                 />
+
+
                 <Controls.Input
                   variant="outlined"
                   label="Số điện thoại"

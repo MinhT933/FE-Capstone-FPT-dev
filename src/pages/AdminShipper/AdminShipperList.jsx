@@ -85,12 +85,14 @@ function applySortFilter(array, comparator, query) {
     return stabilizedThis.map((el) => el[0]);
 }
 
+const token = localStorage.getItem("token");
+
 export default function AdminShipperList() {
     //CallAPIgetListShipper=====================================
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
-            await dispatch(callAPIgetListShipper());
+            await dispatch(callAPIgetListShipper(token));
         };
         callAPI();
     }, [dispatch]);
@@ -106,9 +108,11 @@ export default function AdminShipperList() {
     };
 
     const token = localStorage.getItem("token");
+
     const shipper = useSelector((state) => {
         return state.userReducer.listShipper;
     });
+    console.log(shipper);
     //CallAPIgetListShipper=====================================
     const [OpenPopUp, SetOpenPopUp] = useState(false);
     const [page, setPage] = useState(0);
@@ -253,9 +257,15 @@ export default function AdminShipperList() {
                                                 vehicleType,
                                                 status,
                                                 email,
-                                                kitchenID,
+                                                address,
+                                                account,
+                                                kitchen,
+                                                // kitchenID,
 
                                             } = row;
+
+                                            // console.log(kitchen);
+
                                             const isItemSelected = selected.indexOf(fullName) !== -1;
 
                                             return (
@@ -282,18 +292,18 @@ export default function AdminShipperList() {
                                                         >
                                                             <Avatar alt={fullName} src={avatarUrl} />
                                                             <Typography variant="subtitle2" noWrap>
-                                                                {row.profile.fullName}
+                                                                {account.profile.fullName}
                                                             </Typography>
                                                         </Stack>
                                                     </TableCell>
                                                     {/* <TableCell align="left">{id}</TableCell> */}
                                                     {/* <TableCell align="left">{fullName}</TableCell> */}
 
-                                                    <TableCell align="left">{row.account.phone}</TableCell>
+                                                    <TableCell align="left">{account.phone}</TableCell>
                                                     <TableCell align="left">{noPlate}</TableCell>
                                                     <TableCell align="left">{vehicleType}</TableCell>
-                                                    <TableCell align="left">{row.profile.email}</TableCell>
-                                                    <TableCell align="left">{kitchenID}</TableCell>
+                                                    <TableCell align="left">{account.profile.email}</TableCell>
+                                                    <TableCell align="left">{kitchen?.address}</TableCell>
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
