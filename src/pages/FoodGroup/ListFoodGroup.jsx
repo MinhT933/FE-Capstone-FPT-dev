@@ -1,3 +1,4 @@
+import React from "react";
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -8,7 +9,6 @@ import {
   Table,
   Stack,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -22,29 +22,38 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from "../../sections/@dashboard/user";
-// mock
-import FOODGROUP from "../../_mock/GroupExample";
-import NewUserPopup from "../../components/PopUp/NewUserPopup";
-import NewFoodGroup from "./NewFoodGroup";
-import DnDFoodGroup from "./DnDFoodGroup";
+import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+
+// import DnDFoodGroup from "./DnDFoodGroup";
 import jwt_decode from "jwt-decode";
+import { useSelector } from "react-redux";
+import { callAPIgetGroupFood } from "../../redux/action/acction";
+import { useDispatch } from "react-redux";
+import DetailFoodinGroup from "./PopUp/DetailFoodinGroup";
+// import { createTheme, ThemeProvider } from "@mui/material";
+import NewFoodGroup from "./PopUp/NewFoodGroup";
+import BlockIcon from "@mui/icons-material/Block";
+import IconButton from "@mui/material/IconButton";
+import CheckIcon from "@mui/icons-material/Check";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: "id", label: "", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
   { id: "quanlity", label: "Số lượng", alignRight: false },
-  { id: "sumaryfood", label: "Số thức ăn", alignRigh: false },
+  // { id: "sumaryfood", label: "Số thức ăn", alignRigh: false },
   { id: "createday", label: "Ngày tạo", alignRight: false },
   { id: "updateday", label: "Ngày sửa", alignRight: false },
-  { id: "status", label: "Trạng thái", alignRight: false },
   { id: "des", label: "Mô tả", alignRight: false },
-  { id: "Update", label: "Cập nhập nhóm", alignRight: false },
+  { id: "status", label: "Trạng thái", alignRight: false },
+  // { id: "Update", label: "Cập nhập nhóm", alignRight: false },
+  { id: "detail", label: "Chi tiết món ăn", alignRight: false },
+  { id: "action", label: "Thay đổi trạng thái", alignRight: false },
   { id: "" },
 ];
 
@@ -84,9 +93,10 @@ function applySortFilter(array, comparator, query) {
 
 export default function ListFoodGroup() {
   const [OpenPopUp, SetOpenPopUp] = useState(false);
-  const [OpenPopUpDND, SetOpenPopUpDND] = useState(false);
+  const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
   const [page, setPage] = useState(0);
 
+  const dispatch = useDispatch();
   const [order, setOrder] = useState("asc");
 
   const [selected, setSelected] = useState([]);
@@ -97,6 +107,19 @@ export default function ListFoodGroup() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [valueId, setValueId] = useState();
+
+  const GroupFood = useSelector((state) => {
+    return state.userReducer.listGroupFood;
+  });
+
+  React.useEffect(() => {
+    const getGroupfood = async () => {
+      await dispatch(callAPIgetGroupFood(token));
+    };
+    getGroupfood();
+  }, []);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -105,7 +128,7 @@ export default function ListFoodGroup() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = FOODGROUP.map((n) => n.name);
+      const newSelecteds = GroupFood.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -145,12 +168,16 @@ export default function ListFoodGroup() {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
-
+  //handlePopUpdetail
+  // const handleOpenPopUp = (id) => {
+  //   SetOpenPopUpDetail(true);
+  //   setValueId(id);
+  // };
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FOODGROUP.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - GroupFood.length) : 0;
 
   const filteredUsers = applySortFilter(
-    FOODGROUP,
+    GroupFood,
     getComparator(order, orderBy),
     filterName
   );
@@ -164,7 +191,45 @@ export default function ListFoodGroup() {
     display: "center",
   }));
 
+  const handleAccept = (id, name) => {
+    API("PUT", URL_API + `/food-groups/active/${id}`, null, token).then(
+      (res) => {
+        try {
+          dispatch(callAPIgetGroupFood(token));
+          CustomizedToast({
+            message: `Đã Cập nhập trạng thái ${name}`,
+            type: "SUCCESS",
+          });
+        } catch (err) {
+          CustomizedToast({
+            message: `Có điều gì đó không đúng đã xảy ra ở ${name}`,
+            type: "ERROR",
+          });
+        }
+      }
+    );
+  };
+
+  const handleReject = (id, name) => {
+    API("PUT", URL_API + `/food-groups/remove/${id}`, null, token).then(
+      (res) => {
+        try {
+          dispatch(callAPIgetGroupFood(token));
+          CustomizedToast({
+            message: `Đã ngưng bán ${name} thành công`,
+            type: "SUCCESS",
+          });
+        } catch (err) {
+          CustomizedToast({
+            message: `Có điều gì đó không đúng đã xảy ra ở ${name}`,
+            type: "ERROR",
+          });
+        }
+      }
+    );
+  };
   const isUserNotFound = filteredUsers.length === 0;
+  console.log(valueId);
 
   return (
     <Page title="Nhóm thức ăn" sx={{ maxWith: false }}>
@@ -200,13 +265,13 @@ export default function ListFoodGroup() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: "76rem" }}>
+            <TableContainer sx={{ minWidth: "80rem" }}>
               <Table>
                 <UserListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={FOODGROUP.length}
+                  rowCount={GroupFood.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -218,76 +283,93 @@ export default function ListFoodGroup() {
                       const {
                         id,
                         name,
-                        createDate,
+                        createdAt,
+                        updatedAt,
                         status,
-                        Quanlity,
-                        FoodperGtoup,
-                        UpDateDay,
+                        description,
+                        totalFood,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
                       return (
                         <TableRow
                           hover
                           key={id}
                           tabIndex={-1}
-                          role="checkbox"
+                          // role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+                          displaySelectAll={false}
+                          adjustForCheckbox={false}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
+                          <TableCell padding="checkbox"></TableCell>
                           <TableCell>
                             <Typography>{name}</Typography>
                           </TableCell>
-                          <TableCell align="left">{Quanlity}</TableCell>
-                          <TableCell align="left">{FoodperGtoup}</TableCell>
-                          <TableCell align="left">{createDate}</TableCell>
-                          <TableCell align="left">{UpDateDay}</TableCell>
+                          <TableCell align="left">{totalFood}</TableCell>
+                          <TableCell align="left">
+                            {new Date(createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(updatedAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={
-                                (status === "đợi duyệt" && "error") || "success"
+                                (status === "inActive" && "error") ||
+                                (status === "waiting" && "warning") ||
+                                "success"
                               }
                             >
                               {status}
                             </Label>
                           </TableCell>
-                          <TableCell align="left">
-                            chưa có data từ từ em đỗ vào
-                          </TableCell>
                           <TableCell>
                             <ColorButton
-                              sx={{ width: "80%" }}
+                              sx={{ width: "100%" }}
                               variant="contained"
-                              component={RouterLink}
-                              to="#"
+                              // component={RouterLink}
+                              // to="#"
                               id="id"
                               onClick={() => {
-                                SetOpenPopUpDND(true);
+                                SetOpenPopUpDetail(true);
+                                setValueId(id);
                               }}
                             >
-                              Cập nhập
+                              Chi tiết
                             </ColorButton>
                           </TableCell>
 
-                          <TableCell align="right">
-                            {/* <GroupMoreMenu id={id} /> */}
-                          </TableCell>
+                          {decoded === "manage" && (
+                            <TableCell align="center">
+                              {status === "active" ? (
+                                <ButtonCustomize
+                                  nameButton="Ngưng bán"
+                                  onClick={() => handleReject(id, name)}
+                                />
+                              ) : (
+                                // <IconButton
+                                //   onClick={() => handleAccept(id, name)}
+                                // >
+                                //   <CheckIcon />
+                                // </IconButton>
+                                <ButtonCustomize
+                                  nameButton="Mở bán"
+                                  onClick={() => handleAccept(id, name)}
+                                />
+                              )}
+                            </TableCell>
+                          )}
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
 
                 {isUserNotFound && (
@@ -306,7 +388,7 @@ export default function ListFoodGroup() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={FOODGROUP.length}
+            count={GroupFood.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -323,11 +405,11 @@ export default function ListFoodGroup() {
         OpenPopUp={OpenPopUp}
         SetOpenPopUp={SetOpenPopUp}
       ></NewFoodGroup>
-      <DnDFoodGroup
-        OpenPopUpDND={OpenPopUpDND}
-        SetOpenPopUpDND={SetOpenPopUpDND}
+      <DetailFoodinGroup
+        OpenPopUpDetail={OpenPopUpDetail}
+        SetOpenPopUpDetail={SetOpenPopUpDetail}
+        id={valueId}
       />
     </Page>
   );
-  console.log(OpenPopUp);
 }

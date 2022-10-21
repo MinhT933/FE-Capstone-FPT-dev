@@ -1,6 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { sentenceCase } from "change-case";
 import * as React from "react";
 
@@ -38,6 +38,7 @@ import jwt_decode from "jwt-decode";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 //Link routers
 
@@ -46,7 +47,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 // ko nhát thiết phải thêm table head ở dưới
 
 const TABLE_HEAD = [
-  { id: "image", label: "image", alignRight: false },
+  { id: "image", label: "", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
   { id: "type", label: "Khung thời gian", alignRight: false },
@@ -54,9 +55,9 @@ const TABLE_HEAD = [
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "startSale", label: "Ngày bán", alignRight: false },
   { id: "endSale", label: "Ngày kết thúc bán", alignRight: false },
-  { id: "totalMeal", label: "Tổng buổi ăn", alignRight: false },
-  { id: "totalfood", label: "Tổng số thức ăn", alignRight: false },
-  { id: "areaSale", label: "Địa điểm bán", alignRight: false },
+  { id: "totalMeal", label: "Tổng buổi", alignRight: false },
+  { id: "totalfood", label: "Tổng số món", alignRight: false },
+  { id: "areaSale", label: "Số địa điểm bán", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "Description", label: "Mô tả", alignRight: false },
 ];
@@ -89,20 +90,22 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) =>
+        _user.createdate.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function PackageFood() {
+  const location = useLocation();
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("createdate");
 
   const [filterName, setFilterName] = useState("");
 
@@ -110,9 +113,11 @@ export default function PackageFood() {
 
   const dispatch = useDispatch();
 
+  const token = localStorage.getItem("token");
+  const decoded = jwt_decode(token);
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIGetListPackage());
+      await dispatch(callAPIGetListPackage(token));
     };
     callAPI();
   }, [dispatch]);
@@ -176,17 +181,24 @@ export default function PackageFood() {
     filterName
   );
 
-  const token = localStorage.getItem("token");
-  const decoded = jwt_decode(token);
-  const handleAcceptRequest = (id) => {
+  const handleAcceptRequest = (id, name) => {
     API("PUT", URL_API + `/packages/confirm/${id}`, null, token).then((res) => {
       try {
-        dispatch(callAPIGetListPackage());
+        dispatch(callAPIGetListPackage(token));
+        CustomizedToast({
+          message: `Đã Cập nhập trạng thái ${name}`,
+          type: "SUCCESS",
+        });
       } catch (err) {
         console.log(err);
+        CustomizedToast({
+          message: `Có điều gì đó không đúng đã xảy ra ở ${name}`,
+          type: "ERROR",
+        });
       }
     });
   };
+  console.log(packagefood.id);
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
@@ -209,14 +221,6 @@ export default function PackageFood() {
               nameButton="Thêm Gói Ăn"
             />
           )}
-          {/* {decoded.role === "manager" && (
-            <ButtonCustomize
-              variant="contained"
-              component={RouterLink}
-              to="/dashboard/manager/timeFrame"
-              nameButton="Tạo khung thời gian"
-            />
-          )} */}
         </Stack>
         <Card>
           <UserListToolbar
@@ -226,7 +230,7 @@ export default function PackageFood() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1800 }}>
+            <TableContainer sx={{ minWidth: 2000 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -259,7 +263,13 @@ export default function PackageFood() {
                         image,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
+                      // if (status === "active") {
+                      //   return status === "Đang bán";
+                      // } else if (status === "inactive") {
+                      //   return status === "ngưng bán";
+                      // } else if (status === "watting") {
+                      //   return status === "đang chờ";
+                      // }
                       return (
                         <TableRow
                           hover
@@ -269,12 +279,6 @@ export default function PackageFood() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
                           <TableCell>
                             <Avatar alt={name} src={image} />
                           </TableCell>
@@ -300,18 +304,30 @@ export default function PackageFood() {
                             <Label
                               variant="ghost"
                               color={
-                                (status === "inactive" && "error") || "success"
+                                (status === "inactive" && "error") ||
+                                (status === "waiting" && "warning") ||
+                                "success"
                               }
                             >
-                              {sentenceCase(status)}
+                              {status}
                             </Label>
                           </TableCell>
+
                           <TableCell align="left">{description}</TableCell>
+                          {decoded.role === "manager" && (
+                            <TableCell>
+                              <ButtonCustomize
+                                nameButton="Cập nhập"
+                                component={RouterLink}
+                                to={`${location.pathname}/updatePackageFood/${id}`}
+                              />
+                            </TableCell>
+                          )}
                           {decoded.role === "admin" && (
                             <TableCell align="left">
                               <ButtonCustomize
                                 nameButton="Chấp nhận"
-                                onClick={() => handleAcceptRequest(id, token)}
+                                onClick={() => handleAcceptRequest(id, name)}
                               />
                             </TableCell>
                           )}

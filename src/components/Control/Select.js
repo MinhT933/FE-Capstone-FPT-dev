@@ -5,10 +5,23 @@ import {
   Select as MuiSelect,
   MenuItem,
 } from "@mui/material";
-import ButtonCustomize from "../Button/ButtonCustomize";
 
 export default function Select(props) {
-  const { name, label, value, onChange, options, defaultValue, width } = props;
+  const {
+    name,
+    label,
+    value,
+    onChange,
+    options,
+    defaultValue,
+    width,
+    onClick,
+    marginTop,
+    id,
+    lableid,
+    disabled,
+    ids,
+  } = props;
 
   return (
     <FormControl
@@ -17,17 +30,21 @@ export default function Select(props) {
         gridTemplateColumns: { sm: "6fr 1fr" },
       }}
     >
-      <InputLabel>{label}</InputLabel>
+      <InputLabel id={id}>{label}</InputLabel>
       <MuiSelect
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
+        // labelId="demo-simple-select-label"
+        lableId={lableid}
+        // id="demo-simple-select"
+        id={ids}
         label={label}
         name={name}
         value={value}
+        disabled={disabled}
         onChange={onChange}
+        onClick={onClick}
         defaultValue={defaultValue}
         multiline
-        sx={{ width: width}}
+        sx={{ width: width, marginTop: marginTop }}
       >
         {/* <MenuItem>
           <ButtonCustomize nameButton="tạo" />

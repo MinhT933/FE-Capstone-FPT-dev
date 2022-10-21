@@ -48,11 +48,11 @@ const navConfigAdmin = [
     title: "Sản phẩm",
     icon: getIcon("tabler:building-warehouse"),
     children: [
-      {
-        title: "Thức ăn",
-        path: "/dashboard/admin/food",
-        icon: getIcon("ep:food"),
-      },
+      // {
+      //   title: "Thức ăn",
+      //   path: "/dashboard/admin/food",
+      //   icon: getIcon("ep:food"),
+      // },
       {
         title: "Nhóm thức ăn",
         path: "/dashboard/admin/foodGroup",
@@ -106,11 +106,34 @@ const navConfigAdmin = [
 
   //===================================
 
+  // XÓA SAU
 
+  {
+    title: "Bếp chuẩn bị món ăn",
+    path: "/dashboard/kitchen/kitchenorder",
+    icon: getIcon("ic:outline-restaurant-menu"),
+  },
 
+  {
+    title: "Bếp quản lí đơn hàng",
+    path: "/dashboard/kitchen/kitcheviewnorder",
+    icon: getIcon("eos-icons:subscription-management"),
+  },
 
+  // {
+  //   title: "Bếp quản lí Người giao hàng",
+  //   path: "/dashboard/kitchen/kitchenshipper",
+  //   icon: getIcon("carbon:delivery"),
+  // },
+  // {
+  //   title: "Bếp xem thông tin bếp",
+  //   path: "/dashboard/kitchen/kitchenprofile",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
 
+  // XÓA SAU
 
+  //===================================
 ];
 
 const navConfigKichen = [
@@ -141,7 +164,6 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/kitchenprofile",
     icon: getIcon("mdi:card-account-details-star-outline"),
   },
-
 ];
 const navConfig = [
   {
@@ -246,5 +268,10 @@ const navConfig = [
     icon: getIcon("carbon:delivery"),
   },
 ];
-
-export default { navConfig, navConfigAdmin, navConfigKichen, navConfigManager };
+const exportedObject = {
+  navConfig,
+  navConfigAdmin,
+  navConfigKichen,
+  navConfigManager,
+};
+export default exportedObject;  

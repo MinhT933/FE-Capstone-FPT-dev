@@ -14,6 +14,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import te from "date-fns/esm/locale/te/index.js";
 
 const shema = yup.object().shape({
   name: yup.string().required(" Vui điền đầy đủ thông tin"),
@@ -33,14 +34,14 @@ export default function NewTimeFrame(props) {
       name: "mon",
       value: false,
       lessons: [
-        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "S", value: false, id: Math.floor(Math.random() * 99999) },
         {
-          namel: "lunch",
+          namel: "T",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
         {
-          namel: "after",
+          namel: "C",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
@@ -52,10 +53,10 @@ export default function NewTimeFrame(props) {
       name: "tues",
       value: false,
       lessons: [
-        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
-        { namel: "lunch", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "S", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "T", value: false, id: Math.floor(Math.random() * 99999) },
         {
-          namel: "after",
+          namel: "C",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
@@ -67,14 +68,14 @@ export default function NewTimeFrame(props) {
       name: "wed",
       value: false,
       lessons: [
-        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "S", value: false, id: Math.floor(Math.random() * 99999) },
         {
-          namel: "lunch",
+          namel: "T",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
         {
-          namel: "after",
+          namel: "C",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
@@ -86,14 +87,14 @@ export default function NewTimeFrame(props) {
       name: "thur",
       value: false,
       lessons: [
-        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "S", value: false, id: Math.floor(Math.random() * 99999) },
         {
-          namel: "lunch",
+          namel: "T",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
         {
-          namel: "after",
+          namel: "C",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
@@ -105,14 +106,14 @@ export default function NewTimeFrame(props) {
       name: "fri",
       value: false,
       lessons: [
-        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "S", value: false, id: Math.floor(Math.random() * 99999) },
         {
-          namel: "lunch",
+          namel: "T",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
         {
-          namel: "after",
+          namel: "C",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
@@ -124,14 +125,14 @@ export default function NewTimeFrame(props) {
       name: "sat",
       value: false,
       lessons: [
-        { namel: "mor", value: false, id: Math.floor(Math.random() * 99999) },
+        { namel: "S", value: false, id: Math.floor(Math.random() * 99999) },
         {
-          namel: "lunch",
+          namel: "T",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
         {
-          namel: "after",
+          namel: "C",
           value: false,
           id: Math.floor(Math.random() * 99999),
         },
@@ -252,7 +253,7 @@ export default function NewTimeFrame(props) {
 
   const handleCheckboxClick = (e) => {
     const { value, checked } = e.target;
-    console.log(checkedList);
+
     const a = [...checkedList];
 
     a.push(+value);
@@ -272,6 +273,21 @@ export default function NewTimeFrame(props) {
     } else {
       setCheckedList(checkedList.filter((item) => item !== +value));
     }
+    // T2(S, T, C)-T3(S, T, C)-T4(S, T, C)-T5(S, T, C)-T6(S, T, C)-T7(S, T, C)"
+    let texta = [];
+
+    for (const item of tmp) {
+      if (item.value === true) {
+        let text = [];
+        for (const lession of item.lessons) {
+          if (lession.value === true) {
+            text.push(lession.namel);
+          }
+        }
+        texta.push(`${item.label}(${text.join(",")})`);
+      }
+    }
+    formik.setFieldValue("name", texta.join("-"));
   };
 
   return (
@@ -320,6 +336,7 @@ export default function NewTimeFrame(props) {
                   label="Tên khung thời gian"
                   name="name"
                   width="70%"
+                  disabled
                   marginLeft="29%"
                   marginTop="8%"
                   marginBottom="8%"
@@ -363,7 +380,7 @@ export default function NewTimeFrame(props) {
                   </Grid>
                   {data.map((itemData) => {
                     return (
-                      <Grid item xs={1.5}>
+                      <Grid item={true} xs={1.5} key={itemData}>
                         <Grid
                           container
                           direction="column"
@@ -391,6 +408,7 @@ export default function NewTimeFrame(props) {
                           {itemData.lessons.map((lesson) => {
                             return (
                               <Checkbox
+                                key={lesson}
                                 value={lesson.id}
                                 onChange={handleCheckboxClick}
                                 checked={checkedList.includes(lesson.id)}

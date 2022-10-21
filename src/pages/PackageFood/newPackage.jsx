@@ -19,6 +19,7 @@ import Iconify from "./../../components/hook-form/Iconify";
 import { useState } from "react";
 import {
   callAPIgetCatePackage,
+  callAPIgetGroupFood,
   callAPIgetTimeFrame,
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
@@ -29,6 +30,7 @@ import API from "../../Axios/API/API";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import NewTimeFrame from "./NewTimeFrame";
+import DateTime from "./../../components/Control/DateTime";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -44,20 +46,16 @@ const schema = yup.object().shape({
   totalFood: yup.string().required("Vui lòng nhập tổng số thức ăn").trim(),
 });
 
-//styles paper
-const useStyles = styled("Paper")(({ theme }) => ({
-  pageContent: {
-    margin: theme.spacing(5),
-    padding: theme.spacing(9),
-  },
-}));
-
 export default function NewPackage() {
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   //xử lí hình ảnh
   const [input, setInput] = useState([]);
 
   const dispatch = useDispatch();
+
+  const [groupfood, setGroupFood] = useState([]);
+
+  const [value, setValue] = useState();
 
   const [valueStarTime, setValueStarTime] = React.useState(
     dayjs("2022-10-18T21:11:5")
@@ -67,12 +65,25 @@ export default function NewPackage() {
     dayjs("2022-10-18T21:11:5")
   );
 
+  const [indexFitel, setIndexFitel] = useState("");
+
   const Input = styled("input")({
     display: "none",
   });
 
   //formData để lưu data
   const formData = new FormData();
+
+  const token = localStorage.getItem("token");
+  // console.log(token);
+  React.useEffect(() => {
+    const getTimeFrame = async () => {
+      await dispatch(callAPIgetTimeFrame(token));
+      await dispatch(callAPIgetCatePackage(token));
+      await dispatch(callAPIgetGroupFood(token));
+    };
+    getTimeFrame();
+  }, [dispatch, token]);
 
   const timeframe = useSelector((state) => {
     return state.userReducer.listTimeFrame;
@@ -82,12 +93,26 @@ export default function NewPackage() {
     return state.userReducer.listCategoryPackage;
   });
 
+  const getGroupfood = useSelector((state) => {
+    return state.userReducer.listGroupFood;
+  });
+
   const getTimeFrameOptions = () => {
     const TimeFrameData = [];
     for (var i = 0; i < timeframe.length; i++) {
       TimeFrameData.push({ id: timeframe[i].id, title: timeframe[i].name });
     }
     return TimeFrameData;
+  };
+  const getGroupFoodOptions = () => {
+    const groupFoodData = [];
+    for (var i = 0; i < getGroupfood.length; i++) {
+      groupFoodData.push({
+        id: getGroupfood[i].id,
+        title: getGroupfood[i].name,
+      });
+    }
+    return groupFoodData;
   };
 
   const getcategoryOptions = () => {
@@ -97,15 +122,33 @@ export default function NewPackage() {
     }
     return CategoryData;
   };
-  // console.log(CategoryData);
-
-  React.useEffect(() => {
-    const getTimeFrame = async () => {
-      await dispatch(callAPIgetTimeFrame());
-      await dispatch(callAPIgetCatePackage());
-    };
-    getTimeFrame();
-  }, []);
+  // xử lí onchange groupfood
+  const [prices, setPrices] = useState([]);
+  const handleChangeGroupFood = (e, count) => {
+    let arrayfood = [];
+    let pricearray = [];
+    const a = getGroupfood.find((c) => c.id === e.target.value);
+    API("GET", URL_API + `/food-groups/find/${a.id}`, null, token)
+      .then((res) => {
+        arrayfood = res.data.result.foods;
+        for (let index = 0; index < arrayfood.length; index++) {
+          pricearray.push(arrayfood[index].price);
+        }
+        var priceMorthan = Math.max.apply(Math, pricearray);
+        const a = [...prices];
+        a.push(priceMorthan);
+        formik.setFieldValue(
+          "price",
+          a.reduce((accumulator, item) => accumulator + item),
+          0
+        );
+        setPrices(a);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setGroupFood([...groupfood, { [e.target.name]: a.id, count }]);
+  };
 
   const formik = useFormik({
     validationSchema: schema,
@@ -116,20 +159,26 @@ export default function NewPackage() {
       price: "",
       totalStation: "",
       totalMeal: "",
+      totalDate: "",
       startSale: "",
       endSale: "",
       description: "",
       timeFrameID: "",
       image: null,
       totalFood: "",
+      GroupFoodID: "",
     },
-
+    // `${a[2]}-${a[1]}-${a[0]}`
+    // `0${b[2]}-${b[1]}-${b[0]}`
     onSubmit: async (values) => {
-      const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      const b = new Date(valueStarTime).toLocaleDateString().split("/");
+      // const a = new Date(valueEndTime).toLocaleDateString().split("/");
+      const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
+      const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
+      // Log(a)
+      console.log(startSale);
+      // const b = new Date(valueStarTime).toLocaleDateString().split("/");
       const startDate = new Date(valueStarTime).toLocaleDateString();
       const endDate = new Date(valueEndTime).toLocaleDateString();
-
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -137,43 +186,62 @@ export default function NewPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
-      formData.append("startSale", `0${b[2]}-${b[1]}-${b[0]}`);
+      formData.append("endSale", endSale);
+      formData.append("startSale", startSale);
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
+
       // console.log(endDate > startDate);
 
       try {
         if (endDate > startDate) {
-          const res = await API("POST", URL_API + "/packages", formData);
+          const res = await API("POST", URL_API + "/packages", formData, token);
+          const arrayPromise = [];
+          for (let index = 0; index < groupfood.length; index++) {
+            arrayPromise.push(
+              API(
+                "POST",
+                URL_API + "/package-item",
+                {
+                  itemCode: groupfood[index].count,
+                  packageID: res.data.result.id,
+                  timeFrameID: formik.values.timeFrameID,
+                  foodGroupID: groupfood[index].GroupID,
+                },
+                token
+              )
+            );
+          }
+          await Promise.all(arrayPromise);
+
           CustomizedToast({
             message: `Đã thêm món ${formik.values.name}`,
             type: "SUCCESS",
           });
+
           window.location.reload(true);
-        } else if (endDate < startDate) {
+        } else if (endDate < startDate || endDate === startDate) {
           CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
         }
-        console.log(endDate > startDate);
       } catch (error) {
         CustomizedToast({ message: "Thấp bại rồi", type: "ERROR" });
       }
     },
   });
+  console.log(formik);
 
-  const [filter, setFilter] = useState("");
   const [bit, setBit] = useState([]);
 
   const handClickTimeFrame = (id) => {
-    const count = 3;
-    const temp = [];
-  
-    API("GET", URL_API + `/time-frame/${id}`, null, null)
+    API("GET", URL_API + `/time-frame/${id}`, null, token)
       .then((res) => {
-        setFilter(res.data.result.dateFilter);
-        //coppy chuỗi zào mảng tên là data
-        const data = [...filter];
+        let filter = res.data.result.dateFilter;
+        setIndexFitel(filter);
+        const count = 3;
+        const temp = [];
+        let data = [];
+        data = [...filter];
         for (let index = 0; index < data.length; index += count) {
           let slice = data.slice(index, index + count);
           temp.push(slice);
@@ -183,23 +251,207 @@ export default function NewPackage() {
       .catch((err) => {
         console.log(err);
       });
-    return temp;
   };
-  console.log(bit);
-  // const handleRenderLession = () => {
-  //   // for (let index = 0; index < bit.length; index++) {
-  //   //   const element = bit[index];
-  //   //   console.log(element);
-  //   // }
-  // };
+
+  //hàm check buổi
+  const handlelession = (index) => {
+    let text = "";
+    let arrayText = [];
+    switch (index) {
+      case 0:
+        text = "Sáng";
+        arrayText.push(text);
+        break;
+      case 1:
+        text = "Trưa";
+        arrayText.push(text);
+        break;
+      case 2:
+        text = " Chiều ";
+        arrayText.push(text);
+        break;
+      default:
+        break;
+    }
+    return arrayText;
+  };
+
+  //==============================================================================
+
+  const binding = () => {
+    let dayOfweek = "";
+    let arrayText = [];
+    let array = [];
+
+    for (let index = 0; index < bit.length; index++) {
+      const element = bit[index];
+      const childArr = [];
+      for (let a = 0; a < element.length; a++) {
+        //checked xem thứ nào ( index = 0 là thứ 2)
+        if (index === 0) {
+          dayOfweek = "thứ 2";
+          arrayText.push(dayOfweek);
+          if (element[a] === "1") {
+            childArr.push(
+              <Box
+                sx={{
+                  marginTop: "2rem",
+                  marginLeft: "55%",
+                }}
+              >
+                <Controls.Select
+                  name="GroupID"
+                  label={[handlelession(a) + " " + dayOfweek]}
+                  width="20rem"
+                  defaultValue="undefined"
+                  value={value}
+                  onChange={(e) => handleChangeGroupFood(e, index * 3 + a + 1)}
+                  onBlur={formik.handleBlur}
+                  options={getGroupFoodOptions()}
+                />
+              </Box>
+            );
+          }
+        }
+        if (index === 1) {
+          //110 ==> code 4 5
+          dayOfweek = "thứ 3";
+          arrayText.push(dayOfweek);
+          if (element[a] === "1") {
+            childArr.push(
+              <Box
+                sx={{
+                  marginTop: "2rem",
+                  marginLeft: "55%",
+                }}
+              >
+                <Controls.Select
+                  name="GroupID"
+                  label={[handlelession(a) + " " + dayOfweek]}
+                  width="20rem"
+                  defaultValue="undefined"
+                  value={value}
+                  onChange={(e) => handleChangeGroupFood(e, index * 3 + a + 1)}
+                  onBlur={formik.handleBlur}
+                  options={getGroupFoodOptions()}
+                />
+              </Box>
+            );
+          }
+        }
+
+        if (index === 2) {
+          dayOfweek = "thứ 4";
+          arrayText.push(dayOfweek);
+          if (element[a] === "1") {
+            childArr.push(
+              <Box
+                sx={{
+                  marginTop: "2rem",
+                  marginLeft: "55%",
+                }}
+              >
+                <Controls.Select
+                  name="GroupID"
+                  value={value}
+                  label={[handlelession(a) + " " + dayOfweek]}
+                  width="20rem"
+                  defaultValue="undefined"
+                  onChange={(e) => handleChangeGroupFood(e, index * 3 + a + 1)}
+                  onBlur={formik.handleBlur}
+                  options={getGroupFoodOptions()}
+                />
+              </Box>
+            );
+          }
+        }
+        if (index === 3) {
+          dayOfweek = "thứ 5";
+          arrayText.push(dayOfweek);
+          if (element[a] === "1") {
+            childArr.push(
+              <Box
+                sx={{
+                  marginTop: "2rem",
+                  marginLeft: "55%",
+                }}
+              >
+                <Controls.Select
+                  name="GroupID"
+                  value={value}
+                  label={[handlelession(a) + " " + dayOfweek]}
+                  width="20rem"
+                  defaultValue="undefined"
+                  onChange={(e) => handleChangeGroupFood(e, index * 3 + a + 1)}
+                  onBlur={formik.handleBlur}
+                  options={getGroupFoodOptions()}
+                />
+              </Box>
+            );
+          }
+        }
+        if (index === 4) {
+          dayOfweek = "thứ 6";
+          arrayText.push(dayOfweek);
+          if (element[a] === "1") {
+            childArr.push(
+              <Box
+                sx={{
+                  marginTop: "2rem",
+                  marginLeft: "55%",
+                }}
+              >
+                <Controls.Select
+                  name="GroupID"
+                  value={value}
+                  label={[handlelession(a) + " " + dayOfweek]}
+                  width="20rem"
+                  defaultValue="undefined"
+                  onChange={(e) => handleChangeGroupFood(e, index * 3 + a + 1)}
+                  onBlur={formik.handleBlur}
+                  options={getGroupFoodOptions()}
+                />
+              </Box>
+            );
+          }
+        }
+        if (index === 5) {
+          dayOfweek = "thứ 7 ";
+          arrayText.push(dayOfweek);
+          if (element[a] === "1") {
+            childArr.push(
+              <Box
+                sx={{
+                  marginTop: "2rem",
+                  marginLeft: "55%",
+                }}
+              >
+                <Controls.Select
+                  name="GroupID"
+                  value={value}
+                  label={[handlelession(a) + " " + dayOfweek]}
+                  width="20rem"
+                  defaultValue="undefined"
+                  onChange={(e) => handleChangeGroupFood(e, index * 3 + a + 1)}
+                  onBlur={formik.handleBlur}
+                  options={getGroupFoodOptions()}
+                />
+              </Box>
+            );
+          }
+        }
+      }
+      array.push({ childArray: childArr });
+    }
+    // console.log(array);
+    return array;
+  };
 
   function _treat(e) {
     formik.setFieldValue("image", e.target.files[0]);
 
     setInput(URL.createObjectURL(e.target.files[0]));
   }
-
-  // console.log(bit);
 
   const getIcon = (name) => <Iconify icon={name} width={24} height={24} />;
   return (
@@ -233,7 +485,7 @@ export default function NewPackage() {
                   variant="outlined"
                   name="name"
                   label="Tên"
-                  value={formik.values.name || ""}
+                  value={formik.values.name}
                   onChange={(event) => {
                     formik.handleChange(event);
                   }}
@@ -251,29 +503,10 @@ export default function NewPackage() {
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
-                  label="Giá"
-                  name="price"
-                  value={formik.values.price || ""}
-                  onChange={(event) => {
-                    formik.handleChange(event);
-                  }}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.price && formik.errors.price && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.price}
-                  </FormHelperText>
-                )}
-              </Grid>
-              <Grid item xs={6}>
-                <Controls.Input
-                  variant="outlined"
-                  label="Tổng số thức ăn"
                   name="totalFood"
-                  value={formik.values.totalFood || ""}
+                  label="Tổng số thức ăn"
+                  disabled
+                  value={formik.values.totalFood}
                   onChange={(event) => {
                     formik.handleChange(event);
                   }}
@@ -291,9 +524,31 @@ export default function NewPackage() {
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
+                  label="Giá"
+                  name="price"
+                  disabled
+                  value={formik.values.price}
+                  onChange={(event) => {
+                    formik.handleChange(event);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.price && formik.errors.price && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.price}
+                  </FormHelperText>
+                )}
+              </Grid>
+
+              <Grid item xs={6}>
+                <Controls.Input
+                  variant="outlined"
                   label="Số địa điểm giao hàng"
                   name="totalStation"
-                  value={formik.values.totalStation || ""}
+                  value={formik.values.totalStation}
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
@@ -304,18 +559,19 @@ export default function NewPackage() {
                     error
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.totalMeal}
+                    {formik.errors.totalStation}
                   </FormHelperText>
                 )}
               </Grid>
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
-                  label="Tổng buổi"
                   name="totalMeal"
-                  value={formik.values.totalMeal || ""}
-                  onChange={(e) => {
-                    formik.handleChange(e);
+                  label="Tổng buổi ăn"
+                  disabled
+                  value={formik.values.totalMeal}
+                  onChange={(event) => {
+                    formik.handleChange(event);
                   }}
                   onBlur={formik.handleBlur}
                 />
@@ -329,26 +585,26 @@ export default function NewPackage() {
                 )}
               </Grid>
               <Grid item xs={6}>
-                <Controls.DatePicker
+                <DateTime
                   variant="outlined"
                   name="startSale"
                   label="Ngày mở bán"
-                  // inputFormat="yyyy-MM-dd"
+                  width="16rem"
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
                   }}
-                  onBlur={formik.handleBlur}
                 />
               </Grid>
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
-                  label="Tổng ngày"
                   name="totalDate"
+                  label="Tổng ngày"
+                  disabled
                   value={formik.values.totalDate}
-                  onChange={(e) => {
-                    formik.handleChange(e);
+                  onChange={(event) => {
+                    formik.handleChange(event);
                   }}
                   onBlur={formik.handleBlur}
                 />
@@ -363,11 +619,12 @@ export default function NewPackage() {
               </Grid>
 
               <Grid item xs={6}>
-                <Controls.DatePicker
+                <DateTime
                   variant="outlined"
                   name="endSale"
                   label="Ngày kết thúc bán"
                   value={valueEndTime}
+                  width="16rem"
                   onChange={(e) => {
                     setValueEndtime(e);
                   }}
@@ -378,7 +635,9 @@ export default function NewPackage() {
                 <Controls.Select
                   name="categoryID"
                   label="Chọn loại package"
+                  id="categoryID"
                   value={formik.values.categoryID}
+                  // defaultValue=
                   onChange={(e) => {
                     const a = category.find((c) => c.id === e.target.value);
                     formik.setFieldValue("categoryID", a.id);
@@ -386,6 +645,27 @@ export default function NewPackage() {
                   onBlur={formik.handleBlur}
                   options={getcategoryOptions()}
                 />
+              </Grid>
+              <Grid item xs={6}>
+                <Controls.TextArea
+                  width="16rem"
+                  variant="outlined"
+                  placeholder="Mô tả"
+                  name="description"
+                  value={formik.values.description}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.description && formik.errors.description && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.description}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={6}>
                 <Box
@@ -404,10 +684,22 @@ export default function NewPackage() {
                         const a = timeframe.find(
                           (c) => c.id === e.target.value
                         );
+                        formik.setFieldValue(
+                          "totalMeal",
+                          a.dateFilter.split("").filter((i) => i === "1").length
+                        );
+                        formik.setFieldValue(
+                          "totalDate",
+                          a.name.split("-").length
+                        );
+                        formik.setFieldValue(
+                          "totalFood",
+                          a.dateFilter.split("").filter((i) => i === "1").length
+                        );
                         formik.setFieldValue("timeFrameID", a.id);
+                        handClickTimeFrame(a.id);
                       }}
                       onBlur={formik.handleBlur}
-                      onClick={handClickTimeFrame(formik.values.timeFrameID)}
                       options={getTimeFrameOptions()}
                     />
                     {formik.touched.timeFrameID && formik.errors.timeFrameID && (
@@ -433,27 +725,15 @@ export default function NewPackage() {
                 </Box>
               </Grid>
 
-              <Grid item xs={6}>
-                <Controls.TextArea
-                  width="16rem"
-                  variant="outlined"
-                  placeholder="Mô tả"
-                  name="description"
-                  value={formik.values.description}
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                  }}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.description && formik.errors.description && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.description}
-                  </FormHelperText>
-                )}
-              </Grid>
+              {binding().map((item) => {
+                return (
+                  <>
+                    {item.childArray.map((a) => {
+                      return a;
+                    })}
+                  </>
+                );
+              })}
               <Box>
                 <Stack width="200px" mt={"2rem"} ml={"24rem"} mb={"1rem"}>
                   <ButtonCustomize
@@ -517,6 +797,5 @@ export default function NewPackage() {
       </Box>
       <NewTimeFrame OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp} />
     </Paper>
-    // <h1>hihi</h1>
   );
 }

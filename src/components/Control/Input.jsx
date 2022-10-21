@@ -14,6 +14,8 @@ export default function Input(props) {
     marginLeft,
     marginTop,
     marginBottom,
+    disabled,
+    variant,
   } = props;
   return (
     <Box
@@ -25,6 +27,8 @@ export default function Input(props) {
       autoComplete="off"
     >
       <TextField
+        variant={variant}
+        maxRows={Infinity}
         placeholder={placeholder}
         multiline
         label={label}
@@ -32,12 +36,12 @@ export default function Input(props) {
         name={name}
         onChange={onChange}
         defaultValue={defaultValue}
+        disabled={disabled}
         sx={{
           width: { width },
           marginLeft: { marginLeft },
           marginTop: { marginTop },
           marginBottom: { marginBottom },
-        
         }}
       />
     </Box>

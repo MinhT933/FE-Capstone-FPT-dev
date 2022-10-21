@@ -28,6 +28,7 @@ import * as yup from "yup";
 
 import { useSelector } from "react-redux";
 import {
+  callAPIgetListCategory,
   callAPIgetListStation,
 } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
@@ -42,8 +43,8 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
-  name: yup.string().required("Điền đầy đủ thông tin").trim(),
-  address: yup.string().required("Điền đầy đủ thông tin").trim(),
+  name: yup.string().required().trim(),
+  address: yup.string().required().trim(),
 });
 
 //callAPIforCreateStation========================================
@@ -67,7 +68,7 @@ export default function NewStation() {
   const token = localStorage.getItem("token");
 
   //formData để lưu data
-  const formData = new FormData();
+
 
   const formik = useFormik({
     //gắn schema để so sánh
@@ -78,14 +79,12 @@ export default function NewStation() {
     initialValues: {
       name: "",
       address: "",
-
       phone: "",
       opentime: "",
       closetime: "",
     },
 
     onSubmit: async (values) => {
-      console.log(values);
       const closeTimeSplit = new Date(closetime).toTimeString().split(":");
       const openTimeSplit = new Date(opentime).toTimeString().split(":");
       const data = {
@@ -100,6 +99,7 @@ export default function NewStation() {
         CustomizedToast({
           message: `Đã thêm ${formik.values.name}`,
           type: "SUCCESS",
+
         });
       } catch (error) {
         CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
@@ -121,8 +121,6 @@ export default function NewStation() {
     color: theme.palette.text.secondary,
   }));
   console.log(new Date(opentime).toTimeString());
-
-
   return (
     <Paper
       elevation={3}
@@ -164,7 +162,7 @@ export default function NewStation() {
                     error
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.name}
+                    {formik.errors.description}
                   </FormHelperText>
                 )}
 
@@ -178,8 +176,6 @@ export default function NewStation() {
                   }}
                   onBlur={formik.handleBlur}
                 />
-
-
                 <Controls.Input
                   variant="outlined"
                   label="Số điện thoại"
@@ -258,51 +254,3 @@ export default function NewStation() {
   );
 }
 
-{
-  /* <Paper
-sx={{
-  marginBottom: "50%",
-  paddingBottom: "10%",
-  paddingTop: "8%",
-  borderRadius: 4,
-}}
->
-<label htmlFor="contained-button-file">
-  <Input
-    accept="image/*"
-    id="contained-button-file"
-    multiple
-    type="file"
-    onChange={_treat}
-  />
-  <Button
-    variant="contained"
-    component="span"
-    sx={{
-      marginLeft: "36%",
-    }}
-  >
-    Tải lên...
-  </Button>
-  {/* css button input img */
-}
-//   <Box
-//     sx={{
-//       height: 165,
-//       width: 165,
-//       maxHeight: { xs: 233, md: 167 },
-//       maxWidth: { xs: 350, md: 250 },
-//       marginTop: "10%",
-//       boxShadow: 8,
-//       marginLeft: "11%",
-//     }}
-//   >
-//     {/* hiển thị hình lên  */}
-//     {input != null ? (
-//       <img src={input} />
-//     ) : (
-//       <img src={formik.values.image} alt="hihi" />
-//     )}
-//   </Box>
-// </label>
-// </Paper> */}

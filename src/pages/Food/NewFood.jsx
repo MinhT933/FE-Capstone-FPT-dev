@@ -113,11 +113,9 @@ export default function NewFood() {
       formData.append("description", formik.values.description);
       formData.append("price", formik.values.price);
       formData.append("foodCategoryId", formik.values.foodCategoryId);
-      console.log(formData)
       //gọi API để đẩy data xuống
       try {
         const res = await API("POST", URL_API + "/foods", formData, token);
-        console.log(res)
         CustomizedToast({
           message: `Đã thêm món ${formik.values.name}`,
           type: "SUCCESS",

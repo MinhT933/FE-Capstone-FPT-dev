@@ -13,7 +13,6 @@ import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import TabsPacket from "./Tabs/ColorTabs";
 
-
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#fff",
   ...theme.typography.body2,
@@ -66,9 +65,10 @@ const SignInOutContainer = () => {
             <Box style={{ marginBottom: "25%" }}>
               <img
                 style={{ marginTop: "20%", marginLeft: "30%" }}
-                src="/static/shipper-1-1.png"
+                src="/static/logo7.png"
                 height={300}
-                width={300}
+                width={400}
+                alt=""
               />
               <h1 style={{ marginTop: "2%", marginLeft: "28%" }}>
                 Meal Subscription Plan

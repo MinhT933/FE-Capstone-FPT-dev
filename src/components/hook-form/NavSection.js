@@ -190,6 +190,8 @@ export default function NavSection({
       case "kitchen":
         return navConfig.navConfigKichen;
         break;
+      default:
+        break;
     }
   };
 
