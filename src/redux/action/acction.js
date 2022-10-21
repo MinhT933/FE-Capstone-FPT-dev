@@ -105,10 +105,13 @@ export const callAPIgetListCategory = () => {
   };
 };
 
-export const callAPIgetListStation = () => {
+
+
+export const callAPIgetListStation = (token) => {
+
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/stations", null, null);
+      const res = await API("GET", URL_API + "/stations", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_STATIONS,
@@ -297,25 +300,7 @@ export const refreshToken = (accessToken) => (dispatch) => {
     payload: accessToken,
   });
 };
-//----------------------------------------------------------------
 
-// export const callAPIgetListStation = () => {
-//   return async (dispatch) => {
-//     try {
-//       const res = await API("GET", URL_API + "/stations", null, null);
-//       dispatch(
-//         createAction({
-//           type: PathAction.GET_LIST_STATIONS,
-//           payload: res.data.result,
-//         })
-//       );
-//     } catch (err) {
-//       console.log({ err });
-//     }
-//   };
-// };
-
-//----------------------------------------------------------------
 export const callAPIgetListShipper = () => {
   return async (dispatch) => {
     try {
@@ -353,6 +338,7 @@ export const callAPIAdminCreateShipper = (token) => {
     }
   };
 };
+
 
 export const callAPIgetListKitchen = () => {
   return async (dispatch) => {

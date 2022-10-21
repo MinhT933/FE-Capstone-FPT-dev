@@ -1,6 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -43,19 +43,21 @@ import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
 // import KITCHENLIST from "./KitchenSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    // { id: "name", label: "Địa điểm", alignRight: false },
+    { id: "fullName", label: "Tên bếp", alignRight: false },
     { id: "address", label: "Địa chỉ", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
     { id: "ability", label: "Công suất", alignRight: false },
     // { id: "openTime", label: "Mở cửa", alignRight: false },
-    // { id: "closeTime", label: "Đóng cửa", alignRight: false },
+    { id: "email", label: "Email", alignRight: false },
+
     { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "createdAt", label: "Ngày tạo", alignRight: false },
-    { id: "updatedAt", label: "Cập nhật", alignRight: false },
+    // { id: "createdAt", label: "Ngày tạo", alignRight: false },
+    // { id: "updatedAt", label: "Cập nhật", alignRight: false },
     { id: "" },
 ];
 
@@ -87,34 +89,46 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
+const token = localStorage.getItem("token");
 
 export default function KitchenList() {
 
+    const location = useLocation();
     //callAPIgetListKitchen========================================
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
-            await dispatch(callAPIgetListKitchen());
+            await dispatch(callAPIgetListKitchen(token));
         };
         callAPI();
     }, [dispatch]);
 
     const token = localStorage.getItem("token");
+
     var decoded = jwt_decode(token);
     console.log(decoded);
 
-    const handleDelete = (id) => {
-        API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
+    const handleDelete = (id, fullName) => {
+        API("PUT", URL_API + `/kitchens/status/${id}`, null, token).then(
             (res) => {
                 try {
-                    dispatch(callAPIgetListKitchen());
+                    dispatch(callAPIgetListKitchen(token));
+
+                    CustomizedToast({
+                        message: `Đã cập nhập trạng thái ${fullName}`,
+                        type: "SUCCESS",
+                    });
+
                 } catch (err) {
-                    alert("Ban faild " + id);
+                    CustomizedToast({
+                        message: `Cập nhập trạng thái ${fullName} thất bại`,
+                        type: "ERROR",
+                    });
                 }
             },
             []
@@ -135,7 +149,7 @@ export default function KitchenList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("kitchenName");
+    const [orderBy, setOrderBy] = useState("fullName");
 
     const [filterName, setFilterName] = useState("");
 
@@ -149,18 +163,18 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = kitchen.map((n) => n.name);
+            const newSelecteds = kitchen.map((n) => n.fullName);
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event, kitchenName) => {
-        const selectedIndex = selected.indexOf(kitchenName);
+    const handleClick = (event, fullName) => {
+        const selectedIndex = selected.indexOf(fullName);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, kitchenName);
+            newSelected = newSelected.concat(selected, fullName);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -186,9 +200,6 @@ export default function KitchenList() {
     const handleFilterByName = (event) => {
         setFilterName(event.target.value);
     };
-
-    // const emptyRows =
-    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - kitchen.length) : 0;
 
     const filteredKitchen = applySortFilter(
         kitchen,
@@ -216,7 +227,7 @@ export default function KitchenList() {
     const isKitchenNotFound = filteredKitchen.length === 0;
 
     return (
-        <Page title="User">
+        <Page title="Bếp">
             <Container>
                 <Stack
                     direction="row"
@@ -262,10 +273,11 @@ export default function KitchenList() {
                                         .map((row) => {
                                             const {
                                                 id,
-                                                name,
+                                                fullName,
                                                 address,
                                                 phone,
                                                 ability,
+                                                email,
                                                 openTime,
                                                 closeTime,
                                                 status,
@@ -273,13 +285,12 @@ export default function KitchenList() {
                                                 updatedAt,
 
                                             } = row;
-                                            const isItemSelected = selected.indexOf(name) !== -1;
+                                            const isItemSelected = selected.indexOf(fullName) !== -1;
 
                                             return (
                                                 <TableRow
                                                     hover
-                                                    // key={id}
-                                                    key={name}
+                                                    key={id}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={isItemSelected}
@@ -288,60 +299,52 @@ export default function KitchenList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, name)}
+                                                            onChange={(event) => handleClick(event, fullName)}
                                                         />
                                                     </TableCell>
-                                                    {/* <TableCell align="left">{name}</TableCell> */}
+
+                                                    <TableCell align="left">{row.account.profile.fullName}</TableCell>
                                                     <TableCell align="left">{address}</TableCell>
 
                                                     <TableCell align="left">{row.account.phone}</TableCell>
                                                     <TableCell align="left">{ability}</TableCell>
-                                                    {/* <TableCell align="left">{openTime}</TableCell> */}
-                                                    {/* <TableCell align="left">{closeTime}</TableCell> */}
+                                                    <TableCell align="left">{row.account.profile.email}</TableCell>
+
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
                                                             color={
-                                                                // (status === "Closed" && "error") || "success"
-                                                                (row.account.status === "Closed" && "error") || "success"
+                                                                (row.account.status === "inActive" && "error") || "success"
 
                                                             }
                                                         >
                                                             {(row.account.status)}
                                                         </Label>
                                                     </TableCell>
-                                                    <TableCell align="left">{row.account.createdAt}</TableCell>
-                                                    <TableCell align="left">{row.account.updatedAt}</TableCell>
-                                                    {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
-
 
                                                     <TableCell align="left">
                                                         <Button1
                                                             variant="outlined"
-                                                            // display="TableCell"
-                                                            component={RouterLink}
-                                                            to="/dashboard/admin/updatekitchen"
-
+                                                            onClick={() => { handleDelete(id, fullName) }}
                                                         >
-                                                            Cập nhật
+                                                            Đổi
                                                         </Button1>
                                                     </TableCell>
 
+                                                    <TableCell align="left">
+                                                        <Button1
+                                                            variant="outlined"
+                                                            display="TableCell"
+                                                            component={RouterLink}
+                                                            to={`${location.pathname}/updatekitchen/${id}`}
 
-                                                    {/* <TableCell align="right"> */}
-                                                    {/* //props */}
-                                                    {/* <KitchenMoreMenu id={id} /> */}
-                                                    {/* </TableCell> */}
-
-
+                                                        >
+                                                            Cập nhập
+                                                        </Button1>
+                                                    </TableCell>
                                                 </TableRow>
                                             );
                                         })}
-                                    {/* {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
-                                        </TableRow>
-                                    )} */}
                                 </TableBody>
 
                                 {isKitchenNotFound && (
@@ -375,6 +378,6 @@ export default function KitchenList() {
                 </Card>
             </Container>
             {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
+        </Page >
     );
 }

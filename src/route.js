@@ -113,12 +113,12 @@ export default function Router() {
         //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },
         { path: "newstation", element: <NewStation /> },
-        { path: "updatestation", element: <UpdateStaion /> },
+        { path: "station/updatestation/:id", element: <UpdateStaion /> },
 
         //admin quản lí Kitchen - CURD
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
-        { path: "updatekitchen", element: <UpdateKitchen /> },
+        { path: "kitchen/updatekitchen/:id", element: <UpdateKitchen /> },
 
         //MANAGER quản lí đơn hàng - VIEW theo ERD
         { path: "adminorder", element: <AdminOrderList /> },

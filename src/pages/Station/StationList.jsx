@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -35,7 +35,9 @@ import { useSelector } from "react-redux";
 import { callAPIgetListStation } from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
-
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -46,6 +48,7 @@ const TABLE_HEAD = [
   { id: "openTime", label: "Mở cửa", alignRight: false },
   { id: "closeTime", label: "Đóng cửa", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
+  { label: "Thay đổi trạng thái", alignRight: false },
   { id: "" },
 ];
 
@@ -99,13 +102,41 @@ export default function StationList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   //CALL API====================================================
+  const location = useLocation();
+
+  const token = localStorage.getItem("token");
+
+  const decoded = jwt_decode(token);
+
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIgetListStation());
+      await dispatch(callAPIgetListStation(token));
     };
     callAPI();
   }, [dispatch]);
+
+  const handleDelete = (id, name) => {
+    API("PUT", URL_API + `/stations/update-status/${id}`, null, token).then(
+      (res) => {
+        try {
+          dispatch(callAPIgetListStation(token));
+
+          CustomizedToast({
+            message: `Đã Cập nhập trạng thái ${name}`,
+            type: "SUCCESS",
+          });
+
+        } catch (err) {
+          CustomizedToast({
+            message: `Cập nhập trạng thái ${name} thất bại`,
+            type: "ERROR",
+          });
+        }
+      },
+      []
+    );
+  };
 
   const station = useSelector((state) => {
     return state.userReducer.listStation;
@@ -158,16 +189,12 @@ export default function StationList() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - station.length) : 0;
-
   const filteredStations = applySortFilter(
     station,
     getComparator(order, orderBy),
     filterName
   );
-  const token = localStorage.getItem("token");
-  const decoded = jwt_decode(token);
+
   const isStationNotFound = filteredStations.length === 0;
 
   const Button1 = styled(Button)(({ theme }) => ({
@@ -178,7 +205,7 @@ export default function StationList() {
   }));
 
   return (
-    <Page title="station">
+    <Page title="Trạm">
       <Container>
         <Stack
           direction="row"
@@ -254,35 +281,66 @@ export default function StationList() {
                           <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">{openTime}</TableCell>
                           <TableCell align="left">{closeTime}</TableCell>
+
                           <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={
-                                (status === "Closed" && "error") || "success"
+                                (status === "inActive" && "error") || "success"
                               }
                             >
                               {status}
                             </Label>
                           </TableCell>
+
+                          <TableCell align="center">
+                            {status === "active" ? (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => { handleDelete(id, name) }}
+                              >
+                                Đóng
+                              </Button1>
+                            ) : (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => { handleDelete(id, name) }}
+                              >
+                                Mở
+                              </Button1>
+                            )
+
+                            }
+                          </TableCell>
+
                           <TableCell>
                             {decoded.role === "admin" && (
-                              <ButtonCustomize
+
+                              <Button1
                                 variant="outlined"
+                                display="TableCell"
                                 component={RouterLink}
-                                to="/dashboard/admin/updatestation"
-                                nameButton="Cập nhật"
-                                width="5rem"
-                              />
+                                to={`${location.pathname}/updatestation/${id}`}
+
+                              >
+                                Cập nhập
+                              </Button1>
+
+
+                              // <ButtonCustomize
+                              //   variant="outlined"
+                              //   component={RouterLink}
+                              //   to={`${location.pathname}/updatestation/${id}`}
+                              //   // nameButton="Cập nhập"
+                              //   width="5rem"
+                              // >
+                              //   Cập nhập
+                              // </ButtonCustomize>
                             )}
                           </TableCell>
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
                 </TableBody>
 
                 {isStationNotFound && (
