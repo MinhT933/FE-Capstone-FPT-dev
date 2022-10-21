@@ -44,6 +44,31 @@ export const callAPIgetListFood = (token) => {
   };
 };
 
+export const callAPIgetListFoodActive = (token) => {
+  return async (dispatch) => {
+    try {
+      //res (resonse) ở đây theo tao biết là nhận vào data mà api đã gọi
+      //khi call nó sẽ trả về môt res chứa các thông
+      // muốn biết thì xuống dưới consle.log(res) ra xem nó trả về cái gì
+      /// API là path của API dùng để gọi nó lên 'GET' là phương thức
+      // hay trong anh văn gọi là 'mê thót (methods)' đó
+      const res = await API("GET", URL_API + "/foods/active", null, token);
+      // hàm dispatch hiểu nôm na là lưu store type và các value gắn cùng
+      // gg search đi
+      dispatch(
+        //dây quay lại nhìn ở trên đó tao có type với payload kìa
+        //lưu tham số và data truyền vào để bắn lên store(userReducer)
+        createAction({
+          type: PathAction.GET_LIST_FOOD_ACTIVE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 //------------------  ------------------------------  ----------------------
 
 export const callAPIGetListPackage = (token) => {

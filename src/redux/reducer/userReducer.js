@@ -18,7 +18,6 @@
 // thay thế một trạng mới bằng payload
 //       return {...state}
 import * as PathAction from "../PathAction";
-import { GET_LIST_GROUP_FOOD } from "./../PathAction";
 //B3
 //nhận 2 tham số State và action
 //dây là store
@@ -47,6 +46,7 @@ const initialState = {
 
   currentUser: [],
   listCategoryPackage: [],
+  listFoodActive: [],
 };
 
 // const initialStateAuthen = admin
@@ -72,6 +72,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.SET_VALUE_TAG:
       state.valueTag = payload;
+      break;
+    case PathAction.GET_LIST_FOOD_ACTIVE:
+      state.listFoodActive = payload;
       break;
     case PathAction.GET_LIST_FOODCATEGORY:
       state.listCategory = payload;
