@@ -47,16 +47,15 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "fullName", label: "Địa điểm", alignRight: false },
+    // { id: "name", label: "Địa điểm", alignRight: false },
     { id: "address", label: "Địa chỉ", alignRight: false },
     { id: "phone", label: "Điện thoại", alignRight: false },
     { id: "ability", label: "Công suất", alignRight: false },
     // { id: "openTime", label: "Mở cửa", alignRight: false },
-    { id: "email", label: "Email", alignRight: false },
-
+    // { id: "closeTime", label: "Đóng cửa", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
-    // { id: "createdAt", label: "Ngày tạo", alignRight: false },
-    // { id: "updatedAt", label: "Cập nhật", alignRight: false },
+    { id: "createdAt", label: "Ngày tạo", alignRight: false },
+    { id: "updatedAt", label: "Cập nhật", alignRight: false },
     { id: "" },
 ];
 
@@ -88,12 +87,11 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_kitchen) => _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
-const token = localStorage.getItem("token");
 
 export default function KitchenList() {
 
@@ -101,7 +99,7 @@ export default function KitchenList() {
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
-            await dispatch(callAPIgetListKitchen(token));
+            await dispatch(callAPIgetListKitchen());
         };
         callAPI();
     }, [dispatch]);
@@ -151,7 +149,7 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = kitchen.map((n) => n.fullName);
+            const newSelecteds = kitchen.map((n) => n.name);
             setSelected(newSelecteds);
             return;
         }
@@ -264,11 +262,10 @@ export default function KitchenList() {
                                         .map((row) => {
                                             const {
                                                 id,
-                                                fullName,
+                                                name,
                                                 address,
                                                 phone,
                                                 ability,
-                                                email,
                                                 openTime,
                                                 closeTime,
                                                 status,
@@ -276,13 +273,13 @@ export default function KitchenList() {
                                                 updatedAt,
 
                                             } = row;
-                                            const isItemSelected = selected.indexOf(fullName) !== -1;
+                                            const isItemSelected = selected.indexOf(name) !== -1;
 
                                             return (
                                                 <TableRow
                                                     hover
                                                     // key={id}
-                                                    key={fullName}
+                                                    key={name}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={isItemSelected}
@@ -291,16 +288,14 @@ export default function KitchenList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
+                                                            onChange={(event) => handleClick(event, name)}
                                                         />
                                                     </TableCell>
-                                                    <TableCell align="left">{row.account.profile.fullName}</TableCell>
+                                                    {/* <TableCell align="left">{name}</TableCell> */}
                                                     <TableCell align="left">{address}</TableCell>
 
                                                     <TableCell align="left">{row.account.phone}</TableCell>
                                                     <TableCell align="left">{ability}</TableCell>
-                                                    <TableCell align="left">{row.account.profile.email}</TableCell>
-
                                                     {/* <TableCell align="left">{openTime}</TableCell> */}
                                                     {/* <TableCell align="left">{closeTime}</TableCell> */}
                                                     <TableCell align="left">
@@ -315,8 +310,8 @@ export default function KitchenList() {
                                                             {(row.account.status)}
                                                         </Label>
                                                     </TableCell>
-                                                    {/* <TableCell align="left">{row.account.createdAt}</TableCell> */}
-                                                    {/* <TableCell align="left">{row.account.updatedAt}</TableCell> */}
+                                                    <TableCell align="left">{row.account.createdAt}</TableCell>
+                                                    <TableCell align="left">{row.account.updatedAt}</TableCell>
                                                     {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
 

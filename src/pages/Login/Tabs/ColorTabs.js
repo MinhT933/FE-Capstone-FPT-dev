@@ -78,12 +78,7 @@ export default function TabsPacket() {
   });
 
   return (
-    <Box sx={{
-      bgcolor: "background.paper",
-      width: "115%",
-      // display: "flex",
-      // overflowX: "auto",
-    }}>
+    <Box sx={{ bgcolor: "background.paper", width: "115%" }}>
       <AppBar position="static" sx={{ bgcolor: "#ffff" }}>
         <StyledTabs
           value={value}

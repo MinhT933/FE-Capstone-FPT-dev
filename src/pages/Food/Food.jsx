@@ -106,9 +106,7 @@ export default function Food() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-
   const [categoryName, setcategoryName] = useState([]);
-
 
   const dispatch = useDispatch();
 
@@ -130,15 +128,13 @@ export default function Food() {
       await dispatch(callAPIgetListFood(token));
     };
     callAPI();
-  }, []);
-
-  console.log(decoded);
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     API("PUT", URL_API + `/foods/update-status/${id}`, null, token).then(
       (res) => {
         try {
-          dispatch(callAPIgetListFood());
+          dispatch(callAPIgetListFood(token));
         } catch (err) {
           alert("Ban faild " + id);
         }
@@ -279,12 +275,6 @@ export default function Food() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
                           <TableCell>
                             <Avatar alt={name} src={image} />
                           </TableCell>
@@ -314,7 +304,7 @@ export default function Food() {
                             </Label>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
-                          
+
                           <TableCell align="left">
                             {decoded.role === "manager" && (
                               <ButtonCustomize
@@ -359,7 +349,6 @@ export default function Food() {
           />
         </Card>
       </Container>
-      <Paper></Paper>
     </Page>
   );
 }

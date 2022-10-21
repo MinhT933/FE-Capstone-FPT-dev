@@ -45,6 +45,7 @@ import NewTimeFrame from "./pages/PackageFood/NewTimeFrame";
 import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
 // import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
+import UpdateFood from "./pages/FoodGroup/UpdateFood";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -185,6 +186,8 @@ export default function Router() {
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
+        { path: "foodGroup/updatefood/:id", element: <UpdateFood /> },
+        { path: "package/updatePackageFood/:id", element: <EditPackage /> },
       ],
     },
 

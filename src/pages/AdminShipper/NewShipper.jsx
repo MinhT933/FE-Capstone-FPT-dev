@@ -22,7 +22,7 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useSelector } from "react-redux";
-import { callAPIAdminCreateShipper, callAPIgetListCategory, callAPIgetListShipper } from "./../../redux/action/acction";
+import { callAPIAdminCreateShipper, callAPIgetListCategory } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
 
 //time
@@ -36,12 +36,26 @@ import { MarginRounded } from "@mui/icons-material";
 
 
 
+// const initialValue = {
+//     id: "",
+//     name: "",
+//     phone: "",
+//     NoPlate: "",
+//     VehicleType: "",
+//     accountId: "",
+//     kitchenID: "",
+//     status: "",
+
+// };
+
+
 const useStyles = styled((theme) => ({
     pageContent: {
         margin: theme.spacing(5),
         padding: theme.spacing(9),
     },
 }));
+
 
 
 //geticon
@@ -62,35 +76,59 @@ const schema = yup.object().shape({
     phone: yup.string().required("Điền đầy đủ thông tin").trim(),
     noPlate: yup.string().required("Điền đầy đủ thông tin").trim(),
     vehicleType: yup.string().required("Điền đầy đủ thông tin").trim(),
-    email: yup.string().required("Điền đầy đủ thông tin").trim(),
-    // avatar: yup.string().required("Điền đầy đủ thông tin").trim(),
-    password: yup.string().required("Điền đầy đủ thông tin").trim(),
-    DOB: yup.string().required("Điền đầy đủ thông tin").trim(),
 
 });
 //callAPIAdminCreateShipper=================================
+
+
 export default function NewShipper() {
 
     //callAPIAdminCreateShipper=================================
     const dispatch = useDispatch();
+    //khởi tạo lần đầu gọi thằng getlist cate để nó hiện thị lên selectbox ô select của tao á
+    // ctr+ click chuột vào callAPIgetListCategory để xem nó cách callAPI getlistCateFood no giống y chan
+    //call Food list vậy thay vị đổ vào bảng thì mình đỗ vào selectbox
     React.useEffect(() => {
-        const getlistShipper = async () => {
-            await dispatch(callAPIgetListShipper());
+        const createShipper = async () => {
+            await dispatch(callAPIAdminCreateShipper());
         };
-        getlistShipper();
-        //dispatch để kết thúc vào lặp vô tận loop infinity 
-    }, []);
+        createShipper();
+        //disparch để kết thúc vào lặp vô tận loop infinity á
+    }, [dispatch]);
+
+    //kéo data categoriesFood từ store zìa mà xài nè
+    const shipper = useSelector((state) => {
+        return state.userReducer.shipper;
+    });
+
+    /// get list options để hiển thị lên ô selectbox
+    const getOptions = () => {
+        //tạo mảng rỗng để chứa data ở đây là name và id của categoriesFood
+        //hình dung nó giống nhà kho vậy á
+        // sau này trước khi muốn gọi cái gì đó phải tọa 1 mảng rỗng để bỏ vào
+        const item = [];
+        // vòng food này để đẩy data từ categoriesFood v ào trong items ( vì nó có nhiều object) nên phải làm vậy
+        for (var i = 0; i < shipper.length; i++) {
+            item.push({ id: shipper[i].id, title: shipper[i].name });
+        }
+
+        return item;
+        //trả về item đã có data muốn biết thì console.log ra mà xem
+    };
 
     const Input = styled("input")({
         display: "none",
     });
     //xử lí hình ảnh
     const [input, setInput] = useState([]);
-    const token = localStorage.getItem("token");
-
     //formData để lưu data
     const formData = new FormData();
 
+    const token = localStorage.getItem("token");
+
+    //selected dùng để lí ảnh
+
+    //dùng use formik để validate giá trị nhập vào
     const formik = useFormik({
         //gắn schema để so sánh
         validationSchema: schema,
@@ -98,62 +136,55 @@ export default function NewShipper() {
         validateOnBlur: true,
         //khởi tạo kho để bỏ data vào
         initialValues: {
-
             fullName: "",
             phone: "",
             noPlate: "",
             vehicleType: "",
-            email: "",
-            // avatar: null,
-            password: "",
-            DOB: "",
-
+            image: null,
         },
 
+        //onSubmit ngay từ cái tên đầu nó dùng đẩy data xuống BE
         onSubmit: async (values) => {
-            console.log(values);
-
-            const data = {
-                fullName: formik.values.fullName,
-                phone: formik.values.phone,
-                noPlate: formik.values.noPlate,
-                vehicleType: formik.values.vehicleType,
-                email: formik.values.email,
-                // avatar: formik.values.avatar,
-                password: formik.values.password,
-                DOB: formik.values.DOB,
-            };
+            //formdata.append gg.com => nôm na à đẩy giá trị vào formdata có key là 1 chuỗi
+            //value là formik.values.(something you want ) nó giống như muốn vào nhà ai đó thì phải biết tên m trước
+            //sau đó mới biết về bản thân m sau nôm na vậy đó hi vọng m hiểu
+            formData.append("image", formik.values.image);
+            formData.append("fullName", formik.values.fullName);
+            formData.append("phone", formik.values.phone);
+            formData.append("noPlate", formik.values.noPlate);
+            formData.append("vehicleType", formik.values.vehicleType);
+            //gọi API để đẩy data xuống
             try {
-                const res = await API("POST", URL_API + "/auths/register/shipper", data, token);
+                const res = await API("POST", URL_API + "/auths/register/shipper", formData, token);
                 CustomizedToast({
-                    message: `Đã thêm ${formik.values.fullName}`,
+                    message: `Đã thêm tài xế ${formik.values.fullName}`,
                     type: "SUCCESS",
                 });
-            } catch (error) {
-                CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
-            }
+                window.location.reload(true);
+            } catch (error) { }
         },
     });
 
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        ...theme.typography.body2,
-        // padding: theme.spacing(2),
-        textAlign: "left",
-        color: theme.palette.text.secondary,
-    }));
+    //cái này là sử lí image t box bỏ qua bên kia t xử lí khó quá nên t gôm bỏ zo đây T.T
     function _treat(e) {
         const { files } = e.target;
         let images = [];
         const selecteds = [...[...files]];
-        formik.setFieldValue("avatar", e.target.files[0]);
+        formik.setFieldValue("image", e.target.files[0]);
         return (
             selecteds.forEach((i) => images.push(URL.createObjectURL(i))),
             formData.append("File", selecteds),
             setInput(images)
         );
     }
-
+    //callAPIAdminCreateShipper=================================
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+        ...theme.typography.body2,
+        // padding: theme.spacing(2),
+        textAlign: "left",
+        color: theme.palette.text.secondary
+    }));
 
     return (
 
@@ -164,12 +195,12 @@ export default function NewShipper() {
             // marginLeft: "5%",
             // MarginRounded: "4%"
         }}>
-            <PageHeader
-                display="left"
-                title="Thêm tài xế "
-                subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
-                icon={getIcon('emojione-v1:double-exclamation-mark')}
-            />
+            {/* <PageHeader
+                // display="left"
+                // title="Yêu cầu thêm tài xế "
+                // subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
+                // icon={getIcon('emojione-v1:double-exclamation-mark')}
+            /> */}
             <form onSubmit={formik.handleSubmit}>
                 <Box
                     space-around="space-around"
@@ -203,53 +234,6 @@ export default function NewShipper() {
                                     </FormHelperText>
                                 )}
 
-
-                                <Controls.Input
-                                    variant="outlined"
-                                    name="password"
-                                    label="Mật khẩu"
-
-                                    value={formik.values.password || ""}
-
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {/* nếu sai thì nó đỏ */}
-                                {formik.touched.password && formik.errors.password && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.password}
-                                    </FormHelperText>
-                                )}
-
-
-                                <Controls.Input
-                                    variant="outlined"
-                                    name="DOB"
-                                    label="Ngày sinh"
-
-                                    value={formik.values.DOB || ""}
-
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {/* nếu sai thì nó đỏ */}
-                                {formik.touched.DOB && formik.errors.DOB && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.DOB}
-                                    </FormHelperText>
-                                )}
-
-
                                 <Controls.Input
                                     variant="outlined"
                                     name="phone"
@@ -271,30 +255,6 @@ export default function NewShipper() {
                                         {formik.errors.phone}
                                     </FormHelperText>
                                 )}
-
-
-                                <Controls.Input
-                                    variant="outlined"
-                                    name="email"
-                                    label="Email"
-
-                                    value={formik.values.email || ""}
-
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {/* nếu sai thì nó đỏ */}
-                                {formik.touched.email && formik.errors.email && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.email}
-                                    </FormHelperText>
-                                )}
-
 
                                 <Controls.Input
                                     variant="outlined"
@@ -318,6 +278,25 @@ export default function NewShipper() {
                                     </FormHelperText>
                                 )}
 
+                                {/* <Grid item xs={6} >
+                                    <Controls.Select
+                                        name="vehicleType"
+                                        label="Loại xe"
+                                        value={formik.values.vehicleType}
+                                        onChange={(e) => {
+                                            // formik.handleChange(e);
+                                            // map tên với adi hiện thị name nhưng chọn ẩn ở dưới là id
+                                            const a = shipper.find(
+                                                (c) => c.id === e.target.value
+                                            );
+                                            formik.setFieldValue("shipper", a.id);
+                                        }}
+                                        onBlur={formik.handleBlur}
+                                        //getOption để lấy giá trị category
+                                        options={getOptions()}
+                                    />
+                                </Grid> */}
+
                                 <Controls.Input
                                     variant="outlined"
                                     name="vehicleType"
@@ -340,15 +319,74 @@ export default function NewShipper() {
                                     </FormHelperText>
                                 )}
 
+                                {/* <Controls.Input
+                                    variant="outlined"
+                                    label="Tên tài khoản"
+                                    value={formik.accountId}
+                                    onChange={(e) => {
+                                        formik.handleChange(e);
+                                    }}
+                                    onBlur={formik.handleBlur}
+                                /> */}
+
+                                {/* <Controls.Input
+                                    variant="outlined"
+                                    label="Mã nhà bếp"
+                                    value={formik.kitchenID}
+                                    onChange={(e) => {
+                                        formik.handleChange(e);
+                                    }}
+                                    onBlur={formik.handleBlur}
+                                /> */}
+
+
                             </Stack>
                         </Grid>
 
-
+                        <Box sx={{ float: "left", width: "40%", mt: "2rem", ml: "5rem" }}>
+                            <label htmlFor="contained-button-file">
+                                <Input
+                                    accept="image/*"
+                                    id="contained-button-file"
+                                    multiple
+                                    type="file"
+                                    onChange={_treat}
+                                />
+                                <Button
+                                    variant="contained"
+                                    component="span"
+                                    sx={{
+                                        marginLeft: "20%",
+                                    }}
+                                >
+                                    Tải lên...
+                                </Button>
+                                {/* css button input img */}
+                                <Box
+                                    sx={{
+                                        height: 165,
+                                        width: 165,
+                                        maxHeight: { xs: 233, md: 167 },
+                                        maxWidth: { xs: 350, md: 250 },
+                                        marginTop: "10%",
+                                        boxShadow: 8,
+                                        marginLeft: "11%",
+                                    }}
+                                >
+                                    {/* hiển thị hình lên  */}
+                                    {input.map((i) => (
+                                        <img key={i} src={i} alt="hihi" />
+                                    ))}
+                                </Box>
+                            </label>
+                        </Box>
                     </Grid>
                 </Box>
 
                 <Box>
-                    <ButtonCustomize nameButton="Thêm tài xế" type="submit" marginLeft="45%" marginTop="2%" />
+                    <ButtonCustomize nameButton="Thêm tài xế" type="submit" marginLeft="40%" marginTop="2%" />
+
+
                 </Box>
             </form>
         </Paper >

@@ -4,10 +4,7 @@ import React from "react";
 import { purple } from "@mui/material/colors";
 import UseCreateForm, { TForm } from "./useForm";
 import Controls from "./../Control/Controls";
-import RadioGroup from "./../Control/RadioGroup";
-import Select from "./../Control/Select";
-import Checkbox from "./../Control/Checkbox";
-import DatePicker from "./../Control/DatePicker";
+
 import * as UpdateService from "../../utils/UpdateService/UpdateService";
 import PageHeader from "../PageHeader";
 import Stack from "@mui/material/Stack";
