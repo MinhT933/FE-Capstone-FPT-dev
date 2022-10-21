@@ -336,7 +336,7 @@ export default function KitchenList() {
                                                             variant="outlined"
                                                             display="TableCell"
                                                             component={RouterLink}
-                                                            to={`${location.pathname} / updatekitchen / ${id}`}
+                                                            to={`${location.pathname}/updatekitchen/${id}`}
 
                                                         >
                                                             Cập nhập

@@ -311,10 +311,6 @@ export default function StationList() {
                             )
 
                             }
-
-
-
-
                           </TableCell>
 
                           <TableCell>

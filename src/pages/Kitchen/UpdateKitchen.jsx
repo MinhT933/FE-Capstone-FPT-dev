@@ -66,7 +66,6 @@ export default function UpdateKitchen() {
         API("GET", URL_API + `/kitchens/${id}`, null, token)
             .then((res) => {
 
-                console.log(res);
                 formik.setFieldValue("fullName", res.data.result.account.profile.fullName);
                 formik.setFieldValue("email", res.data.result.account.profile.email);
                 formik.setFieldValue("address", res.data.result.address);
