@@ -151,7 +151,7 @@ export default function NewStation() {
               <Stack spacing={3}>
                 <Controls.Input
                   variant="outlined"
-                  label="Địa điểm"
+                  label="Tên trạm"
                   name="name"
                   value={formik.values.name}
                   onChange={(e) => {
@@ -250,7 +250,7 @@ export default function NewStation() {
             marginLeft={"40%"}
             marginTop={"2%"}
           >
-            <ButtonCustomize nameButton="tạo địa điểm" type="submit" />
+            <ButtonCustomize nameButton="Tạo địa điểm" type="submit" />
           </Stack>
         </Box>
       </form>

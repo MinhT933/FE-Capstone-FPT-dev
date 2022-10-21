@@ -140,7 +140,7 @@ export default function Food() {
         try {
           dispatch(callAPIgetListFood());
         } catch (err) {
-          alert("Ban faild " + id);
+          alert("Ban fail" + id);
         }
       },
       []

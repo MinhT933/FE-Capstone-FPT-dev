@@ -1,4 +1,3 @@
-
 import React from "react";
 // import { Paper } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
@@ -29,7 +28,6 @@ import * as yup from "yup";
 
 import { useSelector } from "react-redux";
 import {
-    callAPIgetListKitchen,
     callAPIgetListStation,
 } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
@@ -37,7 +35,7 @@ import { useState } from "react";
 import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import { Api } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router-dom";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -46,33 +44,47 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
     fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
-    password: yup.string().required("Điền đầy đủ thông tin").trim(),
-    phone: yup.string().required("Điền đầy đủ thông tin").trim(),
     email: yup.string().required("Điền đầy đủ thông tin").trim(),
     address: yup.string().required("Điền đầy đủ thông tin").trim(),
     ability: yup.string().required("Điền đầy đủ thông tin").trim(),
-
 });
-
-
 
 //callAPIforCreateStation========================================
 export default function UpdateKitchen() {
     //callAPIforCreateStation========================================
+    let { id } = useParams();
+
+    const [input, setInput] = useState(null);
+
+    const navigate = useNavigate();
+
+    const token = localStorage.getItem("token");
+
     const dispatch = useDispatch();
+
     React.useEffect(() => {
-        const getlistKitchen = async () => {
-            await dispatch(callAPIgetListKitchen());
-        };
-        getlistKitchen();
-        // API("GET",URL_API='')
+        API("GET", URL_API + `/kitchens/${id}`, null, token)
+            .then((res) => {
+
+                console.log(res);
+                formik.setFieldValue("fullName", res.data.result.account.profile.fullName);
+                formik.setFieldValue("email", res.data.result.account.profile.email);
+                formik.setFieldValue("address", res.data.result.address);
+                formik.setFieldValue("ability", res.data.result.ability)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
     }, []);
+
+    const station = useSelector((state) => {
+        return state.userReducer.listKitchen;
+    });
 
     const Input = styled("input")({
         display: "none",
     });
-    //xử lí hình ảnh
-    const token = localStorage.getItem("token");
 
     //formData để lưu data
     const formData = new FormData();
@@ -85,36 +97,32 @@ export default function UpdateKitchen() {
         //khởi tạo kho để bỏ data vào
         initialValues: {
             fullName: "",
-            password: "",
-            phone: "",
             email: "",
             address: "",
             ability: "",
         },
+
         onSubmit: async (values) => {
             console.log(values);
             const data = {
                 fullName: formik.values.fullName,
-                password: formik.values.password,
-                phone: formik.values.phone,
                 email: formik.values.email,
                 address: formik.values.address,
                 ability: formik.values.ability,
             };
-
             try {
-                const res = await API("POST", URL_API + "/auths/register/kitchen", data, token);
+                const res = await API("PUT", URL_API + `/kitchens/${id}`, data, token);
+
                 if (res) {
-                    console.log(res.data);
                     CustomizedToast({
-                        message: `Đã thêm ${formik.values.fullName}`,
+                        message: `Cập nhập ${formik.values.fullName} thành công`,
                         type: "SUCCESS",
                     });
                 }
-
+                navigate("/dashboard/admin/kitchen");
             } catch (error) {
                 console.log(error);
-                CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
+                CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
             }
         },
     });
@@ -127,8 +135,9 @@ export default function UpdateKitchen() {
         color: theme.palette.text.secondary,
     }));
 
+
     return (
-        <Paper
+        <Paper title="Cập nhập bếp"
             elevation={3}
             sx={{
                 padding: "2%",
@@ -138,12 +147,14 @@ export default function UpdateKitchen() {
         >
             <PageHeader
                 display="left"
-                title="Thêm địa điểm"
+                title="Cập nhập địa điểm"
                 subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
                 icon={getIcon("emojione-monotone:pot-of-food")}
             />
             <form onSubmit={formik.handleSubmit}>
                 <Box
+                    //   space-around="space-around"
+                    // sx={{ float: "right", width: "60%", flexGrow: 1 }}
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
@@ -151,6 +162,7 @@ export default function UpdateKitchen() {
                     <Grid container spacing={4} columns={20}>
                         <Grid item xs={8} marginLeft="10%">
                             <Stack spacing={3}>
+
                                 <Controls.Input
                                     variant="outlined"
                                     label="Tên bếp"
@@ -186,45 +198,6 @@ export default function UpdateKitchen() {
                                         id="standard-weight-helper-text-username-login"
                                     >
                                         {formik.errors.address}
-                                    </FormHelperText>
-                                )}
-
-
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Số điện thoại"
-                                    name="phone"
-                                    value={formik.values.phone}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.phone && formik.errors.phone && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.phone}
-                                    </FormHelperText>
-                                )}
-
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Mật khẩu"
-                                    name="password"
-                                    value={formik.values.password}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.password && formik.errors.password && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.password}
                                     </FormHelperText>
                                 )}
 
@@ -291,3 +264,4 @@ export default function UpdateKitchen() {
         </Paper>
     );
 }
+

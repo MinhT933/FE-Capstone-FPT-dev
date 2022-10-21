@@ -81,10 +81,10 @@ export const callAPIgetListCategory = () => {
 };
 
 
-export const callAPIgetListStation = () => {
+export const callAPIgetListStation = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/stations", null, null);
+      const res = await API("GET", URL_API + "/stations", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_STATIONS,
@@ -265,21 +265,21 @@ export const refreshToken = (accessToken) => (dispatch) => {
   });
 };
 //----------------------------------------------------------------
-export const callAPIgetListStation = () => {
-  return async (dispatch) => {
-    try {
-      const res = await API("GET", URL_API + "/stations", null, null);
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_STATIONS,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {
-      console.log({ err });
-    }
-  };
-};
+// export const callAPIgetListStation = () => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await API("GET", URL_API + "/stations", null, null);
+//       dispatch(
+//         createAction({
+//           type: PathAction.GET_LIST_STATIONS,
+//           payload: res.data.result,
+//         })
+//       );
+//     } catch (err) {
+//       console.log({ err });
+//     }
+//   };
+// };
 
 // export const callAPIAdminCreateStation = (token) => {
 //   return async (dispatch) => {
@@ -316,27 +316,27 @@ export const callAPIgetListShipper = (token) => {
   };
 };
 
-export const callAPIAdminCreateShipper = (token) => {
-  return async (dispatch) => {
-    try {
-      const res = await API(
-        "POST",
-        URL_API + "/auths/register/shipper",
-        null,
-        token
-      );
-      dispatch(
-        createAction({
-          type: PathAction.CREATE_SHIPPER,
-          payload: res.data.result,
-        })
-      );
-      console.log(res.data.result);
-    } catch (err) {
-      console.log({ err });
-    }
-  };
-};
+// export const callAPIAdminCreateShipper = (token) => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await API(
+//         "POST",
+//         URL_API + "/auths/register/shipper",
+//         null,
+//         token
+//       );
+//       dispatch(
+//         createAction({
+//           type: PathAction.CREATE_SHIPPER,
+//           payload: res.data.result,
+//         })
+//       );
+//       console.log(res.data.result);
+//     } catch (err) {
+//       console.log({ err });
+//     }
+//   };
+// };
 
 //----------------------------------------------------------------
 export const callAPIgetListKitchen = (token) => {
