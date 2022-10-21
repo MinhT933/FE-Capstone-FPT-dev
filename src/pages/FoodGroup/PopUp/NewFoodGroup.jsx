@@ -24,7 +24,10 @@ import { useSelector } from "react-redux";
 
 import { CustomizedToast } from "../../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../../components/Button/ButtonCustomize";
-import { callAPIgetListFood } from "../../../redux/action/acction";
+import {
+  callAPIgetListFood,
+  callAPIgetListFoodActive,
+} from "../../../redux/action/acction";
 import Box from "@mui/material/Box";
 import FormHelperText from "@mui/material/FormHelperText";
 import API from "../../../Axios/API/API";
@@ -53,10 +56,10 @@ export default function NewFoodGroup(props) {
       },
     },
   };
-
+  ///
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
-      await dispatch(callAPIgetListFood(token));
+      await dispatch(callAPIgetListFoodActive(token));
     };
     getfoodByFoodGroupId();
   }, [token, dispatch]);
@@ -76,7 +79,7 @@ export default function NewFoodGroup(props) {
   };
 
   const listFoodSelectbox = useSelector((state) => {
-    return state.userReducer.listFood;
+    return state.userReducer.listFoodActive;
   });
 
   const handleClose = () => {

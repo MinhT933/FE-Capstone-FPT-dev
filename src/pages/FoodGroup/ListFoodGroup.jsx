@@ -342,24 +342,26 @@ export default function ListFoodGroup() {
                             </ColorButton>
                           </TableCell>
 
-                          <TableCell align="center">
-                            {status === "active" ? (
-                              <ButtonCustomize
-                                nameButton="Ngưng bán"
-                                onClick={() => handleReject(id, name)}
-                              />
-                            ) : (
-                              // <IconButton
-                              //   onClick={() => handleAccept(id, name)}
-                              // >
-                              //   <CheckIcon />
-                              // </IconButton>
-                              <ButtonCustomize
-                                nameButton="Mở bán"
-                                onClick={() => handleAccept(id, name)}
-                              />
-                            )}
-                          </TableCell>
+                          {decoded === "manage" && (
+                            <TableCell align="center">
+                              {status === "active" ? (
+                                <ButtonCustomize
+                                  nameButton="Ngưng bán"
+                                  onClick={() => handleReject(id, name)}
+                                />
+                              ) : (
+                                // <IconButton
+                                //   onClick={() => handleAccept(id, name)}
+                                // >
+                                //   <CheckIcon />
+                                // </IconButton>
+                                <ButtonCustomize
+                                  nameButton="Mở bán"
+                                  onClick={() => handleAccept(id, name)}
+                                />
+                              )}
+                            </TableCell>
+                          )}
                         </TableRow>
                       );
                     })}

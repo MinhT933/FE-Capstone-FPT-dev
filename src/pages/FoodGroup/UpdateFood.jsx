@@ -1,5 +1,5 @@
 import { Grid, Paper } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Controls from "../../components/Control/Controls";
 import PageHeader from "../../components/PageHeader";
 import Stack from "@mui/material/Stack";
@@ -56,6 +56,7 @@ export default function UpdateFood() {
   };
 
   // const food = [];
+  const [active, setActive] = useState([]);
   React.useEffect(() => {
     API("GET", URL_API + `/food-groups/find/${id}`, null, token)
       .then((res) => {
@@ -83,6 +84,17 @@ export default function UpdateFood() {
   const listFoodSelectbox = useSelector((state) => {
     return state.userReducer.listFood;
   });
+  console.log(listFoodSelectbox);
+  // const handleActive = () => {
+  //   let arr = [];
+  //   for (let index = 0; index < listFoodSelectbox.length; index++) {
+  //     if (listFoodSelectbox.status === "active") {
+  //       console.log("hihi");
+  //     }
+  //   }
+  //   return arr;
+  // };
+  // console.log(active);
 
   const valueTag = useSelector((state) => {
     return state.userReducer.valueTag;
