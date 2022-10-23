@@ -46,6 +46,7 @@ import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
 // import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 import UpdateFood from "./pages/FoodGroup/UpdateFood";
+import Profile from "./components/Profile/Profile";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -140,6 +141,7 @@ export default function Router() {
             // </ProtectedRouteAuthen>
           ),
         },
+        { path: "account/my", element: <Profile /> },
       ],
     },
     //Role Manager

@@ -19,8 +19,10 @@ import account from "../../_mock/account";
 import { useDispatch } from "react-redux";
 import { LogOut } from "../../redux/action/acction";
 import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 // ----------------------------------------------------------------------
-
+const token = localStorage.getItem("token");
+const decode = jwt_decode(token);
 const MENU_OPTIONS = [
   {
     label: "Home",
@@ -30,7 +32,7 @@ const MENU_OPTIONS = [
   {
     label: "Profile",
     icon: "eva:person-fill",
-    linkTo: "#",
+    linkTo: `/dashboard/${decode.role}/account/my`,
   },
   {
     label: "Settings",

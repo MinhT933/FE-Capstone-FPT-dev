@@ -204,6 +204,7 @@ export default function NewFoodGroup(props) {
                               checked={valueTag.indexOf(item.name) > -1}
                             />
                             <ListItemText primary={item.name} />
+                            <ListItemText primary={`${item.price}đ`} />
                           </MenuItem>
                         ))}
                       </Select>

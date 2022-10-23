@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import {
   callAPIgetFoodbyGroupFoodId,
   callAPIgetListFood,
+  callAPIgetListFoodActive,
 } from "../../redux/action/acction";
 import { useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
@@ -71,7 +72,7 @@ export default function UpdateFood() {
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
       await dispatch(callAPIgetFoodbyGroupFoodId(id, token));
-      await dispatch(callAPIgetListFood(token));
+      await dispatch(callAPIgetListFoodActive(token));
     };
     getfoodByFoodGroupId();
   }, [dispatch, id, token]);
@@ -82,7 +83,7 @@ export default function UpdateFood() {
   // console.log(listfood.foods.id);
 
   const listFoodSelectbox = useSelector((state) => {
-    return state.userReducer.listFood;
+    return state.userReducer.listFoodActive;
   });
   console.log(listFoodSelectbox);
   // const handleActive = () => {
@@ -105,7 +106,6 @@ export default function UpdateFood() {
       target: { value },
     } = e;
     const a = listFoodSelectbox.find((c) => c.id === value);
-    console.log(a);
 
     dispatch({
       type: SET_VALUE_TAG,
@@ -132,7 +132,7 @@ export default function UpdateFood() {
           a.push(arr[0].id);
         }
       }
-      console.log(a);
+  
       const data = {
         name: formik.values.name,
         description: formik.values.description,

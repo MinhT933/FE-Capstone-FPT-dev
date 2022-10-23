@@ -89,6 +89,7 @@ export default function EditPackage() {
     };
     getTimeFrame();
     API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
+     
       setInput(res.data.result.image);
       setPackageItem(res.data.result.packageItem);
       formik.setFieldValue("image", res.data.result.image);
@@ -177,7 +178,7 @@ export default function EditPackage() {
       });
     // setGroupFood([...groupfood, { [e.target.name]: a.id }]);
   };
-
+  console.log(packageItem);
   const formik = useFormik({
     validationSchema: schema,
     validateOnMount: true,
@@ -194,14 +195,16 @@ export default function EditPackage() {
       totalFood: "",
     },
 
+    // `${a[2]}-${a[1]}-${a[0]}`
+    // `0${b[2]}-${b[1]}-${b[0]}`
     onSubmit: async (values) => {
-      // const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
-      const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
-      console.log(startSale, endSale);
-      // Log(a)
+      const a = new Date(valueEndTime).toLocaleDateString().split("/");
+      const b = new Date(valueStarTime).toLocaleDateString().split("/");
+      // const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
+      // const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
+      // console.log(startSale, endSale);
       // console.log(startSale);
-      // const b = new Date(valueStarTime).toLocaleDateString().split("/");
+
       // const startDate = new Date(valueStarTime).toLocaleDateString();
       // const endDate = new Date(valueEndTime).toLocaleDateString();
       formData.append("image", formik.values.image);
@@ -211,8 +214,8 @@ export default function EditPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      formData.append("endSale", endSale);
-      formData.append("startSale", startSale);
+      formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
+      formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
@@ -234,7 +237,7 @@ export default function EditPackage() {
               "PUT",
               URL_API + `/package-item/${packageItem[index].id}`,
               {
-                foodGroupID: packageItem[index].groupfood.id,
+                foodGroupID: packageItem[index].foodGroup.id,
               },
               token
             )
@@ -249,7 +252,7 @@ export default function EditPackage() {
 
         window.location.reload(true);
         // } else if (endDate < startDate || endDate === startDate) {
-        CustomizedToast({ message: "vui lòng xem lại ngày ", type: "SUCCESS" });
+        // CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
         // }
       } catch (error) {
         CustomizedToast({ message: "Thấp bại rồi", type: "ERROR" });
@@ -355,7 +358,7 @@ export default function EditPackage() {
             }}
           >
             <Controls.Select
-              name="GroupID"
+              name="foodGroupID"
               label={handleLabel(index + 1)}
               width="20rem"
               defaultValue="undefined"
@@ -511,6 +514,7 @@ export default function EditPackage() {
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
+                    console.log(e);
                   }}
                 />
               </Grid>
