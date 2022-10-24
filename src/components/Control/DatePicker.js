@@ -6,6 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import { width } from "@mui/system";
 
 export default function DatePicker(props) {
   // const [value, setValue] = React.useState(dayjs("2022-10-18T21:11:5"));
@@ -17,7 +18,7 @@ export default function DatePicker(props) {
   // console.log(value);
 
   // console.log(value);
-  const { label, name, value, onChange, inputFormat } = props;
+  const { label, name, value, onChange, inputFormat, width } = props;
 
   // const CustomPickersDay = styled(DesktopDatePicker, {
   //   '&.Mui-selected':{
@@ -30,16 +31,18 @@ export default function DatePicker(props) {
       sx={{
         display: "grid",
         gridTemplateColumns: { sm: "6fr 1fr" },
+        width: { width },
       }}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDatePicker
           name={name}
           label={label}
-          inputFormat="YYYY-MM-DD"
+          // inputFormat="YYYY-MM-DD"
           //hihi
           // inputFormat="DD-MM-YYYY"
-          // inputFormat={inputFormat}
+          inputFormat={inputFormat}
+
           value={value}
           onChange={onChange}
           minDate={new Date()}

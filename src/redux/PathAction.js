@@ -27,7 +27,7 @@ export const REFRESH_TOKEN = "REFRESH_TOKEN";
 export const GET_LIST_TIME_FRAME_BY_ID = "GET_LIST_TIME_FRAME_BY_ID";
 
 export const GET_LIST_FOOD_ACTIVE = "GET_LIST_FOOD_ACTIVE";
-
+export const GET_PROFILE = "GET_PROFILE";
 /// gởi đi message
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";

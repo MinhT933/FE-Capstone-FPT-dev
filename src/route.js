@@ -181,7 +181,7 @@ export default function Router() {
         //MANAGER quản lí đơn hàng - VIEW theo ERD
         { path: "adminorder", element: <AdminOrderList /> },
         // { path: "newadminorder", element: <NewAdminOrder /> },
-
+        { path: "account/my", element: <Profile /> },
         //admin quản lí shipper
         //CURD + chuyển shipper cho bếp
         { path: "adminshipper", element: <AdminShipperList /> },

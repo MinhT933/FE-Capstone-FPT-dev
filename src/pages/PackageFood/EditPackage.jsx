@@ -89,7 +89,6 @@ export default function EditPackage() {
     };
     getTimeFrame();
     API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
-     
       setInput(res.data.result.image);
       setPackageItem(res.data.result.packageItem);
       formik.setFieldValue("image", res.data.result.image);
@@ -176,7 +175,7 @@ export default function EditPackage() {
       .catch((err) => {
         console.log(err);
       });
-    // setGroupFood([...groupfood, { [e.target.name]: a.id }]);
+    setGroupFood([...groupfood, { [e.target.name]: a.id }]);
   };
   console.log(packageItem);
   const formik = useFormik({
@@ -676,13 +675,14 @@ export default function EditPackage() {
                 {/* css button input img */}
                 <Box
                   sx={{
-                    height: 165,
-                    width: 165,
+                    // height: "100%",
+                    // width: "100%",
                     maxHeight: { xs: 233, md: 167 },
                     maxWidth: { xs: 350, md: 250 },
                     marginTop: "10%",
-                    boxShadow: 8,
+                    // boxShadow: 8,
                     marginLeft: "11%",
+                    // objectFit: "cover",
                   }}
                 >
                   {/* hiển thị hình lên  */}

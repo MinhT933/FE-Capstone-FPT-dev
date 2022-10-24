@@ -15,14 +15,17 @@ import {
 // components
 import MenuPopover from "../../components/hook-form/MenuPopover";
 // mocks_
-import account from "../../_mock/account";
+// import account from "../../_mock/account";
 import { useDispatch } from "react-redux";
-import { LogOut } from "../../redux/action/acction";
+import { callAPIProfile, LogOut } from "../../redux/action/acction";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import React from "react";
+import { useSelector } from "react-redux";
 // ----------------------------------------------------------------------
 const token = localStorage.getItem("token");
 const decode = jwt_decode(token);
+
 const MENU_OPTIONS = [
   {
     label: "Home",
@@ -44,10 +47,10 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const anchorRef = useRef(null);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const anchorRef = useRef(null);
 
   const [open, setOpen] = useState(null);
 
@@ -64,6 +67,16 @@ export default function AccountPopover() {
     dispatch(LogOut(token, navigate));
   };
 
+  React.useEffect(() => {
+    const callAPI = async () => {
+      dispatch(await callAPIProfile(token));
+    };
+    callAPI();
+  }, [dispatch]);
+
+  const profiles = useSelector((state) => {
+    return state.userReducer.profiles;
+  });
   return (
     <>
       <IconButton
@@ -85,7 +98,8 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
+        <Avatar src={profiles.profile?.avatar} alt="photoURL" />
       </IconButton>
 
       <MenuPopover
@@ -104,10 +118,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {profiles.profile?.fullName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {account.email}
+            {profiles.profile?.email}
           </Typography>
         </Box>
 

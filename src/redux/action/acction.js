@@ -138,6 +138,22 @@ export const callAPIgetGroupFood = (token) => {
   };
 };
 
+export const callAPIProfile = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/profiles/my", null, token);
+      dispatch(
+        createAction({
+          type: PathAction.GET_PROFILE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 export const callAPIgetFoodbyGroupFoodId = (id, token) => {
   return async (dispatch) => {
     try {

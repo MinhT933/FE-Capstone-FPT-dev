@@ -35,6 +35,7 @@ import NewUserPopup from "../../components/PopUp/NewUserPopup";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: "", lable: "", alignRight: false },
   { id: "name", label: "Name", alignRight: false },
   { id: "company", label: "Company", alignRight: false },
   { id: "role", label: "Role", alignRight: false },
@@ -42,7 +43,6 @@ const TABLE_HEAD = [
   { id: "status", label: "Status", alignRight: false },
   { id: "" },
 ];
-
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
@@ -78,7 +78,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserList() {
-  const[OpenPopUp, SetOpenPopUp] = useState(false);
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -145,15 +145,15 @@ export default function UserList() {
     getComparator(order, orderBy),
     filterName
   );
-    //setColor button
-    const ColorButton = styled(Button)(({ theme }) => ({
-      color: theme.palette.getContrastText("#FFCC32"),
-      backgroundColor: "#FFCC33",
-      "&:hover": {
-        backgroundColor: "#ffee32",
-      },
-      display: "center",
-    }));
+  //setColor button
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC32"),
+    backgroundColor: "#FFCC33",
+    "&:hover": {
+      backgroundColor: "#ffee32",
+    },
+    display: "center",
+  }));
 
   const isUserNotFound = filteredUsers.length === 0;
 
@@ -176,7 +176,7 @@ export default function UserList() {
             // startIcon={
             //   <Iconify
             //     icon="eva:plus-fill"
-               
+
             //   />
             // }
             onClick={() => {
@@ -231,11 +231,10 @@ export default function UserList() {
                           aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox
+                            {/* <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, name)}
-                            />
-                            
+                            /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack
@@ -261,12 +260,12 @@ export default function UserList() {
                                 (status === "banned" && "error") || "success"
                               }
                             >
-                              { (status)}
+                              {status}
                             </Label>
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu id = {id} />
+                            <UserMoreMenu id={id} />
                           </TableCell>
                         </TableRow>
                       );
@@ -302,7 +301,10 @@ export default function UserList() {
           />
         </Card>
       </Container>
-      <NewUserPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewUserPopup>
+      <NewUserPopup
+        OpenPopUp={OpenPopUp}
+        SetOpenPopUp={SetOpenPopUp}
+      ></NewUserPopup>
     </Page>
   );
 }
