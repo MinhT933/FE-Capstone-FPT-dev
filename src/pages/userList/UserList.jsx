@@ -35,6 +35,7 @@ import NewUserPopup from "../../components/PopUp/NewUserPopup";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+
   { id: " ", label: " ", alignRight: false },
   { id: "name", label: "Name", alignRight: false },
   { id: "company", label: "Company", alignRight: false },
@@ -43,7 +44,6 @@ const TABLE_HEAD = [
   { id: "status", label: "Status", alignRight: false },
   { id: " " },
 ];
-
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
@@ -264,7 +264,9 @@ export default function UserList() {
                                 (status === "banned" && "error") || "success"
                               }
                             >
-                              {(status)}
+
+                              {status}
+
                             </Label>
                           </TableCell>
 
@@ -305,7 +307,10 @@ export default function UserList() {
           />
         </Card>
       </Container>
-      <NewUserPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewUserPopup>
+      <NewUserPopup
+        OpenPopUp={OpenPopUp}
+        SetOpenPopUp={SetOpenPopUp}
+      ></NewUserPopup>
     </Page>
   );
 }

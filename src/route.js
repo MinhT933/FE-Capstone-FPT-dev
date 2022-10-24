@@ -46,6 +46,7 @@ import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
 // import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 import UpdateFood from "./pages/FoodGroup/UpdateFood";
+import Profile from "./components/Profile/Profile";
 import UserAccount from "./pages/userList/UserAccount";
 import KitchenAccount from "./pages/userList/KitchenAccount";
 import ShipperAccount from "./pages/userList/ShipperAccount";
@@ -153,6 +154,7 @@ export default function Router() {
             // </ProtectedRouteAuthen>
           ),
         },
+        { path: "account/my", element: <Profile /> },
       ],
     },
     //Role Manager
@@ -192,7 +194,7 @@ export default function Router() {
         //MANAGER quản lí đơn hàng - VIEW theo ERD
         { path: "adminorder", element: <AdminOrderList /> },
         // { path: "newadminorder", element: <NewAdminOrder /> },
-
+        { path: "account/my", element: <Profile /> },
         //admin quản lí shipper
         //CURD + chuyển shipper cho bếp
         { path: "adminshipper", element: <AdminShipperList /> },

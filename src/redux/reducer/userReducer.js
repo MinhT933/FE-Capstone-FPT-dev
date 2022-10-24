@@ -53,6 +53,7 @@ const initialState = {
   currentUser: [],
   listCategoryPackage: [],
   listFoodActive: [],
+  profiles: [],
 };
 
 // const initialStateAuthen = admin
@@ -158,7 +159,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listFoodByGroupFoodID = payload;
       state.valueTag = payload.foods.map((item) => item.name);
       break;
-
+    case PathAction.GET_PROFILE:
+      state.profiles = payload;
+      break;
     default:
   }
   return { ...state };

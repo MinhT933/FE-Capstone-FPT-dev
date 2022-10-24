@@ -13,7 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 // mock
-import account from "../_mock/account";
+// import account from "../_mock/account";
 // hooks
 
 // components
@@ -31,6 +31,8 @@ import NavSection from "./../components/hook-form/NavSection";
 import Logo from "./../components/Logo";
 import useResponsive from "./../hooks/useResponsive";
 import jwt_decode from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { callAPIProfile } from "../redux/action/acction";
 
 // ----------------------------------------------------------------------
 
@@ -62,6 +64,19 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const isDesktop = useResponsive("up", "lg");
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const decode = jwt_decode(token);
+  useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIProfile(token));
+    };
+    callAPI();
+  }, [dispatch]);
+
+  const profiles = useSelector((state) => {
+    return state.userReducer.profiles;
+  });
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -95,15 +110,19 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       </Box>
       <Box sx={{ backgroundColor: "white" }}>
         <Box sx={{ mb: 5, mx: 2.5, backgroundColor: "white" }}>
-          <Link underline="none" component={RouterLink} to="#">
+          <Link
+            underline="none"
+            component={RouterLink}
+            to={`/dashboard/${decode.role}/account/my`}
+          >
             <AccountStyle>
-              <Avatar src={account.photoURL} alt="photoURL" />
+              <Avatar src={profiles.profile?.avatar} alt="photoURL" />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                  {account.displayName}
+                  {profiles.profile?.fullName}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {account.role}
+                  {profiles.profile?.email}
                 </Typography>
               </Box>
             </AccountStyle>
