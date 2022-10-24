@@ -40,7 +40,13 @@ const initialState = {
   listShipper: [],
   shipper: [],
 
-  listUser: [],
+
+  accountCustomer: [],
+  accountAdmin: [],
+  accountManager: [],
+  accountShipper: [],
+  accountKitchen: [],
+
   listOrder: [],
   profileKitchen: [],
 
@@ -88,9 +94,26 @@ export default function userReducer(state = initialState, { type, payload }) {
       // console.log(payload);
       break;
     //=====================================================
-    case PathAction.GET_LIST_USER:
-      state.listUser = payload;
+    case PathAction.GET_ACCOUNT_CUSTOMER:
+      state.accountCustomer = payload;
       break;
+
+    case PathAction.GET_ACCOUNT_ADMIN:
+      state.accountAdmin = payload;
+      break;
+
+    case PathAction.GET_ACCOUNT_MANAGER:
+      state.accountManager = payload;
+      break;
+
+    case PathAction.GET_ACCOUNT_SHIPPER:
+      state.accountShipper = payload;
+      break;
+
+    case PathAction.GET_ACCOUNT_KITCHEN:
+      state.accountKitchen = payload;
+      break;
+
     //=====================================================
     case PathAction.GET_LIST_KITCHEN:
       state.listKitchen = payload;

@@ -46,6 +46,11 @@ import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
 // import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 import UpdateFood from "./pages/FoodGroup/UpdateFood";
+import UserAccount from "./pages/userList/UserAccount";
+import KitchenAccount from "./pages/userList/KitchenAccount";
+import ShipperAccount from "./pages/userList/ShipperAccount";
+import ManagerAccount from "./pages/userList/ManagerAccount";
+import AdminAccount from "./pages/userList/AdminAccount";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -100,6 +105,14 @@ export default function Router() {
       children: [
         { path: "app", element: <Page404 /> },
         { path: "users", element: <ProductList /> },
+
+        { path: "userAccount", element: <UserAccount /> },
+        { path: "adminAccount", element: <AdminAccount /> },
+        { path: "managerAccount", element: <ManagerAccount /> },
+        { path: "shipperAccount", element: <ShipperAccount /> },
+        { path: "kitchenAccount", element: <KitchenAccount /> },
+
+
 
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
