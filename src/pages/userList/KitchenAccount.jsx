@@ -1,5 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
+import * as React from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
@@ -18,46 +19,33 @@ import {
     TableContainer,
     TablePagination,
 } from "@mui/material";
-
-//callAPI
-import TextField from "@mui/material/TextField";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import * as React from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
-import { callAPIgetListKitchen } from "../../redux/action/acction";
-import ButtonCustomize from "./../../components/Button/ButtonCustomize";
-import jwt_decode from "jwt-decode";
-
 // components
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
-import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-// import KITCHENLIST from "./KitchenSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { callAPIgetAccountCustomer, callAPIgetAccountKitchen, callAPIgetListStation } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import { Avatar } from "@mui/joy";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "fullName", label: "Tên bếp", alignRight: false },
-    { id: "address", label: "Địa chỉ", alignRight: false },
-    { id: "phone", label: "Điện thoại", alignRight: false },
-    { id: "ability", label: "Công suất", alignRight: false },
-    // { id: "openTime", label: "Mở cửa", alignRight: false },
+    { id: "", label: "", alignRight: false },
+    { id: "fullName", label: "Họ tên", alignRight: false },
     { id: "email", label: "Email", alignRight: false },
+    { id: "phone", label: "Điện thoại", alignRight: false },
 
     { id: "status", label: "Trạng thái", alignRight: false },
-    // { id: "createdAt", label: "Ngày tạo", alignRight: false },
-    // { id: "updatedAt", label: "Cập nhật", alignRight: false },
+    { label: "Thay đổi trạng thái", alignRight: false },
     { id: "" },
 ];
 
@@ -89,38 +77,50 @@ function applySortFilter(array, comparator, query) {
     if (query) {
         return filter(
             array,
-            (_kitchen) => _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            (_stations) =>
+                _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
     return stabilizedThis.map((el) => el[0]);
 }
-const token = localStorage.getItem("token");
 
-export default function KitchenList() {
+export default function KitchenAccount() {
+    const [OpenPopUp, SetOpenPopUp] = useState(false);
+    const [page, setPage] = useState(0);
 
+    const [order, setOrder] = useState("asc");
+
+    const [selected, setSelected] = useState([]);
+
+    const [orderBy, setOrderBy] = useState("fullName");
+
+    const [filterName, setFilterName] = useState("");
+
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    //CALL API====================================================
     const location = useLocation();
-    //callAPIgetListKitchen========================================
+
+    const token = localStorage.getItem("token");
+
+    const decoded = jwt_decode(token);
+
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
-            await dispatch(callAPIgetListKitchen(token));
+            await dispatch(callAPIgetAccountKitchen(token));
         };
         callAPI();
     }, [dispatch]);
 
-    const token = localStorage.getItem("token");
-
-    var decoded = jwt_decode(token);
-    console.log(decoded);
-
     const handleDelete = (id, fullName) => {
-        API("PUT", URL_API + `/kitchens/status/${id}`, null, token).then(
+        API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then(
             (res) => {
                 try {
-                    dispatch(callAPIgetListKitchen(token));
+                    dispatch(callAPIgetAccountKitchen(token));
 
                     CustomizedToast({
-                        message: `Đã cập nhập trạng thái ${fullName}`,
+                        message: `Đã Cập nhập trạng thái ${fullName}`,
                         type: "SUCCESS",
                     });
 
@@ -135,25 +135,10 @@ export default function KitchenList() {
         );
     };
 
-    const kitchen = useSelector((state) => {
-        return state.userReducer.listKitchen;
+    const station = useSelector((state) => {
+        return state.userReducer.accountKitchen;
     });
-
-    //callAPIgetListKitchen========================================
-
-
-    const [OpenPopUp, SetOpenPopUp] = useState(false);
-    const [page, setPage] = useState(0);
-
-    const [order, setOrder] = useState("asc");
-
-    const [selected, setSelected] = useState([]);
-
-    const [orderBy, setOrderBy] = useState("fullName");
-
-    const [filterName, setFilterName] = useState("");
-
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    //CALL API=====================================================
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -163,7 +148,7 @@ export default function KitchenList() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = kitchen.map((n) => n.fullName);
+            const newSelecteds = station.map((n) => n.fullName);
             setSelected(newSelecteds);
             return;
         }
@@ -201,33 +186,23 @@ export default function KitchenList() {
         setFilterName(event.target.value);
     };
 
-    const filteredKitchen = applySortFilter(
-        kitchen,
+    const filteredStations = applySortFilter(
+        station,
         getComparator(order, orderBy),
         filterName
     );
-    //setColor button
-    const ColorButton = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC32"),
-        backgroundColor: "#FFCC33",
-        "&:hover": {
-            backgroundColor: "#ffee32",
-        },
-        display: "center",
-    }));
+
+    const isStationNotFound = filteredStations.length === 0;
 
     const Button1 = styled(Button)(({ theme }) => ({
         color: theme.palette.getContrastText("#FFCC33"),
         backgroundColor: "#FFCC33",
-        // width: "50%",
-        // height: "70%",
-        // display: "center"
-    }));;
 
-    const isKitchenNotFound = filteredKitchen.length === 0;
+        // display: "center"
+    }));
 
     return (
-        <Page title="Bếp">
+        <Page title="Trạm">
             <Container>
                 <Stack
                     direction="row"
@@ -238,14 +213,14 @@ export default function KitchenList() {
                     <Typography variant="h4" gutterBottom>
                         {/* User */}
                     </Typography>
-                    <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/admin/newkitchen"
-
-                    >
-                        Thêm bếp
-                    </ColorButton>
+                    {decoded.role === "admin" && (
+                        <ButtonCustomize
+                            variant="contained"
+                            component={RouterLink}
+                            to="/dashboard/admin/newstation"
+                            nameButton="Thêm"
+                        />
+                    )}
                 </Stack>
 
                 <Card>
@@ -256,34 +231,29 @@ export default function KitchenList() {
                     />
 
                     <Scrollbar>
-                        <TableContainer sx={{ minWidth: 800 }}>
+                        <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
                                 <UserListHead
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={kitchen.length}
+                                    rowCount={station.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {filteredKitchen
+                                    {filteredStations
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
                                                 id,
+                                                profile,
+                                                avatar,
                                                 fullName,
-                                                address,
-                                                phone,
-                                                ability,
                                                 email,
-                                                openTime,
-                                                closeTime,
+                                                phone,
                                                 status,
-                                                createdAt,
-                                                updatedAt,
-
                                             } = row;
                                             const isItemSelected = selected.indexOf(fullName) !== -1;
 
@@ -297,57 +267,109 @@ export default function KitchenList() {
                                                     aria-checked={isItemSelected}
                                                 >
                                                     <TableCell padding="checkbox">
-                                                        <Checkbox
+                                                        {/* <Checkbox
                                                             checked={isItemSelected}
                                                             onChange={(event) => handleClick(event, fullName)}
-                                                        />
+                                                        /> */}
                                                     </TableCell>
 
-                                                    <TableCell align="left">{row.account.profile.fullName}</TableCell>
-                                                    <TableCell align="left">{address}</TableCell>
 
-                                                    <TableCell align="left">{row.account.phone}</TableCell>
-                                                    <TableCell align="left">{ability}</TableCell>
-                                                    <TableCell align="left">{row.account.profile.email}</TableCell>
+
+                                                    {/* <TableCell align="left">{id}</TableCell> */}
+                                                    <TableCell align="left">{row.profile.fullName}</TableCell>
+
+
+                                                    {/* <TableCell component="th" scope="row" padding="none">
+                                                        <Stack
+                                                            direction="row"
+                                                            alignItems="center"
+                                                            spacing={2}
+                                                        >
+                                                            <Avatar alt={fullName} src={avatar} />
+                                                            <Typography variant="subtitle2" noWrap>
+                                                                {fullName}
+                                                            </Typography>
+                                                        </Stack>
+                                                    </TableCell> */}
+
+                                                    <TableCell align="left">{row.profile.email}</TableCell>
+                                                    <TableCell align="left">{phone}</TableCell>
 
                                                     <TableCell align="left">
                                                         <Label
                                                             variant="ghost"
                                                             color={
-                                                                (row.account.status === "inActive" && "error") || "success"
-
+                                                                (status === "ban" && "error") || "success"
                                                             }
                                                         >
-                                                            {(row.account.status)}
+                                                            {status}
                                                         </Label>
                                                     </TableCell>
 
-                                                    <TableCell align="left">
-                                                        <Button1
-                                                            variant="outlined"
-                                                            onClick={() => { handleDelete(id, fullName) }}
-                                                        >
-                                                            Đổi
-                                                        </Button1>
+                                                    <TableCell align="center">
+                                                        {status === "active" ? (
+                                                            <Button1
+                                                                variant="outlined"
+                                                                onClick={() => { handleDelete(id, fullName) }}
+                                                            >
+                                                                Chặn
+                                                            </Button1>
+                                                        ) : (
+                                                            <Button1
+                                                                variant="outlined"
+                                                                onClick={() => { handleDelete(id, fullName) }}
+                                                            >
+                                                                Chặn
+                                                            </Button1>
+                                                        )
+
+                                                        }
                                                     </TableCell>
 
-                                                    <TableCell align="left">
-                                                        <Button1
-                                                            variant="outlined"
-                                                            display="TableCell"
-                                                            component={RouterLink}
-                                                            to={`${location.pathname}/updatekitchen/${id}`}
-
+                                                    {/* <TableCell component="th" scope="row" padding="none">
+                                                        <Stack
+                                                            direction="row"
+                                                            alignItems="center"
+                                                            spacing={2}
                                                         >
-                                                            Cập nhập
-                                                        </Button1>
+
+                                                            <Label
+                                                                variant="ghost"
+                                                                color={
+                                                                    (status === "ban" && "error") || "success"
+                                                                }
+                                                            >
+                                                                {status}
+                                                            </Label>
+                                                            <Button1
+                                                                variant="outlined"
+                                                                onClick={() => { handleDelete(id, fullName) }}
+                                                            >
+                                                                Chặn
+                                                            </Button1>
+                                                        </Stack>
+                                                    </TableCell> */}
+
+                                                    <TableCell>
+                                                        {decoded.role === "admin" && (
+
+                                                            <Button1
+                                                                variant="outlined"
+                                                                display="TableCell"
+                                                                component={RouterLink}
+                                                                to={`${location.pathname}/updatestation/${id}`}
+
+                                                            >
+                                                                Cập nhập
+                                                            </Button1>
+                                                        )}
                                                     </TableCell>
                                                 </TableRow>
                                             );
                                         })}
                                 </TableBody>
 
-                                {isKitchenNotFound && (
+                                {isStationNotFound && (
                                     <TableBody>
                                         <TableRow>
                                             <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -363,7 +385,7 @@ export default function KitchenList() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20]}
                         component="div"
-                        count={kitchen.length}
+                        count={station.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -374,10 +396,9 @@ export default function KitchenList() {
                             return "" + from + "-" + to + " của " + count;
                         }}
                     />
-
                 </Card>
             </Container>
             {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page >
+        </Page>
     );
 }

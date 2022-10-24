@@ -47,6 +47,11 @@ import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 import UpdateFood from "./pages/FoodGroup/UpdateFood";
 import Profile from "./components/Profile/Profile";
+import UserAccount from "./pages/userList/UserAccount";
+import KitchenAccount from "./pages/userList/KitchenAccount";
+import ShipperAccount from "./pages/userList/ShipperAccount";
+import ManagerAccount from "./pages/userList/ManagerAccount";
+import AdminAccount from "./pages/userList/AdminAccount";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -102,6 +107,14 @@ export default function Router() {
         { path: "app", element: <Page404 /> },
         { path: "users", element: <ProductList /> },
 
+        { path: "userAccount", element: <UserAccount /> },
+        { path: "adminAccount", element: <AdminAccount /> },
+        { path: "managerAccount", element: <ManagerAccount /> },
+        { path: "shipperAccount", element: <ShipperAccount /> },
+        { path: "kitchenAccount", element: <KitchenAccount /> },
+
+
+
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },
         // { path: "package/:id", element: <EditPackage /> },
@@ -114,12 +127,12 @@ export default function Router() {
         //admin quản lí Trạm - CURD
         { path: "station", element: <StationList /> },
         { path: "newstation", element: <NewStation /> },
-        { path: "updatestation", element: <UpdateStaion /> },
+        { path: "station/updatestation/:id", element: <UpdateStaion /> },
 
         //admin quản lí Kitchen - CURD
         { path: "kitchen", element: <KitchenList /> },
         { path: "newkitchen", element: <NewKitchen /> },
-        { path: "updatekitchen", element: <UpdateKitchen /> },
+        { path: "kitchen/updatekitchen/:id", element: <UpdateKitchen /> },
 
         //MANAGER quản lí đơn hàng - VIEW theo ERD
         { path: "adminorder", element: <AdminOrderList /> },

@@ -35,13 +35,14 @@ import NewUserPopup from "../../components/PopUp/NewUserPopup";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "", lable: "", alignRight: false },
+
+  { id: " ", label: " ", alignRight: false },
   { id: "name", label: "Name", alignRight: false },
   { id: "company", label: "Company", alignRight: false },
   { id: "role", label: "Role", alignRight: false },
   { id: "isVerified", label: "Verified", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
-  { id: "" },
+  { id: " " },
 ];
 // ----------------------------------------------------------------------
 
@@ -235,7 +236,9 @@ export default function UserList() {
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, name)}
                             /> */}
+
                           </TableCell>
+
                           <TableCell component="th" scope="row" padding="none">
                             <Stack
                               direction="row"
@@ -248,6 +251,7 @@ export default function UserList() {
                               </Typography>
                             </Stack>
                           </TableCell>
+
                           <TableCell align="left">{company}</TableCell>
                           <TableCell align="left">{role}</TableCell>
                           <TableCell align="left">
@@ -260,7 +264,9 @@ export default function UserList() {
                                 (status === "banned" && "error") || "success"
                               }
                             >
+
                               {status}
+
                             </Label>
                           </TableCell>
 

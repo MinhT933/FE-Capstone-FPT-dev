@@ -55,6 +55,7 @@ export default function EditFood() {
       await dispatch(callAPIgetListCategory());
     };
     getlistCateFood();
+
     API("GET", URL_API + `/foods/${id}`)
       .then((res) => {
         formik.setFieldValue("name", res.data.result.name);
@@ -66,6 +67,7 @@ export default function EditFood() {
       .catch((error) => {
         console.log(error);
       });
+
   }, []);
 
   const categoriesFood = useSelector((state) => {
@@ -115,7 +117,7 @@ export default function EditFood() {
         });
         navigate("/dashboard/admin/food");
       } catch (err) {
-        CustomizedToast({ message: "Cập nhập thất bại rồi ", type: "ERROR" });
+        CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
       }
     },
   });

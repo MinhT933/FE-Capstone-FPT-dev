@@ -76,6 +76,45 @@ const navConfigAdmin = [
     icon: getIcon("eva:people-fill"),
   },
 
+
+  {
+    title: "Người Dùng",
+    icon: getIcon("bxs:user-detail"),
+    children: [
+
+      {
+        title: "Khách hàng",
+        path: "/dashboard/admin/userAccount",
+        icon: getIcon("eva:people-fill"),
+      },
+
+      {
+        title: "Tài xế",
+        path: "/dashboard/admin/shipperAccount",
+        icon: getIcon("ri:motorbike-fill"),
+      },
+
+      {
+        title: "Bếp",
+        path: "/dashboard/admin/kitchenAccount",
+        icon: getIcon("mdi:chef-hat"),
+      },
+      //admin
+      {
+        title: "Quản trị",
+        path: "/dashboard/admin/adminAccount",
+        icon: getIcon("ic:round-manage-accounts"),
+      },
+
+      //manager
+      {
+        title: "Quản lí",
+        path: "/dashboard/admin/managerAccount",
+        icon: getIcon("wpf:administrator"),
+      },
+    ],
+  },
+
   {
     title: "Người giao hàng",
     path: "/dashboard/admin/adminshipper",
