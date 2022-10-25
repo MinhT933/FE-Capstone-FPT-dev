@@ -94,6 +94,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           display: "flex",
           flexDirection: "column",
         },
+        backgroundColor: "white",
       }}
     >
       <Box
@@ -159,7 +160,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               width: 200,
               position: "absolute",
               top: -90,
-              // backgroundColor: "white",
+              backgroundColor: "white",
             }}
           />
         </Stack>

@@ -23,7 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const WidthLogin = styled("div")(({ theme }) => ({
   width: "40%",
-  // height: "auto",
+  backgroundColor: theme.palette.grey,
 }));
 
 const SignInOutContainer = () => {
@@ -35,7 +35,7 @@ const SignInOutContainer = () => {
   //  const paperStyle = { width: '20%', float: 'right' }
   // fixed bug
   return (
-    <div style={{ width: "100%", backgroundColor: "white" }}>
+    <div style={{ width: "100%" }}>
       <Grid container spacing={1} sx={{ display: "flex" }}>
         <Grid item xs={8} sx={{ display: "flex", overflowX: "auto" }}>
           <Paper sx={{ height: "100%", width: "70%" }}>
@@ -57,7 +57,6 @@ const SignInOutContainer = () => {
         <Grid item xs={2}>
           <WidthLogin>
             <div className="format-login">
-              {/* <TabsPacket /> */}
               <Login />
             </div>
           </WidthLogin>

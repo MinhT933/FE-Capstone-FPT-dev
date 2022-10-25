@@ -64,10 +64,6 @@ const Login = () => {
 
   const [age, setAge] = React.useState("");
 
-  const handleChangeSelect = (event) => {
-    setAge(event.target.value);
-  };
-
   const handlePassVisibilty = () => {
     setValues({
       ...formik.values.password,
@@ -188,13 +184,6 @@ const Login = () => {
                         }}
                         onClick={preventDefault}
                       >
-                        {/* <Link
-                          to="/findaccount"
-                          underline="hover"
-                          style={{ marginBlock: "7%" }}
-                        >
-                          {"Quên mật khẩu?"}
-                        </Link> */}
                       </Box>
                     </Grid>
                     <div></div>
