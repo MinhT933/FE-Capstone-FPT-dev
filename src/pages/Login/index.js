@@ -22,9 +22,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const WidthLogin = styled("div")(({ theme }) => ({
-  width: "5000 px",
-  marginLeft: 20,
-  height: "90%",
+  width: "40%",
+  // height: "auto",
 }));
 
 const SignInOutContainer = () => {
@@ -36,29 +35,7 @@ const SignInOutContainer = () => {
   //  const paperStyle = { width: '20%', float: 'right' }
   // fixed bug
   return (
-    <div style={{ width: "100%" }}>
-      {/* <Box sx={{ flexGrow: 2}}> */}
-      {/* <Box
-                sx={{ display: "flex", flexWrap: "wrap", "& > :not(style)": { m: 1, width: '50%' }, }}> */}
-      {/* <Grid container spacing={3}>
-                    <Grid item xs={15}>
-                        <Item >
-                            <img style={{ marginTop: "20%", marginLeft: "25%" }}
-                                src="/static/shipper-1-1.png"
-                                height={300}
-                                width={300}
-                            />
-                            <h1 style={{ marginTop: "4%", marginLeft: "23%" }} >Meal Subscription Plan</h1>
-
-                        </Item>
-                    </Grid>
-                    <Grid item xs>
-                        <Item>xs</Item>
-                    </Grid>
-                </Grid>
-            </Box> */}
-
-      {/* <Grid container spacing={3}> */}
+    <div style={{ width: "100%", backgroundColor: "white" }}>
       <Grid container spacing={1} sx={{ display: "flex" }}>
         <Grid item xs={8} sx={{ display: "flex", overflowX: "auto" }}>
           <Paper sx={{ height: "100%", width: "70%" }}>
@@ -70,7 +47,7 @@ const SignInOutContainer = () => {
                 width={400}
                 alt=""
               />
-              <h1 style={{ marginTop: "2%", marginLeft: "28%" }}>
+              <h1 style={{ marginTop: "2%", marginLeft: "33%" }}>
                 Meal Subscription Plan
               </h1>
             </Box>
@@ -80,20 +57,12 @@ const SignInOutContainer = () => {
         <Grid item xs={2}>
           <WidthLogin>
             <div className="format-login">
-              {/* <Box style={{ marginBottom: "100%", }}> */}
-              {/* <Login handleChange={handleChange} /> */}
-              <TabsPacket />
-
-              {/* </Box> */}
+              {/* <TabsPacket /> */}
+              <Login />
             </div>
           </WidthLogin>
-          {/* <Box style={{ marginBottom: "25%", }}>
-                        <Login handleChange={handleChange} />
-                    </Box> */}
         </Grid>
       </Grid>
-
-      {/* </Grid> */}
     </div>
   );
 };
