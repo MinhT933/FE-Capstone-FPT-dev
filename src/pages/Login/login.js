@@ -13,18 +13,19 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 // import Link from "@mui/material/Link";
-import { Link } from "react-router-dom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import React from "react";
 import * as yup from "yup";
-import { URL_API } from "../../Axios/URL_API/URL";
-import API from "../../Axios/API/API";
 import { useFormik } from "formik";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { LoginAthenAdmin } from "./../../redux/action/acction";
+import { LoginAthen, LoginAthenAdmin } from "./../../redux/action/acction";
+
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 /////
 
 const schema = yup.object().shape({
@@ -51,7 +52,7 @@ const Login = () => {
         phone: formik.values.phone,
         password: formik.values.password,
       };
-      dispatch(LoginAthenAdmin(adminData, navigate));
+      dispatch(LoginAthen(adminData, navigate));
     },
   });
 
@@ -60,6 +61,12 @@ const Login = () => {
     password: "",
     showPass: false,
   });
+
+  const [age, setAge] = React.useState("");
+
+  const handleChangeSelect = (event) => {
+    setAge(event.target.value);
+  };
 
   const handlePassVisibilty = () => {
     setValues({
@@ -181,13 +188,13 @@ const Login = () => {
                         }}
                         onClick={preventDefault}
                       >
-                        <Link
+                        {/* <Link
                           to="/findaccount"
                           underline="hover"
                           style={{ marginBlock: "7%" }}
                         >
                           {"Quên mật khẩu?"}
-                        </Link>
+                        </Link> */}
                       </Box>
                     </Grid>
                     <div></div>
@@ -197,6 +204,7 @@ const Login = () => {
                       type="submit"
                       variant="contained"
                       sx={{ padding: "8%" }}
+                      width="20rem"
                       nameButton="Đăng nhập"
                     />
                   </Grid>

@@ -9,11 +9,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import NewPackage from "../../PackageFood/newPackage";
 
-
 import { styled } from "@mui/styles";
 import Login from "../login";
 import LoginManager from "../LoginManager";
 import Loginkichen from "../Loginkichen";
+import { Paper } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -26,7 +26,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 12 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -78,8 +78,13 @@ export default function TabsPacket() {
   });
 
   return (
-    <Box sx={{ bgcolor: "background.paper", width: "115%" }}>
-      <AppBar position="static" sx={{ bgcolor: "#ffff" }}>
+    <Paper
+      sx={{
+        bgcolor: "background.paper",
+        width: "41.5rem",
+      }}
+    >
+      <AppBar position="static" sx={{ bgcolor: "#ffff", width: "41.75rem" }}>
         <StyledTabs
           value={value}
           onChange={handleChange}
@@ -95,9 +100,10 @@ export default function TabsPacket() {
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
         onChangeIndex={handleChangeIndex}
+        sx={{ width: "40rem", paddingRight: "20rem" }}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <Box sx={{ marginLeft: "5%" }}>
+          <Box sx={{ width: "30rem" }}>
             <Login handleChange={handleChange} />
           </Box>
         </TabPanel>
@@ -112,6 +118,6 @@ export default function TabsPacket() {
           </Box>
         </TabPanel>
       </SwipeableViews>
-    </Box>
+    </Paper>
   );
 }

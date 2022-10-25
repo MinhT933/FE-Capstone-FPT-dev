@@ -9,6 +9,7 @@ import * as PathAction from "./../PathAction";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import jwt_decode from "jwt-decode";
 
 // hàm này được gọi callAPIgetFoodbyGroupFoodId hàm khởi tạo để dùng chung nè
 
@@ -106,7 +107,6 @@ export const callAPIgetListCategory = () => {
 };
 
 export const callAPIgetListStation = (token) => {
-
   return async (dispatch) => {
     try {
       const res = await API("GET", URL_API + "/stations", null, token);
@@ -233,7 +233,7 @@ export const callAPIgetTimeFramebyID = (id) => {
 export const LoginAthenAdmin = (user, navigate) => {
   return async (dispatch) => {
     try {
-      const res = await API("POST", URL_API + "/auths/login/admin", user);
+      const res = await API("POST", URL_API + `/auths/login/admin`, user);
       localStorage.setItem("token", res.data.result.access_token);
       dispatch(
         createAction({
@@ -242,6 +242,34 @@ export const LoginAthenAdmin = (user, navigate) => {
         })
       );
       navigate("/dashboard/admin");
+    } catch (error) {
+      CustomizedToast({
+        message: "Tên đăng nhập hoặc mật khẩu sai",
+        type: "ERROR",
+      });
+    }
+  };
+};
+
+export const LoginAthen = (user, navigate) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("POST", URL_API + `/auths/login`, user);
+      localStorage.setItem("token", res.data.result.access_token);
+      const detoken = jwt_decode(res.data.result.access_token);
+      dispatch(
+        createAction({
+          type: PathAction.LOGIN_USER,
+          payload: res.data.result,
+        })
+      );
+      if (detoken.role === "admin") {
+        navigate("/dashboard/admin/package");
+      } else if (detoken.role === "manager") {
+        navigate("/dashboard/manager/food");
+      } else if (detoken.role === "kitchen") {
+        navigate("/dashboard/kitchen/kitchenorder");
+      }
     } catch (error) {
       CustomizedToast({
         message: "Tên đăng nhập hoặc mật khẩu sai",
@@ -353,7 +381,6 @@ export const callAPIAdminCreateShipper = (token) => {
   };
 };
 
-
 export const callAPIgetListKitchen = () => {
   return async (dispatch) => {
     try {
@@ -420,12 +447,15 @@ export const callAPIgetProfileKitchen = () => {
   };
 };
 
-
 export const callAPIgetAccountCustomer = (token) => {
-
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/accounts?role=customer", null, token);
+      const res = await API(
+        "GET",
+        URL_API + "/accounts?role=customer",
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_ACCOUNT_CUSTOMER,
@@ -439,10 +469,14 @@ export const callAPIgetAccountCustomer = (token) => {
 };
 
 export const callAPIgetAccountAdmin = (token) => {
-
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/accounts?role=admin", null, token);
+      const res = await API(
+        "GET",
+        URL_API + "/accounts?role=admin",
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_ACCOUNT_ADMIN,
@@ -455,12 +489,15 @@ export const callAPIgetAccountAdmin = (token) => {
   };
 };
 
-
 export const callAPIgetAccountManager = (token) => {
-
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/accounts?role=manager", null, token);
+      const res = await API(
+        "GET",
+        URL_API + "/accounts?role=manager",
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_ACCOUNT_MANAGER,
@@ -473,12 +510,15 @@ export const callAPIgetAccountManager = (token) => {
   };
 };
 
-
 export const callAPIgetAccountShipper = (token) => {
-
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/accounts?role=shipper", null, token);
+      const res = await API(
+        "GET",
+        URL_API + "/accounts?role=shipper",
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_ACCOUNT_SHIPPER,
@@ -491,12 +531,15 @@ export const callAPIgetAccountShipper = (token) => {
   };
 };
 
-
 export const callAPIgetAccountKitchen = (token) => {
-
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/accounts?role=kitchen", null, token);
+      const res = await API(
+        "GET",
+        URL_API + "/accounts?role=kitchen",
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_ACCOUNT_KITCHEN,
@@ -508,19 +551,3 @@ export const callAPIgetAccountKitchen = (token) => {
     }
   };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

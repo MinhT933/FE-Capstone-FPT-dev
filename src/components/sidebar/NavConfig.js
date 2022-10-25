@@ -142,27 +142,27 @@ const navConfigAdmin = [
   //   icon: getIcon("carbon:delivery"),
   // },
   //=========================================================
-  {
-    title: "Xem đánh giá bếp",
-    path: "/dashboard/admin/adminviewfeedback",
-    icon: getIcon("teenyicons:star-circle-outline"),
-  },
+  // {
+  //   title: "Xem đánh giá bếp",
+  //   path: "/dashboard/admin/adminviewfeedback",
+  //   icon: getIcon("teenyicons:star-circle-outline"),
+  // },
 
   //===================================
 
   // XÓA SAU
 
-  {
-    title: "Bếp chuẩn bị món ăn",
-    path: "/dashboard/kitchen/kitchenorder",
-    icon: getIcon("ic:outline-restaurant-menu"),
-  },
+  // {
+  //   title: "Bếp chuẩn bị món ăn",
+  //   path: "/dashboard/kitchen/kitchenorder",
+  //   icon: getIcon("ic:outline-restaurant-menu"),
+  // },
 
-  {
-    title: "Bếp quản lí đơn hàng",
-    path: "/dashboard/kitchen/kitcheviewnorder",
-    icon: getIcon("eos-icons:subscription-management"),
-  },
+  // {
+  //   title: "Bếp quản lí đơn hàng",
+  //   path: "/dashboard/kitchen/kitcheviewnorder",
+  //   icon: getIcon("eos-icons:subscription-management"),
+  // },
 
   // {
   //   title: "Bếp quản lí Người giao hàng",

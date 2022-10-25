@@ -34,16 +34,8 @@ import UpdateShipper from "./pages/AdminShipper/UpdateShipper";
 import NewPackage from "./pages/PackageFood/newPackage";
 import EditPackage from "./pages/PackageFood/EditPackage";
 import KitchenViewOrderList from "./pages/KitchenViewOrder/KitchenViewOrderList";
-import { useEffect } from "react";
-import { useState } from "react";
 import jwt_decode from "jwt-decode";
-
 import NewTimeFrame from "./pages/PackageFood/NewTimeFrame";
-
-// import NewPackageItem from "./pages/PackageFood/NewPacketItem";
-
-import Timeframe from "./pages/PackageFood/timeframe/Timeframe";
-// import NewPackageItem from "./pages/PackageFood/NewPacketItem";
 import AdminViewFeedBackList from "./pages/AdminViewFeedBack/AdminViewFeedBack";
 import UpdateFood from "./pages/FoodGroup/UpdateFood";
 import Profile from "./components/Profile/Profile";
@@ -78,9 +70,10 @@ export default function Router() {
       children: [{ path: "/", element: <SignInOutContainer /> }],
     },
     {
-      path: "/login",
+      path: "/auths/login/admin",
       element: <SignInOutContainer />,
     },
+
     {
       path: "/findaccount",
       element: <FindAccount />,
@@ -112,8 +105,6 @@ export default function Router() {
         { path: "managerAccount", element: <ManagerAccount /> },
         { path: "shipperAccount", element: <ShipperAccount /> },
         { path: "kitchenAccount", element: <KitchenAccount /> },
-
-
 
         { path: "404", element: <Page404 /> },
         { path: "package", element: <PackageFood /> },

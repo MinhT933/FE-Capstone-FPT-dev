@@ -140,17 +140,27 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ flexGrow: 1, backgroundColor: "white" }} />
 
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      <Box sx={{ px: 2.5, pb: 4, paddingTop: 12, backgroundColor: "white" }}>
         <Stack
           alignItems="center"
           spacing={3}
-          sx={{ pt: 5, borderRadius: 2, position: "relative" }}
+          sx={{
+            pt: 5,
+            borderRadius: 2,
+            position: "relative",
+            // backgroundColor: "white",
+          }}
         >
           <Box
             component="img"
             src="/static/logo7.png"
             alt="dâdad"
-            sx={{ width: 200, position: "absolute", top: -90 }}
+            sx={{
+              width: 200,
+              position: "absolute",
+              top: -90,
+              // backgroundColor: "white",
+            }}
           />
         </Stack>
       </Box>
