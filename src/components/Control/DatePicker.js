@@ -41,11 +41,11 @@ export default function DatePicker(props) {
           // inputFormat="YYYY-MM-DD"
           //hihi
           // inputFormat="DD-MM-YYYY"
+          disablePast={false}
           inputFormat={inputFormat}
-
           value={value}
           onChange={onChange}
-          minDate={new Date()}
+          // minDate={new Date()}
           renderInput={(params) => <TextField {...params} />}
           sx={{
             ".css-4bvrx5-MuiButtonBase-root-MuiPickersDay-root.Mui-selected": {

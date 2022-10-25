@@ -271,6 +271,7 @@ export default function Router() {
             // </ProtectedRouteAuthen>
           ),
         },
+        { path: "account/my", element: <Profile /> },
 
         //kitchen xem thông tin bếp
         {

@@ -142,7 +142,7 @@ export const callAPIgetGroupFood = (token) => {
 export const callAPIProfile = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/profiles/my", null, token);
+      const res = await API("GET", URL_API + "/accounts/me", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_PROFILE,

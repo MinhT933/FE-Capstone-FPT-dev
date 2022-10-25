@@ -682,6 +682,7 @@ export default function EditPackage() {
                     marginTop: "10%",
                     // boxShadow: 8,
                     marginLeft: "11%",
+                    
                     // objectFit: "cover",
                   }}
                 >

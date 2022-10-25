@@ -57,13 +57,9 @@ export default function NewPackage() {
 
   const [value, setValue] = useState();
 
-  const [valueStarTime, setValueStarTime] = React.useState(
-    dayjs("2022-10-18T21:11:5")
-  );
+  const [valueStarTime, setValueStarTime] = React.useState(new Date());
 
-  const [valueEndTime, setValueEndtime] = React.useState(
-    dayjs("2022-10-18T21:11:5")
-  );
+  const [valueEndTime, setValueEndtime] = React.useState(new Date());
 
   const [indexFitel, setIndexFitel] = useState("");
 
@@ -297,6 +293,7 @@ export default function NewPackage() {
                 sx={{
                   marginTop: "2rem",
                   marginLeft: "55%",
+                  boxShadow: "8%",
                 }}
               >
                 <Controls.Select
@@ -724,16 +721,18 @@ export default function NewPackage() {
                   </Box>
                 </Box>
               </Grid>
+              <Box sx={{ marginLeft: "8rem" }}>
+                {binding().map((item) => {
+                  return (
+                    <>
+                      {item.childArray.map((a) => {
+                        return a;
+                      })}
+                    </>
+                  );
+                })}
+              </Box>
 
-              {binding().map((item) => {
-                return (
-                  <>
-                    {item.childArray.map((a) => {
-                      return a;
-                    })}
-                  </>
-                );
-              })}
               <Box>
                 <Stack width="200px" mt={"2rem"} ml={"24rem"} mb={"1rem"}>
                   <ButtonCustomize
@@ -774,20 +773,20 @@ export default function NewPackage() {
                 {/* css button input img */}
                 <Box
                   sx={{
-                    height: 165,
-                    width: 165,
-                    maxHeight: { xs: 233, md: 167 },
-                    maxWidth: { xs: 350, md: 250 },
+                    //   height: 265,
+                    //   width: 265,
+                    //   maxHeight: { xs: 233, md: 167 },
+                    //   maxWidth: { xs: 350, md: 250 },
                     marginTop: "10%",
-                    // boxShadow: 8,
-                    marginLeft: "11%",
+                    marginLeft: "15%",
+                    objectFit: "cover",
                   }}
                 >
                   {/* hiển thị hình lên  */}
                   {input != null ? (
                     <img src={input} alt="" />
                   ) : (
-                    <img src={formik.values.image} alt="hihi" />
+                    <img src={formik.values.image} alt="" />
                   )}
                 </Box>
               </label>
@@ -799,4 +798,3 @@ export default function NewPackage() {
     </Paper>
   );
 }
-  
