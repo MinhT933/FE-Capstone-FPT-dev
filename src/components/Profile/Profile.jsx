@@ -69,6 +69,22 @@ export default function Profile() {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const decoded = jwt_decode(token);
+
+  const handleJob = () => {
+    let text = "";
+    let arrarText = [];
+    if (decoded.role === "admin") {
+      text = "NHÀ SÁNG LẬP";
+      arrarText.push(text);
+    } else if (decoded.role === "manager") {
+      text = "QUẢN LÍ";
+      arrarText.push(text);
+    } else if (decoded.role === "kitchen") {
+      text = "QUẢN LÍ BẾP";
+      arrarText.push(text);
+    }
+    return arrarText;
+  };
   const Input = styled("input")({
     display: "none",
   });
@@ -115,22 +131,30 @@ export default function Profile() {
     onSubmit: async (values) => {
       const b = new Date(valueStarTime).toLocaleDateString().split("/");
       formData.append("avatar", formik.values.image);
-      formData.append("fullName", formik.values.fullName);
-      formData.append("email", formik.values.email);
-      formData.append("DOB", `${b[2]}-${b[1]}-${b[0]}`);
-      try {
-        const res = await API("PUT", URL_API + "/profiles", formData, token);
 
+      const data = {
+        fullName: formik.values.fullName,
+        email: formik.values.email,
+        DOB: `${b[2]}-${b[1]}-${b[0]}`,
+      };
+      try {
+        const res = await API("PUT", URL_API + "/profiles", data, token).then(
+          (res) => {
+            dispatch(callAPIProfile(token));
+          }
+        );
+        const resq = API(
+          "PUT",
+          URL_API + "/profiles/avatar",
+          formData,
+          token
+        ).then((resq) => {
+          dispatch(callAPIProfile(token));
+        });
         CustomizedToast({
           message: `chỉnh sửa thành công`,
           type: "SUCCESS",
         });
-        // window.location.reload(true);
-
-        // navigate(`/dashboard/${decoded.role}/account/my`);
-
-        // const token = localStorage.getItem("token");
-        dispatch(await callAPIProfile(token));
       } catch (error) {
         CustomizedToast({
           message: `Thất bại`,
@@ -139,12 +163,23 @@ export default function Profile() {
       }
     },
   });
-  // React.useEffect(() => {
-  //   const callAPI = async () => {
-  //     await dispatch(callAPIProfile(token));
-  //   };
-  //   callAPI();
-  // }, [dispatch]);
+
+  // const handleSaveImage = () => {
+  //   try {
+  //     // const
+
+  //     CustomizedToast({
+  //       message: `chỉnh sửa thành công`,
+  //       type: "SUCCESS",
+  //     });
+  //     dispatch(callAPIProfile(token));
+  //   } catch (error) {
+  //     CustomizedToast({
+  //       message: `Thất bại`,
+  //       type: "ERROR",
+  //     });
+  //   }
+  // };
   const classes = useStyles();
   return (
     <Paper>
@@ -171,7 +206,7 @@ export default function Profile() {
 
                 <CardBody profile>
                   <h6 className={classes.cardCategory}>
-                    {`${profiles.role?.name}`} /NHÀ SÁNG LẬP
+                    {`${profiles.role?.name}`} /{handleJob()}
                   </h6>
                   {/* <h4
                   className={classes.cardTitle}
@@ -195,6 +230,7 @@ export default function Profile() {
                       type="file"
                       onChange={_treat}
                     />
+
                     <ButtonCustomize
                       variant="contained"
                       component="span"
@@ -300,32 +336,10 @@ export default function Profile() {
                           </FormHelperText>
                         )}
                       </Grid>
-                      {/* <Grid item xs={12}>
-                      <Controls.Input
-                        variant="outlined"
-                        name="price"
-                        label="Mật khẩu"
-                        width="24rem"
-                        value={formik.values.price}
-                        onChange={(e) => {
-                          formik.handleChange(e);
-                        }}
-                        onBlur={formik.handleBlur}
-                      />
-                      {formik.touched.name && formik.errors.name && (
-                        <FormHelperText
-                          error={false}
-                          id="standard-weight-helper-text-username-login"
-                        >
-                          {formik.errors.name}
-                        </FormHelperText>
-                      )}
-                    </Grid> */}
                       <Grid item xs={12}>
                         <Controls.DatePicker
                           label="Ngày tháng năm sinh"
                           width="28rem"
-                          errors={false}
                           inputFormat="DD-MM-YYYY"
                           value={valueStarTime}
                           onChange={(e) => {
