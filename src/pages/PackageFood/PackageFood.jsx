@@ -332,7 +332,7 @@ export default function PackageFood() {
                             </TableCell>
                           )}
                           <TableCell align="right">
-                            <UserMoreMenu id={id} />
+                            {/* <UserMoreMenu id={id} /> */}
                           </TableCell>
                         </TableRow>
                       );

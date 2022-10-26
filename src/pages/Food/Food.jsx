@@ -315,7 +315,7 @@ export default function Food() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu id={id} />
+                            {/* <UserMoreMenu id={id} /> */}
                           </TableCell>
                         </TableRow>
                       );

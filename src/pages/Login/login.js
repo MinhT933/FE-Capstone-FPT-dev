@@ -13,6 +13,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 // import Link from "@mui/material/Link";
+import { Link } from "react-router-dom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import React from "react";
 import * as yup from "yup";
@@ -63,6 +64,10 @@ const Login = () => {
   });
 
   const [age, setAge] = React.useState("");
+
+  const handleChangeSelect = (event) => {
+    setAge(event.target.value);
+  };
 
   const handlePassVisibilty = () => {
     setValues({
@@ -184,6 +189,13 @@ const Login = () => {
                         }}
                         onClick={preventDefault}
                       >
+                        <Link
+                          to="/findaccount"
+                          underline="hover"
+                          style={{ marginBlock: "7%" }}
+                        >
+                          {"Quên mật khẩu?"}
+                        </Link>
                       </Box>
                     </Grid>
                     <div></div>
