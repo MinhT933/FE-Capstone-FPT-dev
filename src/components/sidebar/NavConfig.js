@@ -70,11 +70,11 @@ const navConfigAdmin = [
     path: "/dashboard/admin/package",
     icon: getIcon("eva:shopping-bag-fill"),
   },
-  {
-    title: "Người Dùng",
-    path: "/dashboard/admin/users",
-    icon: getIcon("eva:people-fill"),
-  },
+  // {
+  //   title: "Người Dùng",
+  //   path: "/dashboard/admin/users",
+  //   icon: getIcon("eva:people-fill"),
+  // },
 
   {
     title: "Người Dùng",
@@ -129,11 +129,11 @@ const navConfigAdmin = [
     icon: getIcon("eos-icons:subscription-management"),
   },
 
-  // {
-  //   title: "Quản lí bếp",
-  //   path: "/dashboard/admin/kitchen",
-  //   icon: getIcon("fa6-solid:kitchen-set"),
-  // },
+  {
+    title: "Quản lí bếp",
+    path: "/dashboard/admin/kitchen",
+    icon: getIcon("fa6-solid:kitchen-set"),
+  },
   // // {
   //   title: "Admin quản lí Người giao hàng",
   //   path: "/dashboard/admin/adminshipper",
