@@ -152,8 +152,8 @@ export default function Profile() {
       <div>
         <form onSubmit={formik.handleSubmit}>
           <GridContainer>
-            <GridItem xs={12} sm={12} md={4}>
-              <Card profile>
+            <GridItem xs={12} sm={12} md={4} sx={{ marginTop: "4%", marginLeft: "4%" }}>
+              <Card profile >
                 <CardAvatar profile>
                   {input != null ? (
                     <img
@@ -169,7 +169,7 @@ export default function Profile() {
                   )}
                 </CardAvatar>
 
-                <CardBody profile>
+                <CardBody profile >
                   <h6 className={classes.cardCategory}>
                     {`${profiles.role?.name}`} /NHÀ SÁNG LẬP
                   </h6>
@@ -207,7 +207,7 @@ export default function Profile() {
                 </CardBody>
               </Card>
             </GridItem>
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem xs={12} sm={12} md={7} sx={{ marginTop: "4%", }}>
               <Card>
                 <CardHeader color="primary">
                   <h4 className={classes.cardTitleWhite}>

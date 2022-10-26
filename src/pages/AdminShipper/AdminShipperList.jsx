@@ -87,10 +87,11 @@ function applySortFilter(array, comparator, query) {
 
 export default function AdminShipperList() {
     //CallAPIgetListShipper=====================================
+    const token = localStorage.getItem("token");
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
-            await dispatch(callAPIgetListShipper());
+            await dispatch(callAPIgetListShipper(token));
         };
         callAPI();
     }, [dispatch]);
@@ -105,7 +106,6 @@ export default function AdminShipperList() {
         }, []);
     };
 
-    const token = localStorage.getItem("token");
     const shipper = useSelector((state) => {
         return state.userReducer.listShipper;
     });
@@ -317,21 +317,9 @@ export default function AdminShipperList() {
                                                             Cập nhật
                                                         </Button1>
                                                     </TableCell>
-
-                                                    {/* <TableCell align="right"> */}
-                                                    {/* //props */}
-                                                    {/* <KitchenMoreMenu id={id} /> */}
-                                                    {/* </TableCell> */}
-
-
                                                 </TableRow>
                                             );
                                         })}
-                                    {/* {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
-                                        </TableRow>
-                                    )} */}
                                 </TableBody>
 
                                 {isKitchenNotFound && (

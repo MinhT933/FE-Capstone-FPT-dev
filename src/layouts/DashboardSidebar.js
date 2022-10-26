@@ -109,7 +109,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         <h1>Mesup</h1>
       </Box>
       <Box sx={{ backgroundColor: "white" }}>
-        <Box sx={{ mb: 5, mx: 2.5, backgroundColor: "white" }}>
+        <Box sx={{ mb: 2, mx: 2.5, backgroundColor: "white" }}>
           <Link
             underline="none"
             component={RouterLink}
