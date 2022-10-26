@@ -38,12 +38,12 @@ const navConfigManager = [
 ];
 
 const navConfigAdmin = [
-  // {
-  //   title: "Trang Chủ",
-  //   path: "/dashboard/admin/app",
-  //   icon: getIcon("eva:pie-chart-2-fill"),
-  //   // component: Home
-  // },
+  {
+    title: "Trang Chủ",
+    path: "/dashboard/admin/app",
+    icon: getIcon("eva:pie-chart-2-fill"),
+    // component: Home
+  },
   // {
   //   title: "Sản phẩm",
   //   icon: getIcon("tabler:building-warehouse"),
@@ -70,18 +70,16 @@ const navConfigAdmin = [
     path: "/dashboard/admin/package",
     icon: getIcon("eva:shopping-bag-fill"),
   },
-  {
-    title: "Người Dùng",
-    path: "/dashboard/admin/users",
-    icon: getIcon("eva:people-fill"),
-  },
-
+  // {
+  //   title: "Người Dùng",
+  //   path: "/dashboard/admin/users",
+  //   icon: getIcon("eva:people-fill"),
+  // },
 
   {
     title: "Người Dùng",
     icon: getIcon("bxs:user-detail"),
     children: [
-
       {
         title: "Khách hàng",
         path: "/dashboard/admin/userAccount",
@@ -126,7 +124,7 @@ const navConfigAdmin = [
     icon: getIcon("carbon:location-company"),
   },
   {
-    title: "Quản lí đơn hàng",
+    title: "Đơn hàng",
     path: "/dashboard/admin/adminorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
@@ -136,7 +134,7 @@ const navConfigAdmin = [
     path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
-  // {
+  // // {
   //   title: "Admin quản lí Người giao hàng",
   //   path: "/dashboard/admin/adminshipper",
   //   icon: getIcon("carbon:delivery"),

@@ -90,7 +90,7 @@ export default function AdminShipperList() {
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
-            await dispatch(callAPIgetListShipper());
+            await dispatch(callAPIgetListShipper(token));
         };
         callAPI();
     }, [dispatch]);

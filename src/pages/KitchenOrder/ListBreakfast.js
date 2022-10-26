@@ -14,6 +14,8 @@ import {
   Container,
   Typography,
   TableContainer,
+  TabScrollButton,
+  createTheme,
   // TablePagination,
 } from "@mui/material";
 // components
@@ -34,6 +36,12 @@ import {
 import MealListToolBar from "../../sections/@dashboard/user/MealListToolBar";
 import PageHeader from "../../components/PageHeader";
 import { Grid } from "@mui/joy";
+import Scrollbar from "./../../components/hook-form/Scrollbar";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/styles";
+import SimpleBarReact from "simplebar-react";
+import { styled } from "@mui/material/styles";
+import { alpha } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
@@ -56,6 +64,27 @@ function descendingComparator(a, b, orderBy) {
   }
   return 0;
 }
+
+const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
+  maxHeight: "100%",
+  "& .simplebar-scrollbar": {
+    "&:before": {
+      backgroundColor: alpha(theme.palette.grey[600], 0.48),
+    },
+    "&.simplebar-visible:before": {
+      opacity: 1,
+    },
+  },
+  "& .simplebar-track.simplebar-vertical": {
+    width: 10,
+  },
+  "& .simplebar-track.simplebar-horizontal .simplebar-scrollbar": {
+    height: 6,
+  },
+  "& .simplebar-mask": {
+    zIndex: "inherit",
+  },
+}));
 
 function getComparator(order, orderBy) {
   return order === "desc"
@@ -141,8 +170,9 @@ export default function ListBreakfast() {
   const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
+    // <SimpleBarStyle>
     <Page title="Breakfast">
-      <Container sx={{ minWidth: 380, width: 380 }}>
+      <Container>
         <Card>
           <Paper
             direction="row"
@@ -191,7 +221,23 @@ export default function ListBreakfast() {
                         onFilterName={handleFilterByName}
                     /> */}
 
-          <TableContainer sx={{ width: 400, maxWidth: 400 }}>
+          <TableContainer
+            sx={{
+              width: 360,
+              maxWidth: 360,
+              "&::-webkit-scrollbar": {
+                width: 20,
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "orange",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "red",
+                borderRadius: 2,
+              },
+              overflowX: "auto",
+            }}
+          >
             <Table>
               <UserListHead
                 order={order}
@@ -239,5 +285,6 @@ export default function ListBreakfast() {
         </Card>
       </Container>
     </Page>
+    // </SimpleBarStyle>
   );
 }

@@ -44,6 +44,8 @@ import KitchenAccount from "./pages/userList/KitchenAccount";
 import ShipperAccount from "./pages/userList/ShipperAccount";
 import ManagerAccount from "./pages/userList/ManagerAccount";
 import AdminAccount from "./pages/userList/AdminAccount";
+import Home from './pages/home/home';
+
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -97,7 +99,7 @@ export default function Router() {
         </ProtectedRouteAuthen>
       ),
       children: [
-        { path: "app", element: <Page404 /> },
+        { path: "app", element: <Home/> },
         { path: "users", element: <ProductList /> },
 
         { path: "userAccount", element: <UserAccount /> },

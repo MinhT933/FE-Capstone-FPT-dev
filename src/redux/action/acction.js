@@ -343,10 +343,10 @@ export const refreshToken = (accessToken) => (dispatch) => {
   });
 };
 
-export const callAPIgetListShipper = () => {
+export const callAPIgetListShipper = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/shippers", null, null);
+      const res = await API("GET", URL_API + "/shippers", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_SHIPPER,
@@ -381,10 +381,10 @@ export const callAPIAdminCreateShipper = (token) => {
   };
 };
 
-export const callAPIgetListKitchen = () => {
+export const callAPIgetListKitchen = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/kitchens", null, null);
+      const res = await API("GET", URL_API + "/kitchens", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_KITCHEN,
