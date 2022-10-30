@@ -47,7 +47,10 @@ const initialState = {
   accountShipper: [],
   accountKitchen: [],
 
+  order: [],
+
   listOrder: [],
+  listOrderK: [],
   profileKitchen: [],
 
   currentUser: [],
@@ -94,6 +97,7 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listStation = payload;
       // console.log(payload);
       break;
+
     //=====================================================
     case PathAction.GET_ACCOUNT_CUSTOMER:
       state.accountCustomer = payload;
@@ -129,7 +133,7 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     //=====================================================
     case PathAction.KITCHEN_GET_LIST_ORDER:
-      state.listOrder = payload;
+      state.listOrderK = payload;
       break;
     //=====================================================
     case PathAction.ADMIN_GET_LIST_ORDER:
