@@ -39,6 +39,7 @@ import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import DetailPackage from "./DetailPackage";
 
 //Link routers
 
@@ -111,7 +112,11 @@ export default function PackageFood() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
+
   const dispatch = useDispatch();
+
+  const [valueId, setValueId] = useState();
 
   const token = localStorage.getItem("token");
   const decoded = jwt_decode(token);
@@ -181,6 +186,12 @@ export default function PackageFood() {
     filterName
   );
 
+  const handleSelect = (id) => {
+    // API('GET',URL_API + '/')
+    SetOpenPopUpDetail(true);
+    setValueId(id);
+  };
+
   const handleAcceptRequest = (id, name) => {
     API("PUT", URL_API + `/packages/confirm/${id}`, null, token).then((res) => {
       try {
@@ -198,7 +209,6 @@ export default function PackageFood() {
       }
     });
   };
-  console.log(packagefood.id);
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="package">
@@ -263,13 +273,6 @@ export default function PackageFood() {
                         image,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-                      // if (status === "active") {
-                      //   return status === "Đang bán";
-                      // } else if (status === "inactive") {
-                      //   return status === "ngưng bán";
-                      // } else if (status === "watting") {
-                      //   return status === "đang chờ";
-                      // }
                       return (
                         <TableRow
                           hover
@@ -278,6 +281,7 @@ export default function PackageFood() {
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+                          onClick={() => handleSelect(id)}
                         >
                           <TableCell>
                             <Avatar alt={name} src={image} />
@@ -367,6 +371,11 @@ export default function PackageFood() {
           />
         </Card>
       </Container>
+      <DetailPackage
+        OpenPopUpDetail={OpenPopUpDetail}
+        SetOpenPopUpDetail={SetOpenPopUpDetail}
+        id={valueId}
+      />
     </Page>
   );
 }

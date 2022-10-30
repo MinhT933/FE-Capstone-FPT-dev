@@ -51,8 +51,6 @@ const TABLE_HEAD = [
   { id: "updateday", label: "Ngày sửa", alignRight: false },
   { id: "des", label: "Mô tả", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
-  // { id: "Update", label: "Cập nhập nhóm", alignRight: false },
-  { id: "detail", label: "Chi tiết món ăn", alignRight: false },
   { id: "action", label: "Thay đổi trạng thái", alignRight: false },
   { id: "" },
 ];
@@ -93,6 +91,7 @@ function applySortFilter(array, comparator, query) {
 
 export default function ListFoodGroup() {
   const [OpenPopUp, SetOpenPopUp] = useState(false);
+  const [OpenPopUpCate, SetOpenPopUpCate] = useState(false);
   const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -229,8 +228,11 @@ export default function ListFoodGroup() {
     );
   };
   const isUserNotFound = filteredUsers.length === 0;
-  console.log(valueId);
 
+  const handleSelect = (id) => {
+    SetOpenPopUpDetail(true);
+    setValueId(id);
+  };
   return (
     <Page title="Nhóm thức ăn" sx={{ maxWith: false }}>
       <Container>
@@ -300,6 +302,7 @@ export default function ListFoodGroup() {
                           aria-checked={isItemSelected}
                           displaySelectAll={false}
                           adjustForCheckbox={false}
+                          onClick={() => handleSelect(id)}
                         >
                           <TableCell padding="checkbox"></TableCell>
                           <TableCell>
@@ -326,7 +329,7 @@ export default function ListFoodGroup() {
                               {status}
                             </Label>
                           </TableCell>
-                          <TableCell>
+                          {/* <TableCell>
                             <ColorButton
                               sx={{ width: "100%" }}
                               variant="contained"
@@ -340,7 +343,7 @@ export default function ListFoodGroup() {
                             >
                               Chi tiết
                             </ColorButton>
-                          </TableCell>
+                          </TableCell> */}
 
                           {/* {decoded.role === "manage" && ( */}
                           <TableCell align="center">

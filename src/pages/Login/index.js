@@ -6,12 +6,10 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import "./format.css";
 
-import { width } from "@mui/system";
 import Login from "./login";
 
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-import TabsPacket from "./Tabs/ColorTabs";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#fff",

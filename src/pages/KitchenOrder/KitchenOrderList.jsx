@@ -12,7 +12,6 @@ import {
   Paper,
   Container,
   Typography,
-
 } from "@mui/material";
 // components
 
@@ -45,8 +44,10 @@ import ListDinner from "./ListDinner";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import DatePicker from "../../components/Control/DatePicker";
 
-
 export default function KitchenOrderList() {
+  const token = localStorage.getItem("token");
+  var decoded = jwt_decode(token);
+  console.log(decoded);
   //callAPIKitchenGetListOrder========================================
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -55,10 +56,6 @@ export default function KitchenOrderList() {
     };
     callAPI();
   }, [dispatch]);
-
-  const token = localStorage.getItem("token");
-  var decoded = jwt_decode(token);
-  console.log(decoded);
 
   const handleDelete = (id) => {
     API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
@@ -143,7 +140,7 @@ export default function KitchenOrderList() {
           </LocalizationProvider>
         </Stack>
 
-        <Grid container spacing={1} >
+        <Grid container spacing={1}>
           <Grid>
             <ListBreakfast />
           </Grid>

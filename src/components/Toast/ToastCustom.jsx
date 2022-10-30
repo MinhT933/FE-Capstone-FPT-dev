@@ -12,7 +12,7 @@ export const CustomizedToast = ({ message, type }) => {
     case "SUCCESS":
       toast.success(`${message}`, {
         position: "bottom-center",
-        autoClose: 2000,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -23,7 +23,7 @@ export const CustomizedToast = ({ message, type }) => {
     case "ERROR":
       toast.error(` ${message}`, {
         position: "bottom-center",
-        autoClose: 2000,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -34,7 +34,7 @@ export const CustomizedToast = ({ message, type }) => {
     case "LOADING":
       toast.loading(` ${message}`, {
         position: "bottom-center",
-        autoClose: 2000,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

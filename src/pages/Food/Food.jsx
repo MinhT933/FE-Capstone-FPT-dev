@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 // material
 import {
   Card,
@@ -39,6 +39,7 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
+import { Button } from "@mui/joy";
 
 // ----------------------------------------------------------------------
 
@@ -122,6 +123,7 @@ export default function Food() {
 
   const token = localStorage.getItem("token");
   var decoded = jwt_decode(token);
+  const location = useLocation();
 
   React.useEffect(() => {
     const callAPI = async () => {
@@ -316,6 +318,13 @@ export default function Food() {
 
                           <TableCell align="right">
                             {/* <UserMoreMenu id={id} /> */}
+                          </TableCell>
+                          <TableCell align="right">
+                            <ButtonCustomize
+                              nameButton="Chi Tiết"
+                              component={RouterLink}
+                              to={`${location.pathname}/${id}`}
+                            />
                           </TableCell>
                         </TableRow>
                       );

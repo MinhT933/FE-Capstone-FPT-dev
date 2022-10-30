@@ -49,14 +49,14 @@ export default function EditFood() {
   const navigate = useNavigate();
 
   const formData = new FormData();
-
+  const token = localStorage.getItem("token");
   React.useEffect(() => {
     const getlistCateFood = async () => {
-      await dispatch(callAPIgetListCategory());
+      await dispatch(callAPIgetListCategory(token));
     };
     getlistCateFood();
 
-    API("GET", URL_API + `/foods/${id}`)
+    API("GET", URL_API + `/foods/${id}`, null, token)
       .then((res) => {
         formik.setFieldValue("name", res.data.result.name);
         formik.setFieldValue("image", res.data.result.image);
@@ -67,7 +67,6 @@ export default function EditFood() {
       .catch((error) => {
         console.log(error);
       });
-
   }, []);
 
   const categoriesFood = useSelector((state) => {

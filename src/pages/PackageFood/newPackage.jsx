@@ -31,6 +31,7 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import NewTimeFrame from "./NewTimeFrame";
 import DateTime from "./../../components/Control/DateTime";
+import NewCate from "./newCate";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -48,6 +49,7 @@ const schema = yup.object().shape({
 
 export default function NewPackage() {
   const [OpenPopUp, SetOpenPopUp] = useState(false);
+  const [OpenPopUpCate, SetOpenPopUpCate] = useState(false);
   //xử lí hình ảnh
   const [input, setInput] = useState([]);
 
@@ -168,11 +170,12 @@ export default function NewPackage() {
     // `0${b[2]}-${b[1]}-${b[0]}`
     onSubmit: async (values) => {
       // const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
-      const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
+      // const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
+      // const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
       // Log(a)
-      console.log(startSale);
-      // const b = new Date(valueStarTime).toLocaleDateString().split("/");
+      // console.log(startSale);
+      const b = new Date(valueStarTime).toLocaleDateString().split("/");
+      const a = new Date(valueEndTime).toLocaleDateString().split("/");
       const startDate = new Date(valueStarTime).toLocaleDateString();
       const endDate = new Date(valueEndTime).toLocaleDateString();
       formData.append("image", formik.values.image);
@@ -182,8 +185,8 @@ export default function NewPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      formData.append("endSale", endSale);
-      formData.append("startSale", startSale);
+      formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
+      formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
@@ -191,41 +194,40 @@ export default function NewPackage() {
       // console.log(endDate > startDate);
 
       try {
-        if (endDate > startDate) {
-          const res = await API("POST", URL_API + "/packages", formData, token);
-          const arrayPromise = [];
-          for (let index = 0; index < groupfood.length; index++) {
-            arrayPromise.push(
-              API(
-                "POST",
-                URL_API + "/package-item",
-                {
-                  itemCode: groupfood[index].count,
-                  packageID: res.data.result.id,
-                  timeFrameID: formik.values.timeFrameID,
-                  foodGroupID: groupfood[index].GroupID,
-                },
-                token
-              )
-            );
-          }
-          await Promise.all(arrayPromise);
-
-          CustomizedToast({
-            message: `Đã thêm món ${formik.values.name}`,
-            type: "SUCCESS",
-          });
-
-          window.location.reload(true);
-        } else if (endDate < startDate || endDate === startDate) {
-          CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
+        // if (endDate > startDate) {
+        const res = await API("POST", URL_API + "/packages", formData, token);
+        const arrayPromise = [];
+        for (let index = 0; index < groupfood.length; index++) {
+          arrayPromise.push(
+            API(
+              "POST",
+              URL_API + "/package-item",
+              {
+                itemCode: groupfood[index].count,
+                packageID: res.data.result.id,
+                timeFrameID: formik.values.timeFrameID,
+                foodGroupID: groupfood[index].GroupID,
+              },
+              token
+            )
+          );
         }
+        await Promise.all(arrayPromise);
+
+        CustomizedToast({
+          message: `Đã thêm món ${formik.values.name}`,
+          type: "SUCCESS",
+        });
+
+        window.location.reload(true);
+        // } else if (endDate < startDate || endDate === startDate) {
+        //   CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
+        // }
       } catch (error) {
         CustomizedToast({ message: "Thấp bại rồi", type: "ERROR" });
       }
     },
   });
-  console.log(formik);
 
   const [bit, setBit] = useState([]);
 
@@ -629,19 +631,41 @@ export default function NewPackage() {
               </Grid>
               {/* ///categoryID */}
               <Grid item xs={6}>
-                <Controls.Select
-                  name="categoryID"
-                  label="Chọn loại package"
-                  id="categoryID"
-                  value={formik.values.categoryID}
-                  // defaultValue=
-                  onChange={(e) => {
-                    const a = category.find((c) => c.id === e.target.value);
-                    formik.setFieldValue("categoryID", a.id);
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
                   }}
-                  onBlur={formik.handleBlur}
-                  options={getcategoryOptions()}
-                />
+                >
+                  <Box>
+                    <Controls.Select
+                      name="categoryID"
+                      label="Chọn loại package"
+                      id="categoryID"
+                      width="13rem"
+                      value={formik.values.categoryID}
+                      // defaultValue=
+                      onChange={(e) => {
+                        const a = category.find((c) => c.id === e.target.value);
+                        formik.setFieldValue("categoryID", a.id);
+                      }}
+                      onBlur={formik.handleBlur}
+                      options={getcategoryOptions()}
+                    />
+                  </Box>
+
+                  <Box
+                    sx={{ mr: "20%", height: "15%", width: "15%", mt: "3%" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        SetOpenPopUpCate(true);
+                      }}
+                    >
+                      <AddCircleOutlineIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
               </Grid>
               <Grid item xs={6}>
                 <Controls.TextArea
@@ -794,6 +818,10 @@ export default function NewPackage() {
           </Box>
         </form>
       </Box>
+      <NewCate
+        OpenPopUpCate={OpenPopUpCate}
+        SetOpenPopUpCate={SetOpenPopUpCate}
+      />
       <NewTimeFrame OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp} />
     </Paper>
   );
