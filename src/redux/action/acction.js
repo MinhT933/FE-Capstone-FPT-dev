@@ -90,10 +90,10 @@ export const callAPIGetListPackage = (token) => {
 };
 
 //----------------------------------------------------------------
-export const callAPIgetListCategory = () => {
+export const callAPIgetListCategory = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/food-categories");
+      const res = await API("GET", URL_API + "/food-categories",null,token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_FOODCATEGORY,

@@ -44,8 +44,7 @@ import KitchenAccount from "./pages/userList/KitchenAccount";
 import ShipperAccount from "./pages/userList/ShipperAccount";
 import ManagerAccount from "./pages/userList/ManagerAccount";
 import AdminAccount from "./pages/userList/AdminAccount";
-import Home from './pages/home/home';
-
+import Home from "./pages/home/home";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -99,7 +98,7 @@ export default function Router() {
         </ProtectedRouteAuthen>
       ),
       children: [
-        { path: "app", element: <Home/> },
+        { path: "app", element: <Home /> },
         { path: "users", element: <ProductList /> },
 
         { path: "userAccount", element: <UserAccount /> },
@@ -113,7 +112,7 @@ export default function Router() {
         // { path: "package/:id", element: <EditPackage /> },
         { path: "newpackage", element: <NewPackage /> },
         { path: "newfood", element: <NewFood /> },
-        // { path: "food/:id", element: <EditFood /> },
+        { path: "food/:id", element: <EditFood /> },
         { path: "users/:id", element: <UserDetail /> },
         { path: "foodGroup", element: <ListFoodGroup /> },
 

@@ -266,12 +266,12 @@ export default function KitchenAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        /> */}
-                          </TableCell>
+                          {/* <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onChange={(event) => handleClick(event, fullName)}
+                            />
+                          </TableCell> */}
 
                           {/* <TableCell align="left">{id}</TableCell> */}
                           <TableCell align="left">

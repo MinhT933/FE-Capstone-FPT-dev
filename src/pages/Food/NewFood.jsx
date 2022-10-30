@@ -26,12 +26,12 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 
 //styles paper
-const useStyles = styled("Paper")(({ theme }) => ({
-  pageContent: {
-    margin: theme.spacing(5),
-    padding: theme.spacing(9),
-  },
-}));
+// const useStyles = styled("Paper")(({ theme }) => ({
+//   pageContent: {
+//     margin: theme.spacing(5),
+//     padding: theme.spacing(9),
+//   },
+// }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //yub dùng để validation trong reactjs
@@ -45,12 +45,13 @@ const schema = yup.object().shape({
 
 export default function NewFood() {
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
   //khởi tạo lần đầu gọi thằng getlist cate để nó hiện thị lên selectbox ô select của tao á
   // ctr+ click chuột vào callAPIgetListCategory để xem nó cách callAPI getlistCateFood no giống y chan
   //call Food list vậy thay vị đổ vào bảng thì mình đỗ vào selectbox
   React.useEffect(() => {
     const getlistCateFood = async () => {
-      await dispatch(callAPIgetListCategory());
+      await dispatch(callAPIgetListCategory(token));
     };
     getlistCateFood();
     //disparch để kết thúc vào lặp vô tận loop infinity á
@@ -83,8 +84,6 @@ export default function NewFood() {
   const [input, setInput] = useState([]);
   //formData để lưu data
   const formData = new FormData();
-
-  const token = localStorage.getItem("token");
 
   //selected dùng để lí ảnh
 

@@ -26,7 +26,6 @@ import { URL_API } from "../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { Stack } from "@mui/system";
 import dayjs from "dayjs";
-import { jwt_decode } from "jwt-decode";
 import DateTime from "./../../components/Control/DateTime";
 
 const schema = yup.object().shape({
@@ -59,8 +58,7 @@ export default function EditPackage() {
 
   const [value, setValue] = useState();
 
-  // const navigate = useNavigate();
-  //xử lí hình ảnh
+
   const [input, setInput] = useState([]);
 
   const [groupfood, setGroupFood] = useState([]);
@@ -686,7 +684,7 @@ export default function EditPackage() {
                     // objectFit: "cover",
                   }}
                 >
-                  {/* hiển thị hình lên  */}
+
                   {input != null ? (
                     <img src={input} alt="hih" />
                   ) : (

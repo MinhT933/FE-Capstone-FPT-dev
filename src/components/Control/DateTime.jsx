@@ -6,14 +6,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
-
 export default function DateTime(props) {
   //   const [value, setValue] = React.useState(dayjs("2022-10-29T21:11:54"));
 
   //   const handleChange = (newValue) => {
   //     setValue(newValue);
   //   };
-  const { label, value, onChange, width } = props;
+  const { label, value, onChange, width, disabled } = props;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -22,6 +21,7 @@ export default function DateTime(props) {
           label={label}
           value={value}
           minDate={new Date()}
+          disabled={disabled}
           onChange={onChange}
           renderInput={(params) => <TextField {...params} />}
         />

@@ -77,7 +77,7 @@ const navConfigAdmin = [
   // },
 
   {
-    title: "Người Dùng",
+    title: "Tài Khoản",
     icon: getIcon("bxs:user-detail"),
     children: [
       {
@@ -99,7 +99,7 @@ const navConfigAdmin = [
       },
       //admin
       {
-        title: "Quản trị",
+        title: "Quản trị viên",
         path: "/dashboard/admin/adminAccount",
         icon: getIcon("ic:round-manage-accounts"),
       },
