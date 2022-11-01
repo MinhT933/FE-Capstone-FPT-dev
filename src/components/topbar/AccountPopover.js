@@ -22,31 +22,28 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import React from "react";
 import { useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
 // ----------------------------------------------------------------------
-const token = localStorage.getItem("token");
-const decode = jwt_decode(token);
-
-const MENU_OPTIONS = [
-  {
-    label: "Home",
-    icon: "eva:home-fill",
-    linkTo: "/",
-  },
-  {
-    label: "Profile",
-    icon: "eva:person-fill",
-    linkTo: `/dashboard/${decode.role}/account/my`,
-  },
-  {
-    label: "Settings",
-    icon: "eva:settings-2-fill",
-    linkTo: "#",
-  },
-];
+// const token = localStorage.getItem("token");
+// const decode = jwt_decode(token);
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const Navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -61,7 +58,23 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
-
+  const MENU_OPTIONS = [
+    {
+      label: "Home",
+      icon: "eva:home-fill",
+      linkTo: "/",
+    },
+    {
+      label: "Profile",
+      icon: "eva:person-fill",
+      linkTo: `/dashboard/${decoded.role}/account/my`,
+    },
+    {
+      label: "Settings",
+      icon: "eva:settings-2-fill",
+      linkTo: "#",
+    },
+  ];
   const handleLogout = () => {
     const token = localStorage.getItem("token");
     dispatch(LogOut(token, navigate));

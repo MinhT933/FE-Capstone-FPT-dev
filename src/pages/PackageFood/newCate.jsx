@@ -18,6 +18,8 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { callAPIgetCatePackage } from "./../../redux/action/acction";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 const shema = yup.object().shape({
   name: yup.string().required(" Vui điền đầy đủ thông tin"),
@@ -29,7 +31,21 @@ const Inputs = styled("input")({
 export default function NewCate(props) {
   const { OpenPopUpCate, SetOpenPopUpCate } = props;
   const [inputImage, setInputImage] = useState();
+  // const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  // const decoded = jwt_decode(token);
+
   const dispatch = useDispatch();
   const handleClose = () => {
     SetOpenPopUpCate(false);

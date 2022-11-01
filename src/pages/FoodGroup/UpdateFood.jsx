@@ -10,7 +10,7 @@ import Card from "@mui/material/Card";
 
 import Iconify from "../../components/hook-form/Iconify";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -32,6 +32,7 @@ import Avatar from "@mui/material/Avatar";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import { SET_VALUE_TAG } from "../../redux/PathAction";
 import FormHelperText from "@mui/material/FormHelperText";
+import  jwt_decode  from 'jwt-decode';
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
@@ -41,7 +42,19 @@ const schema = yup.object().shape({
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 export default function UpdateFood() {
+  // const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
   let { id } = useParams();
   const dispatch = useDispatch();
 
@@ -132,7 +145,7 @@ export default function UpdateFood() {
           a.push(arr[0].id);
         }
       }
-  
+
       const data = {
         name: formik.values.name,
         description: formik.values.description,

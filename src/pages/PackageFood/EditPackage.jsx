@@ -20,6 +20,7 @@ import {
   callAPIgetGroupFood,
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
+
 import { useSelector } from "react-redux";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
@@ -27,6 +28,7 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { Stack } from "@mui/system";
 import dayjs from "dayjs";
 import DateTime from "./../../components/Control/DateTime";
+import  jwt_decode  from "jwt-decode";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -50,10 +52,23 @@ const useStyles = styled("Paper")(({ theme }) => ({
   },
 }));
 
-const token = localStorage.getItem("token");
-// const decoded = jwt_decode(token);
+// const token = localStorage.getItem("token");
 
 export default function EditPackage() {
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  // const decoded = jwt_decode(token);
+
   let { id } = useParams();
 
   const [value, setValue] = useState();
@@ -358,7 +373,7 @@ export default function EditPackage() {
       }
     }
   }, [packageItem]);
-  
+
   const binding = () => {
     let array = [];
     for (let index = 0; index < bit.length; index++) {

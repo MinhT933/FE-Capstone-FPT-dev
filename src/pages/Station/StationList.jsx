@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -102,10 +102,19 @@ export default function StationList() {
 
   //CALL API====================================================
   const location = useLocation();
-
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
-
-  const decoded = jwt_decode(token);
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  // const decoded = jwt_decode(token);
 
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -125,7 +134,6 @@ export default function StationList() {
             message: `Đã Cập nhập trạng thái ${name}`,
             type: "SUCCESS",
           });
-
         } catch (err) {
           CustomizedToast({
             message: `Cập nhập trạng thái ${name} thất bại`,
@@ -296,35 +304,34 @@ export default function StationList() {
                             {status === "active" ? (
                               <Button1
                                 variant="outlined"
-                                onClick={() => { handleDelete(id, name) }}
+                                onClick={() => {
+                                  handleDelete(id, name);
+                                }}
                               >
                                 Đóng
                               </Button1>
                             ) : (
                               <Button1
                                 variant="outlined"
-                                onClick={() => { handleDelete(id, name) }}
+                                onClick={() => {
+                                  handleDelete(id, name);
+                                }}
                               >
                                 Mở
                               </Button1>
-                            )
-
-                            }
+                            )}
                           </TableCell>
 
                           <TableCell>
                             {decoded.role === "admin" && (
-
                               <Button1
                                 variant="outlined"
                                 display="TableCell"
                                 component={RouterLink}
                                 to={`${location.pathname}/updatestation/${id}`}
-
                               >
                                 Cập nhập
                               </Button1>
-
 
                               // <ButtonCustomize
                               //   variant="outlined"

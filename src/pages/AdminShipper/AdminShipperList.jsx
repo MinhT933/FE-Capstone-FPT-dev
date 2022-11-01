@@ -1,7 +1,7 @@
 import * as React from "react";
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -36,6 +36,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 // mock
 // import ADMINSHIPPERLIST from "./AdminShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import jwt_decode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
@@ -90,6 +91,23 @@ function applySortFilter(array, comparator, query) {
 export default function AdminShipperList() {
   //CallAPIgetListShipper=====================================
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  const shipper = useSelector((state) => {
+    return state.userReducer.listShipper;
+  });
   React.useEffect(() => {
     const callAPI = async () => {
       await dispatch(callAPIgetListShipper(token));
@@ -107,10 +125,8 @@ export default function AdminShipperList() {
     }, []);
   };
 
-  const token = localStorage.getItem("token");
-  const shipper = useSelector((state) => {
-    return state.userReducer.listShipper;
-  });
+  // const token = localStorage.getItem("token");
+
   //CallAPIgetListShipper=====================================
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);

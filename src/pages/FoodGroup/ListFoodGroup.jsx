@@ -1,7 +1,7 @@
 import React from "react";
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -134,8 +134,22 @@ export default function ListFoodGroup() {
     setSelected([]);
   };
 
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
+  const Navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
-  var decoded = jwt_decode(token);
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);

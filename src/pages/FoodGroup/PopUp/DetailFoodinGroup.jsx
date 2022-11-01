@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 // material
 import PageHeader from "../../../components/PageHeader";
 import Iconify from "../../../components/hook-form/Iconify";
@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import ButtonCustomize from "./../../../components/Button/ButtonCustomize";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
+import  jwt_decode  from 'jwt-decode';
 
 export default function DetailFoodinGroup(props) {
   const { OpenPopUpDetail, SetOpenPopUpDetail, id } = props;
@@ -21,7 +22,19 @@ export default function DetailFoodinGroup(props) {
   const handleClose = () => {
     SetOpenPopUpDetail(false);
   };
+  // const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
 
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {

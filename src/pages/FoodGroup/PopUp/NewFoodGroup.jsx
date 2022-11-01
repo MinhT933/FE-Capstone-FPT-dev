@@ -32,6 +32,8 @@ import Box from "@mui/material/Box";
 import FormHelperText from "@mui/material/FormHelperText";
 import API from "../../../Axios/API/API";
 import { URL_API } from "../../../Axios/URL_API/URL";
+import { useNavigate } from "react-router-dom";
+import  jwt_decode  from 'jwt-decode';
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
@@ -44,7 +46,18 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 export default function NewFoodGroup(props) {
   const { OpenPopUp, SetOpenPopUp } = props;
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
