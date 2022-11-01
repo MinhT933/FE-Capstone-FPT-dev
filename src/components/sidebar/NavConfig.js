@@ -65,11 +65,11 @@ const navConfigAdmin = [
   //     },
   //   ],
   // },
-  {
-    title: "Gói ăn",
-    path: "/dashboard/admin/package",
-    icon: getIcon("eva:shopping-bag-fill"),
-  },
+  // {
+  //   title: "Gói ăn",
+  //   path: "/dashboard/admin/package",
+  //   icon: getIcon("eva:shopping-bag-fill"),
+  // },
   // {
   //   title: "Người Dùng",
   //   path: "/dashboard/admin/users",

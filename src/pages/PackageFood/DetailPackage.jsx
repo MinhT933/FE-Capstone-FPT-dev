@@ -103,7 +103,7 @@ export default function DetailPackage(props) {
       formik.setFieldValue("categoryID", res.data.result.packageCategory.id);
       setPackageItems(res.data.result?.packageItem);
     });
-  }, [dispatch, id, token]);
+  }, [dispatch, id, token, handClickTimeFrame]);
 
   const getGroupfood = useSelector((state) => {
     return state.userReducer.listGroupFood;
@@ -191,11 +191,6 @@ export default function DetailPackage(props) {
     return groupFoodData;
   };
 
-  // function _treat(e) {
-  //   formik.setFieldValue("image", e.target.files[0]);
-
-  //   setInput(URL.createObjectURL(e.target.files[0]));
-  // }
   const handleLabel = (index) => {
     let a = "";
     switch (index) {

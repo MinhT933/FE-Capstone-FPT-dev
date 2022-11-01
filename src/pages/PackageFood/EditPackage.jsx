@@ -58,12 +58,13 @@ export default function EditPackage() {
 
   const [value, setValue] = useState();
 
-
   const [input, setInput] = useState([]);
 
   const [groupfood, setGroupFood] = useState([]);
 
   const dispatch = useDispatch();
+
+  const [data, setData] = useState([]);
 
   const [valueStarTime, setValueStarTime] = React.useState(
     dayjs("2022-10-26T21:11:5")
@@ -89,6 +90,7 @@ export default function EditPackage() {
     API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
       setInput(res.data.result.image);
       setPackageItem(res.data.result.packageItem);
+      console.log(res);
       formik.setFieldValue("image", res.data.result.image);
       formik.setFieldValue("price", res.data.result.price);
       formik.setFieldValue("totalStation", res.data.result.totalStation);
@@ -148,11 +150,12 @@ export default function EditPackage() {
     let pricearray = [];
     const a = getGroupfood.find((c) => c.id === e.target.value);
     const data = [...packageItem];
-    console.log(data);
+    // console.log(data);
     const index = data.findIndex((item) => item.itemCode === count);
     data[index].foodGroup.id = a.id;
-
-    setPackageItem(data);
+    console.log(data[index].foodGroup.id);
+    // setValue(data[index].foodGroup.name);
+    // setPackageItem(data);
     API("GET", URL_API + `/food-groups/find/${a.id}`, null, token)
       .then((res) => {
         arrayfood = res.data.result.foods;
@@ -175,7 +178,7 @@ export default function EditPackage() {
       });
     setGroupFood([...groupfood, { [e.target.name]: a.id }]);
   };
-  console.log(packageItem);
+
   const formik = useFormik({
     validationSchema: schema,
     validateOnMount: true,
@@ -257,8 +260,6 @@ export default function EditPackage() {
       }
     },
   });
-  console.log(formik);
-  // console.log(formik.handleSubmit());
 
   function _treat(e) {
     formik.setFieldValue("image", e.target.files[0]);
@@ -341,7 +342,23 @@ export default function EditPackage() {
         console.log(err);
       });
   };
-
+  ///==============================================
+  const [valueItem, setValueItem] = useState([]);
+  React.useEffect(() => {
+    let arrayItem = [];
+    console.log(packageItem);
+    for (let index = 0; index < packageItem.length; index++) {
+      const element = packageItem[index].foodGroup;
+      arrayItem.push(element);
+      console.log(arrayItem);
+      for (let a = 0; a < arrayItem.length; a++) {
+        const group = arrayItem[a].id;
+        // console.log(group);
+        setValueItem(group);
+      }
+    }
+  }, [packageItem]);
+  
   const binding = () => {
     let array = [];
     for (let index = 0; index < bit.length; index++) {
@@ -359,7 +376,7 @@ export default function EditPackage() {
               label={handleLabel(index + 1)}
               width="20rem"
               defaultValue="undefined"
-              value={value}
+              value={valueItem}
               onChange={(e) => handleChangeGroupFood(e, index + 1)}
               onBlur={formik.handleBlur}
               options={getGroupFoodOptions()}
@@ -680,11 +697,10 @@ export default function EditPackage() {
                     marginTop: "10%",
                     // boxShadow: 8,
                     marginLeft: "11%",
-                    
+
                     // objectFit: "cover",
                   }}
                 >
-
                   {input != null ? (
                     <img src={input} alt="hih" />
                   ) : (

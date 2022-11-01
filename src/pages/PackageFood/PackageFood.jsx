@@ -281,9 +281,8 @@ export default function PackageFood() {
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
-                          onClick={() => handleSelect(id)}
                         >
-                          <TableCell>
+                          <TableCell onClick={() => handleSelect(id)}>
                             <Avatar alt={name} src={image} />
                           </TableCell>
                           <TableCell align="left">{name}</TableCell>
