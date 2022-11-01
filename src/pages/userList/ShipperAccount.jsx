@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -101,10 +101,20 @@ export default function ShipperAccount() {
     //CALL API====================================================
     const location = useLocation();
 
+    const Navigate = useNavigate();
     const token = localStorage.getItem("token");
-
-    const decoded = jwt_decode(token);
-
+    if (token === null) {
+      Navigate("/");
+    }
+    try {
+      var decoded = jwt_decode(token);
+      // valid token format
+    } catch (error) {
+      // return <Navigate to="/" replace />;
+      Navigate("/");
+    }
+    // const decoded = jwt_decode(token);
+    
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {

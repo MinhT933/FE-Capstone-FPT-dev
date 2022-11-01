@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -18,20 +18,19 @@ import {
   callAPIgetTimeFrame,
 } from "./../../redux/action/acction";
 import PageHeader from "../../components/PageHeader";
-import Iconify from "../../components/hook-form/Iconify";
-import { date } from "yup";
+
 import API from "./../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { CustomizedToast } from "./../../components/Toast/ToastCustom";
-import Button from "@mui/material/Button";
+
 import Controls from "./../../components/Control/Controls";
 import Grid from "@mui/material/Grid";
 import FormHelperText from "@mui/material/FormHelperText";
 import DateTime from "../../components/Control/DateTime";
 import Stack from "@mui/material/Stack";
 import { width } from "@mui/system";
+import jwt_decode from "jwt-decode";
 
 export default function DetailPackage(props) {
   const { OpenPopUpDetail, SetOpenPopUpDetail, id } = props;
@@ -64,7 +63,19 @@ export default function DetailPackage(props) {
     SetOpenPopUpDetail(false);
   };
 
+  // const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
 
   const handClickTimeFrame = (id) => {
     API("GET", URL_API + `/time-frame/${id}`, null, token)

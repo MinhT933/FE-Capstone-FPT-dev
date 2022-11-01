@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
 import {
@@ -65,8 +65,22 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const isDesktop = useResponsive("up", "lg");
   const dispatch = useDispatch();
+  // const token = localStorage.getItem("token");
+  // const decode = jwt_decode(token);
+  const Navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
-  const decode = jwt_decode(token);
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
   useEffect(() => {
     const callAPI = async () => {
       await dispatch(callAPIProfile(token));
@@ -114,7 +128,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           <Link
             underline="none"
             component={RouterLink}
-            to={`/dashboard/${decode.role}/account/my`}
+            to={`/dashboard/${decoded.role}/account/my`}
           >
             <AccountStyle>
               <Avatar src={profiles.profile?.avatar} alt="photoURL" />

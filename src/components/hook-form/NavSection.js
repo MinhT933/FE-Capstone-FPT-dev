@@ -4,6 +4,7 @@ import {
   NavLink as RouterLink,
   matchPath,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 // material
 import { alpha, useTheme, styled } from "@mui/material/styles";
@@ -175,10 +176,20 @@ export default function NavSection({
   ...other
 }) {
   const { pathname } = useLocation();
-
+  const Navigate = useNavigate();
   const checkRole = () => {
     const token = localStorage.getItem("token");
-    var decoded = jwt_decode(token);
+    if (token === null) {
+      Navigate("/");
+    }
+    try {
+      var decoded = jwt_decode(token);
+      // valid token format
+    } catch (error) {
+      // return <Navigate to="/" replace />;
+      Navigate("/");
+    }
+    // var decoded = jwt_decode(token);
 
     switch (decoded.role) {
       case "admin":

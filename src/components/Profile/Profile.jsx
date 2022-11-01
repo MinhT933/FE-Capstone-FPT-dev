@@ -67,8 +67,22 @@ export default function Profile() {
   const [input, setInput] = useState([]);
 
   const dispatch = useDispatch();
+  // const token = localStorage.getItem("token");
+  // const decoded = jwt_decode(token);
+  const Navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
-  const decoded = jwt_decode(token);
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
 
   const handleJob = () => {
     let text = "";

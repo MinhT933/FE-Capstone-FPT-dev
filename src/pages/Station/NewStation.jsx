@@ -36,6 +36,8 @@ import { useState } from "react";
 import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import { useNavigate } from "react-router-dom";
+import  jwt_decode  from 'jwt-decode';
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -65,10 +67,22 @@ export default function NewStation() {
 
   const [opentime, setOpentime] = useState([dayjs("2022-10-18T21:11:5")]);
   const [closetime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
+  // const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  // const decoded = jwt_decode(token);
 
   //formData để lưu data
-
 
   const formik = useFormik({
     //gắn schema để so sánh
@@ -99,7 +113,6 @@ export default function NewStation() {
         CustomizedToast({
           message: `Đã thêm ${formik.values.name}`,
           type: "SUCCESS",
-
         });
       } catch (error) {
         CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
@@ -253,4 +266,3 @@ export default function NewStation() {
     </Paper>
   );
 }
-

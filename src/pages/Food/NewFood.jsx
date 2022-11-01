@@ -24,6 +24,8 @@ import { useDispatch } from "react-redux";
 // import { FormHelperText } from "@mui/material";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 //styles paper
 // const useStyles = styled("Paper")(({ theme }) => ({
@@ -45,7 +47,19 @@ const schema = yup.object().shape({
 
 export default function NewFood() {
   const dispatch = useDispatch();
+  // const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
   //khởi tạo lần đầu gọi thằng getlist cate để nó hiện thị lên selectbox ô select của tao á
   // ctr+ click chuột vào callAPIgetListCategory để xem nó cách callAPI getlistCateFood no giống y chan
   //call Food list vậy thay vị đổ vào bảng thì mình đỗ vào selectbox

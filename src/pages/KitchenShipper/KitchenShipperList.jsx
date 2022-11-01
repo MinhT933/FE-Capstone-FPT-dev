@@ -1,6 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -37,6 +37,7 @@ import Page from "../../components/setPage/Page";
 // mock
 // import KITCHENSHIPPERLIST from "./KitchenShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import  jwt_decode  from 'jwt-decode';
 
 // ----------------------------------------------------------------------
 
@@ -108,7 +109,19 @@ export default function KitchenList() {
         }, []);
     };
 
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
     const shipper = useSelector((state) => {
         return state.userReducer.listShipper;
     });

@@ -49,16 +49,22 @@ import Home from "./pages/home/home";
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
 
-  if (!token) {
+  if (token == null) {
     return <Navigate to={redirectPath} replace />;
   }
-  var decoded = jwt_decode(token);
-  if (token && !decoded.role) {
-    return <Navigate to={redirectPath} replace />;
-  }
-  if (roles.includes(decoded.role)) {
-    return <>{children}</>;
-  }
+
+  // try {
+  //   var decoded = jwt_decode(token);
+  //   // valid token format
+  // } catch (error) {
+  //   return <Navigate to="/" replace />;
+  // }
+  // if (token && !decoded.role) {
+  //   return <Navigate to={redirectPath} replace />;
+  // }
+  // if (roles.includes(decoded.role)) {
+  //   return <>{children}</>;
+  // }
 
   return <Navigate to="/" replace />;
 };
@@ -68,7 +74,7 @@ export default function Router() {
     {
       path: "/",
       element: <SignInOutContainer />,
-      children: [{ path: "/", element: <SignInOutContainer /> }],
+      // children: [{ path: "/", element: <SignInOutContainer /> }],
     },
     {
       path: "/auths/login/admin",

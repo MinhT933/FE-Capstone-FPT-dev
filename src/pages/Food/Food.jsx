@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 // material
 import {
   Card,
@@ -120,9 +120,20 @@ export default function Food() {
 
   // cách search một vần đề why  + 'vấn đề ' in 'thư viện or component'
   //vd: why slectBox not working in mui
-
+  const Navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
-  var decoded = jwt_decode(token);
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
   const location = useLocation();
 
   React.useEffect(() => {
