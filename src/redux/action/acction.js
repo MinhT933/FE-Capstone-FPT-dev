@@ -93,7 +93,7 @@ export const callAPIGetListPackage = (token) => {
 export const callAPIgetListCategory = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/food-categories",null,token);
+      const res = await API("GET", URL_API + "/food-categories", null, token);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_FOODCATEGORY,
@@ -191,7 +191,26 @@ export const callAPIgetTimeFrame = (token) => {
     }
   };
 };
-
+export const callAPIgetShipperOfKitchen = (token, id) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/kitchens/shipper/${id}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_SHIPPER_OF_KITCHEN,
+          payload: res.data.result.shippers,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
 export const callAPIgetCatePackage = (token) => {
   return async (dispatch) => {
     try {
@@ -388,6 +407,21 @@ export const callAPIgetListKitchen = (token) => {
       dispatch(
         createAction({
           type: PathAction.GET_LIST_KITCHEN,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+export const callAPIgetListReq = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + "/request", null, token);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_REQ,
           payload: res.data.result,
         })
       );

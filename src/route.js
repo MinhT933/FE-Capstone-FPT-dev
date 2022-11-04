@@ -45,6 +45,7 @@ import ShipperAccount from "./pages/userList/ShipperAccount";
 import ManagerAccount from "./pages/userList/ManagerAccount";
 import AdminAccount from "./pages/userList/AdminAccount";
 import Home from "./pages/home/home";
+import RequestPage from "./pages/request/RequestPage";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -142,6 +143,7 @@ export default function Router() {
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
+        { path: "request", element: <RequestPage /> },
 
         //admin xem đánh giá bếp
         {

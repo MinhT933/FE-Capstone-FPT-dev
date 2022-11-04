@@ -119,6 +119,11 @@ const navConfigAdmin = [
     icon: getIcon("carbon:delivery"),
   },
   {
+    title: "Yêu cầu shipper",
+    path: "/dashboard/admin/request",
+    icon: getIcon("fluent-mdl2:feedback-request-solid"),
+  },
+  {
     title: "Trạm",
     path: "/dashboard/admin/station",
     icon: getIcon("carbon:location-company"),
