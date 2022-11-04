@@ -48,6 +48,8 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: "", label: " ", alignRight: false },
+
   { id: "fullName", label: "Tên bếp", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
@@ -303,10 +305,10 @@ export default function KitchenList() {
                           aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox
+                            {/* <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, fullName)}
-                            />
+                            /> */}
                           </TableCell>
 
                           <TableCell align="left">
@@ -353,7 +355,7 @@ export default function KitchenList() {
                               component={RouterLink}
                               to={`${location.pathname}/updatekitchen/${id}`}
                             >
-                              Cập nhập
+                              Chi tiết
                             </Button1>
                           </TableCell>
                         </TableRow>

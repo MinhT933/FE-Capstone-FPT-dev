@@ -80,7 +80,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ListBreakfast() {
+export default function ListDinner() {
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
   // const [OpenPopUp, SetOpenPopUp] = useState(false);
@@ -199,7 +199,7 @@ export default function ListBreakfast() {
                         onFilterName={handleFilterByName}
                     /> */}
 
-          <TableContainer sx={{ minWidth: 380, width: 380 }}>
+          <TableContainer sx={{ minWidth: 390, width: 390 }}>
             <Table>
               <UserListHead
                 order={order}
@@ -232,16 +232,6 @@ export default function ListBreakfast() {
                     );
                   })}
               </TableBody>
-
-              {isKitchenNotFound && (
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                      <SearchNotFound searchQuery={filterName} />
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              )}
             </Table>
           </TableContainer>
         </Card>

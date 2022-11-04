@@ -104,17 +104,17 @@ export default function ShipperAccount() {
     const Navigate = useNavigate();
     const token = localStorage.getItem("token");
     if (token === null) {
-      Navigate("/");
+        Navigate("/");
     }
     try {
-      var decoded = jwt_decode(token);
-      // valid token format
+        var decoded = jwt_decode(token);
+        // valid token format
     } catch (error) {
-      // return <Navigate to="/" replace />;
-      Navigate("/");
+        // return <Navigate to="/" replace />;
+        Navigate("/");
     }
     // const decoded = jwt_decode(token);
-    
+
     const dispatch = useDispatch();
     React.useEffect(() => {
         const callAPI = async () => {
@@ -214,14 +214,14 @@ export default function ShipperAccount() {
     return (
         <Page title="Trạm">
             <Container>
-                <Stack
+                {/* <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
                     mb={5}
                 >
                     <Typography variant="h4" gutterBottom>
-                        {/* User */}
+                       
                     </Typography>
                     {decoded.role === "admin" && (
                         <ButtonCustomize
@@ -231,7 +231,7 @@ export default function ShipperAccount() {
                             nameButton="Thêm"
                         />
                     )}
-                </Stack>
+                </Stack> */}
 
                 <Card>
                     <UserListToolbar
@@ -316,7 +316,7 @@ export default function ShipperAccount() {
                                                         </Label>
                                                     </TableCell>
 
-                                                    <TableCell align="center">
+                                                    <TableCell align="left">
                                                         {status === "active" ? (
                                                             <Button1
                                                                 variant="outlined"
@@ -388,7 +388,7 @@ export default function ShipperAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-                                                    <TableCell>
+                                                    {/* <TableCell>
                                                         {decoded.role === "admin" && (
 
                                                             <Button1
@@ -401,7 +401,7 @@ export default function ShipperAccount() {
                                                                 Cập nhập
                                                             </Button1>
                                                         )}
-                                                    </TableCell>
+                                                    </TableCell> */}
                                                 </TableRow>
                                             );
                                         })}
