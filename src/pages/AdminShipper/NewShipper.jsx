@@ -161,7 +161,7 @@ export default function NewShipper() {
           type: "SUCCESS",
         });
         window.location.reload(true);
-      } catch (error) {}
+      } catch (error) { }
     },
   });
 
@@ -199,12 +199,12 @@ export default function NewShipper() {
         // MarginRounded: "4%"
       }}
     >
-      {/* <PageHeader
-                // display="left"
-                // title="Yêu cầu thêm tài xế "
-                // subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
-                // icon={getIcon('emojione-v1:double-exclamation-mark')}
-            /> */}
+      <PageHeader
+        display="left"
+        title="Thêm tài xế "
+        subTitle="Vui lòng điền đầy đủ thông tin."
+        icon={getIcon('emojione-v1:double-exclamation-mark')}
+      />
       <form onSubmit={formik.handleSubmit}>
         <Box
           space-around="space-around"
@@ -212,7 +212,7 @@ export default function NewShipper() {
           display="flex"
           justifyContent="left"
           alignItems="left"
-        >
+          sx={{ marginLeft: "6%" }}>
           <Grid container spacing={4} columns={20}>
             <Grid item xs={8} marginLeft="10%">
               <Stack spacing={3}>
@@ -381,11 +381,11 @@ export default function NewShipper() {
           <ButtonCustomize
             nameButton="Thêm tài xế"
             type="submit"
-            marginLeft="40%"
+            marginLeft="45%"
             marginTop="2%"
           />
         </Box>
       </form>
-    </Paper>
+    </Paper >
   );
 }

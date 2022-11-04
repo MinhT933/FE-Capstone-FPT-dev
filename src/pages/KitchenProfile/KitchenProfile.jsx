@@ -58,7 +58,7 @@ export default function KitchenProfile(props) {
                     </Grid>
                     <Grid item container direction="column" xs={12} sm={5}>
                         <Typography variant="h6" gutterBottom>
-                            Khung thời gian hoạt động
+                            Khung giờ hoạt động
                         </Typography>
                         <Grid container>
                             <Grid item xs={6}>

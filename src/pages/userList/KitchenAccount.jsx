@@ -218,16 +218,16 @@ export default function KitchenAccount() {
   return (
     <Page title="Trạm">
       <Container>
-        <Stack
+        {/* <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h4" gutterBottom>
-            {/* User */}
+        <Typography variant="h4" gutterBottom>
+           
           </Typography>
-          {decoded.role === "admin" && (
+        {decoded.role === "admin" && (
             <ButtonCustomize
               variant="contained"
               component={RouterLink}
@@ -235,7 +235,7 @@ export default function KitchenAccount() {
               nameButton="Thêm"
             />
           )}
-        </Stack>
+        </Stack> */}
 
         <Card>
           <UserListToolbar
@@ -280,12 +280,12 @@ export default function KitchenAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          {/* <TableCell padding="checkbox">
-                            <Checkbox
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, fullName)}
-                            />
-                          </TableCell> */}
+                            /> */}
+                          </TableCell>
 
                           {/* <TableCell align="left">{id}</TableCell> */}
                           <TableCell align="left">
@@ -319,7 +319,7 @@ export default function KitchenAccount() {
                             </Label>
                           </TableCell>
 
-                          <TableCell align="center">
+                          <TableCell align="left">
                             {status === "active" ? (
                               <Button1
                                 variant="outlined"
@@ -365,7 +365,7 @@ export default function KitchenAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-                          <TableCell>
+                          {/* <TableCell>
                             {decoded.role === "admin" && (
                               <Button1
                                 variant="outlined"
@@ -376,7 +376,7 @@ export default function KitchenAccount() {
                                 Cập nhập
                               </Button1>
                             )}
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}

@@ -216,14 +216,14 @@ export default function UserAccount() {
   return (
     <Page title="Trạm">
       <Container>
-        <Stack
+        {/* <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            {/* User */}
+            User
           </Typography>
           {decoded.role === "admin" && (
             <ButtonCustomize
@@ -233,7 +233,7 @@ export default function UserAccount() {
               nameButton="Thêm"
             />
           )}
-        </Stack>
+        </Stack> */}
 
         <Card>
           <UserListToolbar
@@ -317,7 +317,7 @@ export default function UserAccount() {
                             </Label>
                           </TableCell>
 
-                          <TableCell align="center">
+                          <TableCell align="left">
                             {status === "active" ? (
                               <Button1
                                 variant="outlined"
@@ -363,7 +363,7 @@ export default function UserAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-                          <TableCell>
+                          {/* <TableCell>
                             {decoded.role === "admin" && (
                               <Button1
                                 variant="outlined"
@@ -374,7 +374,7 @@ export default function UserAccount() {
                                 Cập nhập
                               </Button1>
                             )}
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}
