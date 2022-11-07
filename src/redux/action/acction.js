@@ -528,10 +528,10 @@ export const callAPIgetListReqByStatus = (token, status) => {
 };
 
 //----------------------------------------------------------------
-export const callAPIKitchenGetListOrder = () => {
+export const callAPIKitchenGetListOrder = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/orders", null, null);
+      const res = await API("GET", URL_API + "/subscriptions", null, token);
       dispatch(
         createAction({
           type: PathAction.KITCHEN_GET_LIST_ORDER,
@@ -544,10 +544,10 @@ export const callAPIKitchenGetListOrder = () => {
   };
 };
 //----------------------------------------------------------------
-export const callAPIAdminGetListOrder = () => {
+export const callAPIAdminGetListOrder = (token) => {
   return async (dispatch) => {
     try {
-      const res = await API("GET", URL_API + "/orders", null, null);
+      const res = await API("GET", URL_API + "/subscriptions", null, token);
       dispatch(
         createAction({
           type: PathAction.ADMIN_GET_LIST_ORDER,

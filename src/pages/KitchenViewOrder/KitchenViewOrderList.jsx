@@ -62,6 +62,7 @@ import KitchenListToolbar from "./../../sections/@dashboard/user/KitchenListTool
 // ko nhát thiết phải thêm table head ở dưới
 
 const TABLE_HEAD = [
+  { id: "", label: "", alignRight: false },
   { id: "id", label: "Mã đơn", alignRight: false },
   { id: "name", label: "Người đặt", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },

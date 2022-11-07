@@ -224,7 +224,7 @@ export default function ManagerAccount() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            {/* User */}
+             {/* User  */}
           </Typography>
           {decoded.role === "admin" && (
             <ButtonCustomize
@@ -318,7 +318,7 @@ export default function ManagerAccount() {
                             </Label>
                           </TableCell>
 
-                          <TableCell align="center">
+                          <TableCell align="left">
                             {status === "active" ? (
                               <Button1
                                 variant="outlined"
@@ -364,7 +364,7 @@ export default function ManagerAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-                          <TableCell>
+                          {/* <TableCell>
                             {decoded.role === "admin" && (
                               <Button1
                                 variant="outlined"
@@ -375,7 +375,7 @@ export default function ManagerAccount() {
                                 Cập nhập
                               </Button1>
                             )}
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}

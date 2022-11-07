@@ -201,8 +201,8 @@ export default function Profile() {
       <div>
         <form onSubmit={formik.handleSubmit}>
           <GridContainer>
-            <GridItem xs={12} sm={12} md={4}>
-              <Card profile>
+            <GridItem xs={12} sm={12} md={4} sx={{ marginTop: "3%", marginLeft: "2%" }}>
+              <Card profile >
                 <CardAvatar profile>
                   {input != null ? (
                     <img
@@ -257,7 +257,7 @@ export default function Profile() {
                 </CardBody>
               </Card>
             </GridItem>
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem xs={12} sm={12} md={7.5} sx={{ marginTop: "3%" }}>
               <Card>
                 <CardHeader color="primary">
                   <h4 className={classes.cardTitleWhite}>

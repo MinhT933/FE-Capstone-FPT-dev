@@ -40,8 +40,10 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+
   { id: "id", label: "", alignRight: false },
   // { id: "id", label: "Mã trạm", alignRight: false },
+
   { id: "name", label: "Địa điểm", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Số điện thoại", alignRight: false },
@@ -278,7 +280,9 @@ export default function StationList() {
                           // aria-checked={isItemSelected}
                          
                         >
+
                           <TableCell align="left">{""}</TableCell>
+
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{phone}</TableCell>
@@ -326,7 +330,7 @@ export default function StationList() {
                                 component={RouterLink}
                                 to={`${location.pathname}/updatestation/${id}`}
                               >
-                                Cập nhập
+                                Chi tiết
                               </Button1>
 
                               // <ButtonCustomize

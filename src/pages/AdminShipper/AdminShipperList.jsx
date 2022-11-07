@@ -271,7 +271,8 @@ export default function AdminShipperList() {
                         vehicleType,
                         status,
                         email,
-                        kitchenID,
+                        account,
+                        kitchenid,
                       } = row;
                       const isItemSelected = selected.indexOf(fullName) !== -1;
 
@@ -302,7 +303,7 @@ export default function AdminShipperList() {
                                 src={row.profile?.avatar}
                               />
                               <Typography variant="subtitle2" noWrap>
-                                {row.profile?.fullName}
+                                {row.account.profile?.fullName}
                               </Typography>
                             </Stack>
                           </TableCell>
@@ -312,9 +313,9 @@ export default function AdminShipperList() {
                           <TableCell align="left">{noPlate}</TableCell>
                           <TableCell align="left">{vehicleType}</TableCell>
                           <TableCell align="left">
-                            {row.profile?.email}
+                            {row.account.profile?.email}
                           </TableCell>
-                          <TableCell align="left">{kitchenID}</TableCell>
+                          <TableCell align="left">{kitchenid}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
