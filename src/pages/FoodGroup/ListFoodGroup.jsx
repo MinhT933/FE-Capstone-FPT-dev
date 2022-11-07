@@ -134,6 +134,12 @@ export default function ListFoodGroup() {
     setSelected([]);
   };
 
+  const getOptions = () => [
+    // { id: "waiting", title: "Waiting" },
+    { id: "active", title: "Active" },
+    { id: "inActive", title: "InActive" },
+    { id: "", title: "All" },
+  ];
   // const token = localStorage.getItem("token");
   // var decoded = jwt_decode(token);
   const Navigate = useNavigate();
@@ -278,6 +284,7 @@ export default function ListFoodGroup() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -316,10 +323,9 @@ export default function ListFoodGroup() {
                           aria-checked={isItemSelected}
                           displaySelectAll={false}
                           adjustForCheckbox={false}
-                          onClick={() => handleSelect(id)}
                         >
                           <TableCell padding="checkbox"></TableCell>
-                          <TableCell>
+                          <TableCell onClick={() => handleSelect(id)}>
                             <Typography>{name}</Typography>
                           </TableCell>
                           <TableCell align="left">{totalFood}</TableCell>
@@ -332,16 +338,19 @@ export default function ListFoodGroup() {
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={
-                                (status === "inActive" && "error") ||
-                                (status === "waiting" && "warning") ||
-                                "success"
-                              }
-                            >
-                              {status}
-                            </Label>
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Không hoạt động</Label>
+                              )}
+                              {status === "waiting" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="warning">Đang chờ</Label>
+                              )}
+                              {status === "active" && (
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                            </div>
                           </TableCell>
                           {/* <TableCell>
                             <ColorButton

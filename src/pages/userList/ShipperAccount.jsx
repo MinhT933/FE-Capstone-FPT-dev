@@ -5,19 +5,19 @@ import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
-    Card,
-    Table,
-    Stack,
-    // Avatar,
-    Button,
-    Checkbox,
-    TableRow,
-    TableBody,
-    TableCell,
-    Container,
-    Typography,
-    TableContainer,
-    TablePagination,
+  Card,
+  Table,
+  Stack,
+  // Avatar,
+  Button,
+  Checkbox,
+  TableRow,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  TableContainer,
+  TablePagination,
 } from "@mui/material";
 // components
 import Label from "../../components/label/label";
@@ -29,7 +29,11 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { callAPIgetAccountCustomer, callAPIgetAccountShipper, callAPIgetListStation } from "../../redux/action/acction";
+import {
+  callAPIgetAccountCustomer,
+  callAPIgetAccountShipper,
+  callAPIgetListStation,
+} from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
@@ -39,257 +43,252 @@ import { Avatar } from "@mui/joy";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "", label: "", alignRight: false },
-    { id: "fullName", label: "Họ tên", alignRight: false },
-    { id: "email", label: "Email", alignRight: false },
-    { id: "phone", label: "Điện thoại", alignRight: false },
+  { id: "", label: "", alignRight: false },
+  { id: "fullName", label: "Họ tên", alignRight: false },
+  { id: "email", label: "Email", alignRight: false },
+  { id: "phone", label: "Điện thoại", alignRight: false },
 
-    { id: "status", label: "Trạng thái", alignRight: false },
-    { label: "Thay đổi trạng thái", alignRight: false },
-    { id: "" },
+  { id: "status", label: "Trạng thái", alignRight: false },
+  { label: "Thay đổi trạng thái", alignRight: false },
+  { id: "" },
 ];
 
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
 }
 
 function getComparator(order, orderBy) {
-    return order === "desc"
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    if (query) {
-        return filter(
-            array,
-            (_stations) =>
-                _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
-        );
-    }
-    return stabilizedThis.map((el) => el[0]);
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(
+      array,
+      (_stations) =>
+        _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
+  }
+  return stabilizedThis.map((el) => el[0]);
 }
 
 export default function ShipperAccount() {
-    const [OpenPopUp, SetOpenPopUp] = useState(false);
-    const [page, setPage] = useState(0);
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
+  const [page, setPage] = useState(0);
 
-    const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("asc");
 
-    const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("fullName");
+  const [orderBy, setOrderBy] = useState("fullName");
 
-    const [filterName, setFilterName] = useState("");
+  const [filterName, setFilterName] = useState("");
 
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    //CALL API====================================================
-    const location = useLocation();
+  //CALL API====================================================
+  const location = useLocation();
 
-    const Navigate = useNavigate();
-    const token = localStorage.getItem("token");
-    if (token === null) {
-      Navigate("/");
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  // const decoded = jwt_decode(token);
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetAccountShipper(token));
+    };
+    callAPI();
+  }, [dispatch]);
+
+  const handleDelete = (id, fullName) => {
+    API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetAccountShipper(token));
+
+        CustomizedToast({
+          message: `Đã Cập nhập trạng thái ${fullName}`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${fullName} thất bại`,
+          type: "ERROR",
+        });
+      }
+    }, []);
+  };
+
+  const station = useSelector((state) => {
+    return state.userReducer.accountShipper;
+  });
+  //CALL API=====================================================
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = station.map((n) => n.fullName);
+      setSelected(newSelecteds);
+      return;
     }
-    try {
-      var decoded = jwt_decode(token);
-      // valid token format
-    } catch (error) {
-      // return <Navigate to="/" replace />;
-      Navigate("/");
+    setSelected([]);
+  };
+
+  const handleClick = (event, fullName) => {
+    const selectedIndex = selected.indexOf(fullName);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, fullName);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
     }
-    // const decoded = jwt_decode(token);
-    
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-        const callAPI = async () => {
-            await dispatch(callAPIgetAccountShipper(token));
-        };
-        callAPI();
-    }, [dispatch]);
+    setSelected(newSelected);
+  };
 
-    const handleDelete = (id, fullName) => {
-        API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then(
-            (res) => {
-                try {
-                    dispatch(callAPIgetAccountShipper(token));
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-                    CustomizedToast({
-                        message: `Đã Cập nhập trạng thái ${fullName}`,
-                        type: "SUCCESS",
-                    });
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-                } catch (err) {
-                    CustomizedToast({
-                        message: `Cập nhập trạng thái ${fullName} thất bại`,
-                        type: "ERROR",
-                    });
-                }
-            },
-            []
-        );
-    };
+  const handleFilterByName = (event) => {
+    setFilterName(event.target.value);
+  };
 
-    const station = useSelector((state) => {
-        return state.userReducer.accountShipper;
-    });
-    //CALL API=====================================================
+  const filteredStations = applySortFilter(
+    station,
+    getComparator(order, orderBy),
+    filterName
+  );
 
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === "asc";
-        setOrder(isAsc ? "desc" : "asc");
-        setOrderBy(property);
-    };
+  const isStationNotFound = filteredStations.length === 0;
 
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelecteds = station.map((n) => n.fullName);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
-    };
+  const Button1 = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC33"),
+    backgroundColor: "#FFCC33",
 
-    const handleClick = (event, fullName) => {
-        const selectedIndex = selected.indexOf(fullName);
-        let newSelected = [];
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, fullName);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1)
-            );
-        }
-        setSelected(newSelected);
-    };
+    // display: "center"
+  }));
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+  return (
+    <Page title="Shipper">
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h4" gutterBottom>
+            {/* User */}
+          </Typography>
+          {decoded.role === "admin" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/admin/newstation"
+              nameButton="Thêm"
+            />
+          )}
+        </Stack>
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
+        <Card>
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
-    const handleFilterByName = (event) => {
-        setFilterName(event.target.value);
-    };
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 1000 }}>
+              <Table>
+                <UserListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={station.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
+                />
+                <TableBody>
+                  {filteredStations
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      const {
+                        id,
+                        profile,
+                        avatar,
+                        fullName,
+                        email,
+                        phone,
+                        status,
+                      } = row;
+                      const isItemSelected = selected.indexOf(fullName) !== -1;
 
-    const filteredStations = applySortFilter(
-        station,
-        getComparator(order, orderBy),
-        filterName
-    );
-
-    const isStationNotFound = filteredStations.length === 0;
-
-    const Button1 = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC33"),
-        backgroundColor: "#FFCC33",
-
-        // display: "center"
-    }));
-
-    return (
-        <Page title="Trạm">
-            <Container>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={5}
-                >
-                    <Typography variant="h4" gutterBottom>
-                        {/* User */}
-                    </Typography>
-                    {decoded.role === "admin" && (
-                        <ButtonCustomize
-                            variant="contained"
-                            component={RouterLink}
-                            to="/dashboard/admin/newstation"
-                            nameButton="Thêm"
-                        />
-                    )}
-                </Stack>
-
-                <Card>
-                    <UserListToolbar
-                        numSelected={selected.length}
-                        filterName={filterName}
-                        onFilterName={handleFilterByName}
-                    />
-
-                    <Scrollbar>
-                        <TableContainer sx={{ minWidth: 1000 }}>
-                            <Table>
-                                <UserListHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    headLabel={TABLE_HEAD}
-                                    rowCount={station.length}
-                                    numSelected={selected.length}
-                                    onRequestSort={handleRequestSort}
-                                    onSelectAllClick={handleSelectAllClick}
-                                />
-                                <TableBody>
-                                    {filteredStations
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row) => {
-                                            const {
-                                                id,
-                                                profile,
-                                                avatar,
-                                                fullName,
-                                                email,
-                                                phone,
-                                                status,
-                                            } = row;
-                                            const isItemSelected = selected.indexOf(fullName) !== -1;
-
-                                            return (
-                                                <TableRow
-                                                    hover
-                                                    key={id}
-                                                    tabIndex={-1}
-                                                    role="checkbox"
-                                                    selected={isItemSelected}
-                                                    aria-checked={isItemSelected}
-                                                >
-                                                    <TableCell padding="checkbox">
-                                                        {/* <Checkbox
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox
                                                             checked={isItemSelected}
                                                             onChange={(event) => handleClick(event, fullName)}
                                                         /> */}
-                                                    </TableCell>
+                          </TableCell>
 
+                          {/* <TableCell align="left">{id}</TableCell> */}
+                          <TableCell align="left">
+                            {row.profile.fullName}
+                          </TableCell>
 
-
-                                                    {/* <TableCell align="left">{id}</TableCell> */}
-                                                    <TableCell align="left">{row.profile.fullName}</TableCell>
-
-
-                                                    {/* <TableCell component="th" scope="row" padding="none">
+                          {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack
                                                             direction="row"
                                                             alignItems="center"
@@ -302,42 +301,42 @@ export default function ShipperAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-                                                    <TableCell align="left">{row.profile.email}</TableCell>
-                                                    <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left">
+                            {row.profile.email}
+                          </TableCell>
+                          <TableCell align="left">{phone}</TableCell>
 
-                                                    <TableCell align="left">
-                                                        <Label
-                                                            variant="ghost"
-                                                            color={
-                                                                (status === "ban" && "error") || "success"
-                                                            }
-                                                        >
-                                                            {status}
-                                                        </Label>
-                                                    </TableCell>
+                          <TableCell align="left">
+                            <Label
+                              variant="ghost"
+                              color={(status === "ban" && "error") || "success"}
+                            >
+                              {status}
+                            </Label>
+                          </TableCell>
 
-                                                    <TableCell align="center">
-                                                        {status === "active" ? (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Đổi
-                                                            </Button1>
-                                                        ) : (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        )
+                          <TableCell align="center">
+                            {status === "active" ? (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => {
+                                  handleDelete(id, fullName);
+                                }}
+                              >
+                                Đổi
+                              </Button1>
+                            ) : (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => {
+                                  handleDelete(id, fullName);
+                                }}
+                              >
+                                Chặn
+                              </Button1>
+                            )}
 
-                                                        }
-
-
-
-                                                        {/* {status === "active" ? (
+                            {/* {status === "active" ? (
                                                             <Button1
                                                                 variant="outlined"
                                                                 onClick={() => { handleDelete(id, fullName) }}
@@ -361,10 +360,9 @@ export default function ShipperAccount() {
                                                         )
 
                                                         } */}
+                          </TableCell>
 
-                                                    </TableCell>
-
-                                                    {/* <TableCell component="th" scope="row" padding="none">
+                          {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack
                                                             direction="row"
                                                             alignItems="center"
@@ -388,55 +386,53 @@ export default function ShipperAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-                                                    <TableCell>
-                                                        {decoded.role === "admin" && (
+                          <TableCell>
+                            {decoded.role === "admin" && (
+                              <Button1
+                                variant="outlined"
+                                display="TableCell"
+                                component={RouterLink}
+                                to={`${location.pathname}/updatestation/${id}`}
+                              >
+                                Cập nhập
+                              </Button1>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
 
-                                                            <Button1
-                                                                variant="outlined"
-                                                                display="TableCell"
-                                                                component={RouterLink}
-                                                                to={`${location.pathname}/updatestation/${id}`}
+                {isStationNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
 
-                                                            >
-                                                                Cập nhập
-                                                            </Button1>
-                                                        )}
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                </TableBody>
-
-                                {isStationNotFound && (
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                <SearchNotFound searchQuery={filterName} />
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                )}
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
-
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 20]}
-                        component="div"
-                        count={station.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        // fix languge in footer tables
-                        labelRowsPerPage={"Số hàng trên một trang"}
-                        labelDisplayedRows={({ from, to, count }) => {
-                            return "" + from + "-" + to + " của " + count;
-                        }}
-                    />
-                </Card>
-            </Container>
-            {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
-    );
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20]}
+            component="div"
+            count={station.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
+          />
+        </Card>
+      </Container>
+      {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
+    </Page>
+  );
 }

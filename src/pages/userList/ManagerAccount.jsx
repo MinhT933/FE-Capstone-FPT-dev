@@ -215,7 +215,7 @@ export default function ManagerAccount() {
   }));
 
   return (
-    <Page title="Trạm">
+    <Page title="Manager">
       <Container>
         <Stack
           direction="row"

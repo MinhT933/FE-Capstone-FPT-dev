@@ -202,15 +202,15 @@ const navConfigKichen = [
   },
 
   {
-    title: "Bếp quản lí Người giao hàng",
+    title: "Người giao hàng",
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
   },
-  {
-    title: "Bếp xem thông tin bếp",
-    path: "/dashboard/kitchen/kitchenprofile",
-    icon: getIcon("mdi:card-account-details-star-outline"),
-  },
+  // {
+  //   title: "Bếp xem thông tin bếp",
+  //   path: "/dashboard/kitchen/kitchenprofile",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
 ];
 const navConfig = [
   {
@@ -304,16 +304,16 @@ const navConfig = [
   //   path: "/dashboard/kitchen/kitchen",
   //   icon: getIcon("mdi:card-account-details-star-outline"),
   // },
-  {
-    title: "Bếp xem thông tin bếp",
-    path: "/dashboard/kitchen/kitchenprofile",
-    icon: getIcon("mdi:card-account-details-star-outline"),
-  },
-  {
-    title: "Bếp quản lí Người giao hàng",
-    path: "/dashboard/kitchen/kitchenshipper",
-    icon: getIcon("carbon:delivery"),
-  },
+  // {
+  //   title: "Bếp xem thông tin bếp",
+  //   path: "/dashboard/kitchen/kitchenprofile",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
+  // {
+  //   title: "Bếp quản lí Người giao hàng",
+  //   path: "/dashboard/kitchen/kitchenshipper",
+  //   icon: getIcon("carbon:delivery"),
+  // },
 ];
 const exportedObject = {
   navConfig,

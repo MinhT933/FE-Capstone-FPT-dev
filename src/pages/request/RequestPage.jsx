@@ -46,7 +46,7 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  // { id: "images", name: "Hình", alignRight: false },
+  { id: "images", name: "", alignRight: false },
   { id: "name", label: "Lí do", alignRight: false },
   { id: "price", label: "Sô lượng tài xế", alignRight: false },
   { id: "quality", label: "Lí do từ chối", alignRight: false },
@@ -139,14 +139,27 @@ export default function RequestPage() {
     return state.userReducer.listRequests;
   });
 
-  console.log(request.status);
+  const getOptions = () => [
+    { id: "waiting", title: "Đang chờ" },
+    { id: "pending", title: "Chờ duyệt" },
+    { id: "reject", title: "Từ chối" },
+    { id: "processed", title: "Hoàng thành" },
+    { id: "", title: "All" },
+  ];
 
   const handleAccept = (id) => {
     API("PUT", URL_API + `/request/${id}`, null, token).then((res) => {
       try {
         dispatch(callAPIgetListReq(token));
+        CustomizedToast({
+          message: `Đã chuyển trạng thái thông công`,
+          type: "SUCCESS",
+        });
       } catch (err) {
-        alert("Ban fail" + id);
+        CustomizedToast({
+          message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
+          type: "ERROR",
+        });
       }
     }, []);
   };
@@ -212,7 +225,7 @@ export default function RequestPage() {
   const isUserNotFound = filterFood.length === 0;
 
   return (
-    <Page title="food">
+    <Page title="Quản lí yêu cầu">
       <Container>
         <Stack
           direction="row"
@@ -239,6 +252,7 @@ export default function RequestPage() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -278,33 +292,47 @@ export default function RequestPage() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell>
-                            <Typography variant="subtitle2" noWrap>
-                              {reason}
-                            </Typography>
-                          </TableCell>
+                          <TableCell align="left">{""}</TableCell>
+                          <TableCell align="left">{reason}</TableCell>
                           <TableCell align="left">{numberReq}</TableCell>
                           <TableCell align="left">{rejectReason}</TableCell>
                           <TableCell align="left">
                             {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">
-                            <Label
+                            {/* <Label
                               variant="ghost"
                               color={
                                 (status === "reject" && "error") ||
                                 (status === "pending" && "warning") ||
-                                // (status === "" && "warning") ||
+                                (status === "waiting" && "secondary") ||
                                 "success"
                               }
                             >
                               {status}
-                            </Label>
+                            </Label> */}
+                            <div>
+                              {status === "reject" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Từ chối</Label>
+                              )}
+                              {status === "waiting" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="warning">Đang chờ</Label>
+                              )}
+                              {status === "pending" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="secondary">Chờ duyệt</Label>
+                              )}
+                              {status === "processed" && (
+                                <Label color="success">Hoàng thành</Label>
+                              )}
+                            </div>
                           </TableCell>
                           <TableCell align="left">
                             <ButtonCustomize
                               nameButton={
-                                status === "watting" ? "Chờ duyệt" : "duyệt"
+                                status === "waiting" ? "Chờ xử lí" : "duyệt"
                               }
                               onClick={() => {
                                 status !== "reject"

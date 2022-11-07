@@ -42,16 +42,18 @@ import Page from "../../components/setPage/Page";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import jwt_decode from "jwt-decode";
 import RequestShipper from "./RequestShipper";
+import DetailShipper from "./DetailShipper";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: "image", label: "", alignRight: false },
   { id: "fullName", label: "Họ Tên", alignRight: false },
-  { id: "id", label: "Mã tài xế", alignRight: false },
+  //   { id: "id", label: "Mã tài xế", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
   { id: "noPlate", label: "Biển số xe", alignRight: false },
   { id: "vehicleType", label: "Loại xe", alignRight: false },
-  { id: "email", label: "Tên tài khoản", alignRight: false },
+  //   { id: "email", label: "Tên tài khoản", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
@@ -135,11 +137,11 @@ export default function KitchenList() {
     return state.userReducer.shipPerOfKitchen;
   });
 
-  console.log(shipperofkichen);
-
   //CallAPIgetListShipper=====================================
 
   const [Open, setOpen] = useState(false);
+  const [OpenDetail, setOpenDetail] = useState(false);
+  const [valueId, setValueId] = useState();
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -216,6 +218,11 @@ export default function KitchenList() {
     display: "center",
   }));
 
+  const handleDetails = (id) => {
+    setOpenDetail(true);
+    setValueId(id);
+  };
+
   const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
@@ -262,17 +269,17 @@ export default function KitchenList() {
                       const {
                         id,
                         // avatarUrl,
-                        // fullName,
+                        account,
                         // phone,
                         noPlate,
                         vehicleType,
                         status,
-                        email,
+                        // email,
                         // kitchenID,
                       } = row;
 
-                      console.log(row);
-                      //   const isItemSelected = selected.indexOf(fullName) !== -1;
+                      const isItemSelected =
+                        selected.indexOf(account.profile.fullName) !== -1;
 
                       return (
                         <TableRow
@@ -280,30 +287,25 @@ export default function KitchenList() {
                           key={id}
                           tabIndex={-1}
                           role="checkbox"
-                          //   selected={isItemSelected}
-                          //   aria-checked={isItemSelected}
+                          onClick={() => {
+                            handleDetails(id);
+                          }}
                         >
-                          {/* <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                            >
-                              <Avatar alt={fullName} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {row.profile.fullName}
-                              </Typography>
-                            </Stack>
-                          </TableCell> */}
-                          <TableCell align="left">{id}</TableCell>
-                          <TableCell align="left">
-                            {row.account.phone}
+                          <TableCell>
+                            <Avatar
+                              alt={account.profile.fullName}
+                              src={account.profile.avatar}
+                            />
                           </TableCell>
+                          <TableCell align="left">
+                            {account.profile.fullName}
+                          </TableCell>
+                          <TableCell align="left">{account.phone}</TableCell>
                           <TableCell align="left">{noPlate}</TableCell>
                           <TableCell align="left">{vehicleType}</TableCell>
-                          <TableCell align="left">
+                          {/* <TableCell align="left">
                             {row.profile.email}
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell align="left">
                             <Label
                               variant="ghost"
@@ -348,6 +350,11 @@ export default function KitchenList() {
         </Card>
       </Container>
       <RequestShipper Open={Open} setOpen={setOpen} />
+      <DetailShipper
+        OpenDetail={OpenDetail}
+        setOpenDetail={setOpenDetail}
+        id={valueId}
+      />
     </Page>
   );
 }

@@ -40,7 +40,6 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 
-
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -48,8 +47,7 @@ const TABLE_HEAD = [
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
   { id: "type", label: "Phân loại", alignRight: false },
-
-  { id: "createdate", label: "Ngày thêm", alignRight: false },
+  { id: "createdAt", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
@@ -101,7 +99,7 @@ export default function Food() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("createdAt");
 
   const [filterName, setFilterName] = useState("");
 
@@ -136,6 +134,11 @@ export default function Food() {
   }
   const location = useLocation();
 
+  const getOptions = () => [
+    { id: "active", title: "Active" },
+    { id: "inActive", title: "InActive" },
+    { id: "", title: "All" },
+  ];
   React.useEffect(() => {
     const callAPI = async () => {
       await dispatch(callAPIgetListFood(token));
@@ -219,7 +222,7 @@ export default function Food() {
   const isUserNotFound = filterFood.length === 0;
 
   return (
-    <Page title="food">
+    <Page title="Thức ăn">
       <Container>
         <Stack
           direction="row"
@@ -246,10 +249,11 @@ export default function Food() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1200 }}>
+            <TableContainer sx={{ minWidth: 1400 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -307,14 +311,27 @@ export default function Food() {
                             {new Date(updatedAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">
-                            <Label
+                            {/* <Label
                               variant="ghost"
                               color={
                                 (status === "inActive" && "error") || "success"
                               }
                             >
                               {status}
-                            </Label>
+                            </Label> */}
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Không hoạt động</Label>
+                              )}
+                              {status === "waiting" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="warning">Đang chờ</Label>
+                              )}
+                              {status === "active" && (
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                            </div>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
 

@@ -21,6 +21,7 @@ export default function Select(props) {
     lableid,
     disabled,
     ids,
+    marginRight,
   } = props;
 
   return (
@@ -28,6 +29,7 @@ export default function Select(props) {
       sx={{
         display: "grid",
         gridTemplateColumns: { sm: "6fr 1fr" },
+        marginRight: marginRight,
       }}
     >
       <InputLabel id={id}>{label}</InputLabel>

@@ -215,7 +215,7 @@ export default function AdminAccount() {
   }));
 
   return (
-    <Page title="Trạm">
+    <Page title="Admin">
       <Container>
         <Stack
           direction="row"

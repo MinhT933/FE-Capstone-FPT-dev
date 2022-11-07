@@ -45,6 +45,28 @@ export const callAPIgetListFood = (token) => {
   };
 };
 
+export const callAPIgetListFoodByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/foods/byStatus?statusFood=${status}`,
+        null,
+        token
+      );
+
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_FOOD,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 export const callAPIgetListFoodActive = (token) => {
   return async (dispatch) => {
     try {
@@ -89,6 +111,30 @@ export const callAPIGetListPackage = (token) => {
   };
 };
 
+export const callAPIGetListPack = async (token, status) => {
+  return async (dispatch) => {
+    try {
+      console.log("jhjahah");
+      const res = await API(
+        "GET",
+        URL_API + `/packages/byStatus?statusPackage=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PACKAGE_FOOD,
+          payload: res.data.result,
+        })
+      );
+      // console.log(res.data.result);
+    } catch (err) {
+      console.log(err);
+      // console.log("hehehe");
+    }
+  };
+};
+
 //----------------------------------------------------------------
 export const callAPIgetListCategory = (token) => {
   return async (dispatch) => {
@@ -122,11 +168,48 @@ export const callAPIgetListStation = (token) => {
   };
 };
 
+export const callAPIgetShipperByID = (token, id) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + `/shippers/${id}`, null, token);
+      dispatch(
+        createAction({
+          type: PathAction.GET_SHIPPER_BY_ID,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 //----------------------------------------------------------------
 export const callAPIgetGroupFood = (token) => {
   return async (dispatch) => {
     try {
       const res = await API("GET", URL_API + "/food-groups", null, token);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_GROUP_FOOD,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+export const callAPIgetGroupFoodByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/food-groups/byStatus?statusFG=${status}`,
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_LIST_GROUP_FOOD,
@@ -283,7 +366,7 @@ export const LoginAthen = (user, navigate) => {
         })
       );
       if (detoken.role === "admin") {
-        navigate("/dashboard/admin/package");
+        navigate("/dashboard/admin/app");
       } else if (detoken.role === "manager") {
         navigate("/dashboard/manager/food");
       } else if (detoken.role === "kitchen") {
@@ -355,13 +438,6 @@ export const LogOut = (token, navigate) => {
   };
 };
 
-export const refreshToken = (accessToken) => (dispatch) => {
-  dispatch({
-    type: PathAction.REFRESH_TOKEN,
-    payload: accessToken,
-  });
-};
-
 export const callAPIgetListShipper = (token) => {
   return async (dispatch) => {
     try {
@@ -430,6 +506,27 @@ export const callAPIgetListReq = (token) => {
     }
   };
 };
+export const callAPIgetListReqByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/request/status?status=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_REQ,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 //----------------------------------------------------------------
 export const callAPIKitchenGetListOrder = () => {
   return async (dispatch) => {

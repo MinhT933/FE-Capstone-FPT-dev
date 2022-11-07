@@ -55,6 +55,7 @@ const initialState = {
   profiles: [],
   listRequests: [],
   shipPerOfKitchen: [],
+  shipPerByID: [],
 };
 
 // const initialStateAuthen = admin
@@ -169,6 +170,8 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_LIST_SHIPPER_OF_KITCHEN:
       state.shipPerOfKitchen = payload;
       break;
+    case PathAction.GET_SHIPPER_BY_ID:
+      state.shipPerByID = payload;
     default:
   }
   return { ...state };
