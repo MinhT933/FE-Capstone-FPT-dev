@@ -28,7 +28,7 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { Stack } from "@mui/system";
 import dayjs from "dayjs";
 import DateTime from "./../../components/Control/DateTime";
-import  jwt_decode  from "jwt-decode";
+import jwt_decode from "jwt-decode";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -60,14 +60,6 @@ export default function EditPackage() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
 
   let { id } = useParams();
 
@@ -105,7 +97,7 @@ export default function EditPackage() {
     API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
       setInput(res.data.result.image);
       setPackageItem(res.data.result.packageItem);
-      console.log(res);
+      console.log(res.data.result.packageItem);
       formik.setFieldValue("image", res.data.result.image);
       formik.setFieldValue("price", res.data.result.price);
       formik.setFieldValue("totalStation", res.data.result.totalStation);
@@ -119,9 +111,9 @@ export default function EditPackage() {
       formik.setFieldValue("timeFrameID", res.data.result.timeFrame.id);
       handClickTimeFrame(res.data.result.timeFrame.id);
       formik.setFieldValue("categoryID", res.data.result.packageCategory.id);
-      // console.log(res.data.result.packageItem);
+      // console.log(res.data.result.packageCategory.id);
     });
-  }, [dispatch]);
+  }, [dispatch, token, id]);
 
   const timeframe = useSelector((state) => {
     return state.userReducer.listTimeFrame;
@@ -148,6 +140,7 @@ export default function EditPackage() {
         title: getGroupfood[i].name,
       });
     }
+    // console.log(groupFoodData);
     return groupFoodData;
   };
 
@@ -165,12 +158,9 @@ export default function EditPackage() {
     let pricearray = [];
     const a = getGroupfood.find((c) => c.id === e.target.value);
     const data = [...packageItem];
-    // console.log(data);
     const index = data.findIndex((item) => item.itemCode === count);
     data[index].foodGroup.id = a.id;
-    console.log(data[index].foodGroup.id);
-    // setValue(data[index].foodGroup.name);
-    // setPackageItem(data);
+
     API("GET", URL_API + `/food-groups/find/${a.id}`, null, token)
       .then((res) => {
         arrayfood = res.data.result.foods;
@@ -213,6 +203,7 @@ export default function EditPackage() {
     // `${a[2]}-${a[1]}-${a[0]}`
     // `0${b[2]}-${b[1]}-${b[0]}`
     onSubmit: async (values) => {
+      console.log(values);
       const a = new Date(valueEndTime).toLocaleDateString().split("/");
       const b = new Date(valueStarTime).toLocaleDateString().split("/");
       // const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
@@ -246,7 +237,6 @@ export default function EditPackage() {
         );
         const arrayPromise = [];
         for (let index = 0; index < packageItem.length; index++) {
-          console.log(packageItem[index].id);
           arrayPromise.push(
             API(
               "PUT",
@@ -358,27 +348,79 @@ export default function EditPackage() {
       });
   };
   ///==============================================
-  const [valueItem, setValueItem] = useState([]);
-  React.useEffect(() => {
-    let arrayItem = [];
-    console.log(packageItem);
-    for (let index = 0; index < packageItem.length; index++) {
-      const element = packageItem[index].foodGroup;
-      arrayItem.push(element);
-      console.log(arrayItem);
-      for (let a = 0; a < arrayItem.length; a++) {
-        const group = arrayItem[a].id;
-        // console.log(group);
-        setValueItem(group);
+  const [valueItem, setValueItem] = useState();
+
+  // React.useEffect(() => {
+  //   let arrayItem = [];
+  //   if (getGroupfood.length > 0) {
+  //     if (packageItem.length > 0) {
+  //       for (const item of packageItem) {
+  //         for (let index = 0; index < getGroupfood.length; index++) {
+  //           const element = getGroupfood[index];
+  //           // console.log(element);
+  //           if (element.id === item.foodGroup.id) {
+  //             setPackageItem(
+  //               [...packageItem].filter((hehe) => hehe.id !== item.id)
+  //             );
+  //             console.log(element.id);
+  //             setValueItem(element.id);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   for (let index = 0; index < packageItem.length; index++) {
+  //     const element = packageItem[index].foodGroup;
+  //     console.log(element);
+  //     arrayItem.push(element);
+  //     console.log(arrayItem);
+  //     let arrayId = [];
+  //     for (let a = 0; a < arrayItem.length; a++) {
+  //       const group = arrayItem[a].id;
+  //       arrayId.push(group);
+  //       setValueItem(arrayId);
+  //     }
+  //   }
+  // }, [packageItem]);
+  const handleItem = () => {
+    if (getGroupfood.length > 0) {
+      if (packageItem.length > 0) {
+        for (const item of packageItem) {
+          for (let index = 0; index < getGroupfood.length; index++) {
+            const element = getGroupfood[index];
+            // console.log(element);
+
+            if (element.id === item.foodGroup.id) {
+              setPackageItem(
+                [...packageItem].filter((hehe) => hehe.id !== item.id)
+              );
+              return element.id;
+            }
+          }
+        }
       }
     }
-  }, [packageItem]);
+  };
+  const [selectedItem, setSelectedItem] = useState();
+  // const handleItem2 = () => {
+  //   if (packageItem.length > 0) {
+  //     return packageItem.map((item, index) => {
+  //       console.log(item[index]?.id);
+  //       return <h1 key={index}>{item.itemCode}</h1>;
+  //       // console.log(item.foodGroup.name);
+  //       // return `${item[index]?.foodGroup.id}`;
+  //     });
+  //   }
+  // };
+  // console.log(groupfood);
 
   const binding = () => {
+    // console.log(handleItem());
     let array = [];
     for (let index = 0; index < bit.length; index++) {
       const element = bit[index];
       if (element === "1") {
+        // if (handleItem() !== undefined) {
         array.push(
           <Box
             sx={{
@@ -390,14 +432,15 @@ export default function EditPackage() {
               name="foodGroupID"
               label={handleLabel(index + 1)}
               width="20rem"
-              defaultValue="undefined"
-              value={valueItem}
+              // value={handleItem() !== undefined ? handleItem() : "hahah"}
+              // value={handleItem()}
               onChange={(e) => handleChangeGroupFood(e, index + 1)}
               onBlur={formik.handleBlur}
               options={getGroupFoodOptions()}
             />
           </Box>
         );
+        // }
       }
     }
     return array;
@@ -540,6 +583,7 @@ export default function EditPackage() {
                   name="startSale"
                   label="Ngày mở bán"
                   width="16rem"
+                  // disablePast
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);

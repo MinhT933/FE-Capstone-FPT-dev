@@ -28,10 +28,11 @@ import {
   UserListToolbar,
   UserMoreMenu,
 } from "../../sections/@dashboard/user";
-// mock
-// import food from "../../_mock/foodsample";
 
-import { callAPIgetListFood } from "../../redux/action/acction";
+import {
+  callAPIgetListFood,
+  callAPIgetListReq,
+} from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Iconify from "../../components/hook-form/Iconify";
@@ -39,19 +40,20 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
+import ReasionReject from "./ReasionReject";
+import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "images", name: "Hình", alignRight: false },
-  { id: "name", label: "Tên", alignRight: false },
-  { id: "price", label: "Giá", alignRight: false },
-  { id: "type", label: "Phân loại", alignRight: false },
-  { id: "createdAt", label: "Ngày thêm", alignRight: false },
-  { id: "updatedate", label: "Ngày sửa", alignRight: false },
+  { id: "images", name: "", alignRight: false },
+  { id: "name", label: "Lí do", alignRight: false },
+  { id: "price", label: "Sô lượng tài xế", alignRight: false },
+  { id: "quality", label: "Lí do từ chối", alignRight: false },
+  { id: "createdate", label: "Ngày thêm", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
-  { id: "description", label: "Mô tả", alignRight: false },
-  { id: "SetStatus", label: "Thay đổi trạng thái", alignRight: false },
+  { id: "Confrim", label: "Xác nhận ", alignRight: false },
+  { id: "Reject", label: "Từ chối", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -87,41 +89,35 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-//getICon
-const getIcon = (name) => (
-  <Iconify icon={name} width={15} height={15} color={"red"} />
-);
 
-export default function Food() {
+export default function RequestPage() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("createdAt");
+  const [orderBy, setOrderBy] = useState("name");
 
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [categoryName, setcategoryName] = useState([]);
+  const [valueId, setValueId] = useState();
 
   const dispatch = useDispatch();
 
-  //gọi trên action.js ==> accctions.js
-  //đây khởi chạy lần đầu tiên gọi thằng gọi tra gg để useEffect()
-  // theo toa hiểu  ở đây useEffect sẽ được gọi mỗi khi components thay đổi
-  // kiểu cái gì mà ko có lần đầu tiên project cũng vậy cũng có lần đầu tiên gọi api chứu
-
-  // nó lifecycle gg.com để biết thêm thông tin
-
-  // cách search một vần đề why  + 'vấn đề ' in 'thư viện or component'
-  //vd: why slectBox not working in mui
   const Navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
+
   const token = localStorage.getItem("token");
+
+  const handleReject = (id) => {
+    setOpen(true);
+    setValueId(id);
+  };
+
+  const [Open, setOpen] = useState(false);
   if (token === null) {
     Navigate("/");
   }
@@ -132,37 +128,44 @@ export default function Food() {
     // return <Navigate to="/" replace />;
     Navigate("/");
   }
-  const location = useLocation();
-
-  const getOptions = () => [
-    { id: "active", title: "Active" },
-    { id: "inActive", title: "InActive" },
-    { id: "", title: "All" },
-  ];
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIgetListFood(token));
+      dispatch(await callAPIgetListReq(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
-  const handleDelete = (id) => {
-    API("PUT", URL_API + `/foods/update-status/${id}`, null, token).then(
-      (res) => {
-        try {
-          dispatch(callAPIgetListFood(token));
-        } catch (err) {
-          alert("Ban fail" + id);
-        }
-      },
-      []
-    );
+  const request = useSelector((state) => {
+    return state.userReducer.listRequests;
+  });
+
+  const getOptions = () => [
+    { id: "waiting", title: "Đang chờ" },
+    { id: "pending", title: "Chờ duyệt" },
+    { id: "reject", title: "Từ chối" },
+    { id: "processed", title: "Hoàng thành" },
+    { id: "", title: "All" },
+  ];
+
+  const handleAccept = (id) => {
+    API("PUT", URL_API + `/request/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetListReq(token));
+        CustomizedToast({
+          message: `Đã chuyển trạng thái thông công`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        CustomizedToast({
+          message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
+          type: "ERROR",
+        });
+      }
+    }, []);
   };
 
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
-  const food = useSelector((state) => {
-    return state.userReducer.listFood;
-  });
+
   //========================================================
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -172,7 +175,7 @@ export default function Food() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = food.map((n) => n.name);
+      const newSelecteds = request.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -214,7 +217,7 @@ export default function Food() {
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - food.length) : 0;
 
   const filterFood = applySortFilter(
-    food,
+    request,
     getComparator(order, orderBy),
     filterName
   );
@@ -222,7 +225,7 @@ export default function Food() {
   const isUserNotFound = filterFood.length === 0;
 
   return (
-    <Page title="Thức ăn">
+    <Page title="Quản lí yêu cầu">
       <Container>
         <Stack
           direction="row"
@@ -253,13 +256,13 @@ export default function Food() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1400 }}>
+            <TableContainer sx={{ minWidth: 990 }}>
               <Table>
                 <UserListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={food.length}
+                  rowCount={request.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -271,17 +274,14 @@ export default function Food() {
                     .map((row) => {
                       const {
                         id,
-                        name,
-                        price,
-                        description,
-                        createdAt,
-                        updatedAt,
+                        reason,
+                        numberReq,
+                        rejectReason,
                         status,
-                        foodCategory,
-                        image,
+                        createdAt,
                       } = row;
 
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      const isItemSelected = selected.indexOf(reason) !== -1;
 
                       return (
                         <TableRow
@@ -292,66 +292,70 @@ export default function Food() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell>
-                            <Avatar alt={name} src={image} />
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">
-                            {foodCategory.name}
-                          </TableCell>
+                          <TableCell align="left">{""}</TableCell>
+                          <TableCell align="left">{reason}</TableCell>
+                          <TableCell align="left">{numberReq}</TableCell>
+                          <TableCell align="left">{rejectReason}</TableCell>
                           <TableCell align="left">
                             {new Date(createdAt).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell align="left">
-                            {new Date(updatedAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">
                             {/* <Label
                               variant="ghost"
                               color={
-                                (status === "inActive" && "error") || "success"
+                                (status === "reject" && "error") ||
+                                (status === "pending" && "warning") ||
+                                (status === "waiting" && "secondary") ||
+                                "success"
                               }
                             >
                               {status}
                             </Label> */}
                             <div>
-                              {status === "inActive" && (
+                              {status === "reject" && (
                                 // <Alert severity="warning">inActive</Alert>
-                                <Label color="error">Không hoạt động</Label>
+                                <Label color="error">Từ chối</Label>
                               )}
                               {status === "waiting" && (
                                 // <Alert severity="info">waiting</Alert>
                                 <Label color="warning">Đang chờ</Label>
                               )}
-                              {status === "active" && (
-                                <Label color="success">Hoạt động</Label>
+                              {status === "pending" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="secondary">Chờ duyệt</Label>
+                              )}
+                              {status === "processed" && (
+                                <Label color="success">Hoàng thành</Label>
                               )}
                             </div>
                           </TableCell>
-                          <TableCell align="left">{description}</TableCell>
-
                           <TableCell align="left">
-                            {decoded.role === "manager" && (
-                              <ButtonCustomize
-                                nameButton="Cập nhập"
-                                onClick={() => handleDelete(id, token)}
-                              />
-                            )}
+                            <ButtonCustomize
+                              nameButton={
+                                status === "waiting" ? "Chờ xử lí" : "duyệt"
+                              }
+                              onClick={() => {
+                                status !== "reject"
+                                  ? handleAccept(id, token)
+                                  : CustomizedToast({
+                                      message: `Đã Từ chối không thể đồng ý`,
+                                      type: "ERROR",
+                                    });
+                              }}
+                            />
                           </TableCell>
 
-                          <TableCell align="right">
-                            {/* <UserMoreMenu id={id} /> */}
-                          </TableCell>
                           <TableCell align="right">
                             <ButtonCustomize
-                              nameButton="Chi Tiết"
-                              component={RouterLink}
-                              to={`${location.pathname}/${id}`}
+                              nameButton="Từ chối"
+                              onClick={() => {
+                                status === "processed"
+                                  ? CustomizedToast({
+                                      message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
+                                      type: "ERROR",
+                                    })
+                                  : handleReject(id, token);
+                              }}
                             />
                           </TableCell>
                         </TableRow>
@@ -373,7 +377,7 @@ export default function Food() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={food.length}
+            count={request.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -386,6 +390,7 @@ export default function Food() {
           />
         </Card>
       </Container>
+      <ReasionReject Open={Open} setOpen={setOpen} id={valueId} />
     </Page>
   );
 }

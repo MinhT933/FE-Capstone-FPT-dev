@@ -5,19 +5,19 @@ import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
-    Card,
-    Table,
-    Stack,
-    // Avatar,
-    Button,
-    Checkbox,
-    TableRow,
-    TableBody,
-    TableCell,
-    Container,
-    Typography,
-    TableContainer,
-    TablePagination,
+  Card,
+  Table,
+  Stack,
+  // Avatar,
+  Button,
+  Checkbox,
+  TableRow,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  TableContainer,
+  TablePagination,
 } from "@mui/material";
 // components
 import Label from "../../components/label/label";
@@ -29,7 +29,11 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { callAPIgetAccountCustomer, callAPIgetAccountShipper, callAPIgetListStation } from "../../redux/action/acction";
+import {
+  callAPIgetAccountCustomer,
+  callAPIgetAccountShipper,
+  callAPIgetListStation,
+} from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
@@ -39,58 +43,55 @@ import { Avatar } from "@mui/joy";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    { id: "", label: "", alignRight: false },
-    { id: "fullName", label: "Họ tên", alignRight: false },
-    { id: "email", label: "Email", alignRight: false },
-    { id: "phone", label: "Điện thoại", alignRight: false },
+  { id: "", label: "", alignRight: false },
+  { id: "fullName", label: "Họ tên", alignRight: false },
+  { id: "email", label: "Email", alignRight: false },
+  { id: "phone", label: "Điện thoại", alignRight: false },
 
-    { id: "status", label: "Trạng thái", alignRight: false },
-    { label: "Thay đổi trạng thái", alignRight: false },
-    { id: "" },
+  { id: "status", label: "Trạng thái", alignRight: false },
+  { label: "Thay đổi trạng thái", alignRight: false },
+  { id: "" },
 ];
 
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
 }
 
 function getComparator(order, orderBy) {
-    return order === "desc"
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    if (query) {
-        return filter(
-            array,
-            (_stations) =>
-                _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
-        );
-    }
-    return stabilizedThis.map((el) => el[0]);
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(
+      array,
+      (_stations) =>
+        _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
+  }
+  return stabilizedThis.map((el) => el[0]);
 }
 
 export default function ShipperAccount() {
-    const [OpenPopUp, SetOpenPopUp] = useState(false);
-    const [page, setPage] = useState(0);
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
+  const [page, setPage] = useState(0);
 
-    const [order, setOrder] = useState("asc");
-
-    const [selected, setSelected] = useState([]);
 
     const [orderBy, setOrderBy] = useState("fullName");
 
@@ -145,56 +146,38 @@ export default function ShipperAccount() {
         );
     };
 
-    const station = useSelector((state) => {
-        return state.userReducer.accountShipper;
-    });
-    //CALL API=====================================================
 
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === "asc";
-        setOrder(isAsc ? "desc" : "asc");
-        setOrderBy(property);
+  const [selected, setSelected] = useState([]);
+
+  const [orderBy, setOrderBy] = useState("fullName");
+
+  const [filterName, setFilterName] = useState("");
+
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  //CALL API====================================================
+  const location = useLocation();
+
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  // const decoded = jwt_decode(token);
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetAccountShipper(token));
     };
 
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelecteds = station.map((n) => n.fullName);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
-    };
-
-    const handleClick = (event, fullName) => {
-        const selectedIndex = selected.indexOf(fullName);
-        let newSelected = [];
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, fullName);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1)
-            );
-        }
-        setSelected(newSelected);
-    };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const handleFilterByName = (event) => {
-        setFilterName(event.target.value);
-    };
 
     const filteredStations = applySortFilter(
         station,
@@ -281,15 +264,14 @@ export default function ShipperAccount() {
                                                             checked={isItemSelected}
                                                             onChange={(event) => handleClick(event, fullName)}
                                                         /> */}
-                                                    </TableCell>
+                          </TableCell>
 
+                          {/* <TableCell align="left">{id}</TableCell> */}
+                          <TableCell align="left">
+                            {row.profile.fullName}
+                          </TableCell>
 
-
-                                                    {/* <TableCell align="left">{id}</TableCell> */}
-                                                    <TableCell align="left">{row.profile.fullName}</TableCell>
-
-
-                                                    {/* <TableCell component="th" scope="row" padding="none">
+                          {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack
                                                             direction="row"
                                                             alignItems="center"
@@ -301,6 +283,7 @@ export default function ShipperAccount() {
                                                             </Typography>
                                                         </Stack>
                                                     </TableCell> */}
+
 
                                                     <TableCell align="left">{row.profile.email}</TableCell>
                                                     <TableCell align="left">{phone}</TableCell>
@@ -338,6 +321,7 @@ export default function ShipperAccount() {
 
 
                                                         {/* {status === "active" ? (
+
                                                             <Button1
                                                                 variant="outlined"
                                                                 onClick={() => { handleDelete(id, fullName) }}
@@ -361,10 +345,9 @@ export default function ShipperAccount() {
                                                         )
 
                                                         } */}
+                          </TableCell>
 
-                                                    </TableCell>
-
-                                                    {/* <TableCell component="th" scope="row" padding="none">
+                          {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack
                                                             direction="row"
                                                             alignItems="center"
@@ -439,4 +422,5 @@ export default function ShipperAccount() {
             {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
         </Page>
     );
+
 }

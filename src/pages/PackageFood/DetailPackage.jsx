@@ -114,7 +114,7 @@ export default function DetailPackage(props) {
       formik.setFieldValue("categoryID", res.data.result.packageCategory.id);
       setPackageItems(res.data.result?.packageItem);
     });
-  }, [dispatch, id, token, handClickTimeFrame]);
+  }, [dispatch, id, token, handClickTimeFrame ]);
 
   const getGroupfood = useSelector((state) => {
     return state.userReducer.listGroupFood;

@@ -40,7 +40,6 @@ const initialState = {
   listShipper: [],
   shipper: [],
 
-
   accountCustomer: [],
   accountAdmin: [],
   accountManager: [],
@@ -57,6 +56,9 @@ const initialState = {
   listCategoryPackage: [],
   listFoodActive: [],
   profiles: [],
+  listRequests: [],
+  shipPerOfKitchen: [],
+  shipPerByID: [],
 };
 
 // const initialStateAuthen = admin
@@ -166,6 +168,14 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_PROFILE:
       state.profiles = payload;
       break;
+    case PathAction.GET_LIST_REQ:
+      state.listRequests = payload;
+      break;
+    case PathAction.GET_LIST_SHIPPER_OF_KITCHEN:
+      state.shipPerOfKitchen = payload;
+      break;
+    case PathAction.GET_SHIPPER_BY_ID:
+      state.shipPerByID = payload;
     default:
   }
   return { ...state };

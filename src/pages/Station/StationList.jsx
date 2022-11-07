@@ -40,7 +40,10 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "", label: "", alignRight: false },
+
+  { id: "id", label: "", alignRight: false },
+  // { id: "id", label: "Mã trạm", alignRight: false },
+
   { id: "name", label: "Địa điểm", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Số điện thoại", alignRight: false },
@@ -241,7 +244,7 @@ export default function StationList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1000 }}>
+            <TableContainer sx={{ minWidth: 1200 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -272,17 +275,14 @@ export default function StationList() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
+                          // role="checkbox"
+                          // selected={isItemSelected}
+                          // aria-checked={isItemSelected}
+                         
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            /> */}
-                          </TableCell>
-                          {/* <TableCell align="left">{id}</TableCell> */}
+
+                          <TableCell align="left">{""}</TableCell>
+
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{phone}</TableCell>

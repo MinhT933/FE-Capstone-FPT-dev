@@ -4,24 +4,27 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
-    Card,
-    Table,
-    Stack,
-    Avatar,
-    Button,
-    Checkbox,
-    TableRow,
-    TableBody,
-    TableCell,
-    Container,
-    Typography,
-    TableContainer,
-    TablePagination,
+  Card,
+  Table,
+  Stack,
+  Avatar,
+  Button,
+  Checkbox,
+  TableRow,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  TableContainer,
+  TablePagination,
 } from "@mui/material";
 
 //callAPI
 import * as React from "react";
-import { callAPIgetListShipper } from "../../redux/action/acction";
+import {
+  callAPIgetListShipper,
+  callAPIgetShipperOfKitchen,
+} from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Iconify from "../../components/hook-form/Iconify";
@@ -37,355 +40,321 @@ import Page from "../../components/setPage/Page";
 // mock
 // import KITCHENSHIPPERLIST from "./KitchenShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import  jwt_decode  from 'jwt-decode';
+import jwt_decode from "jwt-decode";
+import RequestShipper from "./RequestShipper";
+import DetailShipper from "./DetailShipper";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-
-    { id: "fullName", label: "Họ Tên", alignRight: false },
-    { id: "id", label: "Mã tài xế", alignRight: false },
-    { id: "phone", label: "Điện thoại", alignRight: false },
-    { id: "noPlate", label: "Biển số xe", alignRight: false },
-    { id: "vehicleType", label: "Loại xe", alignRight: false },
-    { id: "email", label: "Tên tài khoản", alignRight: false },
-    // { id: "kitchenID", label: "Mã nhà bếp", alignRight: false },
-    { id: "status", label: "Trạng thái", alignRight: false },
-    { id: "" },
+  { id: "image", label: "", alignRight: false },
+  { id: "fullName", label: "Họ Tên", alignRight: false },
+  //   { id: "id", label: "Mã tài xế", alignRight: false },
+  { id: "phone", label: "Điện thoại", alignRight: false },
+  { id: "noPlate", label: "Biển số xe", alignRight: false },
+  { id: "vehicleType", label: "Loại xe", alignRight: false },
+  //   { id: "email", label: "Tên tài khoản", alignRight: false },
+  { id: "status", label: "Trạng thái", alignRight: false },
+  { id: "" },
 ];
 
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
 }
 
 function getComparator(order, orderBy) {
-    return order === "desc"
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    if (query) {
-        return filter(
-            array,
-            (_kitchen) => _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
-        );
-    }
-    return stabilizedThis.map((el) => el[0]);
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(
+      array,
+      (_kitchen) =>
+        _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
+  }
+  return stabilizedThis.map((el) => el[0]);
 }
 
 export default function KitchenList() {
+  //CallAPIgetListShipper=====================================
+  const dispatch = useDispatch();
+  //     React.useEffect(() => {
+  //       const callAPI = async () => {
+  //         await dispatch(callAPIgetListShipper());
+  //       };
+  //       callAPI();
+  //     }, [dispatch]);
 
-    //CallAPIgetListShipper=====================================
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-        const callAPI = async () => {
-            await dispatch(callAPIgetListShipper());
-        };
-        callAPI();
-    }, [dispatch]);
+  //     const handleDelete = (id) => {
+  //       API("PUT", URL_API + `/shippers/update-status/${id}`).then((res) => {
+  //         try {
+  //           dispatch(callAPIgetListShipper());
+  //         } catch (err) {
+  //           alert("ban faild " + id);
+  //         }
+  //       }, []);
+  //     };
 
-    const handleDelete = (id) => {
-        API("PUT", URL_API + `/shippers/update-status/${id}`).then((res) => {
-            try {
-                dispatch(callAPIgetListShipper());
-            } catch (err) {
-                alert("ban faild " + id);
-            }
-        }, []);
-    };
+  // const token = localStorage.getItem("token");
 
-    // const token = localStorage.getItem("token");
-    const Navigate = useNavigate();
+  const profiles = useSelector((state) => {
+    return state.userReducer.profiles;
+  });
+
+  const idKitchen = profiles.id;
+  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-    const shipper = useSelector((state) => {
-        return state.userReducer.listShipper;
-    });
-    //CallAPIgetListShipper=====================================
 
-    const [OpenPopUp, SetOpenPopUp] = useState(false);
-    const [page, setPage] = useState(0);
-
-    const [order, setOrder] = useState("asc");
-
-    const [selected, setSelected] = useState([]);
-
-    const [orderBy, setOrderBy] = useState("fullName");
-
-    const [filterName, setFilterName] = useState("");
-
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === "asc";
-        setOrder(isAsc ? "desc" : "asc");
-        setOrderBy(property);
+  React.useEffect(() => {
+    const getfoodByFoodGroupId = async () => {
+      dispatch(await callAPIgetShipperOfKitchen(token, idKitchen));
     };
+    getfoodByFoodGroupId();
+  }, [dispatch, idKitchen, token]);
 
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelecteds = shipper.map((n) => n.fullName);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
-    };
+  const shipperofkichen = useSelector((state) => {
+    return state.userReducer.shipPerOfKitchen;
+  });
 
-    const handleClick = (event, fullName) => {
-        const selectedIndex = selected.indexOf(fullName);
-        let newSelected = [];
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, fullName);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1)
-            );
-        }
-        setSelected(newSelected);
-    };
+  //CallAPIgetListShipper=====================================
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+  const [Open, setOpen] = useState(false);
+  const [OpenDetail, setOpenDetail] = useState(false);
+  const [valueId, setValueId] = useState();
+  const [page, setPage] = useState(0);
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
+  const [order, setOrder] = useState("asc");
 
-    const handleFilterByName = (event) => {
-        setFilterName(event.target.value);
-    };
+  const [selected, setSelected] = useState([]);
 
-    // const emptyRows =
-    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - shipper.length) : 0;
+  const [orderBy, setOrderBy] = useState("fullName");
 
-    const filteredKitchen = applySortFilter(
-        shipper,
-        getComparator(order, orderBy),
-        filterName
-    );
-    //setColor button
-    const ColorButton = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC32"),
-        backgroundColor: "#FFCC33",
-        "&:hover": {
-            backgroundColor: "#ffee32",
-        },
-        display: "center",
-    }));
+  const [filterName, setFilterName] = useState("");
 
-    const Button1 = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC33"),
-        backgroundColor: "#FFCC33",
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-        // display: "center"
-    }));;
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
-    const isKitchenNotFound = filteredKitchen.length === 0;
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = shipperofkichen.map((n) => n.fullName);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
 
-    return (
-        <Page title="User">
-            <Container>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={5}
-                >
-                    <Typography variant="h4" gutterBottom>
-                        {/* User */}
-                    </Typography>
-                    {/* <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/admin/newshipper"
+  const handleClick = (event, fullName) => {
+    const selectedIndex = selected.indexOf(fullName);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, fullName);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
 
-                    >
-                        Thêm tài xế
-                    </ColorButton> */}
-                    <ColorButton
-                        variant="contained"
-                        component={RouterLink}
-                        to="/dashboard/kitchen/requestshipper"
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-                    >
-                        Yêu cầu thêm tài xế
-                    </ColorButton>
-                </Stack>
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-                <Card>
-                    <UserListToolbar
-                        numSelected={selected.length}
-                        filterName={filterName}
-                        onFilterName={handleFilterByName}
-                    />
+  const handleFilterByName = (event) => {
+    setFilterName(event.target.value);
+  };
 
-                    <Scrollbar>
-                        <TableContainer sx={{ minWidth: 800 }}>
-                            <Table>
-                                <UserListHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    headLabel={TABLE_HEAD}
-                                    rowCount={shipper.length}
-                                    numSelected={selected.length}
-                                    onRequestSort={handleRequestSort}
-                                    onSelectAllClick={handleSelectAllClick}
-                                />
-                                <TableBody>
-                                    {filteredKitchen
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row) => {
-                                            const {
-                                                id,
-                                                avatarUrl,
-                                                fullName,
-                                                phone,
-                                                noPlate,
-                                                vehicleType,
-                                                status,
-                                                email,
-                                                // kitchenID,
+  // const emptyRows =
+  //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - shipper.length) : 0;
 
-                                            } = row;
+  const filteredKitchen = applySortFilter(
+    shipperofkichen,
+    getComparator(order, orderBy),
+    filterName
+  );
+  //setColor button
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC32"),
+    backgroundColor: "#FFCC33",
+    "&:hover": {
+      backgroundColor: "#ffee32",
+    },
+    display: "center",
+  }));
 
-                                            console.log(row);
-                                            const isItemSelected = selected.indexOf(fullName) !== -1;
+  const handleDetails = (id) => {
+    setOpenDetail(true);
+    setValueId(id);
+  };
 
-                                            return (
-                                                <TableRow
-                                                    hover
-                                                    key={id}
-                                                    tabIndex={-1}
-                                                    role="checkbox"
-                                                    selected={isItemSelected}
-                                                    aria-checked={isItemSelected}
-                                                >
-                                                    <TableCell padding="checkbox">
-                                                        <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        />
-                                                    </TableCell>
+  const isKitchenNotFound = filteredKitchen.length === 0;
 
-                                                    <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar alt={fullName} src={avatarUrl} />
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {row.profile.fullName}
-                                                            </Typography>
-                                                        </Stack>
-                                                    </TableCell>
-                                                    <TableCell align="left">{id}</TableCell>
-                                                    {/* <TableCell align="left">{fullName}</TableCell> */}
+  return (
+    <Page title="User">
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h4" gutterBottom>
+            {/* User */}
+          </Typography>
 
-                                                    <TableCell align="left">{row.account.phone}</TableCell>
-                                                    <TableCell align="left">{noPlate}</TableCell>
-                                                    <TableCell align="left">{vehicleType}</TableCell>
-                                                    <TableCell align="left">{row.profile.email}</TableCell>
-                                                    {/* <TableCell align="left">{kitchenID}</TableCell> */}
-                                                    <TableCell align="left">
-                                                        <Label
-                                                            variant="ghost"
-                                                            color={
-                                                                (status === "Closed" && "error") || "success"
-                                                            }
-                                                        >
-                                                            {(status)}
-                                                        </Label>
-                                                    </TableCell>
-                                                    {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
+          <ColorButton variant="contained" onClick={() => setOpen(true)}>
+            Yêu cầu thêm tài xế
+          </ColorButton>
+        </Stack>
 
-                                                    {/* <Button1 sx={{ marginTop: "7%", }}
-                                                        variant="outlined"
-                                                        // display="TableCell"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/updateshipper"
+        <Card>
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
-                                                    >
-                                                        Cập nhật
-                                                    </Button1> */}
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 800 }}>
+              <Table>
+                <UserListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={shipperofkichen.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
+                />
+                <TableBody>
+                  {filteredKitchen
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      const {
+                        id,
+                        // avatarUrl,
+                        account,
+                        // phone,
+                        noPlate,
+                        vehicleType,
+                        status,
+                        // email,
+                        // kitchenID,
+                      } = row;
 
-                                                    {/* <TableCell align="right"> */}
-                                                    {/* //props */}
-                                                    {/* <KitchenMoreMenu id={id} /> */}
-                                                    {/* </TableCell> */}
+                      const isItemSelected =
+                        selected.indexOf(account.profile.fullName) !== -1;
 
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          onClick={() => {
+                            handleDetails(id);
+                          }}
+                        >
+                          <TableCell>
+                            <Avatar
+                              alt={account.profile.fullName}
+                              src={account.profile.avatar}
+                            />
+                          </TableCell>
+                          <TableCell align="left">
+                            {account.profile.fullName}
+                          </TableCell>
+                          <TableCell align="left">{account.phone}</TableCell>
+                          <TableCell align="left">{noPlate}</TableCell>
+                          <TableCell align="left">{vehicleType}</TableCell>
+                          {/* <TableCell align="left">
+                            {row.profile.email}
+                          </TableCell> */}
+                          <TableCell align="left">
+                            <Label
+                              variant="ghost"
+                              color={
+                                (status === "Closed" && "error") || "success"
+                              }
+                            >
+                              {status}
+                            </Label>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+                {isKitchenNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
 
-                                                </TableRow>
-                                            );
-                                        })}
-                                    {/* {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
-                                        </TableRow>
-                                    )} */}
-                                </TableBody>
-
-                                {isKitchenNotFound && (
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                <SearchNotFound searchQuery={filterName} />
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                )}
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
-
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 20]}
-                        component="div"
-                        count={shipper.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        // fix languge in footer tables
-                        labelRowsPerPage={"Số hàng trên một trang"}
-                        labelDisplayedRows={({ from, to, count }) => {
-                            return "" + from + "-" + to + " của " + count;
-                        }}
-                    />
-                </Card>
-            </Container>
-            {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
-    );
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20]}
+            component="div"
+            count={shipperofkichen.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
+          />
+        </Card>
+      </Container>
+      <RequestShipper Open={Open} setOpen={setOpen} />
+      <DetailShipper
+        OpenDetail={OpenDetail}
+        setOpenDetail={setOpenDetail}
+        id={valueId}
+      />
+    </Page>
+  );
 }

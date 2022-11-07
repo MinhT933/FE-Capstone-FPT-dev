@@ -214,7 +214,7 @@ export default function UserAccount() {
   }));
 
   return (
-    <Page title="Trạm">
+    <Page title="Khách hàng">
       <Container>
         {/* <Stack
           direction="row"

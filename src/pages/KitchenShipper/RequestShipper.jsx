@@ -6,191 +6,142 @@ import { styled } from "@mui/material/styles";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
-import Iconify from '../../components/hook-form/Iconify';
-
+import Iconify from "../../components/hook-form/Iconify";
 
 import Button from "@mui/material/Button";
-import UseCreateForm from "../../components/PopUp/useForm";
-import * as UpdateService from "../../utils/UpdateService/UpdateService";
 import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
-import InputImg from './../../components/InputImg/inputImg';
+
+import { useFormik } from "formik";
 
 //time
-import dayjs from "dayjs";
-import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import Paper from "@mui/material/Paper";
-import { MarginRounded } from "@mui/icons-material";
-
-
-
-const initialValue = {
-    id: "",
-    name: "",
-    phone: "",
-    NoPlate: "",
-    VehicleType: "",
-    accountId: "",
-    kitchenID: "",
-    status: "",
-
-};
-const useStyles = styled((theme) => ({
-    pageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(9),
-    },
-}));
-
-const Status = [
-    { id: 1, title: "Đang hoạt động" },
-    { id: 2, title: "Ngưng hoạt động" },
-]
+import Dialog from "@mui/material/Dialog";
+import { useNavigate } from "react-router-dom";
+import API from "../../Axios/API/API";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import { URL_API } from "../../Axios/URL_API/URL";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import DialogContent from "@mui/material/DialogContent";
+import FormHelperText from "@mui/material/FormHelperText";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
 /// csss button
-const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC32"),
-    backgroundColor: "#FFCC32",
-    "&:hover": {
-        backgroundColor: "#ffee32",
+
+const getOptionsGroup = () => [
+  { id: "1", title: "1" },
+  { id: "2", title: "2" },
+  { id: "3", title: "3" },
+  { id: "4", title: "4" },
+];
+
+export default function RequestShipper(props) {
+  const { Open, setOpen } = props;
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const token = localStorage.getItem("token");
+
+  const Navigate = useNavigate();
+  if (token === null) {
+    Navigate("/");
+  }
+  const formik = useFormik({
+    validateOnMount: true,
+    validateOnBlur: true,
+    initialValues: {
+      reason: "",
+      numberReq: "",
     },
-    display: "center",
-}));
 
-export default function RequestShipper() {
-    const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
-    const classes = useStyles();
+    onSubmit: async (values) => {
+      const data = {
+        reason: formik.values.reason,
+        numberReq: formik.values.numberReq,
+      };
 
-
-    // gettime
-    const [value, setValueTime] = React.useState(dayjs("2014-08-18T21:11:54"));
-
-    const handleChangeTime = (newValueTime) => {
-        setValueTime(newValueTime);
-    };
-
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        ...theme.typography.body2,
-        // padding: theme.spacing(2),
-        textAlign: "left",
-        color: theme.palette.text.secondary
-    }));
-
-
-
-    return (
-
-        <Paper elevation={3} sx={{
-            padding: "2%", marginBottom: "10%", margin: "2%"
-
-            // marginTop: "2%",
-            // marginLeft: "5%",
-            // MarginRounded: "4%"
-        }}>
-            <PageHeader
-                display="left"
-                title="Yêu cầu thêm tài xế "
-                // subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
-                icon={getIcon('emojione-v1:double-exclamation-mark')}
-            />
-            <Box
-                space-around="space-around"
-                // sx={{ float: "right", width: "60%", flexGrow: 1 }}
-                display="flex"
-                justifyContent="left"
-                alignItems="left"
-            >
-                <Grid container spacing={4} columns={20}>
-                    <Grid item xs={8} marginLeft="10%">
-                        <Stack spacing={3}>
-                            <Controls.Input
-                                variant="outlined"
-                                label="Số lượng"
-                                value={values.id}
-                                onChange={handleInputChange}
-                            />
-
-                            <Controls.Input
-                                variant="outlined"
-                                label="Lí do"
-                                value={values.name}
-                                onChange={handleInputChange}
-                            />
-
-                            {/* <Controls.Input
-                                variant="outlined"
-                                label="Điện thoại"
-                                value={values.phone}
-                                onChange={handleInputChange}
-                            /> */}
-
-                            {/* <Controls.Input
-                                variant="NoPlate"
-                                label="Biển số xe"
-                                value={values.phone}
-                                onChange={handleInputChange}
-                            /> */}
-
-                            {/* <Grid item xs={6} >
-                                <Controls.Select
-                                    name="Nhóm Package"
-                                    label="Loại xe"
-                                    value={values.VehicleType}
-                                    onChange={handleInputChange}
-                                    options={UpdateService.motorcycle()}
-                                />
-                            </Grid> */}
-
-                            {/* <Controls.Input
-                                variant="outlined"
-                                label="Tên tài khoản"
-                                value={values.accountId}
-                                onChange={handleInputChange}
-                            /> */}
-                            <Controls.Input
-                                variant="outlined"
-                                label="Mã nhà bếp"
-                                value={values.kitchenID}
-                                onChange={handleInputChange}
-                            />
-
-                            {/* <Controls.RadioGroup
-                                name="Status"
-                                label="Trạng thái"
-                                value={values.status}
-                                onChange={handleInputChange}
-                                items={Status} /> */}
-
-                        </Stack>
-                    </Grid>
-                    <Grid item xs={8} display="right" marginTop="2%">
-                        <Box sx={{ float: "right", width: "40%" }}>
-                            <Paper backgroundColor='red'>
-                                <InputImg />
-                            </Paper>
-                        </Box>
-                    </Grid>
-                </Grid>
-
-            </Box>
-
-            <Box>
-                <Stack width="20%" justifyContent="center" marginLeft={"40%"} marginTop={"2%"}>
-                    <ColorButton variant="contained">Gửi yêu cầu</ColorButton>
-                </Stack>
-            </Box>
-
-        </Paper >
-
-    );
+      //gọi API để đẩy data xuống   
+      try {
+        const res = await API("POST", URL_API + "/request", data, token);
+        CustomizedToast({
+          message: `Đã gởi yêu cầu`,
+          type: "SUCCESS",
+        });
+        setOpen(false);
+        // dispatch(callAPIgetListReq(token));
+      } catch (error) {
+        CustomizedToast({
+          message: `Vui lòng xem lại thông tin`,
+          type: "ERROR",
+        });
+      }
+    },
+  });
+  return (
+    <Dialog open={Open} onClose={handleClose}>
+      <PageHeader
+        display="center"
+        title="Yêu cầu thêm tài xế "
+        subTitle="Điền đầy đủ thông tin"
+        icon={getIcon("emojione-v1:double-exclamation-mark")}
+      />
+      <DialogContent>
+        <form onSubmit={formik.handleSubmit}>
+          <Grid container spacing={1}>
+            <Grid item xs={8} marginLeft="10%">
+              <Stack spacing={2}>
+                <Controls.Input
+                  variant="outlined"
+                  label="lí do"
+                  name="reason"
+                  width="12rem"
+                  value={formik.values.reason}
+                  onChange={(event) => {
+                    formik.handleChange(event);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.reason && formik.errors.reason && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.reason}
+                  </FormHelperText>
+                )}
+                <Controls.Select
+                  variant="outlined"
+                  label="Số lượng"
+                  width="12rem"
+                  name="numberReq"
+                  value={formik.values.numberReq}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  options={getOptionsGroup()}
+                />
+                {formik.touched.numberReq && formik.errors.numberReq && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.numberReq}
+                  </FormHelperText>
+                )}
+              </Stack>
+              <ButtonCustomize
+                nameButton="Yêu cầu"
+                width="8rem"
+                marginLeft="2rem"
+                marginTop="1rem"
+                type="submit"
+              />
+            </Grid>
+          </Grid>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
 }
-
-
-
-

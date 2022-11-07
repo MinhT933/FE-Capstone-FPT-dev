@@ -1,27 +1,39 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // material
-import { styled } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import { styled } from "@mui/material/styles";
+import {
+  Toolbar,
+  Tooltip,
+  IconButton,
+  Typography,
+  OutlinedInput,
+  InputAdornment,
+} from "@mui/material";
 // component
-import Iconify from '../../../components/hook-form/Iconify';
+import Box from "@mui/material/Box";
+import Iconify from "../../../components/hook-form/Iconify";
+import { Controller } from "react-hook-form";
+import Controls from "./../../../components/Control/Controls";
+import { callAPIgetGroupFoodByStatus, callAPIgetListFoodByStatus, callAPIGetListPack, callAPIgetListReqByStatus } from "../../../redux/action/acction";
+import { useDispatch } from "react-redux";
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: "flex",
+  justifyContent: "space-between",
   padding: theme.spacing(0, 1, 0, 3),
 }));
 
 const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   width: 240,
-  transition: theme.transitions.create(['box-shadow', 'width'], {
+  transition: theme.transitions.create(["box-shadow", "width"], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
   }),
-  '&.Mui-focused': { width: 320, boxShadow: theme.customShadows.z8 },
-  '& fieldset': {
+  "&.Mui-focused": { width: 320, boxShadow: theme.customShadows.z8 },
+  "& fieldset": {
     borderWidth: `1px !important`,
     borderColor: `${theme.palette.grey[500_32]} !important`,
   },
@@ -35,13 +47,29 @@ UserListToolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+const token = localStorage.getItem("token");
+if (token === "null") {
+}
+
+export default function UserListToolbar({
+  numSelected,
+  filterName,
+  onFilterName,
+  options,
+}) {
+  const dispatch = useDispatch();
+  const handleChange = async (event) => {
+    dispatch(await callAPIGetListPack(token, event.target.value));
+    dispatch(await callAPIgetListFoodByStatus(token, event.target.value));
+    dispatch (await callAPIgetGroupFoodByStatus(token,event.target.value));
+    dispatch (await callAPIgetListReqByStatus(token,event.target.value));
+  };
   return (
     <RootStyle
       sx={{
         ...(numSelected > 0 && {
-          color: 'primary.main',
-          bgcolor: 'primary.lighter',
+          color: "primary.main",
+          bgcolor: "primary.lighter",
         }),
       }}
     >
@@ -50,16 +78,29 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
           {numSelected} Đã chọn
         </Typography>
       ) : (
-        <SearchStyle
-          value={filterName}
-          onChange={onFilterName}
-          placeholder="Tìm kiếm..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-            </InputAdornment>
-          }
-        />
+        <>
+          <SearchStyle
+            value={filterName}
+            onChange={onFilterName}
+            placeholder="Tìm kiếm..."
+            startAdornment={
+              <InputAdornment position="start">
+                <Iconify
+                  icon="eva:search-fill"
+                  sx={{ color: "text.disabled", width: 20, height: 20 }}
+                />
+              </InputAdornment>
+            }
+          />
+          <Controls.Select
+            label="Status"
+            width="10rem"
+            marginRight="30rem"
+            options={options}
+            onChange={handleChange}
+            // value={value}
+          />
+        </>
       )}
 
       {numSelected > 0 ? (
@@ -69,11 +110,13 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
+        // <Tooltip title="Filter list">
+        //   <IconButton>
+        //     <Iconify icon="ic:round-filter-list" />
+        //   </IconButton>
+        // </Tooltip>
+
+        <></>
       )}
     </RootStyle>
   );

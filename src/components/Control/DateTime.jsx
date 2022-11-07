@@ -12,7 +12,7 @@ export default function DateTime(props) {
   //   const handleChange = (newValue) => {
   //     setValue(newValue);
   //   };
-  const { label, value, onChange, width, disabled } = props;
+  const { label, value, onChange, width, disabled, disablePast } = props;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -20,8 +20,9 @@ export default function DateTime(props) {
         <DateTimePicker
           label={label}
           value={value}
-          minDate={new Date()}
+          // minDate={new Date()}
           disabled={disabled}
+          disablePast={disablePast}
           onChange={onChange}
           renderInput={(params) => <TextField {...params} />}
         />

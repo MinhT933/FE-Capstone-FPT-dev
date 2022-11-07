@@ -17,6 +17,7 @@ import {
   TableContainer,
   TablePagination,
   Avatar,
+  Alert,
 } from "@mui/material";
 // components
 import Label from "./../../components/label/label";
@@ -52,7 +53,7 @@ const TABLE_HEAD = [
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
   { id: "type", label: "Khung thời gian", alignRight: false },
-  { id: "createdate", label: "Ngày thêm", alignRight: false },
+  { id: "createdAt", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "startSale", label: "Ngày bán", alignRight: false },
   { id: "endSale", label: "Ngày kết thúc bán", alignRight: false },
@@ -74,6 +75,14 @@ function descendingComparator(a, b, orderBy) {
   }
   return 0;
 }
+
+const getOptions = () => [
+  { id: "waiting", title: "Waiting" },
+  { id: "active", title: "Active" },
+  { id: "inActive", title: "InActive" },
+  { id: "", title: "All" },
+];
+console.log(getOptions().id);
 
 function getComparator(order, orderBy) {
   return order === "desc"
@@ -106,7 +115,7 @@ export default function PackageFood() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("createdate");
+  const [orderBy, setOrderBy] = useState("createdAt");
 
   const [filterName, setFilterName] = useState("");
 
@@ -122,10 +131,10 @@ export default function PackageFood() {
   const decoded = jwt_decode(token);
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIGetListPackage(token));
+      dispatch(await callAPIGetListPackage(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const packagefood = useSelector((state) => {
     return state.userReducer.listFoodPackage;
@@ -211,7 +220,7 @@ export default function PackageFood() {
   };
   const isUserNotFound = filteredUsers.length === 0;
   return (
-    <Page title="package">
+    <Page title="Gói thức ăn">
       <Container>
         <Stack
           direction="row"
@@ -237,6 +246,8 @@ export default function PackageFood() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
+            // value
           />
 
           <Scrollbar>
@@ -304,7 +315,7 @@ export default function PackageFood() {
                           <TableCell align="left">{totalFood}</TableCell>
                           <TableCell align="left">{totalStation}</TableCell>
                           <TableCell align="left">
-                            <Label
+                            {/* <Label
                               variant="ghost"
                               color={
                                 (status === "inactive" && "error") ||
@@ -313,7 +324,20 @@ export default function PackageFood() {
                               }
                             >
                               {status}
-                            </Label>
+                            </Label> */}
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Không hoạt động</Label>
+                              )}
+                              {status === "waiting" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="warning">Đang chờ</Label>
+                              )}
+                              {status === "active" && (
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                            </div>
                           </TableCell>
 
                           <TableCell align="left">{description}</TableCell>
@@ -370,11 +394,11 @@ export default function PackageFood() {
           />
         </Card>
       </Container>
-      <DetailPackage
+      {/* <DetailPackage
         OpenPopUpDetail={OpenPopUpDetail}
         SetOpenPopUpDetail={SetOpenPopUpDetail}
         id={valueId}
-      />
+      /> */}
     </Page>
   );
 }

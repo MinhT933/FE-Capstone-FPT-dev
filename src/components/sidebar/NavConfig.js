@@ -119,6 +119,11 @@ const navConfigAdmin = [
     icon: getIcon("carbon:delivery"),
   },
   {
+    title: "Yêu cầu shipper",
+    path: "/dashboard/admin/request",
+    icon: getIcon("fluent-mdl2:feedback-request-solid"),
+  },
+  {
     title: "Trạm",
     path: "/dashboard/admin/station",
     icon: getIcon("carbon:location-company"),
@@ -172,11 +177,13 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
   },
+
   {
     title: "Thông tin bếp",
     path: "/dashboard/kitchen/kitchenprofile",
     icon: getIcon("mdi:card-account-details-star-outline"),
   },
+
 ];
 const navConfig = [
   {
@@ -270,16 +277,16 @@ const navConfig = [
   //   path: "/dashboard/kitchen/kitchen",
   //   icon: getIcon("mdi:card-account-details-star-outline"),
   // },
-  {
-    title: "Bếp xem thông tin bếp",
-    path: "/dashboard/kitchen/kitchenprofile",
-    icon: getIcon("mdi:card-account-details-star-outline"),
-  },
-  {
-    title: "Bếp quản lí Người giao hàng",
-    path: "/dashboard/kitchen/kitchenshipper",
-    icon: getIcon("carbon:delivery"),
-  },
+  // {
+  //   title: "Bếp xem thông tin bếp",
+  //   path: "/dashboard/kitchen/kitchenprofile",
+  //   icon: getIcon("mdi:card-account-details-star-outline"),
+  // },
+  // {
+  //   title: "Bếp quản lí Người giao hàng",
+  //   path: "/dashboard/kitchen/kitchenshipper",
+  //   icon: getIcon("carbon:delivery"),
+  // },
 ];
 const exportedObject = {
   navConfig,
