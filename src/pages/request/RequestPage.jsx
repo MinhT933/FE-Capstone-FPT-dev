@@ -143,8 +143,8 @@ export default function RequestPage() {
     { id: "waiting", title: "Đang chờ" },
     { id: "pending", title: "Chờ duyệt" },
     { id: "reject", title: "Từ chối" },
-    { id: "processed", title: "Hoàng thành" },
-    { id: "", title: "All" },
+    { id: "processed", title: "Hoàn thành" },
+    { id: "", title: "Tất cả" },
   ];
 
   const handleAccept = (id) => {
@@ -152,7 +152,7 @@ export default function RequestPage() {
       try {
         dispatch(callAPIgetListReq(token));
         CustomizedToast({
-          message: `Đã chuyển trạng thái thông công`,
+          message: `Đã chuyển trạng thái thành công`,
           type: "SUCCESS",
         });
       } catch (err) {
@@ -338,9 +338,9 @@ export default function RequestPage() {
                                 status !== "reject"
                                   ? handleAccept(id, token)
                                   : CustomizedToast({
-                                      message: `Đã Từ chối không thể đồng ý`,
-                                      type: "ERROR",
-                                    });
+                                    message: `Đã Từ chối không thể đồng ý`,
+                                    type: "ERROR",
+                                  });
                               }}
                             />
                           </TableCell>
@@ -351,9 +351,9 @@ export default function RequestPage() {
                               onClick={() => {
                                 status === "processed"
                                   ? CustomizedToast({
-                                      message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
-                                      type: "ERROR",
-                                    })
+                                    message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
+                                    type: "ERROR",
+                                  })
                                   : handleReject(id, token);
                               }}
                             />

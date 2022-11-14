@@ -28,9 +28,7 @@ import * as yup from "yup";
 
 import { useSelector } from "react-redux";
 import {
-    callAPIgetListCategory,
-    callAPIgetListKitchen,
-    callAPIgetListStation,
+    callAPIgetAccountAdmin, callAPIgetAccountManager,
 } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -46,22 +44,19 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
-    phone: yup.string().required("Điền đầy đủ thông tin").trim(),
-    password: yup.string().required("Điền đầy đủ thông tin").trim(),
     fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
+    phone: yup.string().required("Điền đầy đủ thông tin").trim(),
     email: yup.string().required("Điền đầy đủ thông tin").trim(),
-    address: yup.string().required("Điền đầy đủ thông tin").trim(),
-    ability: yup.string().required("Điền đầy đủ thông tin").trim(),
-
+    password: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 
 //callAPIforCreateStation========================================
-export default function NewKitchen() {
+export default function NewManager() {
     //callAPIforCreateStation========================================
     const dispatch = useDispatch();
     React.useEffect(() => {
         const getlistStation = async () => {
-            await dispatch(callAPIgetListKitchen());
+            await dispatch(callAPIgetAccountManager());
         };
         getlistStation();
     }, []);
@@ -69,12 +64,9 @@ export default function NewKitchen() {
     const Input = styled("input")({
         display: "none",
     });
-    //xử lí hình ảnh
-
     // const token = localStorage.getItem("token");
     const Navigate = useNavigate();
     const token = localStorage.getItem("token");
-
     if (token === null) {
         Navigate("/");
     }
@@ -85,9 +77,6 @@ export default function NewKitchen() {
         // return <Navigate to="/" replace />;
         Navigate("/");
     }
-    // const decoded = jwt_decode(token);
-
-    //formData để lưu data
 
     const formik = useFormik({
         //gắn schema để so sánh
@@ -96,25 +85,22 @@ export default function NewKitchen() {
         validateOnBlur: true,
         //khởi tạo kho để bỏ data vào
         initialValues: {
-            phone: "",
-            password: "",
+
             fullName: "",
+            phone: "",
             email: "",
-            address: "",
-            ability: "",
+            password: "",
         },
 
         onSubmit: async (values) => {
             const data = {
-                phone: formik.values.phone,
-                password: formik.values.password,
                 fullName: formik.values.fullName,
+                phone: formik.values.phone,
                 email: formik.values.email,
-                address: formik.values.address,
-                ability: formik.values.ability,
+                password: formik.values.password,
             };
             try {
-                const res = await API("POST", URL_API + "/auths/register/kitchen", data, token);
+                const res = await API("POST", URL_API + "/auths/register/manager", data, token);
                 CustomizedToast({
                     message: `Đã thêm ${formik.values.fullName}`,
                     type: "SUCCESS",
@@ -132,8 +118,6 @@ export default function NewKitchen() {
         textAlign: "left",
         color: theme.palette.text.secondary,
     }));
-
-
     return (
         <Paper
             elevation={3}
@@ -145,8 +129,8 @@ export default function NewKitchen() {
         >
             <PageHeader
                 display="left"
-                title="Thêm địa điểm"
-                subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
+                title="Thêm tài khoản quản lí"
+                subTitle="Vui lòng điền đầy đủ thông tin"
                 icon={getIcon("emojione-monotone:pot-of-food")}
             />
             <form onSubmit={formik.handleSubmit}>
@@ -160,10 +144,9 @@ export default function NewKitchen() {
                     <Grid container spacing={4} columns={20}>
                         <Grid item xs={8} marginLeft="10%">
                             <Stack spacing={3}>
-
                                 <Controls.Input
                                     variant="outlined"
-                                    label="Tên bếp"
+                                    label="Họ tên"
                                     name="fullName"
                                     value={formik.values.fullName}
                                     onChange={(e) => {
@@ -218,43 +201,6 @@ export default function NewKitchen() {
                                     </FormHelperText>
                                 )}
 
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Địa chỉ"
-                                    name="address"
-                                    value={formik.values.address}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.address && formik.errors.address && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.address}
-                                    </FormHelperText>
-                                )}
-
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Công suất"
-                                    name="ability"
-                                    value={formik.values.ability}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.ability && formik.errors.ability && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.ability}
-                                    </FormHelperText>
-                                )}
 
                                 <Controls.Input
                                     variant="outlined"
@@ -266,6 +212,7 @@ export default function NewKitchen() {
                                     }}
                                     onBlur={formik.handleBlur}
                                 />
+
                                 {formik.touched.password && formik.errors.password && (
                                     <FormHelperText
                                         error
@@ -292,7 +239,7 @@ export default function NewKitchen() {
                         marginLeft={"40%"}
                         marginTop={"2%"}
                     >
-                        <ButtonCustomize nameButton="Tạo địa điểm" type="submit" />
+                        <ButtonCustomize nameButton="Thêm tài khoản" type="submit" />
                     </Stack>
                 </Box>
             </form>

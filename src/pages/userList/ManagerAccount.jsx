@@ -89,6 +89,14 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function ManagerAccount() {
+  const getOptions = () => [
+    { id: "active", title: "Hoạt động" },
+    { id: "inActive", title: "Tạm nghỉ" },
+    { id: "ban", title: "Bị cấm" },
+    { id: "", title: "Tất cả" },
+  ];
+
+
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -147,6 +155,25 @@ export default function ManagerAccount() {
       }
     }, []);
   };
+
+  const handleActive = (id, fullName) => {
+    API("PUT", URL_API + `/accounts/unBan/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetAccountManager(token));
+
+        CustomizedToast({
+          message: `Đã Cập nhập trạng thái ${fullName}`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${fullName} thất bại`,
+          type: "ERROR",
+        });
+      }
+    }, []);
+  };
+
 
   const station = useSelector((state) => {
     return state.userReducer.accountManager;
@@ -224,13 +251,13 @@ export default function ManagerAccount() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-             {/* User  */}
+            {/* User  */}
           </Typography>
           {decoded.role === "admin" && (
             <ButtonCustomize
               variant="contained"
               component={RouterLink}
-              to="/dashboard/admin/newstation"
+              to="/dashboard/admin/newManager"
               nameButton="Thêm"
             />
           )}
@@ -241,6 +268,7 @@ export default function ManagerAccount() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -310,12 +338,21 @@ export default function ManagerAccount() {
                           <TableCell align="left">{phone}</TableCell>
 
                           <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(status === "ban" && "error") || "success"}
-                            >
-                              {status}
-                            </Label>
+
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="warning">Tạm nghỉ</Label>
+                              )}
+                              {status === "active" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                              {status === "ban" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="error">Bị cấm</Label>
+                              )}
+                            </div>
                           </TableCell>
 
                           <TableCell align="left">
@@ -332,10 +369,10 @@ export default function ManagerAccount() {
                               <Button1
                                 variant="outlined"
                                 onClick={() => {
-                                  handleDelete(id, fullName);
+                                  handleActive(id, fullName);
                                 }}
                               >
-                                Chặn
+                                Mở chặn
                               </Button1>
                             )}
                           </TableCell>

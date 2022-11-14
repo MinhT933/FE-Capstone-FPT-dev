@@ -42,7 +42,6 @@ const TABLE_HEAD = [
   { id: "", label: "", alignRight: false },
   { id: "name", label: "Tên gói", alignRight: false },
   { id: "totalPrice", label: "Giá", alignRight: false },
-  { id: "phone", label: "Số điện thoại", alignRight: false },
   { id: "totalDate", label: "Tổng ngày", alignRight: false },
   { id: "totalMeal", label: "Tổng bữa ăn", alignRight: false },
   { id: "startDelivery", label: "Ngày giao", alignRight: false },
@@ -88,6 +87,17 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function AdminOrderList() {
+  const getOptions = () => [
+    { id: "unComfirmed", title: "Hoạt động" },
+    { id: "inProgress", title: "Tạm nghỉ" },
+    { id: "done", title: "Bị cấm" },
+    { id: "cancel", title: "Bị cấm" },
+    { id: "", title: "Tất cả" },
+  ];
+
+
+
+
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -139,7 +149,7 @@ export default function AdminOrderList() {
   };
 
   const station = useSelector((state) => {
-    return state.userReducer.listStation;
+    return state.userReducer.listOrder;
   });
   //CALL API=====================================================
 
@@ -207,24 +217,6 @@ export default function AdminOrderList() {
   return (
     <Page title="Trạm">
       <Container>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-        >
-          <Typography variant="h4" gutterBottom>
-            {/* User */}
-          </Typography>
-          {decoded.role === "admin" && (
-            <ButtonCustomize
-              variant="contained"
-              component={RouterLink}
-              to="/dashboard/admin/newstation"
-              nameButton="Thêm trạm"
-            />
-          )}
-        </Stack>
 
         <Card>
           <UserListToolbar
@@ -277,7 +269,7 @@ export default function AdminOrderList() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          {/* <TableCell align="left">{id}</TableCell> */}
+                          <TableCell align="left"></TableCell>
                           <TableCell align="left">{packages?.name}</TableCell>
                           <TableCell align="left">{totalPrice}</TableCell>
                           {/* <TableCell align="left">{phone}</TableCell> */}

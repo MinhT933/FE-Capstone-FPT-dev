@@ -128,6 +128,8 @@ export default function KitchenList() {
     // return <Navigate to="/" replace />;
     Navigate("/");
   }
+
+
   const handleDelete = (id, fullName) => {
     API("PUT", URL_API + `/kitchens/status/${id}`, null, token).then((res) => {
       try {

@@ -88,6 +88,14 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserAccount() {
+  const getOptions = () => [
+    { id: "active", title: "Hoạt động" },
+    { id: "inActive", title: "Tạm nghỉ" },
+    { id: "ban", title: "Bị cấm" },
+    { id: "", title: "Tất cả" },
+  ];
+
+
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -131,6 +139,24 @@ export default function UserAccount() {
 
   const handleDelete = (id, fullName) => {
     API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetAccountCustomer(token));
+
+        CustomizedToast({
+          message: `Đã Cập nhập trạng thái ${fullName}`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${fullName} thất bại`,
+          type: "ERROR",
+        });
+      }
+    }, []);
+  };
+
+  const handleActive = (id, fullName) => {
+    API("PUT", URL_API + `/accounts/unBan/${id}`, null, token).then((res) => {
       try {
         dispatch(callAPIgetAccountCustomer(token));
 
@@ -240,6 +266,7 @@ export default function UserAccount() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -309,12 +336,20 @@ export default function UserAccount() {
                           <TableCell align="left">{phone}</TableCell>
 
                           <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(status === "ban" && "error") || "success"}
-                            >
-                              {status}
-                            </Label>
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="warning">Tạm nghỉ</Label>
+                              )}
+                              {status === "active" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                              {status === "ban" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="error">Bị cấm</Label>
+                              )}
+                            </div>
                           </TableCell>
 
                           <TableCell align="left">
@@ -331,50 +366,14 @@ export default function UserAccount() {
                               <Button1
                                 variant="outlined"
                                 onClick={() => {
-                                  handleDelete(id, fullName);
+                                  handleActive(id, fullName);
                                 }}
                               >
-                                Chặn
+                                Mở chặn
                               </Button1>
                             )}
                           </TableCell>
 
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-
-                                                            <Label
-                                                                variant="ghost"
-                                                                color={
-                                                                    (status === "ban" && "error") || "success"
-                                                                }
-                                                            >
-                                                                {status}
-                                                            </Label>
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        </Stack>
-                                                    </TableCell> */}
-
-                          {/* <TableCell>
-                            {decoded.role === "admin" && (
-                              <Button1
-                                variant="outlined"
-                                display="TableCell"
-                                component={RouterLink}
-                                to={`${location.pathname}/updatestation/${id}`}
-                              >
-                                Cập nhập
-                              </Button1>
-                            )}
-                          </TableCell> */}
                         </TableRow>
                       );
                     })}

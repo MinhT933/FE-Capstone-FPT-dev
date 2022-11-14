@@ -168,6 +168,23 @@ export const callAPIgetListStation = (token) => {
   };
 };
 
+export const callAPIgetListStationByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+
+      const res = await API("GET", URL_API + `/stations/byStatus?status=${status}`, null, token);
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_STATIONS,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 export const callAPIgetShipperByID = (token, id) => {
   return async (dispatch) => {
     try {
@@ -599,6 +616,27 @@ export const callAPIgetAccountCustomer = (token) => {
   };
 };
 
+export const callAPIgetAccountCustomerByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/accounts?role=customer&status=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_CUSTOMER,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 export const callAPIgetAccountAdmin = (token) => {
   return async (dispatch) => {
     try {
@@ -620,12 +658,55 @@ export const callAPIgetAccountAdmin = (token) => {
   };
 };
 
+export const callAPIgetAccountAdminByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/accounts?role=admin&status=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_ADMIN,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+
 export const callAPIgetAccountManager = (token) => {
   return async (dispatch) => {
     try {
       const res = await API(
         "GET",
         URL_API + "/accounts?role=manager",
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_MANAGER,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+export const callAPIgetAccountManagerByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/accounts?role=manager&status=${status}`,
         null,
         token
       );
@@ -662,12 +743,54 @@ export const callAPIgetAccountShipper = (token) => {
   };
 };
 
+export const callAPIgetAccountShipperByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/accounts?role=shipper&status=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_SHIPPER,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 export const callAPIgetAccountKitchen = (token) => {
   return async (dispatch) => {
     try {
       const res = await API(
         "GET",
         URL_API + "/accounts?role=kitchen",
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_KITCHEN,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+export const callAPIgetAccountKitchenByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/accounts?role=manager&status=${status}`,
         null,
         token
       );

@@ -152,6 +152,15 @@ export default function StationList() {
     return state.userReducer.listStation;
   });
   //CALL API=====================================================
+  //Thay đổi trạng thái
+  const getOptions = () => [
+    { id: "active", title: "Hoạt động" },
+    { id: "inActive", title: "Đóng cửa" },
+    { id: "", title: "Tất cả" },
+  ];
+
+
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -241,6 +250,7 @@ export default function StationList() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -275,10 +285,10 @@ export default function StationList() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          // role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
-                         
+                        // role="checkbox"
+                        // selected={isItemSelected}
+                        // aria-checked={isItemSelected}
+
                         >
 
                           <TableCell align="left">{""}</TableCell>
@@ -290,14 +300,26 @@ export default function StationList() {
                           <TableCell align="left">{closeTime}</TableCell>
 
                           <TableCell align="left">
-                            <Label
+                            {/* <Label
                               variant="ghost"
                               color={
                                 (status === "inActive" && "error") || "success"
                               }
                             >
                               {status}
-                            </Label>
+                            </Label> */}
+
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Đóng cửa</Label>
+                              )}
+                              {status === "active" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Hoạt động</Label>
+                              )}
+
+                            </div>
                           </TableCell>
 
                           <TableCell align="center">

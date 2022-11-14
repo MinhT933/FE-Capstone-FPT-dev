@@ -5,19 +5,19 @@ import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
-  Card,
-  Table,
-  Stack,
-  // Avatar,
-  Button,
-  Checkbox,
-  TableRow,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  TableContainer,
-  TablePagination,
+    Card,
+    Table,
+    Stack,
+    // Avatar,
+    Button,
+    Checkbox,
+    TableRow,
+    TableBody,
+    TableCell,
+    Container,
+    Typography,
+    TableContainer,
+    TablePagination,
 } from "@mui/material";
 // components
 import Label from "../../components/label/label";
@@ -30,9 +30,7 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
-  callAPIgetAccountCustomer,
-  callAPIgetAccountShipper,
-  callAPIgetListStation,
+    callAPIgetAccountShipper,
 } from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
@@ -43,55 +41,66 @@ import { Avatar } from "@mui/joy";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "", label: "", alignRight: false },
-  { id: "fullName", label: "Họ tên", alignRight: false },
-  { id: "email", label: "Email", alignRight: false },
-  { id: "phone", label: "Điện thoại", alignRight: false },
+    { id: "", label: "", alignRight: false },
+    { id: "fullName", label: "Họ tên", alignRight: false },
+    { id: "email", label: "Email", alignRight: false },
+    { id: "phone", label: "Điện thoại", alignRight: false },
 
-  { id: "status", label: "Trạng thái", alignRight: false },
-  { label: "Thay đổi trạng thái", alignRight: false },
-  { id: "" },
+    { id: "status", label: "Trạng thái", alignRight: false },
+    { label: "Thay đổi trạng thái", alignRight: false },
+    { id: "" },
 ];
 
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
+    if (b[orderBy] < a[orderBy]) {
+        return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+        return 1;
+    }
+    return 0;
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+    return order === "desc"
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(
-      array,
-      (_stations) =>
-        _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
-  }
-  return stabilizedThis.map((el) => el[0]);
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+    });
+    if (query) {
+        return filter(
+            array,
+            (_stations) =>
+                _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        );
+    }
+    return stabilizedThis.map((el) => el[0]);
 }
 
 export default function ShipperAccount() {
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
-  const [page, setPage] = useState(0);
+    const getOptions = () => [
+        { id: "active", title: "Hoạt động" },
+        { id: "inActive", title: "Tạm nghỉ" },
+        { id: "ban", title: "Bị cấm" },
+        { id: "", title: "Tất cả" },
+    ];
 
+
+    const [OpenPopUp, SetOpenPopUp] = useState(false);
+    const [page, setPage] = useState(0);
+
+    const [order, setOrder] = useState("asc");
+
+    const [selected, setSelected] = useState([]);
 
     const [orderBy, setOrderBy] = useState("fullName");
 
@@ -102,6 +111,9 @@ export default function ShipperAccount() {
     //CALL API====================================================
     const location = useLocation();
 
+    // const token = localStorage.getItem("token");
+
+    // const decoded = jwt_decode(token);
     const Navigate = useNavigate();
     const token = localStorage.getItem("token");
     if (token === null) {
@@ -125,59 +137,91 @@ export default function ShipperAccount() {
     }, [dispatch]);
 
     const handleDelete = (id, fullName) => {
-        API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then(
-            (res) => {
-                try {
-                    dispatch(callAPIgetAccountShipper(token));
+        API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
+            try {
+                dispatch(callAPIgetAccountShipper(token));
 
-                    CustomizedToast({
-                        message: `Đã Cập nhập trạng thái ${fullName}`,
-                        type: "SUCCESS",
-                    });
-
-                } catch (err) {
-                    CustomizedToast({
-                        message: `Cập nhập trạng thái ${fullName} thất bại`,
-                        type: "ERROR",
-                    });
-                }
-            },
-            []
-        );
+                CustomizedToast({
+                    message: `Đã Cập nhập trạng thái ${fullName}`,
+                    type: "SUCCESS",
+                });
+            } catch (err) {
+                CustomizedToast({
+                    message: `Cập nhập trạng thái ${fullName} thất bại`,
+                    type: "ERROR",
+                });
+            }
+        }, []);
     };
 
+    const handleActive = (id, fullName) => {
+        API("PUT", URL_API + `/accounts/unBan/${id}`, null, token).then((res) => {
+            try {
+                dispatch(callAPIgetAccountShipper(token));
 
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState("fullName");
-
-  const [filterName, setFilterName] = useState("");
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  //CALL API====================================================
-  const location = useLocation();
-
-  const Navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  if (token === null) {
-    Navigate("/");
-  }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
-
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    const callAPI = async () => {
-      await dispatch(callAPIgetAccountShipper(token));
+                CustomizedToast({
+                    message: `Đã Cập nhập trạng thái ${fullName}`,
+                    type: "SUCCESS",
+                });
+            } catch (err) {
+                CustomizedToast({
+                    message: `Cập nhập trạng thái ${fullName} thất bại`,
+                    type: "ERROR",
+                });
+            }
+        }, []);
     };
 
+    const station = useSelector((state) => {
+        return state.userReducer.accountShipper;
+    });
+    //CALL API=====================================================
+
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === "asc";
+        setOrder(isAsc ? "desc" : "asc");
+        setOrderBy(property);
+    };
+
+    const handleSelectAllClick = (event) => {
+        if (event.target.checked) {
+            const newSelecteds = station.map((n) => n.fullName);
+            setSelected(newSelecteds);
+            return;
+        }
+        setSelected([]);
+    };
+
+    const handleClick = (event, fullName) => {
+        const selectedIndex = selected.indexOf(fullName);
+        let newSelected = [];
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, fullName);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selected.slice(0, selectedIndex),
+                selected.slice(selectedIndex + 1)
+            );
+        }
+        setSelected(newSelected);
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const handleFilterByName = (event) => {
+        setFilterName(event.target.value);
+    };
 
     const filteredStations = applySortFilter(
         station,
@@ -195,32 +239,33 @@ export default function ShipperAccount() {
     }));
 
     return (
-        <Page title="Trạm">
+        <Page title="Khách hàng">
             <Container>
                 {/* <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={5}
-                >
-                    <Typography variant="h4" gutterBottom>
-                       
-                    </Typography>
-                    {decoded.role === "admin" && (
-                        <ButtonCustomize
-                            variant="contained"
-                            component={RouterLink}
-                            to="/dashboard/admin/newstation"
-                            nameButton="Thêm"
-                        />
-                    )}
-                </Stack> */}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h4" gutterBottom>
+            User
+          </Typography>
+          {decoded.role === "admin" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/admin/newstation"
+              nameButton="Thêm"
+            />
+          )}
+        </Stack> */}
 
                 <Card>
                     <UserListToolbar
                         numSelected={selected.length}
                         filterName={filterName}
                         onFilterName={handleFilterByName}
+                        options={getOptions()}
                     />
 
                     <Scrollbar>
@@ -264,14 +309,14 @@ export default function ShipperAccount() {
                                                             checked={isItemSelected}
                                                             onChange={(event) => handleClick(event, fullName)}
                                                         /> */}
-                          </TableCell>
+                                                    </TableCell>
 
-                          {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">
-                            {row.profile.fullName}
-                          </TableCell>
+                                                    {/* <TableCell align="left">{id}</TableCell> */}
+                                                    <TableCell align="left">
+                                                        {row.profile.fullName}
+                                                    </TableCell>
 
-                          {/* <TableCell component="th" scope="row" padding="none">
+                                                    {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack
                                                             direction="row"
                                                             alignItems="center"
@@ -284,107 +329,50 @@ export default function ShipperAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-
-                                                    <TableCell align="left">{row.profile.email}</TableCell>
+                                                    <TableCell align="left">
+                                                        {row.profile.email}
+                                                    </TableCell>
                                                     <TableCell align="left">{phone}</TableCell>
 
                                                     <TableCell align="left">
-                                                        <Label
-                                                            variant="ghost"
-                                                            color={
-                                                                (status === "ban" && "error") || "success"
-                                                            }
-                                                        >
-                                                            {status}
-                                                        </Label>
+                                                        <div>
+                                                            {status === "inActive" && (
+                                                                // <Alert severity="warning">inActive</Alert>
+                                                                <Label color="warning">Tạm nghỉ</Label>
+                                                            )}
+                                                            {status === "active" && (
+                                                                // <Alert severity="info">waiting</Alert>
+                                                                <Label color="success">Hoạt động</Label>
+                                                            )}
+                                                            {status === "ban" && (
+                                                                // <Alert severity="info">waiting</Alert>
+                                                                <Label color="error">Bị cấm</Label>
+                                                            )}
+                                                        </div>
                                                     </TableCell>
 
                                                     <TableCell align="left">
                                                         {status === "active" ? (
                                                             <Button1
                                                                 variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Đổi
-                                                            </Button1>
-                                                        ) : (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        )
-
-                                                        }
-
-
-
-                                                        {/* {status === "active" ? (
-
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Đổi
-                                                            </Button1>
-                                                        ) : status === "inActive" ? (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
+                                                                onClick={() => {
+                                                                    handleDelete(id, fullName);
+                                                                }}
                                                             >
                                                                 Chặn
                                                             </Button1>
                                                         ) : (
                                                             <Button1
                                                                 variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
+                                                                onClick={() => {
+                                                                    handleActive(id, fullName);
+                                                                }}
                                                             >
-                                                                Chặn
-                                                            </Button1>
-                                                        )
-
-                                                        } */}
-                          </TableCell>
-
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-
-                                                            <Label
-                                                                variant="ghost"
-                                                                color={
-                                                                    (status === "ban" && "error") || "success"
-                                                                }
-                                                            >
-                                                                {status}
-                                                            </Label>
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        </Stack>
-                                                    </TableCell> */}
-
-                                                    {/* <TableCell>
-                                                        {decoded.role === "admin" && (
-
-                                                            <Button1
-                                                                variant="outlined"
-                                                                display="TableCell"
-                                                                component={RouterLink}
-                                                                to={`${location.pathname}/updatestation/${id}`}
-
-                                                            >
-                                                                Cập nhập
+                                                                Mở chặn
                                                             </Button1>
                                                         )}
-                                                    </TableCell> */}
+                                                    </TableCell>
+
                                                 </TableRow>
                                             );
                                         })}
@@ -422,5 +410,4 @@ export default function ShipperAccount() {
             {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
         </Page>
     );
-
 }
