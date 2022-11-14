@@ -1,7 +1,7 @@
 import * as React from "react";
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -37,6 +37,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 // import ADMINSHIPPERLIST from "./AdminShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import jwt_decode from "jwt-decode";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 // ----------------------------------------------------------------------
 
@@ -90,6 +91,8 @@ function applySortFilter(array, comparator, query) {
 
 export default function AdminShipperList() {
   //CallAPIgetListShipper=====================================
+  const location = useLocation();
+
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   // const token = localStorage.getItem("token");
@@ -105,6 +108,8 @@ export default function AdminShipperList() {
     // return <Navigate to="/" replace />;
     Navigate("/");
   }
+
+
   const shipper = useSelector((state) => {
     return state.userReducer.listShipper;
   });
@@ -115,12 +120,21 @@ export default function AdminShipperList() {
     callAPI();
   }, [dispatch]);
 
-  const handleDelete = (id) => {
-    API("PUT", URL_API + `/shippers/update-status/${id}`).then((res) => {
+
+  const handleDelete = (id, fullName) => {
+    API("PUT", URL_API + `/shippers/update-status/${id}`, null, token).then((res) => {
       try {
-        dispatch(callAPIgetListShipper());
+        dispatch(callAPIgetListShipper(token));
+
+        CustomizedToast({
+          message: `Đã cập nhập trạng thái ${fullName}`,
+          type: "SUCCESS",
+        });
       } catch (err) {
-        alert("ban faild " + id);
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${fullName} thất bại`,
+          type: "ERROR",
+        });
       }
     }, []);
   };
@@ -272,7 +286,8 @@ export default function AdminShipperList() {
                         status,
                         email,
                         account,
-                        kitchenid,
+                        kitchen,
+                        address,
                       } = row;
                       const isItemSelected = selected.indexOf(fullName) !== -1;
 
@@ -315,7 +330,8 @@ export default function AdminShipperList() {
                           <TableCell align="left">
                             {row.account.profile?.email}
                           </TableCell>
-                          <TableCell align="left">{kitchenid}</TableCell>
+                          <TableCell align="left">{row.kitchen?.address}</TableCell>
+
                           <TableCell align="left">
                             <Label
                               variant="ghost"
@@ -326,31 +342,20 @@ export default function AdminShipperList() {
                               {status}
                             </Label>
                           </TableCell>
-                          {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
 
                           <TableCell align="left">
                             <Button1
                               variant="outlined"
-                              // display="TableCell"
+                              display="TableCell"
                               component={RouterLink}
-                              to="/dashboard/admin/updateshipper"
+                              to={`${location.pathname}/updateshipper/${id}`}
                             >
                               Cập nhật
                             </Button1>
                           </TableCell>
-
-                          {/* <TableCell align="right"> */}
-                          {/* //props */}
-                          {/* <KitchenMoreMenu id={id} /> */}
-                          {/* </TableCell> */}
                         </TableRow>
                       );
                     })}
-                  {/* {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
-                                        </TableRow>
-                                    )} */}
                 </TableBody>
 
                 {isKitchenNotFound && (

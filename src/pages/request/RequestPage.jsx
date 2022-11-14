@@ -137,8 +137,8 @@ export default function RequestPage() {
     { id: "waiting", title: "Đang chờ" },
     { id: "pending", title: "Chờ duyệt" },
     { id: "reject", title: "Từ chối" },
-    { id: "processed", title: "Hoàng thành" },
-    { id: "", title: "All" },
+    { id: "processed", title: "Hoàn thành" },
+    { id: "", title: "Tất cả" },
   ];
 
   const [OpenPopUp, setOpenPopUp] = useState(false);
@@ -149,7 +149,7 @@ export default function RequestPage() {
       try {
         dispatch(callAPIgetListReq(token));
         CustomizedToast({
-          message: `Đã chuyển trạng thái thông công`,
+          message: `Đã chuyển trạng thái thành công`,
           type: "SUCCESS",
         });
       } catch (err) {
@@ -322,6 +322,7 @@ export default function RequestPage() {
                                 status === "waiting" ? "Chờ xử lí" : "duyệt"
                               }
                               onClick={() => {
+
                                 if (status === "waiting") {
                                   status !== "reject"
                                     ? handleAccept(id, token)
@@ -335,6 +336,7 @@ export default function RequestPage() {
                                   setValueId(id);
                                   // handleAccept(id, token);
                                 }
+
                               }}
                             />
                           </TableCell>
@@ -345,9 +347,9 @@ export default function RequestPage() {
                               onClick={() => {
                                 status === "processed"
                                   ? CustomizedToast({
-                                      message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
-                                      type: "ERROR",
-                                    })
+                                    message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
+                                    type: "ERROR",
+                                  })
                                   : handleReject(id, token);
                               }}
                             />

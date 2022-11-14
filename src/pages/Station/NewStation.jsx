@@ -37,7 +37,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate } from "react-router-dom";
-import  jwt_decode  from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -45,8 +45,9 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
-  name: yup.string().required().trim(),
-  address: yup.string().required().trim(),
+  name: yup.string().required("Điền đầy đủ thông tin").trim(),
+  address: yup.string().required("Điền đầy đủ thông tin").trim(),
+  phone: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 
 //callAPIforCreateStation========================================
@@ -70,6 +71,7 @@ export default function NewStation() {
   // const token = localStorage.getItem("token");
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+
   if (token === null) {
     Navigate("/");
   }
@@ -170,12 +172,13 @@ export default function NewStation() {
                   }}
                   onBlur={formik.handleBlur}
                 />
+
                 {formik.touched.name && formik.errors.name && (
                   <FormHelperText
                     error
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.description}
+                    {formik.errors.name}
                   </FormHelperText>
                 )}
 
@@ -189,9 +192,18 @@ export default function NewStation() {
                   }}
                   onBlur={formik.handleBlur}
                 />
+                {formik.touched.address && formik.errors.address && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.address}
+                  </FormHelperText>
+                )}
+
                 <Controls.Input
                   variant="outlined"
-                  label="Số điện thoại"
+                  label="Điện thoại"
                   name="phone"
                   value={formik.values.phone}
                   onChange={(e) => {

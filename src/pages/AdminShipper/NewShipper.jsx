@@ -69,6 +69,35 @@ export default function NewShipper() {
     //disparch để kết thúc vào lặp vô tận loop infinity á
   }, [dispatch]);
 
+  
+  //kéo data categoriesFood từ store zìa mà xài nè
+  const shipper = useSelector((state) => {
+    return state.userReducer.shipper;
+  });
+
+  /// get list options để hiển thị lên ô selectbox
+  const getOptions = () => {
+    //tạo mảng rỗng để chứa data ở đây là name và id của categoriesFood
+    //hình dung nó giống nhà kho vậy á
+    // sau này trước khi muốn gọi cái gì đó phải tọa 1 mảng rỗng để bỏ vào
+    const item = [];
+    // vòng food này để đẩy data từ categoriesFood v ào trong items ( vì nó có nhiều object) nên phải làm vậy
+    for (var i = 0; i < shipper.length; i++) {
+      item.push({ id: shipper[i].id, title: shipper[i].name });
+    }
+
+    return item;
+    //trả về item đã có data muốn biết thì console.log ra mà xem
+  };
+
+  const Input = styled("input")({
+    display: "none",
+  });
+  //xử lí hình ảnh
+  const [input, setInput] = useState([]);
+  //formData để lưu data
+  const formData = new FormData();
+
 
   // const token = localStorage.getItem("token");
 

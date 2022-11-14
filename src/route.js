@@ -46,6 +46,8 @@ import ManagerAccount from "./pages/userList/ManagerAccount";
 import AdminAccount from "./pages/userList/AdminAccount";
 import Home from "./pages/home/home";
 import RequestPage from "./pages/request/RequestPage";
+import NewAdmin from "./pages/userList/NewAdmin";
+import NewManager from "./pages/userList/NewManager";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -110,7 +112,11 @@ export default function Router() {
 
         { path: "userAccount", element: <UserAccount /> },
         { path: "adminAccount", element: <AdminAccount /> },
+        { path: "newAdmin", element: <NewAdmin /> },
+
         { path: "managerAccount", element: <ManagerAccount /> },
+        { path: "newManager", element: <NewManager /> },
+
         { path: "shipperAccount", element: <ShipperAccount /> },
         { path: "kitchenAccount", element: <KitchenAccount /> },
 
@@ -140,6 +146,8 @@ export default function Router() {
         //admin quản lí shipper
         //CURD + chuyển shipper cho bếp
         { path: "adminshipper", element: <AdminShipperList /> },
+        { path: "adminshipper/updateshipper/:id", element: <UpdateShipper /> },
+        // /dashboard/admin/updateshipper
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },

@@ -14,13 +14,10 @@ import Box from "@mui/material/Box";
 import Iconify from "../../../components/hook-form/Iconify";
 import { Controller } from "react-hook-form";
 import Controls from "./../../../components/Control/Controls";
-import {
-  callAPIgetGroupFoodByStatus,
-  callAPIgetListFoodByStatus,
-  callAPIGetListOderByDay,
-  callAPIGetListPack,
-  callAPIgetListReqByStatus,
-} from "../../../redux/action/acction";
+
+import { callAPIgetAccountAdminByStatus, callAPIgetAccountCustomerByStatus, callAPIgetAccountKitchenByStatus, callAPIgetAccountManagerByStatus, callAPIgetAccountShipperByStatus, callAPIgetGroupFoodByStatus, callAPIgetListFoodByStatus, callAPIGetListPack, callAPIgetListReqByStatus, callAPIgetListStationByStatus } from "../../../redux/action/acction";
+
+
 import { useDispatch } from "react-redux";
 
 // ----------------------------------------------------------------------
@@ -70,9 +67,22 @@ export default function UserListToolbar({
     dispatch(await callAPIgetListFoodByStatus(token, event.target.value));
     dispatch(await callAPIgetGroupFoodByStatus(token, event.target.value));
     dispatch(await callAPIgetListReqByStatus(token, event.target.value));
+
+
+    dispatch(await callAPIgetListStationByStatus(token, event.target.value));
+
+
+    dispatch(await callAPIgetAccountManagerByStatus(token, event.target.value));
+    dispatch(await callAPIgetAccountAdminByStatus(token, event.target.value));
+    dispatch(await callAPIgetAccountShipperByStatus(token, event.target.value));
+    dispatch(await callAPIgetAccountKitchenByStatus(token, event.target.value));
+    dispatch(await callAPIgetAccountCustomerByStatus(token, event.target.value));
+
+
     if (date) {
       dispatch(await callAPIGetListOderByDay(token, date, event.target.value)); 
     }
+
   };
   return (
     <RootStyle
@@ -103,12 +113,12 @@ export default function UserListToolbar({
             }
           />
           <Controls.Select
-            label="Status"
+            label="Trạng thái"
             width="10rem"
             marginRight="30rem"
             options={options}
             onChange={handleChange}
-            // value={value}
+          // value={value}
           />
         </>
       )}
