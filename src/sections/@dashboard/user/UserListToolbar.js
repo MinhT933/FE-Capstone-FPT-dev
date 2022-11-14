@@ -14,7 +14,13 @@ import Box from "@mui/material/Box";
 import Iconify from "../../../components/hook-form/Iconify";
 import { Controller } from "react-hook-form";
 import Controls from "./../../../components/Control/Controls";
-import { callAPIgetGroupFoodByStatus, callAPIgetListFoodByStatus, callAPIGetListPack, callAPIgetListReqByStatus } from "../../../redux/action/acction";
+import {
+  callAPIgetGroupFoodByStatus,
+  callAPIgetListFoodByStatus,
+  callAPIGetListOderByDay,
+  callAPIGetListPack,
+  callAPIgetListReqByStatus,
+} from "../../../redux/action/acction";
 import { useDispatch } from "react-redux";
 
 // ----------------------------------------------------------------------
@@ -56,13 +62,17 @@ export default function UserListToolbar({
   filterName,
   onFilterName,
   options,
+  date,
 }) {
   const dispatch = useDispatch();
   const handleChange = async (event) => {
     dispatch(await callAPIGetListPack(token, event.target.value));
     dispatch(await callAPIgetListFoodByStatus(token, event.target.value));
-    dispatch (await callAPIgetGroupFoodByStatus(token,event.target.value));
-    dispatch (await callAPIgetListReqByStatus(token,event.target.value));
+    dispatch(await callAPIgetGroupFoodByStatus(token, event.target.value));
+    dispatch(await callAPIgetListReqByStatus(token, event.target.value));
+    if (date) {
+      dispatch(await callAPIGetListOderByDay(token, date, event.target.value)); 
+    }
   };
   return (
     <RootStyle

@@ -51,13 +51,7 @@ export default function NewFoodGroup(props) {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
+ 
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;

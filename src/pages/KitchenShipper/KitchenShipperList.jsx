@@ -9,7 +9,6 @@ import {
   Stack,
   Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -21,15 +20,9 @@ import {
 
 //callAPI
 import * as React from "react";
-import {
-  callAPIgetListShipper,
-  callAPIgetShipperOfKitchen,
-} from "../../redux/action/acction";
+import { callAPIgetShipperOfKitchen } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Iconify from "../../components/hook-form/Iconify";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
 
 // components
 import Label from "../../components/label/label";
@@ -40,7 +33,7 @@ import Page from "../../components/setPage/Page";
 // mock
 // import KITCHENSHIPPERLIST from "./KitchenShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import jwt_decode from "jwt-decode";
+
 import RequestShipper from "./RequestShipper";
 import DetailShipper from "./DetailShipper";
 
@@ -75,6 +68,12 @@ function getComparator(order, orderBy) {
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
+
+const getOptions = () => [
+  { id: "active", title: "Active" },
+  { id: "inActive", title: "InActive" },
+  { id: "", title: "All" },
+];
 
 function applySortFilter(array, comparator, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -208,6 +207,7 @@ export default function KitchenList() {
     getComparator(order, orderBy),
     filterName
   );
+
   //setColor button
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC32"),
@@ -248,6 +248,7 @@ export default function KitchenList() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>

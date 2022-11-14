@@ -1,4 +1,4 @@
-import React from "react";
+
 import * as axios from "axios";
 
 export default function API(method, url, body, token) {

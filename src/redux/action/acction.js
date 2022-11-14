@@ -111,6 +111,47 @@ export const callAPIGetListPackage = (token) => {
   };
 };
 
+export const callAPIGetListOderByDay = (token, date, status) => {
+  return async (dispatch) => {
+    try {
+      if (status === null) {
+        const res = await API(
+          "GET",
+          URL_API + `/orders/order-date?deliveryDate=${date}`,
+          null,
+          token
+        );
+        dispatch(
+          createAction({
+            type: PathAction.GET_LIST_ORDER_BY_DATE,
+            payload: res.data.result,
+          })
+        );
+      } else {
+        const res = await API(
+          "GET",
+          URL_API + `/orders/order-date?deliveryDate=${date}&status=${status}`,
+          null,
+          token
+        );
+        dispatch(
+          createAction({
+            type: PathAction.GET_LIST_ORDER_BY_DATE,
+            payload: res.data.result,
+          })
+        );
+      }
+
+      // console.log(res.data.result);
+    } catch (err) {
+      CustomizedToast({
+        message: `${err.response.data.message}`,
+        type: "ERROR",
+      });
+    }
+  };
+};
+
 export const callAPIGetListPack = async (token, status) => {
   return async (dispatch) => {
     try {
@@ -192,6 +233,27 @@ export const callAPIgetGroupFood = (token) => {
       dispatch(
         createAction({
           type: PathAction.GET_LIST_GROUP_FOOD,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+export const getAPIgetGroupFoodByStatus = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + "/food-groups/byStatus?statusFG=active",
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_GROUPFOOD_BY_STATUS,
           payload: res.data.result,
         })
       );
@@ -502,7 +564,10 @@ export const callAPIgetListReq = (token) => {
         })
       );
     } catch (err) {
-      console.log({ err });
+      CustomizedToast({
+        message: `${err.response.data.message}`,
+        type: "ERROR",
+      });
     }
   };
 };
@@ -656,6 +721,28 @@ export const callAPIgetAccountShipper = (token) => {
           payload: res.data.result,
         })
       );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
+export const callAPIgetShipperActive = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + "/shippers?status=new",
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_SHIPPER_ACTIVE,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
     } catch (err) {
       console.log({ err });
     }

@@ -209,7 +209,7 @@ export default function NewTimeFrame(props) {
           type: "SUCCESS",
         });
         SetOpenPopUp(false);
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         CustomizedToast({
           message: "Thêm thất bại Vui lòng kiểm tra thông tin",
