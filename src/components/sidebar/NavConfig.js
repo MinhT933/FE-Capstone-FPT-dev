@@ -177,13 +177,6 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
   },
-
-  {
-    title: "Thông tin bếp",
-    path: "/dashboard/kitchen/kitchenprofile",
-    icon: getIcon("mdi:card-account-details-star-outline"),
-  },
-
 ];
 const navConfig = [
   {

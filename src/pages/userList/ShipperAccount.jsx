@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -30,8 +30,8 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
+  callAPIgetAccountAdmin,
   callAPIgetAccountCustomer,
-  callAPIgetAccountShipper,
   callAPIgetListStation,
 } from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
@@ -88,64 +88,11 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ShipperAccount() {
+export default function AdminAccount() {
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
-
-    const [orderBy, setOrderBy] = useState("fullName");
-
-    const [filterName, setFilterName] = useState("");
-
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    //CALL API====================================================
-    const location = useLocation();
-
-    const Navigate = useNavigate();
-    const token = localStorage.getItem("token");
-    if (token === null) {
-        Navigate("/");
-    }
-    try {
-        var decoded = jwt_decode(token);
-        // valid token format
-    } catch (error) {
-        // return <Navigate to="/" replace />;
-        Navigate("/");
-    }
-    // const decoded = jwt_decode(token);
-
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-        const callAPI = async () => {
-            await dispatch(callAPIgetAccountShipper(token));
-        };
-        callAPI();
-    }, [dispatch]);
-
-    const handleDelete = (id, fullName) => {
-        API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then(
-            (res) => {
-                try {
-                    dispatch(callAPIgetAccountShipper(token));
-
-                    CustomizedToast({
-                        message: `Đã Cập nhập trạng thái ${fullName}`,
-                        type: "SUCCESS",
-                    });
-
-                } catch (err) {
-                    CustomizedToast({
-                        message: `Cập nhập trạng thái ${fullName} thất bại`,
-                        type: "ERROR",
-                    });
-                }
-            },
-            []
-        );
-    };
-
+  const [order, setOrder] = useState("asc");
 
   const [selected, setSelected] = useState([]);
 
@@ -158,109 +105,169 @@ export default function ShipperAccount() {
   //CALL API====================================================
   const location = useLocation();
 
-  const Navigate = useNavigate();
   const token = localStorage.getItem("token");
-  if (token === null) {
-    Navigate("/");
-  }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
+
+  const decoded = jwt_decode(token);
 
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIgetAccountShipper(token));
+      await dispatch(callAPIgetAccountAdmin(token));
     };
+    callAPI();
+  }, [dispatch]);
 
+  const handleDelete = (id, fullName) => {
+    API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetAccountAdmin(token));
 
-    const filteredStations = applySortFilter(
-        station,
-        getComparator(order, orderBy),
-        filterName
-    );
+        CustomizedToast({
+          message: `Đã Cập nhập trạng thái ${fullName}`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${fullName} thất bại`,
+          type: "ERROR",
+        });
+      }
+    }, []);
+  };
 
-    const isStationNotFound = filteredStations.length === 0;
+  const station = useSelector((state) => {
+    return state.userReducer.accountAdmin;
+  });
+  //CALL API=====================================================
 
-    const Button1 = styled(Button)(({ theme }) => ({
-        color: theme.palette.getContrastText("#FFCC33"),
-        backgroundColor: "#FFCC33",
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
-        // display: "center"
-    }));
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = station.map((n) => n.fullName);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
 
-    return (
-        <Page title="Trạm">
-            <Container>
-                {/* <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={5}
-                >
-                    <Typography variant="h4" gutterBottom>
-                       
-                    </Typography>
-                    {decoded.role === "admin" && (
-                        <ButtonCustomize
-                            variant="contained"
-                            component={RouterLink}
-                            to="/dashboard/admin/newstation"
-                            nameButton="Thêm"
-                        />
-                    )}
-                </Stack> */}
+  const handleClick = (event, fullName) => {
+    const selectedIndex = selected.indexOf(fullName);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, fullName);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
 
-                <Card>
-                    <UserListToolbar
-                        numSelected={selected.length}
-                        filterName={filterName}
-                        onFilterName={handleFilterByName}
-                    />
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-                    <Scrollbar>
-                        <TableContainer sx={{ minWidth: 1000 }}>
-                            <Table>
-                                <UserListHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    headLabel={TABLE_HEAD}
-                                    rowCount={station.length}
-                                    numSelected={selected.length}
-                                    onRequestSort={handleRequestSort}
-                                    onSelectAllClick={handleSelectAllClick}
-                                />
-                                <TableBody>
-                                    {filteredStations
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row) => {
-                                            const {
-                                                id,
-                                                profile,
-                                                avatar,
-                                                fullName,
-                                                email,
-                                                phone,
-                                                status,
-                                            } = row;
-                                            const isItemSelected = selected.indexOf(fullName) !== -1;
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-                                            return (
-                                                <TableRow
-                                                    hover
-                                                    key={id}
-                                                    tabIndex={-1}
-                                                    role="checkbox"
-                                                    selected={isItemSelected}
-                                                    aria-checked={isItemSelected}
-                                                >
-                                                    <TableCell padding="checkbox">
-                                                        {/* <Checkbox
+  const handleFilterByName = (event) => {
+    setFilterName(event.target.value);
+  };
+
+  const filteredStations = applySortFilter(
+    station,
+    getComparator(order, orderBy),
+    filterName
+  );
+
+  const isStationNotFound = filteredStations.length === 0;
+
+  const Button1 = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC33"),
+    backgroundColor: "#FFCC33",
+
+    // display: "center"
+  }));
+
+  return (
+    <Page title="Trạm">
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h4" gutterBottom>
+            {/* User */}
+          </Typography>
+          {decoded.role === "admin" && (
+            <ButtonCustomize
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/admin/newstation"
+              nameButton="Thêm"
+            />
+          )}
+        </Stack>
+
+        <Card>
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
+
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 1000 }}>
+              <Table>
+                <UserListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={station.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
+                />
+                <TableBody>
+                  {filteredStations
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      const {
+                        id,
+                        profile,
+                        avatar,
+                        fullName,
+                        email,
+                        phone,
+                        status,
+                      } = row;
+                      const isItemSelected = selected.indexOf(fullName) !== -1;
+
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox
                                                             checked={isItemSelected}
                                                             onChange={(event) => handleClick(event, fullName)}
                                                         /> */}
@@ -284,67 +291,40 @@ export default function ShipperAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
+                          <TableCell align="left">
+                            {row.profile.email}
+                          </TableCell>
+                          <TableCell align="left">{phone}</TableCell>
 
-                                                    <TableCell align="left">{row.profile.email}</TableCell>
-                                                    <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left">
+                            <Label
+                              variant="ghost"
+                              color={(status === "ban" && "error") || "success"}
+                            >
+                              {status}
+                            </Label>
+                          </TableCell>
 
-                                                    <TableCell align="left">
-                                                        <Label
-                                                            variant="ghost"
-                                                            color={
-                                                                (status === "ban" && "error") || "success"
-                                                            }
-                                                        >
-                                                            {status}
-                                                        </Label>
-                                                    </TableCell>
-
-                                                    <TableCell align="left">
-                                                        {status === "active" ? (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Đổi
-                                                            </Button1>
-                                                        ) : (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        )
-
-                                                        }
-
-
-
-                                                        {/* {status === "active" ? (
-
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Đổi
-                                                            </Button1>
-                                                        ) : status === "inActive" ? (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        ) : (
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        )
-
-                                                        } */}
+                          <TableCell align="center">
+                            {status === "active" ? (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => {
+                                  handleDelete(id, fullName);
+                                }}
+                              >
+                                Chặn
+                              </Button1>
+                            ) : (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => {
+                                  handleDelete(id, fullName);
+                                }}
+                              >
+                                Chặn
+                              </Button1>
+                            )}
                           </TableCell>
 
                           {/* <TableCell component="th" scope="row" padding="none">
@@ -371,56 +351,53 @@ export default function ShipperAccount() {
                                                         </Stack>
                                                     </TableCell> */}
 
-                                                    {/* <TableCell>
-                                                        {decoded.role === "admin" && (
+                          <TableCell>
+                            {decoded.role === "admin" && (
+                              <Button1
+                                variant="outlined"
+                                display="TableCell"
+                                component={RouterLink}
+                                to={`${location.pathname}/updatestation/${id}`}
+                              >
+                                Cập nhập
+                              </Button1>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
 
-                                                            <Button1
-                                                                variant="outlined"
-                                                                display="TableCell"
-                                                                component={RouterLink}
-                                                                to={`${location.pathname}/updatestation/${id}`}
+                {isStationNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
 
-                                                            >
-                                                                Cập nhập
-                                                            </Button1>
-                                                        )}
-                                                    </TableCell> */}
-                                                </TableRow>
-                                            );
-                                        })}
-                                </TableBody>
-
-                                {isStationNotFound && (
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                <SearchNotFound searchQuery={filterName} />
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                )}
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
-
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 20]}
-                        component="div"
-                        count={station.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        // fix languge in footer tables
-                        labelRowsPerPage={"Số hàng trên một trang"}
-                        labelDisplayedRows={({ from, to, count }) => {
-                            return "" + from + "-" + to + " của " + count;
-                        }}
-                    />
-                </Card>
-            </Container>
-            {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
-    );
-
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20]}
+            component="div"
+            count={station.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
+          />
+        </Card>
+      </Container>
+      {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
+    </Page>
+  );
 }

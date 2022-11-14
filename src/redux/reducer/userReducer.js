@@ -59,6 +59,9 @@ const initialState = {
   listRequests: [],
   shipPerOfKitchen: [],
   shipPerByID: [],
+  listOderByDate: [],
+  listGroupFoodByStatus: [],
+  listShipperActive: [],
 };
 
 // const initialStateAuthen = admin
@@ -155,6 +158,9 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_LIST_GROUP_FOOD:
       state.listGroupFood = payload;
       break;
+    case PathAction.GET_LIST_GROUPFOOD_BY_STATUS:
+      state.listGroupFoodByStatus = payload;
+      break;
     case PathAction.GET_LIST_TIME_FRAME:
       state.listTimeFrame = payload;
       break;
@@ -165,9 +171,16 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listFoodByGroupFoodID = payload;
       state.valueTag = payload.foods.map((item) => item.name);
       break;
+    case PathAction.GET_SHIPPER_ACTIVE:
+      state.listShipperActive = payload;
+      state.valueTag = payload.listShipperActive.map(
+        (item) => item.account.profile.fullName
+      );
+      break;
     case PathAction.GET_PROFILE:
       state.profiles = payload;
       break;
+
     case PathAction.GET_LIST_REQ:
       state.listRequests = payload;
       break;
@@ -176,6 +189,10 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_SHIPPER_BY_ID:
       state.shipPerByID = payload;
+      break;
+    case PathAction.GET_LIST_ORDER_BY_DATE:
+      state.listOderByDate = payload;
+      break;
     default:
   }
   return { ...state };
