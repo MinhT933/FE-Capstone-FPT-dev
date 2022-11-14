@@ -23,25 +23,18 @@ import Label from "./../../components/label/label";
 import Scrollbar from "./../../components/hook-form/Scrollbar";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from "../../sections/@dashboard/user";
+import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
-import {
-  callAPIgetListFood,
-  callAPIgetListReq,
-} from "../../redux/action/acction";
+import { callAPIgetListReq } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Iconify from "../../components/hook-form/Iconify";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import ReasionReject from "./ReasionReject";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
+import Addshipper from "./Addshipper";
 
 // ----------------------------------------------------------------------
 
@@ -138,6 +131,7 @@ export default function RequestPage() {
   const request = useSelector((state) => {
     return state.userReducer.listRequests;
   });
+  console.log(request);
 
   const getOptions = () => [
     { id: "waiting", title: "Đang chờ" },
@@ -147,7 +141,10 @@ export default function RequestPage() {
     { id: "", title: "Tất cả" },
   ];
 
+  const [OpenPopUp, setOpenPopUp] = useState(false);
+  const [valueKitChenID, setValueKitChenID] = useState();
   const handleAccept = (id) => {
+    // if (request.status === "waiting") {
     API("PUT", URL_API + `/request/${id}`, null, token).then((res) => {
       try {
         dispatch(callAPIgetListReq(token));
@@ -279,6 +276,7 @@ export default function RequestPage() {
                         rejectReason,
                         status,
                         createdAt,
+                        kitchen,
                       } = row;
 
                       const isItemSelected = selected.indexOf(reason) !== -1;
@@ -300,17 +298,6 @@ export default function RequestPage() {
                             {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">
-                            {/* <Label
-                              variant="ghost"
-                              color={
-                                (status === "reject" && "error") ||
-                                (status === "pending" && "warning") ||
-                                (status === "waiting" && "secondary") ||
-                                "success"
-                              }
-                            >
-                              {status}
-                            </Label> */}
                             <div>
                               {status === "reject" && (
                                 // <Alert severity="warning">inActive</Alert>
@@ -335,12 +322,21 @@ export default function RequestPage() {
                                 status === "waiting" ? "Chờ xử lí" : "duyệt"
                               }
                               onClick={() => {
-                                status !== "reject"
-                                  ? handleAccept(id, token)
-                                  : CustomizedToast({
-                                    message: `Đã Từ chối không thể đồng ý`,
-                                    type: "ERROR",
-                                  });
+
+                                if (status === "waiting") {
+                                  status !== "reject"
+                                    ? handleAccept(id, token)
+                                    : CustomizedToast({
+                                        message: `Đã Từ chối không thể đồng ý`,
+                                        type: "ERROR",
+                                      });
+                                } else {
+                                  setOpenPopUp(true);
+                                  setValueKitChenID(kitchen.id);
+                                  setValueId(id);
+                                  // handleAccept(id, token);
+                                }
+
                               }}
                             />
                           </TableCell>
@@ -391,6 +387,12 @@ export default function RequestPage() {
         </Card>
       </Container>
       <ReasionReject Open={Open} setOpen={setOpen} id={valueId} />
+      <Addshipper
+        Open={OpenPopUp}
+        setOpen={setOpenPopUp}
+        id={valueKitChenID}
+        idre={valueId}
+      />
     </Page>
   );
 }

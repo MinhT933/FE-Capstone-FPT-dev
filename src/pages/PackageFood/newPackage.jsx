@@ -21,6 +21,7 @@ import {
   callAPIgetCatePackage,
   callAPIgetGroupFood,
   callAPIgetTimeFrame,
+  getAPIgetGroupFoodByStatus,
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -32,6 +33,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import NewTimeFrame from "./NewTimeFrame";
 import DateTime from "./../../components/Control/DateTime";
 import NewCate from "./newCate";
+import * as moment from "moment";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -78,7 +80,7 @@ export default function NewPackage() {
     const getTimeFrame = async () => {
       await dispatch(callAPIgetTimeFrame(token));
       await dispatch(callAPIgetCatePackage(token));
-      await dispatch(callAPIgetGroupFood(token));
+      await dispatch(getAPIgetGroupFoodByStatus(token));
     };
     getTimeFrame();
   }, [dispatch, token]);
@@ -92,7 +94,7 @@ export default function NewPackage() {
   });
 
   const getGroupfood = useSelector((state) => {
-    return state.userReducer.listGroupFood;
+    return state.userReducer.listGroupFoodByStatus;
   });
 
   const getTimeFrameOptions = () => {
@@ -172,6 +174,8 @@ export default function NewPackage() {
       // const a = new Date(valueEndTime).toLocaleDateString().split("/");
       // const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
       // const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
+      const startSale = moment(valueStarTime).format("YYYY-MM-DD hh:mm:ss");
+      const endSale = moment(valueEndTime).format("YYYY-MM-DD hh:mm:ss");
       // Log(a)
       // console.log(startSale);
       const b = new Date(valueStarTime).toLocaleDateString().split("/");
@@ -185,8 +189,8 @@ export default function NewPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
-      formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
+      formData.append("endSale", endSale);
+      formData.append("startSale", startSale);
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
@@ -797,13 +801,13 @@ export default function NewPackage() {
                 {/* css button input img */}
                 <Box
                   sx={{
-                    //   height: 265,
-                    //   width: 265,
-                    //   maxHeight: { xs: 233, md: 167 },
-                    //   maxWidth: { xs: 350, md: 250 },
+                    // height: 165,
+                    // width: 165,
+                    maxHeight: { xs: 233, md: 167 },
+                    maxWidth: { xs: 350, md: 250 },
                     marginTop: "10%",
-                    marginLeft: "15%",
-                    objectFit: "cover",
+                    marginRight: "10%",
+                    // objectFit: "cover",
                   }}
                 >
                   {/* hiển thị hình lên  */}

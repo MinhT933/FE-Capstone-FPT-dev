@@ -18,6 +18,7 @@ import {
   callAPIgetCatePackage,
   callAPIgetTimeFrame,
   callAPIgetGroupFood,
+  getAPIgetGroupFoodByStatus,
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 
@@ -89,9 +90,9 @@ export default function EditPackage() {
   const [packageItem, setPackageItem] = useState([]);
   React.useEffect(() => {
     const getTimeFrame = async () => {
+      await dispatch(getAPIgetGroupFoodByStatus(token));
       await dispatch(callAPIgetTimeFrame(token));
       await dispatch(callAPIgetCatePackage(token));
-      await dispatch(callAPIgetGroupFood(token));
     };
     getTimeFrame();
     API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
@@ -115,6 +116,9 @@ export default function EditPackage() {
     });
   }, [dispatch, token, id]);
 
+  const getGroupfood = useSelector((state) => {
+    return state.userReducer.listGroupFoodByStatus;
+  });
   const timeframe = useSelector((state) => {
     return state.userReducer.listTimeFrame;
   });
@@ -122,9 +126,6 @@ export default function EditPackage() {
     return state.userReducer.listCategoryPackage;
   });
 
-  const getGroupfood = useSelector((state) => {
-    return state.userReducer.listGroupFood;
-  });
   const getTimeFrameOptions = () => {
     const TimeFrameData = [];
     for (var i = 0; i < timeframe.length; i++) {
@@ -347,49 +348,12 @@ export default function EditPackage() {
         console.log(err);
       });
   };
-  ///==============================================
-  const [valueItem, setValueItem] = useState();
-
-  // React.useEffect(() => {
-  //   let arrayItem = [];
-  //   if (getGroupfood.length > 0) {
-  //     if (packageItem.length > 0) {
-  //       for (const item of packageItem) {
-  //         for (let index = 0; index < getGroupfood.length; index++) {
-  //           const element = getGroupfood[index];
-  //           // console.log(element);
-  //           if (element.id === item.foodGroup.id) {
-  //             setPackageItem(
-  //               [...packageItem].filter((hehe) => hehe.id !== item.id)
-  //             );
-  //             console.log(element.id);
-  //             setValueItem(element.id);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   for (let index = 0; index < packageItem.length; index++) {
-  //     const element = packageItem[index].foodGroup;
-  //     console.log(element);
-  //     arrayItem.push(element);
-  //     console.log(arrayItem);
-  //     let arrayId = [];
-  //     for (let a = 0; a < arrayItem.length; a++) {
-  //       const group = arrayItem[a].id;
-  //       arrayId.push(group);
-  //       setValueItem(arrayId);
-  //     }
-  //   }
-  // }, [packageItem]);
   const handleItem = () => {
     if (getGroupfood.length > 0) {
       if (packageItem.length > 0) {
         for (const item of packageItem) {
           for (let index = 0; index < getGroupfood.length; index++) {
             const element = getGroupfood[index];
-            // console.log(element);
-
             if (element.id === item.foodGroup.id) {
               setPackageItem(
                 [...packageItem].filter((hehe) => hehe.id !== item.id)
@@ -401,19 +365,7 @@ export default function EditPackage() {
       }
     }
   };
-  const [selectedItem, setSelectedItem] = useState();
-  // const handleItem2 = () => {
-  //   if (packageItem.length > 0) {
-  //     return packageItem.map((item, index) => {
-  //       console.log(item[index]?.id);
-  //       return <h1 key={index}>{item.itemCode}</h1>;
-  //       // console.log(item.foodGroup.name);
-  //       // return `${item[index]?.foodGroup.id}`;
-  //     });
-  //   }
-  // };
-  // console.log(groupfood);
-
+  console.log(handleItem());
   const binding = () => {
     // console.log(handleItem());
     let array = [];
@@ -432,8 +384,7 @@ export default function EditPackage() {
               name="foodGroupID"
               label={handleLabel(index + 1)}
               width="20rem"
-              // value={handleItem() !== undefined ? handleItem() : "hahah"}
-              // value={handleItem()}
+              value={handleItem()}
               onChange={(e) => handleChangeGroupFood(e, index + 1)}
               onBlur={formik.handleBlur}
               options={getGroupFoodOptions()}

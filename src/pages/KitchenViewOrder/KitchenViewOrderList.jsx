@@ -10,8 +10,6 @@ import {
   // Avatar,
   Paper,
   Box,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -32,31 +30,24 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
-import { callAPIKitchenGetListOrder } from "../../redux/action/acction";
+import {
+  callAPIGetListOderByDay,
+  callAPIKitchenGetListOrder,
+} from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
-
-import dayjs from "dayjs";
-import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 
 import DatePicker from "../../components/Control/DatePicker";
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
-// import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
-import KITCHENVIEWORDERLIST from "./KitchenViewOrderSample";
+
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import KitchenListToolbar from "./../../sections/@dashboard/user/KitchenListToolbar";
-
+import * as moment from "moment";
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
 // ko nhát thiết phải thêm table head ở dưới
@@ -64,22 +55,27 @@ import KitchenListToolbar from "./../../sections/@dashboard/user/KitchenListTool
 const TABLE_HEAD = [
   { id: "", label: "", alignRight: false },
   { id: "id", label: "Mã đơn", alignRight: false },
-  { id: "name", label: "Người đặt", alignRight: false },
+  { id: "name", label: "Món ăn", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
   { id: "station", label: "Điểm giao", alignRight: false },
-  { id: "order", label: "Món ăn", alignRight: false },
-  { id: "note", label: "Ghi chú", alignRight: false },
+  { id: "slot", label: "Slot", alignRight: false },
+  { id: "timeSlot", label: "Bắt đầu", alignRight: false },
+  { id: "endTime", label: " Kết thúc", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
 
 // ----------------------------------------------------------------------
 
+const tomisecon = (mi) => {
+  return +mi[0] * (60000 * 60) + +mi[1] * 60000;
+};
+
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
+  if (tomisecon(b[orderBy]["startTime"]) < tomisecon(a[orderBy]["startTime"])) {
     return -1;
   }
-  if (b[orderBy] > a[orderBy]) {
+  if (tomisecon(b[orderBy]["startTime"]) > tomisecon(a[orderBy]["startTime"])) {
     return 1;
   }
   return 0;
@@ -94,13 +90,16 @@ function getComparator(order, orderBy) {
 function applySortFilter(array, comparator, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
+    console.log(a[0]);
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
   if (query) {
+    console.log(array);
     return filter(
       array,
+
       (_kitchen) =>
         _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
@@ -108,22 +107,19 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+const getOptions = () => [
+  { id: "done", title: "Done" },
+  { id: "active", title: "Active" },
+  { id: "delivery", title: "Delivery" },
+  { id: "pending  ", title: "Đang chờ" },
+  { id: "progress", title: "Progress" },
+  { id: "", title: "All" },
+];
 export default function KitchenViewOrderList() {
   //callAPIKitchenGetListOrder========================================
   const dispatch = useDispatch();
-  React.useEffect(() => {
-    const callAPI = async () => {
-      await dispatch(callAPIKitchenGetListOrder());
-    };
-    callAPI();
-  }, [dispatch]);
 
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
-  // console.log(decoded);
   const Navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
   if (token === null) {
     Navigate("/");
@@ -149,20 +145,15 @@ export default function KitchenViewOrderList() {
     );
   };
 
-  const kitchen = useSelector((state) => {
-    return state.userReducer.listKitchen;
-  });
-
   //callAPIKitchenGetListOrder========================================
 
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("asc ");
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("timeSlot");
 
   const [filterName, setFilterName] = useState("");
 
@@ -174,31 +165,14 @@ export default function KitchenViewOrderList() {
     setOrderBy(property);
   };
 
+  // console.log(orderBy);
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = KITCHENVIEWORDERLIST.map((n) => n.name);
+      const newSelecteds = orderlist.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -214,43 +188,28 @@ export default function KitchenViewOrderList() {
     setFilterName(event.target.value);
   };
 
-  // const emptyRows =
-  //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - KITCHENVIEWORDERLIST.length) : 0;
+  const [date, setDate] = React.useState(
+    moment(new Date()).format("YYYY-MM-DD")
+  );
+  React.useEffect(() => {
+    const callAPI = async () => {
+      dispatch(await callAPIGetListOderByDay(token, date, null));
+    };
+    callAPI();
+  }, [dispatch, date, token]);
+  const orderlist = useSelector((state) => {
+    return state.userReducer.listOderByDate;
+  });
+
+  //CHỌN BỮA ĂN
 
   const filteredKitchen = applySortFilter(
-    KITCHENVIEWORDERLIST,
+    orderlist,
     getComparator(order, orderBy),
     filterName
   );
-  //setColor button
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC32"),
-    backgroundColor: "#FFCC33",
-    "&:hover": {
-      backgroundColor: "#ffee32",
-    },
-    display: "center",
-  }));
-
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-
-    // display: "center"
-  }));
 
   const isKitchenNotFound = filteredKitchen.length === 0;
-
-  //LỊCH CHỌN NGÀY TRONG TUẦN
-  const isWeekend = (date) => {
-    const day = date.day();
-
-    return day === 0 || day === 6;
-  };
-
-  const [value, setValue] = React.useState(dayjs());
-
-  //CHỌN BỮA ĂN
   const [meal, setMeal] = React.useState("");
 
   const handleChange = (event) => {
@@ -298,9 +257,10 @@ export default function KitchenViewOrderList() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Chọn ngày"
-                value={value}
+                value={date}
                 onChange={(newValue) => {
-                  setValue(newValue);
+                  const b = new Date(newValue).toLocaleDateString().split("/");
+                  setDate(`${b[2]}-${b[1]}-${b[0]}`);
                 }}
                 inputFormat="DD-MM-YYYY"
                 renderInput={({ inputRef, inputProps, InputProps }) => (
@@ -312,32 +272,14 @@ export default function KitchenViewOrderList() {
               />
             </LocalizationProvider>
           </FormControl>
-
-          {/* CHỌN BỮA ĂN */}
-          <FormControl sx={{ minWidth: 120, marginRight: "67%" }}>
-            <InputLabel id="demo-simple-select-helper-label">Buổi</InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={meal}
-              label="Buổi"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Sáng</MenuItem>
-              <MenuItem value={20}>Trưa</MenuItem>
-              <MenuItem value={30}>Tối</MenuItem>
-            </Select>
-          </FormControl>
         </Stack>
-
         <Card>
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
+            date={date}
           />
 
           <Scrollbar>
@@ -347,7 +289,7 @@ export default function KitchenViewOrderList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={KITCHENVIEWORDERLIST.length}
+                  rowCount={orderlist.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -356,31 +298,33 @@ export default function KitchenViewOrderList() {
                   {filteredKitchen
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, phone, station, order, note, status } =
-                        row;
-                      const isItemSelected = selected.indexOf(id) !== -1;
+                      // const Slot
+                      const {
+                        id,
+                        subscription,
+                        station,
+                        food,
+                        timeSlot,
+                        order,
+                        note,
+                        status,
+                      } = row;
 
                       return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, id)}
-                            />
-                          </TableCell>
+                        <TableRow hover key={id} tabIndex={-1}>
+                          <TableCell align="left">{""}</TableCell>
                           <TableCell align="left">{id}</TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">{station}</TableCell>
-                          <TableCell align="left">{order}</TableCell>
-                          <TableCell align="left">{note}</TableCell>
+                          <TableCell align="left">{food.name}</TableCell>
+                          <TableCell align="left">
+                            {subscription.customer.account.phone}
+                          </TableCell>
+                          <TableCell align="left">{station.address}</TableCell>
+                          <TableCell align="left">{timeSlot.flag}</TableCell>
+                          <TableCell align="left">
+                            {timeSlot.startTime}
+                          </TableCell>
+                          <TableCell align="left">{timeSlot.endTime}</TableCell>
+
                           <TableCell align="left">
                             <Label
                               variant="ghost"
@@ -401,28 +345,9 @@ export default function KitchenViewOrderList() {
                               />
                             )}
                           </TableCell>
-
-                          {/* <Button1 sx={{ marginTop: "7%", }}
-                                                        variant="outlined"
-                                                        component={RouterLink}
-                                                        to="/dashboard/admin/updatekitchen"
-
-                                                    >
-                                                        Cập nhập
-                                                    </Button1> */}
-
-                          {/* <TableCell align="right"> */}
-                          {/* //props */}
-                          {/* <KitchenMoreMenu id={id} /> */}
-                          {/* </TableCell> */}
                         </TableRow>
                       );
                     })}
-                  {/* {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
-                                        </TableRow>
-                                    )} */}
                 </TableBody>
 
                 {isKitchenNotFound && (
@@ -441,7 +366,7 @@ export default function KitchenViewOrderList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={KITCHENVIEWORDERLIST.length}
+            count={orderlist.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

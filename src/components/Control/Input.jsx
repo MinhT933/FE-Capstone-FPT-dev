@@ -16,6 +16,9 @@ export default function Input(props) {
     marginBottom,
     disabled,
     variant,
+    type,
+    hintText,
+    floatingLabelText,
   } = props;
   return (
     <Box
@@ -32,7 +35,10 @@ export default function Input(props) {
         placeholder={placeholder}
         multiline
         label={label}
+        type={type}
         value={value}
+        hintText={hintText}
+        floatingLabelText={floatingLabelText}
         name={name}
         onChange={onChange}
         defaultValue={defaultValue}
