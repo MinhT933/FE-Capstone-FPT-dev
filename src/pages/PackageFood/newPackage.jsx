@@ -19,7 +19,6 @@ import Iconify from "./../../components/hook-form/Iconify";
 import { useState } from "react";
 import {
   callAPIgetCatePackage,
-  callAPIgetGroupFood,
   callAPIgetTimeFrame,
   getAPIgetGroupFoodByStatus,
 } from "../../redux/action/acction";
@@ -168,7 +167,7 @@ export default function NewPackage() {
       totalFood: "",
       GroupFoodID: "",
     },
-    // `${a[2]}-${a[1]}-${a[0]}`
+    // `${a[2]}-${a[1]}-${a[0]}
     // `0${b[2]}-${b[1]}-${b[0]}`
     onSubmit: async (values) => {
       // const a = new Date(valueEndTime).toLocaleDateString().split("/");

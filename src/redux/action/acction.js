@@ -212,8 +212,12 @@ export const callAPIgetListStation = (token) => {
 export const callAPIgetListStationByStatus = (token, status) => {
   return async (dispatch) => {
     try {
-
-      const res = await API("GET", URL_API + `/stations/byStatus?status=${status}`, null, token);
+      const res = await API(
+        "GET",
+        URL_API + `/stations/byStatus?status=${status}`,
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_LIST_STATIONS,
@@ -644,6 +648,28 @@ export const callAPIAdminGetListOrder = (token) => {
 
 //----------------------------------------------------------------
 
+export const callAPIgetShipperActive = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + "/shippers?status=new",
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_SHIPPER_ACTIVE,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
+
 export const callAPIgetProfileKitchen = () => {
   return async (dispatch) => {
     try {
@@ -744,7 +770,6 @@ export const callAPIgetAccountAdminByStatus = (token, status) => {
   };
 };
 
-
 export const callAPIgetAccountManager = (token) => {
   return async (dispatch) => {
     try {
@@ -808,9 +833,7 @@ export const callAPIgetAccountShipper = (token) => {
   };
 };
 
-
 export const callAPIgetAccountShipperByStatus = (token, status) => {
-
   return async (dispatch) => {
     try {
       const res = await API(
@@ -823,13 +846,11 @@ export const callAPIgetAccountShipperByStatus = (token, status) => {
       );
       dispatch(
         createAction({
-
           type: PathAction.GET_SHIPPER_ACTIVE,
           payload: res.data.result,
         })
       );
       console.log(res.data.result);
-
     } catch (err) {
       console.log({ err });
     }

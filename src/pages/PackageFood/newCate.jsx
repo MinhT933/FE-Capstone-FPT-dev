@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as yup from "yup";
 import { useFormik } from "formik";
