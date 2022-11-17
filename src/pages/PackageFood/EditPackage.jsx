@@ -35,7 +35,7 @@ const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
   price: yup
     .number()
-    .moreThan(0, "giá phải lớn hơn ko")
+    .moreThan(0, "Giá phải lớn hơn ko")
     .required("Vui lòng nhập lại giá"),
   totalStation: yup.string().required("nhập tổng số đỉa điểm giao").trim(),
   totalMeal: yup.string().required("Vui lòng nhập bữa ăn").trim(),
@@ -98,7 +98,6 @@ export default function EditPackage() {
     API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
       setInput(res.data.result.image);
       setPackageItem(res.data.result.packageItem);
-      console.log(res.data.result.packageItem);
       formik.setFieldValue("image", res.data.result.image);
       formik.setFieldValue("price", res.data.result.price);
       formik.setFieldValue("totalStation", res.data.result.totalStation);
@@ -255,14 +254,8 @@ export default function EditPackage() {
           message: `Đã thêm món ${formik.values.name}`,
           type: "SUCCESS",
         });
-
-        window.location.reload(true);
-        // } else if (endDate < startDate || endDate === startDate) {
-        // CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
-        // }
       } catch (error) {
-        CustomizedToast({ message: "Thấp bại rồi", type: "ERROR" });
-        console.log(error);
+        CustomizedToast({ message: "Tạo thất bại", type: "ERROR" });
       }
     },
   });
@@ -348,6 +341,7 @@ export default function EditPackage() {
         console.log(err);
       });
   };
+
   const handleItem = () => {
     if (getGroupfood.length > 0) {
       if (packageItem.length > 0) {
@@ -365,6 +359,7 @@ export default function EditPackage() {
       }
     }
   };
+
   console.log(handleItem());
   const binding = () => {
     // console.log(handleItem());
