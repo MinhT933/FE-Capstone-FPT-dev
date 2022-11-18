@@ -48,6 +48,7 @@ import Home from "./pages/home/home";
 import RequestPage from "./pages/request/RequestPage";
 import NewAdmin from "./pages/userList/NewAdmin";
 import NewManager from "./pages/userList/NewManager";
+import Tripdelivery from "./components/Trip/Tripdelivery";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -247,6 +248,14 @@ export default function Router() {
           element: (
             // <ProtectedRouteAuthen role="kitchen">
             <KitchenViewOrderList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "tripDelivery",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <Tripdelivery />
             // </ProtectedRouteAuthen>
           ),
         },

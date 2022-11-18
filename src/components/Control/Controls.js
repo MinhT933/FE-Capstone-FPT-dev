@@ -14,7 +14,6 @@ const Controls = {
   RadioGroup,
   Select,
   Checkbox,
-  DatePicker,
   Button,
   TextArea,
   TimeInput,

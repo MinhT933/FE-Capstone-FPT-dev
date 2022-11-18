@@ -68,8 +68,8 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
@@ -80,7 +80,7 @@ function applySortFilter(array, comparator, query) {
       (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 }
 
 export default function RequestPage() {
@@ -131,14 +131,13 @@ export default function RequestPage() {
   const request = useSelector((state) => {
     return state.userReducer.listRequests;
   });
-  console.log(request);
 
   const getOptions = () => [
     { id: "waiting", title: "Đang chờ" },
     { id: "pending", title: "Chờ duyệt" },
     { id: "reject", title: "Từ chối" },
     { id: "processed", title: "Hoàn thành" },
-    { id: "", title: "Tất cả" },
+    { id: "All", title: "Tất cả" },
   ];
 
   const [OpenPopUp, setOpenPopUp] = useState(false);
@@ -212,14 +211,14 @@ export default function RequestPage() {
 
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - food.length) : 0;
-
+  // console.log(request);
   const filterFood = applySortFilter(
     request,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isUserNotFound = filterFood.length === 0;
+  const isUserNotFound = filterFood?.length === 0;
 
   return (
     <Page title="Quản lí yêu cầu">
@@ -259,7 +258,7 @@ export default function RequestPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={request.length}
+                  rowCount={request?.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -267,7 +266,10 @@ export default function RequestPage() {
                 <TableBody>
                   {/* nhớ khởi tạo đúng tên file trong database */}
                   {filterFood
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
                     .map((row) => {
                       const {
                         id,
@@ -322,7 +324,6 @@ export default function RequestPage() {
                                 status === "waiting" ? "Chờ xử lí" : "duyệt"
                               }
                               onClick={() => {
-
                                 if (status === "waiting") {
                                   status !== "reject"
                                     ? handleAccept(id, token)
@@ -336,7 +337,6 @@ export default function RequestPage() {
                                   setValueId(id);
                                   // handleAccept(id, token);
                                 }
-
                               }}
                             />
                           </TableCell>
@@ -347,9 +347,9 @@ export default function RequestPage() {
                               onClick={() => {
                                 status === "processed"
                                   ? CustomizedToast({
-                                    message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
-                                    type: "ERROR",
-                                  })
+                                      message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
+                                      type: "ERROR",
+                                    })
                                   : handleReject(id, token);
                               }}
                             />
@@ -373,7 +373,7 @@ export default function RequestPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={request.length}
+            count={request?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
