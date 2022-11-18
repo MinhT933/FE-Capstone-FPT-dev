@@ -177,6 +177,11 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
   },
+  {
+    title: "Chuyến giao hàng",
+    path: "/dashboard/kitchen/tripDelivery",
+    icon: getIcon("mdi:language-go"),
+  },
 ];
 const navConfig = [
   {

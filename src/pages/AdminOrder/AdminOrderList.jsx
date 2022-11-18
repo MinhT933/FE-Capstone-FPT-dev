@@ -92,7 +92,7 @@ export default function AdminOrderList() {
     { id: "inProgress", title: "Tạm nghỉ" },
     { id: "done", title: "Bị cấm" },
     { id: "cancel", title: "Bị cấm" },
-    { id: "", title: "Tất cả" },
+    { id: "All", title: "Tất cả" },
   ];
 
 

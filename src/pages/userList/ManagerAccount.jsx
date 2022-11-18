@@ -93,9 +93,8 @@ export default function ManagerAccount() {
     { id: "active", title: "Hoạt động" },
     { id: "inActive", title: "Tạm nghỉ" },
     { id: "ban", title: "Bị cấm" },
-    { id: "", title: "Tất cả" },
+    { id: "All", title: "Tất cả" },
   ];
-
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
@@ -173,7 +172,6 @@ export default function ManagerAccount() {
       }
     }, []);
   };
-
 
   const station = useSelector((state) => {
     return state.userReducer.accountManager;
@@ -338,7 +336,6 @@ export default function ManagerAccount() {
                           <TableCell align="left">{phone}</TableCell>
 
                           <TableCell align="left">
-
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
