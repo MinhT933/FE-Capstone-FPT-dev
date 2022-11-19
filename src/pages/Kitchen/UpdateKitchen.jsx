@@ -34,7 +34,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate, useParams } from "react-router-dom";
-import  jwt_decode  from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -63,13 +63,13 @@ export default function UpdateKitchen() {
   if (token === null) {
     Navigate("/");
   }
-    try {
-      var decoded = jwt_decode(token);
-      // valid token format
-    } catch (error) {
-      // return <Navigate to="/" replace />;
-      Navigate("/");
-    }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
 
   const dispatch = useDispatch();
 
@@ -158,9 +158,9 @@ export default function UpdateKitchen() {
     >
       <PageHeader
         display="left"
-        title="Cập nhập địa điểm"
-        subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
-        icon={getIcon("emojione-monotone:pot-of-food")}
+        title="Cập nhập bếp"
+        subTitle="Vui lòng điền đầy đủ thông tin"
+        icon={getIcon("mdi:chef-hat")}
       />
       <form onSubmit={formik.handleSubmit}>
         <Box
@@ -169,9 +169,10 @@ export default function UpdateKitchen() {
           display="flex"
           justifyContent="left"
           alignItems="left"
+          sx={{ marginLeft: "33%" }}
         >
           <Grid container spacing={4} columns={20}>
-            <Grid item xs={8} marginLeft="10%">
+            <Grid item xs={12} >
               <Stack spacing={3}>
                 <Controls.Input
                   variant="outlined"
@@ -249,11 +250,6 @@ export default function UpdateKitchen() {
                   </FormHelperText>
                 )}
               </Stack>
-            </Grid>
-            <Grid item xs={8} display="right" marginTop="2%">
-              {/* <Box sx={{ float: "right", width: "40%" }}>
-               
-              </Box> */}
             </Grid>
           </Grid>
         </Box>

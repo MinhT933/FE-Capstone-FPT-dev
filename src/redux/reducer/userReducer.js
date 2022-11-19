@@ -62,6 +62,7 @@ const initialState = {
   listOderByDate: [],
   listGroupFoodByStatus: [],
   listShipperActive: [],
+  listPrepareFood: [],
   shipPerOfKitchen: [],
   listSlots: [],
 };

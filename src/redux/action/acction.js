@@ -886,3 +886,25 @@ export const callAPIgetAccountKitchenByStatus = (token, status) => {
     } catch (err) {}
   };
 };
+
+
+export const callAPIKitchenPrepareOrder = (token, date, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/orders/food-prepare?deliveryDate=${date}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+};
