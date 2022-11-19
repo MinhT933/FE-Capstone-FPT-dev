@@ -250,7 +250,7 @@ export default function NewPackage() {
         setBit(temp);
       })
       .catch((err) => {
-        console.log(err);
+      
       });
   };
 

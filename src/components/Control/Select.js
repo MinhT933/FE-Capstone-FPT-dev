@@ -44,13 +44,10 @@ export default function Select(props) {
         disabled={disabled}
         onChange={onChange}
         onClick={onClick}
-        defaultValue={defaultValue}
+        defaultValue={"hiuhi"}
         multiline
         sx={{ width: width, marginTop: marginTop }}
       >
-        {/* <MenuItem>
-          <ButtonCustomize nameButton="tạo" />
-        </MenuItem> */}
         {options?.map((item) => (
           <MenuItem key={item.id} value={item.id}>
             {item.title}

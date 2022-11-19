@@ -12,6 +12,7 @@ export default function ButtonCustomize(props) {
     width,
     marginTop,
     marginLeft,
+    paddingBottom,
   } = props;
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC32"),
@@ -31,6 +32,7 @@ export default function ButtonCustomize(props) {
         width: { width },
         marginTop: { marginTop },
         marginLeft: { marginLeft },
+        paddingBottom: { paddingBottom },
       }}
     >
       {nameButton}

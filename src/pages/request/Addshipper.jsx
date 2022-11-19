@@ -190,15 +190,15 @@ export default function Addshipper(props) {
                   {listShipperSelectbox.map((item) => (
                     <MenuItem
                       key={item.id}
-                      value={item.account.profile.fullName}
+                      value={item.account?.profile?.fullName}
                     >
-                      <Avatar src={item.account.profile.avatar} alt="food" />
+                      <Avatar src={item.account?.profile?.avatar} alt="food" />
                       <Checkbox
                         checked={
-                          valueTag.indexOf(item.account.profile.fullName) > -1
+                          valueTag.indexOf(item.account?.profile?.fullName) > -1
                         }
                       />
-                      <ListItemText primary={item.account.profile.fullName} />
+                      <ListItemText primary={item.account?.profile?.fullName} />
                     </MenuItem>
                   ))}
                 </Select>

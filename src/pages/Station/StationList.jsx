@@ -156,7 +156,7 @@ export default function StationList() {
   const getOptions = () => [
     { id: "active", title: "Hoạt động" },
     { id: "inActive", title: "Đóng cửa" },
-    { id: "", title: "Tất cả" },
+    { id: "All", title: "Tất cả" },
   ];
 
   const handleRequestSort = (event, property) => {

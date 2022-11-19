@@ -93,7 +93,7 @@ export default function AdminAccount() {
     { id: "active", title: "Hoạt động" },
     { id: "inActive", title: "Tạm nghỉ" },
     { id: "ban", title: "Bị cấm" },
-    { id: "", title: "Tất cả" },
+    { id: "All", title: "Tất cả" },
   ];
 
 

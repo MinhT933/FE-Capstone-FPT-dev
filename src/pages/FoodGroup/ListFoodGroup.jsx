@@ -138,7 +138,7 @@ export default function ListFoodGroup() {
     // { id: "waiting", title: "Waiting" },
     { id: "active", title: "Active" },
     { id: "inActive", title: "InActive" },
-    { id: "", title: "All" },
+    { id: "All", title: "All" },
   ];
   // const token = localStorage.getItem("token");
   // var decoded = jwt_decode(token);

@@ -29,11 +29,11 @@ export default function Logo({ disabledLink = false, sx }) {
   //   viewBox="0 0 512 512"
   // >
   const logo = (
-    <Box sx={{ width: 40, height: 40, ...sx }}>
+    <Box sx={{ width: 100, height: 40, ...sx }}>
       <Box
         component="img"
         src="/static/logo7.png"
-        sx={{ width: 40, height: 40, ...sx }}
+        sx={{ width: 80, height: 60, ...sx }}
       />
       <defs>
         <linearGradient id="BG1" x1="100%" x2="50%" y1="9.946%" y2="50%">
