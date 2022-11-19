@@ -159,9 +159,6 @@ export default function StationList() {
     { id: "", title: "Tất cả" },
   ];
 
-
-
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -254,7 +251,7 @@ export default function StationList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1200 }}>
+            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -300,15 +297,6 @@ export default function StationList() {
                           <TableCell align="left">{closeTime}</TableCell>
 
                           <TableCell align="left">
-                            {/* <Label
-                              variant="ghost"
-                              color={
-                                (status === "inActive" && "error") || "success"
-                              }
-                            >
-                              {status}
-                            </Label> */}
-
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
@@ -318,7 +306,6 @@ export default function StationList() {
                                 // <Alert severity="info">waiting</Alert>
                                 <Label color="success">Hoạt động</Label>
                               )}
-
                             </div>
                           </TableCell>
 
@@ -355,15 +342,6 @@ export default function StationList() {
                                 Chi tiết
                               </Button1>
 
-                              // <ButtonCustomize
-                              //   variant="outlined"
-                              //   component={RouterLink}
-                              //   to={`${location.pathname}/updatestation/${id}`}
-                              //   // nameButton="Cập nhập"
-                              //   width="5rem"
-                              // >
-                              //   Cập nhập
-                              // </ButtonCustomize>
                             )}
                           </TableCell>
                         </TableRow>

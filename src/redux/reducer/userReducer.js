@@ -62,6 +62,9 @@ const initialState = {
   listOderByDate: [],
   listGroupFoodByStatus: [],
   listShipperActive: [],
+
+  listPrepareFood: [],
+
 };
 
 // const initialStateAuthen = admin

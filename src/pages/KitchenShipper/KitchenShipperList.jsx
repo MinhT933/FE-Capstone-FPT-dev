@@ -36,7 +36,7 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 import RequestShipper from "./RequestShipper";
 import DetailShipper from "./DetailShipper";
-
+import jwt_decode from "jwt-decode";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -70,9 +70,9 @@ function getComparator(order, orderBy) {
 }
 
 const getOptions = () => [
-  { id: "active", title: "Active" },
-  { id: "inActive", title: "InActive" },
-  { id: "", title: "All" },
+  { id: "active", title: "Hoạt động" },
+  { id: "inActive", title: "Tạm nghỉ" },
+  { id: "", title: "Tất cả" },
 ];
 
 function applySortFilter(array, comparator, query) {
@@ -92,7 +92,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function KitchenList() {
+export default function KitchenShipperList() {
   //CallAPIgetListShipper=====================================
   const dispatch = useDispatch();
   //     React.useEffect(() => {
@@ -122,6 +122,11 @@ export default function KitchenList() {
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
   if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+  } catch (error) {
     Navigate("/");
   }
 
@@ -288,19 +293,25 @@ export default function KitchenList() {
                           key={id}
                           tabIndex={-1}
                           role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
                           onClick={() => {
                             handleDetails(id);
                           }}
                         >
-                          <TableCell>
-                            <Avatar
+                          <TableCell >
+                            <Avatar sx={{ marginLeft: "50%" }}
                               alt={account.profile.fullName}
                               src={account.profile.avatar}
                             />
                           </TableCell>
-                          <TableCell align="left">
-                            {account.profile.fullName}
+                          <TableCell >
+                            <Typography variant="subtitle2" noWrap>
+                              {account.profile.fullName}
+                            </Typography>
                           </TableCell>
+
+
                           <TableCell align="left">{account.phone}</TableCell>
                           <TableCell align="left">{noPlate}</TableCell>
                           <TableCell align="left">{vehicleType}</TableCell>

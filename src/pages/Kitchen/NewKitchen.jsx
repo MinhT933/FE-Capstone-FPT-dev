@@ -58,6 +58,8 @@ const schema = yup.object().shape({
 //callAPIforCreateStation========================================
 export default function NewKitchen() {
     //callAPIforCreateStation========================================
+    const navigate = useNavigate();
+
     const dispatch = useDispatch();
     React.useEffect(() => {
         const getlistStation = async () => {
@@ -115,10 +117,13 @@ export default function NewKitchen() {
             };
             try {
                 const res = await API("POST", URL_API + "/auths/register/kitchen", data, token);
-                CustomizedToast({
-                    message: `Đã thêm ${formik.values.fullName}`,
-                    type: "SUCCESS",
-                });
+                if (res) {
+                    CustomizedToast({
+                        message: `Đã thêm ${formik.values.fullName}`,
+                        type: "SUCCESS",
+                    });
+                }
+                navigate("/dashboard/admin/kitchen");
             } catch (error) {
                 CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
             }
@@ -146,8 +151,8 @@ export default function NewKitchen() {
             <PageHeader
                 display="left"
                 title="Thêm địa điểm"
-                subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
-                icon={getIcon("emojione-monotone:pot-of-food")}
+                subTitle="Vui lòng điền đầy đủ thông tin"
+                icon={getIcon("mdi:chef-hat")}
             />
             <form onSubmit={formik.handleSubmit}>
                 <Box
@@ -156,9 +161,10 @@ export default function NewKitchen() {
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
+                    sx={{ marginLeft: "33%" }}
                 >
                     <Grid container spacing={4} columns={20}>
-                        <Grid item xs={8} marginLeft="10%">
+                        <Grid item xs={12}>
                             <Stack spacing={3}>
 
                                 <Controls.Input
@@ -277,11 +283,7 @@ export default function NewKitchen() {
 
                             </Stack>
                         </Grid>
-                        <Grid item xs={8} display="right" marginTop="2%">
-                            {/* <Box sx={{ float: "right", width: "40%" }}>
-               
-              </Box> */}
-                        </Grid>
+
                     </Grid>
                 </Box>
 
@@ -292,7 +294,7 @@ export default function NewKitchen() {
                         marginLeft={"40%"}
                         marginTop={"2%"}
                     >
-                        <ButtonCustomize nameButton="Tạo địa điểm" type="submit" />
+                        <ButtonCustomize nameButton="Thêm bếp" type="submit" />
                     </Stack>
                 </Box>
             </form>
