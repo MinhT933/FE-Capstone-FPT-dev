@@ -80,7 +80,7 @@ const getOptions = () => [
   { id: "waiting", title: "Waiting" },
   { id: "active", title: "Active" },
   { id: "inActive", title: "InActive" },
-  { id: "All", title: "All" },
+  { id: "All", title: "Tất cả" },
 ];
 console.log(getOptions().id);
 

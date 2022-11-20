@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // @mui
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/material";
+import jwt_decode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +14,18 @@ Logo.propTypes = {
 
 export default function Logo({ disabledLink = false, sx }) {
   const theme = useTheme();
-
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
   const PRIMARY_LIGHT = theme.palette.primary.light;
 
   const PRIMARY_MAIN = theme.palette.primary.main;
@@ -70,6 +82,11 @@ export default function Logo({ disabledLink = false, sx }) {
   if (disabledLink) {
     return <>{logo}</>;
   }
-
-  return <RouterLink to="/">{logo}</RouterLink>;
+  if (decoded.role === "admin") {
+    return <RouterLink to="/dashboard/admin/app">{logo}</RouterLink>;
+  } else if (decoded.role === "manager") {
+    return <RouterLink to="/dashboard/manager/food">{logo}</RouterLink>;
+  } else if (decoded.role === "kitchen") {
+    return <RouterLink to="/dashboard/kitchen/kitchenorder">{logo}</RouterLink>;
+  }
 }

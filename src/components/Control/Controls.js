@@ -16,6 +16,7 @@ const Controls = {
   Checkbox,
   DatePicker,
   Button,
+  DatePicker,
   TextArea,
   TimeInput,
   TagInput,
