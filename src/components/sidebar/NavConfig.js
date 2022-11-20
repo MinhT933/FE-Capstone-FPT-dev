@@ -106,6 +106,7 @@ const navConfigAdmin = [
     ],
   },
 
+
   {
     title: "Người giao hàng",
     // path: "/dashboard/admin/adminshipper",
@@ -117,6 +118,7 @@ const navConfigAdmin = [
     path: "/dashboard/admin/request",
     icon: getIcon("fluent-mdl2:feedback-request-solid"),
   },
+
   {
     title: "Trạm",
     path: "/dashboard/admin/station",
@@ -127,7 +129,6 @@ const navConfigAdmin = [
     path: "/dashboard/admin/adminorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
-
   {
     title: "Quản lí bếp",
     // path: "/dashboard/admin/kitchen",
@@ -135,10 +136,17 @@ const navConfigAdmin = [
     icon: getIcon("fa6-solid:kitchen-set"),
   },
   {
-    title: "Đánh giá",
-    path: "/dashboard/admin/adminviewfeedback",
-    icon: getIcon("teenyicons:star-circle-outline"),
+    title: "Người giao hàng",
+    path: "/dashboard/admin/adminshipper",
+    icon: getIcon("carbon:delivery"),
   },
+  {
+    title: "Yêu cầu shipper",
+    path: "/dashboard/admin/request",
+    icon: getIcon("fluent-mdl2:feedback-request-solid"),
+  },
+
+
   // // {
   //   title: "Admin quản lí Người giao hàng",
   //   path: "/dashboard/admin/adminshipper",

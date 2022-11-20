@@ -38,6 +38,10 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 
+import { IconButton, InputAdornment } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 /// csss button
@@ -52,6 +56,18 @@ const schema = yup.object().shape({
 
 //callAPIforCreateStation========================================
 export default function NewAdmin() {
+    const [values, setValues] = useState({
+        phone: "",
+        password: "",
+        showPass: false,
+    });
+    const handlePassVisibilty = () => {
+        setValues({
+            ...formik.values.password,
+            showPass: !values.showPass,
+        });
+    };
+
     //callAPIforCreateStation========================================
     const dispatch = useDispatch();
     React.useEffect(() => {
@@ -131,7 +147,7 @@ export default function NewAdmin() {
                 display="left"
                 title="Thêm tài khoản quản trị"
                 subTitle="Vui lòng điền đầy đủ thông tin"
-                icon={getIcon("emojione-monotone:pot-of-food")}
+                icon={getIcon("ic:round-manage-accounts")}
             />
             <form onSubmit={formik.handleSubmit}>
                 <Box
@@ -140,9 +156,10 @@ export default function NewAdmin() {
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
+                    sx={{ marginLeft: "33%" }}
                 >
                     <Grid container spacing={4} columns={20}>
-                        <Grid item xs={8} marginLeft="10%">
+                        <Grid item xs={12} >
                             <Stack spacing={3}>
                                 <Controls.Input
                                     variant="outlined"
@@ -202,15 +219,36 @@ export default function NewAdmin() {
                                 )}
 
 
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Mật khẩu"
+                                <TextField
+                                    type={values.showPass ? "text" : "password"}
                                     name="password"
+                                    // sx={{'.css-r0m7rw-MuiInputBase-root-MuiOutlinedInput-root: 20rem'}}
+                                    sx={{ width: "24rem" }}
+                                    label="Mật khẩu"
+                                    placeholder="Mật khẩu"
+                                    variant="outlined"
+                                    required
                                     value={formik.values.password}
                                     onChange={(e) => {
                                         formik.handleChange(e);
                                     }}
-                                    onBlur={formik.handleBlur}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={handlePassVisibilty}
+                                                    aria-label="toggle password"
+                                                    edge="end"
+                                                >
+                                                    {values.showPass ? (
+                                                        <VisibilityOffIcon />
+                                                    ) : (
+                                                        <VisibilityIcon />
+                                                    )}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                 />
 
                                 {formik.touched.password && formik.errors.password && (
@@ -224,11 +262,7 @@ export default function NewAdmin() {
 
                             </Stack>
                         </Grid>
-                        <Grid item xs={8} display="right" marginTop="2%">
-                            {/* <Box sx={{ float: "right", width: "40%" }}>
-               
-              </Box> */}
-                        </Grid>
+
                     </Grid>
                 </Box>
 
