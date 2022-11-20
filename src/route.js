@@ -29,7 +29,6 @@ import RequestShipper from "./pages/KitchenShipper/RequestShipper";
 import KitchenProfile from "./pages/KitchenProfile/KitchenProfile";
 
 import AdminShipperList from "./pages/AdminShipper/AdminShipperList";
-import NewShipper from "./pages/AdminShipper/NewShipper";
 import UpdateShipper from "./pages/AdminShipper/UpdateShipper";
 import NewPackage from "./pages/PackageFood/newPackage";
 import EditPackage from "./pages/PackageFood/EditPackage";
@@ -49,6 +48,7 @@ import RequestPage from "./pages/request/RequestPage";
 import NewAdmin from "./pages/userList/NewAdmin";
 import NewManager from "./pages/userList/NewManager";
 import Tripdelivery from "./components/Trip/Tripdelivery";
+import NewShipper from "./pages/AdminShipper/NewShipper";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -150,7 +150,7 @@ export default function Router() {
         { path: "adminshipper/updateshipper/:id", element: <UpdateShipper /> },
         // /dashboard/admin/updateshipper
 
-        { path: "newshipper", element: <NewShipper /> },
+        { path: "newShipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
         { path: "request", element: <RequestPage /> },
 
@@ -208,7 +208,6 @@ export default function Router() {
         //CURD + chuyển shipper cho bếp
         { path: "adminshipper", element: <AdminShipperList /> },
 
-        { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
         { path: "foodGroup/updatefood/:id", element: <UpdateFood /> },
         { path: "package/updatePackageFood/:id", element: <EditPackage /> },
