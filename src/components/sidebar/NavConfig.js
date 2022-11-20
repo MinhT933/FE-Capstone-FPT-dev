@@ -85,13 +85,6 @@ const navConfigAdmin = [
         path: "/dashboard/admin/userAccount",
         icon: getIcon("eva:people-fill"),
       },
-
-      {
-        title: "Tài xế",
-        path: "/dashboard/admin/shipperAccount",
-        icon: getIcon("ri:motorbike-fill"),
-      },
-
       {
         title: "Bếp",
         path: "/dashboard/admin/kitchenAccount",
@@ -115,7 +108,8 @@ const navConfigAdmin = [
 
   {
     title: "Người giao hàng",
-    path: "/dashboard/admin/adminshipper",
+    // path: "/dashboard/admin/adminshipper",
+    path: "/dashboard/admin/shipperAccount",
     icon: getIcon("carbon:delivery"),
   },
   {
@@ -136,8 +130,14 @@ const navConfigAdmin = [
 
   {
     title: "Quản lí bếp",
-    path: "/dashboard/admin/kitchen",
+    // path: "/dashboard/admin/kitchen",
+    path: "/dashboard/admin/kitchenAccount",
     icon: getIcon("fa6-solid:kitchen-set"),
+  },
+  {
+    title: "Đánh giá",
+    path: "/dashboard/admin/adminviewfeedback",
+    icon: getIcon("teenyicons:star-circle-outline"),
   },
   // // {
   //   title: "Admin quản lí Người giao hàng",

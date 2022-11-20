@@ -47,6 +47,7 @@ const TABLE_HEAD = [
 
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
+  { label: "Chi tiết", alignRight: false },
   { id: "" },
 ];
 
@@ -350,24 +351,31 @@ export default function ShipperAccount() {
 
                           <TableCell align="left">
                             {status === "active" ? (
-                              <Button1
+                              <ButtonCustomize
                                 variant="outlined"
+                                nameButton="Chặn"
                                 onClick={() => {
                                   handleDelete(id, fullName);
                                 }}
-                              >
-                                Chặn
-                              </Button1>
+                              />
                             ) : (
-                              <Button1
+                              <ButtonCustomize
                                 variant="outlined"
+                                nameButton="Mở chặn"
                                 onClick={() => {
                                   handleActive(id, fullName);
                                 }}
-                              >
-                                Mở chặn
-                              </Button1>
+                              />
                             )}
+                          </TableCell>
+                          <TableCell align="left">
+                            <ButtonCustomize
+                              variant="outlined"
+                              display="TableCell"
+                              nameButton="Chi tiết"
+                              component={RouterLink}
+                              to={`${location.pathname}/updateshipper/${id}`}
+                            />
                           </TableCell>
                         </TableRow>
                       );

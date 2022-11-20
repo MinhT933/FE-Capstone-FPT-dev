@@ -261,7 +261,7 @@ export default function NewShipper() {
                   <Controls.DatePicker
                     label="Ngày tháng năm sinh"
                     width="28rem"
-                    // inputFormat="DD-MM-YYYY"
+                    inputFormat="DD-MM-YYYY"
                     value={valueStarTime}
                     onChange={(e) => {
                       setValueStarTime(e);
