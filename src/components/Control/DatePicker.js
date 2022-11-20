@@ -40,9 +40,9 @@ export default function DatePicker(props) {
           label={label}
           // inputFormat="YYYY-MM-DD"
           //hihi
-          inputFormat="DD-MM-YYYY"
+          // inputFormat="DD-MM-YYYY"
           disablePast={false}
-          // inputFormat={inputFormat}
+          inputFormat={inputFormat}
           value={value}
           onChange={onChange}
           // minDate={new Date()}
@@ -63,3 +63,4 @@ export default function DatePicker(props) {
     </FormControl>
   );
 }
+  
