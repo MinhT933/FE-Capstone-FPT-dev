@@ -32,15 +32,12 @@ import { useNavigate } from "react-router-dom";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
-
-//callAPIAdminCreateShipper=================================
 const schema = yup.object().shape({
   fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
   phone: yup.string().required("Điền đầy đủ thông tin").trim(),
   noPlate: yup.string().required("Điền đầy đủ thông tin").trim(),
   vehicleType: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
-//callAPIAdminCreateShipper=================================
 
 export default function NewShipper() {
   const [values, setValues] = useState({
@@ -151,7 +148,7 @@ export default function NewShipper() {
       }}
     >
       <PageHeader
-        display="left"
+        // display="left"
         title="Thêm tài xế "
         subTitle="Vui lòng điền đầy đủ thông tin"
         icon={getIcon("carbon:delivery")}
@@ -159,7 +156,6 @@ export default function NewShipper() {
       <form onSubmit={formik.handleSubmit}>
         <Box
           space-around="space-around"
-          // sx={{ float: "right", width: "60%", flexGrow: 1 }}
           display="flex"
           justifyContent="left"
           alignItems="left"
@@ -179,7 +175,6 @@ export default function NewShipper() {
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {/* nếu sai thì nó đỏ */}
                 {formik.touched.fullName && formik.errors.fullName && (
                   <FormHelperText
                     error
@@ -232,7 +227,7 @@ export default function NewShipper() {
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {/* nếu sai thì nó đỏ */}
+
                 {formik.touched.email && formik.errors.email && (
                   <FormHelperText
                     error
@@ -262,15 +257,17 @@ export default function NewShipper() {
                   </FormHelperText>
                 )}
 
-                <Controls.DatePicker
-                  label="Ngày tháng năm sinh"
-                  width="28rem"
-                  inputFormat="DD-MM-YYYY"
-                  value={valueStarTime}
-                  onChange={(e) => {
-                    setValueStarTime(e);
-                  }}
-                />
+                <Grid item xs={12}>
+                  <Controls.DatePicker
+                    label="Ngày tháng năm sinh"
+                    width="28rem"
+                    inputFormat="DD-MM-YYYY"
+                    value={valueStarTime}
+                    onChange={(e) => {
+                      setValueStarTime(e);
+                    }}
+                  />
+                </Grid>
 
                 <Controls.Input
                   variant="outlined"
@@ -316,7 +313,6 @@ export default function NewShipper() {
             </Grid>
           </Grid>
         </Box>
-
         <Box>
           <ButtonCustomize
             nameButton="Thêm tài xế"
