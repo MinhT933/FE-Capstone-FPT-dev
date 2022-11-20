@@ -14,14 +14,23 @@ import Box from "@mui/material/Box";
 import Iconify from "../../../components/hook-form/Iconify";
 import { Controller } from "react-hook-form";
 import Controls from "./../../../components/Control/Controls";
+
 import {
+  callAPIgetAccountAdminByStatus,
+  callAPIgetAccountCustomerByStatus,
+  callAPIgetAccountKitchenByStatus,
+  callAPIgetAccountManagerByStatus,
+  callAPIgetAccountShipperByStatus,
   callAPIgetGroupFoodByStatus,
   callAPIgetListFoodByStatus,
   callAPIGetListOderByDay,
   callAPIGetListPack,
   callAPIgetListReqByStatus,
+  callAPIgetListStationByStatus,
 } from "../../../redux/action/acction";
+
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -65,13 +74,93 @@ export default function UserListToolbar({
   date,
 }) {
   const dispatch = useDispatch();
+  const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
-    dispatch(await callAPIGetListPack(token, event.target.value));
-    dispatch(await callAPIgetListFoodByStatus(token, event.target.value));
-    dispatch(await callAPIgetGroupFoodByStatus(token, event.target.value));
-    dispatch(await callAPIgetListReqByStatus(token, event.target.value));
+    setHaha(event.target.value === "All" ? "" : event.target.value);
+
+    dispatch(
+      await callAPIGetListPack(
+        token,
+        event.target.value === "All"
+          ? ""
+          : event.target.value === "All"
+          ? ""
+          : event.target.value === "All"
+          ? ""
+          : event.target.value
+      )
+    );
+    dispatch(
+      await callAPIgetListFoodByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+    dispatch(
+      await callAPIgetGroupFoodByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+    dispatch(
+      await callAPIgetListReqByStatus(
+        token,
+        event.target.value === "All"
+          ? ""
+          : event.target.value === "All"
+          ? ""
+          : event.target.value === "All"
+          ? ""
+          : event.target.value
+      )
+    );
+
+    dispatch(
+      await callAPIgetListStationByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+
+    dispatch(
+      await callAPIgetAccountManagerByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+    dispatch(
+      await callAPIgetAccountAdminByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+    dispatch(
+      await callAPIgetAccountShipperByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+    dispatch(
+      await callAPIgetAccountKitchenByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+    dispatch(
+      await callAPIgetAccountCustomerByStatus(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+
     if (date) {
-      dispatch(await callAPIGetListOderByDay(token, date, event.target.value)); 
+      dispatch(
+        await callAPIGetListOderByDay(
+          token,
+          date,
+          event.target.value === "All" ? "" : event.target.value
+        )
+      );
     }
   };
   return (
@@ -103,12 +192,12 @@ export default function UserListToolbar({
             }
           />
           <Controls.Select
-            label="Status"
+            label="Trạng thái"
             width="10rem"
-            marginRight="30rem"
+            marginRight="50%  "
             options={options}
             onChange={handleChange}
-            // value={value}
+            value={haha}
           />
         </>
       )}
