@@ -137,7 +137,7 @@ export default function Food() {
   const getOptions = () => [
     { id: "active", title: "Active" },
     { id: "inActive", title: "InActive" },
-    { id: "All", title: "Tất" },
+    { id: "All", title: "All" },
   ];
   React.useEffect(() => {
     const callAPI = async () => {
