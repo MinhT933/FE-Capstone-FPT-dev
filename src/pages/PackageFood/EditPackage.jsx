@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Paper } from "@mui/material";
 
 import { Grid } from "@mui/material";
@@ -90,43 +90,30 @@ export default function EditPackage() {
   const [packageItem, setPackageItem] = useState([]);
   React.useEffect(() => {
     const getTimeFrame = async () => {
-      dispatch(await getAPIgetGroupFoodByStatus(token));
-      dispatch(await callAPIgetTimeFrame(token));
-      dispatch(await callAPIgetCatePackage(token));
-      API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
-        setInput(res.data.result.image);
-        setPackageItem(res.data.result.packageItem);
-        formik.setFieldValue("image", res.data.result.image);
-        formik.setFieldValue("price", res.data.result.price);
-        formik.setFieldValue("totalStation", res.data.result.totalStation);
-        formik.setFieldValue("totalMeal", res.data.result.totalMeal);
-        setValueStarTime(res.data.result.startSale);
-        formik.setFieldValue("name", res.data.result.name);
-        setValueEndtime(res.data.result.endSale);
-        formik.setFieldValue("totalDate", res.data.result.totalDate);
-        formik.setFieldValue("totalFood", res.data.result.totalFood);
-        formik.setFieldValue("description", res.data.result.description);
-        formik.setFieldValue("timeFrameID", res.data.result.timeFrame.id);
-        handClickTimeFrame(res.data.result.timeFrame.id);
-        formik.setFieldValue("categoryID", res.data.result.packageCategory.id);
-      });
+      await dispatch(getAPIgetGroupFoodByStatus(token));
+      await dispatch(callAPIgetTimeFrame(token));
+      await dispatch(callAPIgetCatePackage(token));
     };
     getTimeFrame();
+    API("GET", URL_API + `/packages/find/${id}`, null, token).then((res) => {
+      setInput(res.data.result.image);
+      setPackageItem(res.data.result.packageItem);
+      formik.setFieldValue("image", res.data.result.image);
+      formik.setFieldValue("price", res.data.result.price);
+      formik.setFieldValue("totalStation", res.data.result.totalStation);
+      formik.setFieldValue("totalMeal", res.data.result.totalMeal);
+      setValueStarTime(res.data.result.startSale);
+      formik.setFieldValue("name", res.data.result.name);
+      setValueEndtime(res.data.result.endSale);
+      formik.setFieldValue("totalDate", res.data.result.totalDate);
+      formik.setFieldValue("totalFood", res.data.result.totalFood);
+      formik.setFieldValue("description", res.data.result.description);
+      formik.setFieldValue("timeFrameID", res.data.result.timeFrame.id);
+      handClickTimeFrame(res.data.result.timeFrame.id);
+      formik.setFieldValue("categoryID", res.data.result.packageCategory.id);
+      // console.log(res.data.result.packageCategory.id);
+    });
   }, [dispatch, token, id]);
-  /// làm sao chó nó chạy cùng 1 lúc
-  const [bit, setBit] = useState([]);
-  const handClickTimeFrame = (id) => {
-    API("GET", URL_API + `/time-frame/${id}`, null, token)
-      .then((res) => {
-        let filter = res.data.result.dateFilter;
-        let data = [];
-        data = [...filter];
-        setBit(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   const getGroupfood = useSelector((state) => {
     return state.userReducer.listGroupFoodByStatus;
@@ -166,21 +153,35 @@ export default function EditPackage() {
   };
 
   const [prices, setPrices] = useState([]);
-  ///========================Change PackageItem
-  const handleChangeGroupFood = (e, idPackage) => {
-    const indexUpdate = packageItem.findIndex((a) => a.id === idPackage);
-    const packageItemUpdate = [...packageItem];
-    packageItemUpdate[indexUpdate].foodGroup.id = e.target.value;
-    setPackageItem(packageItemUpdate);
-    // const index = data.findIndex((item) => item.itemCode === count);
-    // data[index].foodGroup.id = a.id;
-    const itemGroupFood = getGroupfood.find((c) => c.id === e.target.value);
-    var priceMost = Math.max.apply(
-      Math,
-      itemGroupFood.foods.map((item) => item.price)
-    );
-    const result = +formik.values.price + priceMost;
-    formik.setFieldValue("price", result);
+  const handleChangeGroupFood = (e, count) => {
+    let arrayfood = [];
+    let pricearray = [];
+    const a = getGroupfood.find((c) => c.id === e.target.value);
+    const data = [...packageItem];
+    const index = data.findIndex((item) => item.itemCode === count);
+    data[index].foodGroup.id = a.id;
+
+    API("GET", URL_API + `/food-groups/find/${a.id}`, null, token)
+      .then((res) => {
+        arrayfood = res.data.result.foods;
+        for (let index = 0; index < arrayfood.length; index++) {
+          pricearray.push(arrayfood[index].price);
+        }
+
+        var priceMorthan = Math.max.apply(Math, pricearray);
+        const a = [...prices];
+        a.push(priceMorthan);
+        formik.setFieldValue(
+          "price",
+          a.reduce((accumulator, item) => accumulator + item),
+          0
+        );
+        setPrices(a);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setGroupFood([...groupfood, { [e.target.name]: a.id }]);
   };
 
   const formik = useFormik({
@@ -197,7 +198,6 @@ export default function EditPackage() {
       timeFrameID: "",
       image: null,
       totalFood: "",
-      categoryID: "",
     },
 
     // `${a[2]}-${a[1]}-${a[0]}`
@@ -328,41 +328,76 @@ export default function EditPackage() {
     }
     return a;
   };
+  const [bit, setBit] = useState([]);
+  const handClickTimeFrame = (id) => {
+    API("GET", URL_API + `/time-frame/${id}`, null, token)
+      .then((res) => {
+        let filter = res.data.result.dateFilter;
+        let data = [];
+        data = [...filter];
+        setBit(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleItem = () => {
-    let array = [];
     if (getGroupfood.length > 0) {
       if (packageItem.length > 0) {
         for (const item of packageItem) {
-          array.push(
-            <Box
-              sx={{
-                marginTop: "2rem",
-                marginLeft: "55%",
-              }}
-            >
-              <Controls.Select
-                name="foodGroupID"
-                label={handleLabel(item.itemCode)}
-                width="20rem"
-                value={getGroupfood.find((i) => i.id === item.foodGroup.id)?.id}
-                onChange={(e) => handleChangeGroupFood(e, item.id)}
-                onBlur={formik.handleBlur}
-                options={getGroupFoodOptions()}
-              />
-            </Box>
-          );
+          for (let index = 0; index < getGroupfood.length; index++) {
+            const element = getGroupfood[index];
+            if (element.id === item.foodGroup.id) {
+              setPackageItem(
+                [...packageItem].filter((hehe) => hehe.id !== item.id)
+              );
+              return element.id;
+            }
+          }
         }
+      }
+    }
+  };
+
+  console.log(handleItem());
+  const binding = () => {
+    // console.log(handleItem());
+    let array = [];
+    for (let index = 0; index < bit.length; index++) {
+      const element = bit[index];
+      if (element === "1") {
+        // if (handleItem() !== undefined) {
+        array.push(
+          <Box
+            sx={{
+              marginTop: "2rem",
+              marginLeft: "55%",
+            }}
+          >
+            <Controls.Select
+              name="foodGroupID"
+              label={handleLabel(index + 1)}
+              width="20rem"
+              value={handleItem()}
+              onChange={(e) => handleChangeGroupFood(e, index + 1)}
+              onBlur={formik.handleBlur}
+              options={getGroupFoodOptions()}
+            />
+          </Box>
+        );
+        // }
       }
     }
     return array;
   };
+  // console.log(array);
 
   const getIcon = (name) => <Iconify icon={name} width={24} height={24} />;
   return (
     <Paper>
       <PageHeader
-        title="Cập nhập gói ăn"
+        title="Thiết ké gói ăn"
         subTitle="Điền các thông tin  "
         icon={getIcon("ant-design:setting-filled")}
       />
@@ -537,11 +572,10 @@ export default function EditPackage() {
                 />
               </Grid>
               {/* ///categoryID */}
-
               <Grid item xs={6}>
                 <Controls.Select
                   name="categoryID"
-                  label="Chọn loại gói ăn"
+                  label="Chọn loại package"
                   value={formik.values.categoryID}
                   onChange={(e) => {
                     const a = category.find((c) => c.id === e.target.value);
@@ -584,7 +618,6 @@ export default function EditPackage() {
                       name="timeFrameID"
                       label="Chọn khung thời gian"
                       width="13rem"
-                      disabled
                       value={formik.values.timeFrameID}
                       onChange={(e) => {
                         const a = timeframe.find(
@@ -619,10 +652,9 @@ export default function EditPackage() {
                   </Box>
                 </Box>
               </Grid>
-              {handleItem().length > 0 &&
-                handleItem().map((item) => {
-                  return <>{item}</>;
-                })}
+              {binding().map((item) => {
+                return <>{item}</>;
+              })}
               <Box>
                 <Stack width="200px" mt={"2rem"} ml={"24rem"} mb={"1rem"}>
                   <ButtonCustomize
