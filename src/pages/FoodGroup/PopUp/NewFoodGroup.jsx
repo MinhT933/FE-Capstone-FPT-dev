@@ -77,6 +77,7 @@ export default function NewFoodGroup(props) {
     const {
       target: { value },
     } = e;
+    
     const a = listFoodSelectbox.find((c) => c.id === value);
     console.log(a);
     setValueTag(
@@ -122,7 +123,9 @@ export default function NewFoodGroup(props) {
         const res = await API("POST", URL_API + `/food-groups`, data, token);
         await dispatch(callAPIgetGroupFood(token));
         CustomizedToast({
+
           message: `Đã Thêm ${formik.values.name}`,
+
           type: "SUCCESS",
         });
       } catch (error) {

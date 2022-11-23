@@ -1,6 +1,7 @@
 import React from "react";
 import PageHeader from "../PageHeader";
 // import Paper from "./../../theme/overrides/Paper";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Iconify from "../../components/hook-form/Iconify";
 import { Paper } from "@mui/material";
 import { Grid } from "@mui/joy";
@@ -10,7 +11,6 @@ import DatePicker from "../Control/DatePicker";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   callAPIgetOrdertoCreateDeliveryTrip,
   callAPIgetShipperOfKitchen,
@@ -20,8 +20,16 @@ import {
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { slotShouldForwardProp } from "@mui/material/styles/styled";
+import TripdeliveryPopUp from "./TripdeliveryPopUp";
+import { ChargingStationOutlined } from "@mui/icons-material";
+
 
 export default function Tripdelivery() {
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
+  const [OpenPopUpCate, SetOpenPopUpCate] = useState(false);
+  const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
+  const [page, setPage] = useState(0);
+
   //   const idKitchen = profiles.id;
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -88,6 +96,7 @@ export default function Tripdelivery() {
   };
 
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
+  console.log(valueStarTime)
   const [stationID, setStationID] = useState("");
   const [slot, setSlot] = useState("");
   const [result, setResult] = useState("");
@@ -96,53 +105,41 @@ export default function Tripdelivery() {
     // { field: "id", headerName: "ID", flex: 1 },
     { field: "nameFood", headerName: "Tên Món", flex: 1 },
     {
-      field: "station", headerName: "Địa điểm", flex: 1,
-      renderCell: (param) => {
-        return param.row.station.address
-      }
-
-    },
-    {
       field: "name", headerName: "Tên trạm", flex: 1,
       renderCell: (param) => {
         return param.row.station.name
       }
 
     },
-    // {
-    //   field: "openTime", headerName: "Giờ mở cửa", flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.openTime
-    //   }
+    {
+      field: "station", headerName: "Địa chỉ", flex: 1,
+      renderCell: (param) => {
+        return param.row.station.address
+      }
 
-    // },
-    // {
-    //   field: "phone", headerName: "Điện thoại ", flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.phone
-    //   }
+    },
 
-    // },
-    // {
-    //   field: "deliveryDate", headerName: "Ngày giao", flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.deliveryDate
-    //   }
+    {
+      field: "openTime", headerName: "Giờ mở cửa", flex: 1,
+      renderCell: (param) => {
+        return param.row.station.openTime
+      }
 
-    // },
-    // {
-    //   field: "address",
-    //   headerName: "địa chỉ",
-    //   type: "number",
-    //   width: 90,
-    // },
-    // {
-    //   field: "openTime",
-    //   headerName: "Giờ mở cửa",
-    //   description: "This column has a value getter and is not sortable.",
-    //   sortable: false,
-    //   width: 160,
-    // },
+    },
+    {
+      field: "phone", headerName: "Điện thoại ", flex: 1,
+      renderCell: (param) => {
+        return param.row.station.phone
+      }
+
+    },
+    {
+      field: "deliveryDate", headerName: "Ngày giao", flex: 1,
+      renderCell: (param) => {
+        return param.row.station.deliveryDate
+      }
+
+    },
   ];
 
   const rows = [
@@ -162,7 +159,8 @@ export default function Tripdelivery() {
     return state.userReducer.orderToCreate;
   });
   console.log(resultList)
-  console.log(rows)
+
+
   const handleClickFind = async () => {
 
     dispatch(
@@ -181,6 +179,10 @@ export default function Tripdelivery() {
 
   }
 
+  const [selectionModel, setSelectionModel] = React.useState([]);
+
+  console.log(resultList);
+
   return (
     // <div>Tripdelivery</div>
     <Paper>
@@ -190,7 +192,7 @@ export default function Tripdelivery() {
         icon={getIcon("icon-park-outline:delivery")}
       />
       <form>
-        <Box sx={{ marginLeft: 12 }}>
+        <Box sx={{ marginLeft: 12, height: 600 }}>
           <Grid container>
             <Grid item xs={3}>
               <DatePicker
@@ -225,7 +227,7 @@ export default function Tripdelivery() {
             <Grid item xs={3}>
               <Controls.Select
                 name="stationID"
-                label="Địa điểm"
+                label="Trạm"
                 // defaultValue={categoriesFood[0].name}
 
                 //   value={formik.values.foodCategoryId}
@@ -270,7 +272,11 @@ export default function Tripdelivery() {
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 getRowId={(row) => row.id}
-                // checkboxSelection
+                checkboxSelection
+                onSelectionModelChange={(newSelectionModel) => {
+                  console.log(newSelectionModel)
+                  setSelectionModel(newSelectionModel);
+                }}
                 pagination
               /> : <DataGrid
                 rows={rows}
@@ -278,20 +284,36 @@ export default function Tripdelivery() {
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 getRowId={(row) => row.id}
-                // checkboxSelection
+                checkboxSelection
                 pagination
               />}
 
             </div>
           </Box>
           <ButtonCustomize
+            // variant="contained"
+            component={RouterLink}
+            to="#"
+            onClick={() => {
+              SetOpenPopUp(true);
+            }}
             nameButton="Tạo chuyến đi"
-            marginLeft="35%"
-            marginTop="3%"
-          // paddingBottom="3%"
+            width='20%'
+            marginLeft='45%'
+            marginTop='3%'
           />
+
         </Box>
       </form>
+      <TripdeliveryPopUp
+        OpenPopUp={OpenPopUp}
+        SetOpenPopUp={SetOpenPopUp}
+        stationID={stationID}
+        valueStarTime={valueStarTime}
+        selectionModel={selectionModel}
+      >
+
+      </TripdeliveryPopUp>
     </Paper>
   );
 }

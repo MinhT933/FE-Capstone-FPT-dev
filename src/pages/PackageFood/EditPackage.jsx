@@ -17,6 +17,7 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import {
   callAPIgetCatePackage,
   callAPIgetTimeFrame,
+  callAPIgetGroupFood,
   getAPIgetGroupFoodByStatus,
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
@@ -337,14 +338,14 @@ export default function EditPackage() {
             <Box
               sx={{
                 marginTop: "2rem",
-                marginLeft: "53%",
+                marginLeft: "55%",
               }}
             >
               <Controls.Select
                 name="foodGroupID"
                 label={handleLabel(item.itemCode)}
                 width="20rem"
-                value={getGroupfood.find((i) => i.id === item.foodGroup.id)?.id}
+                value={getGroupfood.find((i) => i.id === item.foodGroup.id).id}
                 onChange={(e) => handleChangeGroupFood(e, item.id)}
                 onBlur={formik.handleBlur}
                 options={getGroupFoodOptions()}
@@ -497,6 +498,7 @@ export default function EditPackage() {
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
+                    console.log(e);
                   }}
                 />
               </Grid>
@@ -535,6 +537,41 @@ export default function EditPackage() {
                 />
               </Grid>
               {/* ///categoryID */}
+
+              <Grid item xs={6}>
+                <Controls.Select
+                  name="categoryID"
+                  label="Chọn loại gói ăn"
+                  value={formik.values.categoryID}
+                  onChange={(e) => {
+                    const a = category.find((c) => c.id === e.target.value);
+                    formik.setFieldValue("categoryID", a.id);
+                  }}
+                  onBlur={formik.handleBlur}
+                  options={getcategoryOptions()}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Controls.TextArea
+                  width="16rem"
+                  variant="outlined"
+                  placeholder="Mô tả"
+                  name="description"
+                  value={formik.values.description}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.description && formik.errors.description && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.description}
+                  </FormHelperText>
+                )}
+              </Grid>
               <Grid item xs={6}>
                 <Box
                   sx={{
@@ -546,7 +583,7 @@ export default function EditPackage() {
                     <Controls.Select
                       name="timeFrameID"
                       label="Chọn khung thời gian"
-                      width="16rem"
+                      width="13rem"
                       disabled
                       value={formik.values.timeFrameID}
                       onChange={(e) => {
@@ -582,41 +619,6 @@ export default function EditPackage() {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={6}>
-                <Controls.Select
-                  name="categoryID"
-                  label="Chọn loại gói ăn"
-                  value={formik.values.categoryID}
-                  onChange={(e) => {
-                    const a = category.find((c) => c.id === e.target.value);
-                    formik.setFieldValue("categoryID", a.id);
-                  }}
-                  onBlur={formik.handleBlur}
-                  options={getcategoryOptions()}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controls.TextArea
-                  width="16rem"
-                  variant="outlined"
-                  placeholder="Mô tả"
-                  name="description"
-                  value={formik.values.description}
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                  }}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.description && formik.errors.description && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.description}
-                  </FormHelperText>
-                )}
-              </Grid>
-
               {handleItem().length > 0 &&
                 handleItem().map((item) => {
                   return <>{item}</>;
@@ -661,13 +663,13 @@ export default function EditPackage() {
                 {/* css button input img */}
                 <Box
                   sx={{
-                    height: "60%",
-                    width: "80%",
-                    maxHeight: { xs: 350, md: 250 },
-                    // maxWidth: { xs: 350, md: 250 },
+                    // height: "100%",
+                    // width: "100%",
+                    maxHeight: { xs: 233, md: 167 },
+                    maxWidth: { xs: 350, md: 250 },
                     marginTop: "10%",
                     // boxShadow: 8,
-                    // marginLeft: "5%",
+                    marginLeft: "11%",
 
                     // objectFit: "cover",
                   }}

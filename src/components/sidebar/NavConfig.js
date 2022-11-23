@@ -85,11 +85,7 @@ const navConfigAdmin = [
         path: "/dashboard/admin/userAccount",
         icon: getIcon("eva:people-fill"),
       },
-      // {
-      //   title: "Bếp",
-      //   path: "/dashboard/admin/kitchenAccount",
-      //   icon: getIcon("mdi:chef-hat"),
-      // },
+
       //admin
       {
         title: "Quản trị viên",
@@ -105,20 +101,6 @@ const navConfigAdmin = [
       },
     ],
   },
-
-
-  {
-    title: "Người giao hàng",
-    // path: "/dashboard/admin/adminshipper",
-    path: "/dashboard/admin/shipperAccount",
-    icon: getIcon("carbon:delivery"),
-  },
-  {
-    title: "Yêu cầu shipper",
-    path: "/dashboard/admin/request",
-    icon: getIcon("fluent-mdl2:feedback-request-solid"),
-  },
-
   {
     title: "Trạm",
     path: "/dashboard/admin/station",
@@ -131,8 +113,7 @@ const navConfigAdmin = [
   },
   {
     title: "Quản lí bếp",
-    // path: "/dashboard/admin/kitchen",
-    path: "/dashboard/admin/kitchenAccount",
+    path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
   {
@@ -145,7 +126,6 @@ const navConfigAdmin = [
     path: "/dashboard/admin/request",
     icon: getIcon("fluent-mdl2:feedback-request-solid"),
   },
-
 
   // // {
   //   title: "Admin quản lí Người giao hàng",

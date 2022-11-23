@@ -141,6 +141,7 @@ export default function KitchenOrderList() {
               label="Chọn ngày"
               value={value}
               onChange={(newValue) => {
+                console.log(newValue)
                 setValue(newValue);
               }}
               inputFormat="DD-MM-YYYY"
