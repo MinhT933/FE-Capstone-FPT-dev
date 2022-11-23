@@ -80,8 +80,10 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_stations) =>
-        _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+
+      (_user) =>
+        _user.profile.fullName?.toLowerCase().indexOf(query.toLowerCase()) !==
+        -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -94,7 +96,6 @@ export default function UserAccount() {
     { id: "ban", title: "Bị cấm" },
     { id: "All", title: "Tất cả" },
   ];
-
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
@@ -242,25 +243,6 @@ export default function UserAccount() {
   return (
     <Page title="Khách hàng">
       <Container>
-        {/* <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-        >
-          <Typography variant="h4" gutterBottom>
-            User
-          </Typography>
-          {decoded.role === "admin" && (
-            <ButtonCustomize
-              variant="contained"
-              component={RouterLink}
-              to="/dashboard/admin/newstation"
-              nameButton="Thêm"
-            />
-          )}
-        </Stack> */}
-
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -305,31 +287,9 @@ export default function UserAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        /> */}
-                          </TableCell>
+                          <TableCell padding="checkbox"></TableCell>
 
-                          {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">
-                            {row.profile.fullName}
-                          </TableCell>
-
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar alt={fullName} src={avatar} />
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {fullName}
-                                                            </Typography>
-                                                        </Stack>
-                                                    </TableCell> */}
-
+                          <TableCell align="left">{profile.fullName}</TableCell>
                           <TableCell align="left">
                             {row.profile.email}
                           </TableCell>
@@ -373,7 +333,6 @@ export default function UserAccount() {
                               </Button1>
                             )}
                           </TableCell>
-
                         </TableRow>
                       );
                     })}

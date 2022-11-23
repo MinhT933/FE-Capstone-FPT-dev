@@ -89,6 +89,7 @@ export default function Router() {
     {
       path: "/findaccount",
       element: <FindAccount />,
+      // element: <Logintext />,
     },
     {
       path: "/verifyphone",

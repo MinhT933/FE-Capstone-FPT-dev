@@ -100,8 +100,7 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) =>
-        _user.createdate.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) => _user.name?.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -115,7 +114,7 @@ export default function PackageFood() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("createdAt");
+  const [orderBy, setOrderBy] = useState("name");
 
   const [filterName, setFilterName] = useState("");
 
@@ -195,6 +194,7 @@ export default function PackageFood() {
     filterName
   );
 
+  // const isUserNotFound = filterFood.length === 0;
   const handleSelect = (id) => {
     // API('GET',URL_API + '/')
     SetOpenPopUpDetail(true);
@@ -365,7 +365,6 @@ export default function PackageFood() {
                       );
                     })}
                 </TableBody>
-
                 {isUserNotFound && (
                   <TableBody>
                     <TableRow>

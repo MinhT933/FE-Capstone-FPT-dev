@@ -55,25 +55,40 @@ export default function AccountPopover() {
     setOpen(event.currentTarget);
   };
 
+  // const handleLink = () => {
+  //   let text = "";
+  //   let arr = [];
+  //   if (decoded.role === "admin") {
+  //     text = "/dashboard/admin/app";
+  //     arr.push(text);
+  //   } else if (decoded.role === "manager") {
+  //     text = "/dashboard/manager/food";
+  //     arr.push(text);
+  //   } else if (decoded.role === "kitchen") {
+  //     text = "/dashboard/kitchen/kitchenorder";
+  //     arr.push(text);
+  //   }
+  //   return arr;
+  // };
   const handleClose = () => {
     setOpen(null);
   };
   const MENU_OPTIONS = [
+    // {
+    //   label: "Home",
+    //   icon: "eva:home-fill",
+    //   linkTo: { handleLink },
+    // },
     {
-      label: "Home",
-      icon: "eva:home-fill",
-      linkTo: "/",
-    },
-    {
-      label: "Profile",
+      label: "Trang cá nhân",
       icon: "eva:person-fill",
       linkTo: `/dashboard/${decoded.role}/account/my`,
     },
-    {
-      label: "Settings",
-      icon: "eva:settings-2-fill",
-      linkTo: "#",
-    },
+    // {
+    //   label: "",
+    //   icon: "eva:settings-2-fill",
+    //   linkTo: "#",
+    // },
   ];
   const handleLogout = () => {
     const token = localStorage.getItem("token");
@@ -161,7 +176,7 @@ export default function AccountPopover() {
           // component={RouterLink}
           // to="/"
         >
-          Logout
+          Đăng xuất
         </MenuItem>
       </MenuPopover>
     </>

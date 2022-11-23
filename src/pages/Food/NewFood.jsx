@@ -26,14 +26,8 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { makeStyles } from "@mui/styles";
 
-//styles paper
-// const useStyles = styled("Paper")(({ theme }) => ({
-//   pageContent: {
-//     margin: theme.spacing(5),
-//     padding: theme.spacing(9),
-//   },
-// }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //yub dùng để validation trong reactjs
@@ -150,10 +144,12 @@ export default function NewFood() {
       setInput(images)
     );
   }
-
+  // const classes = useStyles();
   return (
-    <Paper>
+    <Box>
       <PageHeader
+        width="60%"
+        marginLeft="20%"
         title="Thêm thức ăn"
         subTitle="Tinh hoa ẩm thực "
         icon={getIcon("emojione-monotone:pot-of-food")}
@@ -167,7 +163,9 @@ export default function NewFood() {
             display: "flex",
             justifyContent: "center",
             boxShadow: 12,
-            paddingLeft: "12%",
+            paddingLeft: "7%",
+            width: "60%",
+            marginLeft: "20%",
           }}
         >
           {/* // à nhớ bỏ cái form ở đây thì nó mới hiểu và làm onsubmit đc */}
@@ -246,7 +244,7 @@ export default function NewFood() {
               <Grid item xs={12}>
                 <Controls.TextArea
                   columns={12}
-                  width="24.5rem"
+                  width="85%"
                   row={6}
                   maxRows={6}
                   multiline
@@ -270,12 +268,7 @@ export default function NewFood() {
               </Grid>
 
               <Box>
-                <Stack
-                  width="200px"
-                  marginTop={"10rem"}
-                  ml={"10rem"}
-                  mb={"2rem"}
-                >
+                <Stack width="200px" marginTop={"10%"} ml={"98%"} mb={"2rem"}>
                   <ButtonCustomize
                     variant="contained"
                     type="submit"
@@ -286,7 +279,7 @@ export default function NewFood() {
             </Grid>
           </Box>
 
-          <Box sx={{ float: "left", width: "40%", mt: "2rem", ml: "5rem" }}>
+          <Box sx={{ float: "left", width: "60%", mt: "2rem", pl: "20%" }}>
             <label htmlFor="contained-button-file">
               <Input
                 accept="image/*"
@@ -325,6 +318,6 @@ export default function NewFood() {
           </Box>
         </Box>
       </form>
-    </Paper>
+    </Box>
   );
 }
