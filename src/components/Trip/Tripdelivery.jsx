@@ -140,6 +140,13 @@ export default function Tripdelivery() {
       }
 
     },
+    // {
+    //   field: "timeslotID", headerName: "Ngày giao", flex: 1,
+    //   renderCell: (param) => {
+    //     return param.row.station.deliveryDate
+    //   }
+
+    // },
   ];
 
   const rows = [
@@ -185,20 +192,27 @@ export default function Tripdelivery() {
 
   return (
     // <div>Tripdelivery</div>
-    <Paper>
+    <Paper title="Chuyến hàng"
+      elevation={3}
+      sx={{
+        padding: "2%",
+        marginBottom: "10%",
+        margin: "2%",
+      }}
+    >
       <PageHeader
-        title="Tạo chuyến đi"
+        title="Tạo chuyến giao hàng"
         subTitle="Vui lòng điền đầy đủ thông tin"
         icon={getIcon("icon-park-outline:delivery")}
       />
       <form>
-        <Box sx={{ marginLeft: 12, height: 600 }}>
+        <Box sx={{ marginLeft: '9%', height: '35rem', width: '100%', marginTop: '2%' }}>
           <Grid container>
             <Grid item xs={3}>
               <DatePicker
                 variant="outlined"
                 name="valueStarTime"
-                label="Ngày mở bán"
+                label="Ngày giao"
                 width="16rem"
                 inputFormat="YYYY-MM-DD"
                 value={valueStarTime}
@@ -227,7 +241,8 @@ export default function Tripdelivery() {
             <Grid item xs={3}>
               <Controls.Select
                 name="stationID"
-                label="Trạm"
+                label="Địa điểm giao"
+                width="14rem"
                 // defaultValue={categoriesFood[0].name}
 
                 //   value={formik.values.foodCategoryId}
@@ -243,14 +258,15 @@ export default function Tripdelivery() {
             <Grid item xs={3}>
               <Controls.Select
                 name="slot"
-                label="Giờ"
+                label="Thời gian giao"
+                width="14rem"
                 onChange={(e) => {
                   const a = Slot.find(
                     (c) => c.id === e.target.value
                   );
                   console.log(a)
                   console.log(e.target.value)
-                  setSlot(a.id);
+                  setSlot(e.target.value);
                 }}
                 options={getSlot()}
               />
@@ -258,13 +274,14 @@ export default function Tripdelivery() {
 
             <Grid item xs={3}>
               <ButtonCustomize
-                nameButton="Tìm chuyến"
+                marginTop="1%"
+                nameButton="Tìm kiếm"
                 onClick={handleClickFind}
               />
             </Grid>
           </Grid>
           <Box>
-            <div style={{ height: 400, width: 800, marginTop: 20 }}>
+            <div style={{ height: '25rem', width: '83%', marginTop: '2%' }}>
 
               {resultList ? <DataGrid
                 rows={resultList}
@@ -297,9 +314,9 @@ export default function Tripdelivery() {
             onClick={() => {
               SetOpenPopUp(true);
             }}
-            nameButton="Tạo chuyến đi"
+            nameButton="Thêm tài xế cho chuyến"
             width='20%'
-            marginLeft='45%'
+            marginLeft='30%'
             marginTop='3%'
           />
 
@@ -311,6 +328,7 @@ export default function Tripdelivery() {
         stationID={stationID}
         valueStarTime={valueStarTime}
         selectionModel={selectionModel}
+        slot={slot}
       >
 
       </TripdeliveryPopUp>

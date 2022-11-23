@@ -82,7 +82,7 @@ const getOptions = () => [
   { id: "inActive", title: "InActive" },
   { id: "All", title: "All" },
 ];
-console.log(getOptions().id);
+// console.log(getOptions().id);
 
 function getComparator(order, orderBy) {
   return order === "desc"
@@ -247,7 +247,7 @@ export default function PackageFood() {
             filterName={filterName}
             onFilterName={handleFilterByName}
             options={getOptions()}
-            // value
+          // value
           />
 
           <Scrollbar>

@@ -47,7 +47,7 @@ function convert(str) {
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 export default function TripdeliveryPopUp(props) {
-    const { OpenPopUp, SetOpenPopUp, stationID, valueStarTime, selectionModel } = props;
+    const { OpenPopUp, SetOpenPopUp, stationID, valueStarTime, selectionModel, slot } = props;
     const dispatch = useDispatch();
     const Navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -139,6 +139,7 @@ export default function TripdeliveryPopUp(props) {
             const data = {
                 shipperId: valueTag,
                 // shipperId: formik.values.shipperId,
+                timeSlotId: slot,
                 stationId: stationID,
                 deliveryDate: convert(valueStarTime.$d),
                 ordersIds: selectionModel
@@ -174,7 +175,7 @@ export default function TripdeliveryPopUp(props) {
 
                 <DialogContent>
                     <form onSubmit={formik.handleSubmit}>
-                        <Box sx={{ maxWidth: "1000px", maxHeight: "900px", marginTop: "2%" }}>
+                        <Box sx={{ width: "28rem", height: "8rem", marginTop: "2%" }}>
                             <div>
                                 <FormControl sx={{ width: "28rem" }}>
                                     <InputLabel id="demo-multiple-checkbox-label">

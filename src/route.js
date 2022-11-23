@@ -49,6 +49,7 @@ import RequestPage from "./pages/request/RequestPage";
 import NewAdmin from "./pages/userList/NewAdmin";
 import NewManager from "./pages/userList/NewManager";
 import Tripdelivery from "./components/Trip/Tripdelivery";
+import Delivery from "./components/Trip/Delivery";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -260,6 +261,7 @@ export default function Router() {
             // </ProtectedRouteAuthen>
           ),
         },
+        { path: "delivery", element: <Delivery /> },
 
         //kitchen xem đơn hàng
         {

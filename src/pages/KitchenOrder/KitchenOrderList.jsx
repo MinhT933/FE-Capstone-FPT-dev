@@ -29,7 +29,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
-import { callAPIgetListKitchen } from "../../redux/action/acction";
+import { callAPIgetListKitchen, callAPIKitchenPrepareOrder } from "../../redux/action/acction";
 import jwt_decode from "jwt-decode";
 
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
@@ -66,31 +66,19 @@ export default function KitchenOrderList() {
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIgetListKitchen());
+      await dispatch(callAPIKitchenPrepareOrder(token));
     };
     callAPI();
   }, [dispatch]);
 
-  const handleDelete = (id) => {
-    API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
-      (res) => {
-        try {
-          dispatch(callAPIgetListKitchen());
-        } catch (err) {
-          alert("Ban faild " + id);
-        }
-      },
-      []
-    );
-  };
 
   const kitchen = useSelector((state) => {
-    return state.userReducer.listKitchen;
+    return state.userReducer.listFoodPrepare;
   });
 
   //callAPIKitchenGetListOrder========================================
 
-  const [value, setValue] = React.useState(dayjs("2022-02-10"));
+  const [value, setValue] = React.useState(new Date());
   // const [spacing, setSpacing] = React.useState(2);
 
   return (
