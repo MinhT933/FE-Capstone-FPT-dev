@@ -383,6 +383,22 @@ export const callAPIGetSlot = (token) => {
   };
 };
 
+export const callAPIGetListDelivery = (token, status, valueStarTime) => {
+  return async (dispatch) => {
+    try {
+      // const res = await API("GET", URL_API + `/delivery_trips/byKitchen?status=${status}&deliveryDate=${valueStarTime}`, null, token);
+
+      const res = await API("GET", URL_API + '/delivery_trips/byKitchen?status=' + status + '&deliveryDate=' + valueStarTime, null, token);
+      console.log(res)
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_DELIVERY,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) { }
+  };
+};
 
 export const callAPIgetOrdertoCreateDeliveryTrip = (
   token,

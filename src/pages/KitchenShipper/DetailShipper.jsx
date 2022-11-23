@@ -57,8 +57,8 @@ function DetailShipper(props) {
             subTitle={`Thông tin của ${shipper.account?.profile?.fullName}`}
             icon={
               <img
-                // src={shipper.account?.profile?.avatar}
-                src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/302151129_1489511498168314_1583038780045397465_n.jpg?stp=cp6_dst-jpg&_nc_cat=100&ccb=1-7&_nc_sid=0debeb&_nc_ohc=UpuyQoUrdj0AX_gtH04&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfDvOaE8gy5IsKAM8nBv7JpnmskNJEMQ260vqnBGx_ZeiA&oe=636C46EC"
+                src={shipper.account?.profile?.avatar}
+                // src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/302151129_1489511498168314_1583038780045397465_n.jpg?stp=cp6_dst-jpg&_nc_cat=100&ccb=1-7&_nc_sid=0debeb&_nc_ohc=UpuyQoUrdj0AX_gtH04&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfDvOaE8gy5IsKAM8nBv7JpnmskNJEMQ260vqnBGx_ZeiA&oe=636C46EC"
                 alt={shipper.account?.profile?.fullName}
                 height={90}
                 width={120}
@@ -68,18 +68,21 @@ function DetailShipper(props) {
         </DialogTitle>
         <DialogContent>
           {JSON.stringify(shipper) !== "{}" && (
-            <Box sx={{ marginLeft: "7rem", marginTop: "2rem" }}>
+            <Box sx={{ marginLeft: "5rem", marginTop: "1rem", height: '18rem', width: '8rem' }}>
               <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                // container
+                // rowSpacing={1}
+
+                container spacing={4}
+
+              // columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               >
                 <Grid item xs={9}>
                   <Controls.Input
                     variant="outlined"
                     name="fullName"
                     width="18rem"
-                    label="Name"
+                    label="Họ tên"
                     disabled
                     value={shipper.account?.profile?.fullName}
                   />
@@ -90,7 +93,7 @@ function DetailShipper(props) {
                     variant="outlined"
                     name="phone"
                     width="18rem"
-                    label="Phone"
+                    label="Điện thoại"
                     disabled
                     value={shipper.account?.phone}
                   />
@@ -105,7 +108,7 @@ function DetailShipper(props) {
                     value={shipper.account?.profile?.email}
                   />
                 </Grid>
-                <Grid item xs={9}>
+                {/* <Grid item xs={9}>
                   <Controls.Input
                     variant="outlined"
                     name="totalFood"
@@ -114,7 +117,7 @@ function DetailShipper(props) {
                     disabled
                     value={shipper.account?.profile?.fullName}
                   />
-                </Grid>
+                </Grid> */}
               </Grid>
             </Box>
           )}

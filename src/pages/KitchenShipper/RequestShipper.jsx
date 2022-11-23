@@ -65,7 +65,7 @@ export default function RequestShipper(props) {
       try {
         const res = await API("POST", URL_API + "/request", data, token);
         CustomizedToast({
-          message: `Đã gởi yêu cầu`,
+          message: `Đã gửi yêu cầu`,
           type: "SUCCESS",
         });
         setOpen(false);
@@ -83,19 +83,19 @@ export default function RequestShipper(props) {
       <PageHeader
         display="center"
         title="Yêu cầu thêm tài xế "
-        subTitle="Điền đầy đủ thông tin"
+        subTitle="Vui lòng điền đầy đủ thông tin"
         icon={getIcon("emojione-v1:double-exclamation-mark")}
       />
       <DialogContent>
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={8} marginLeft="10%">
-              <Stack spacing={2}>
+          <Grid container spacing={1} sx={{ width: "28rem", height: "15rem", marginTop: "2%" }}>
+            <Grid item xs={12} marginLeft="10%">
+              <Stack spacing={4}>
                 <Controls.Input
                   variant="outlined"
-                  label="lí do"
+                  label="Lí do"
                   name="reason"
-                  width="12rem"
+                  width="22rem"
                   value={formik.values.reason}
                   onChange={(event) => {
                     formik.handleChange(event);
@@ -113,7 +113,7 @@ export default function RequestShipper(props) {
                 <Controls.Select
                   variant="outlined"
                   label="Số lượng"
-                  width="12rem"
+                  width="22rem"
                   name="numberReq"
                   value={formik.values.numberReq}
                   onChange={(e) => {
@@ -133,8 +133,8 @@ export default function RequestShipper(props) {
               <ButtonCustomize
                 nameButton="Yêu cầu"
                 width="8rem"
-                marginLeft="2rem"
-                marginTop="1rem"
+                marginLeft="7rem"
+                marginTop="2rem"
                 type="submit"
               />
             </Grid>

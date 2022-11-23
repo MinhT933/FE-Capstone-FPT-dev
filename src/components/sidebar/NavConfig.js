@@ -178,6 +178,11 @@ const navConfigKichen = [
   },
   {
     title: "Chuyến giao hàng",
+    path: "/dashboard/kitchen/delivery",
+    icon: getIcon("mdi:language-go"),
+  },
+  {
+    title: "Chuyến giao hàng add",
     path: "/dashboard/kitchen/tripDelivery",
     icon: getIcon("mdi:language-go"),
   },
