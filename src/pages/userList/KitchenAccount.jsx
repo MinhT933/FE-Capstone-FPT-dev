@@ -82,7 +82,9 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_stations) =>
-        _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _stations.profile.fullName
+          ?.toLowerCase()
+          .indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -95,8 +97,6 @@ export default function KitchenAccount() {
     { id: "ban", title: "Bị cấm" },
     { id: "All", title: "Tất cả" },
   ];
-
-
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
@@ -245,24 +245,22 @@ export default function KitchenAccount() {
   return (
     <Page title="Tài khoản bếp">
       <Container>
-        {/* <Stack
+        <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           mb={5}
         >
-        <Typography variant="h4" gutterBottom>
-           
-          </Typography>
-        {decoded.role === "admin" && (
-            <ButtonCustomize
-              variant="contained"
-              component={RouterLink}
-              to="/dashboard/admin/newstation"
-              nameButton="Thêm"
-            />
-          )}
-        </Stack> */}
+          <Typography variant="h4" gutterBottom></Typography>
+          <ButtonCustomize
+            variant="contained"
+            component={RouterLink}
+            nameButton="Thêm bếp"
+            to="/dashboard/admin/newkitchen"
+          />
+
+          {/* </ColorButton> */}
+        </Stack>
 
         <Card>
           <UserListToolbar
@@ -316,9 +314,7 @@ export default function KitchenAccount() {
                           </TableCell>
 
                           {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">
-                            {row.profile.fullName}
-                          </TableCell>
+                          <TableCell align="left">{profile.fullName}</TableCell>
 
                           {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack
@@ -339,7 +335,6 @@ export default function KitchenAccount() {
                           <TableCell align="left">{phone}</TableCell>
 
                           <TableCell align="left">
-
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
@@ -377,7 +372,6 @@ export default function KitchenAccount() {
                               </Button1>
                             )}
                           </TableCell>
-
                         </TableRow>
                       );
                     })}

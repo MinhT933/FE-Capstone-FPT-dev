@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { CustomizedToast } from "../../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../../components/Button/ButtonCustomize";
 import {
+  callAPIgetGroupFood,
   callAPIgetListFood,
   callAPIgetListFoodActive,
 } from "../../../redux/action/acction";
@@ -33,7 +34,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import API from "../../../Axios/API/API";
 import { URL_API } from "../../../Axios/URL_API/URL";
 import { useNavigate } from "react-router-dom";
-import  jwt_decode  from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
@@ -51,7 +52,6 @@ export default function NewFoodGroup(props) {
   if (token === null) {
     Navigate("/");
   }
- 
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -121,8 +121,11 @@ export default function NewFoodGroup(props) {
       };
       try {
         const res = await API("POST", URL_API + `/food-groups`, data, token);
+        await dispatch(callAPIgetGroupFood(token));
         CustomizedToast({
-          message: `Đã cập nhập ${formik.values.name}`,
+
+          message: `Đã Thêm ${formik.values.name}`,
+
           type: "SUCCESS",
         });
       } catch (error) {

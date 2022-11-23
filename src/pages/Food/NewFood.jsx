@@ -26,12 +26,14 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { makeStyles } from "@mui/styles";
 
-//styles paper
-// const useStyles = styled("Paper")(({ theme }) => ({
-//   pageContent: {
-//     margin: theme.spacing(5),
-//     padding: theme.spacing(9),
+// styles paper
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     "& .MuiPaper-root": {
+//      minWidth: 1400
+//     },
 //   },
 // }));
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -150,10 +152,12 @@ export default function NewFood() {
       setInput(images)
     );
   }
-
+  // const classes = useStyles();
   return (
-    <Paper>
+    <Box>
       <PageHeader
+        width="80%"
+        marginLeft="12%"
         title="Thêm thức ăn"
         subTitle="Tinh hoa ẩm thực "
         icon={getIcon("emojione-monotone:pot-of-food")}
@@ -168,6 +172,8 @@ export default function NewFood() {
             justifyContent: "center",
             boxShadow: 12,
             paddingLeft: "12%",
+            width: "80%",
+            marginLeft: "12%",
           }}
         >
           {/* // à nhớ bỏ cái form ở đây thì nó mới hiểu và làm onsubmit đc */}
@@ -246,7 +252,7 @@ export default function NewFood() {
               <Grid item xs={12}>
                 <Controls.TextArea
                   columns={12}
-                  width="24.5rem"
+                  width="85%"
                   row={6}
                   maxRows={6}
                   multiline
@@ -270,12 +276,7 @@ export default function NewFood() {
               </Grid>
 
               <Box>
-                <Stack
-                  width="200px"
-                  marginTop={"10rem"}
-                  ml={"10rem"}
-                  mb={"2rem"}
-                >
+                <Stack width="200px" marginTop={"10%"} ml={"98%"} mb={"2rem"}>
                   <ButtonCustomize
                     variant="contained"
                     type="submit"
@@ -325,6 +326,6 @@ export default function NewFood() {
           </Box>
         </Box>
       </form>
-    </Paper>
+    </Box>
   );
 }

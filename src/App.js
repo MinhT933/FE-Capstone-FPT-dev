@@ -5,16 +5,19 @@ import Router from "./route.js";
 import ThemeProvider from "./theme";
 import ScrollToTop from "./components/hook-form/ScrollToTop";
 import ToastContainerConfig from "./components/Toast/ToastContainer";
+import { UserAuthContextProvider } from "./pages/Login/UserAuthContextProvider";
 
 function App() {
   return (
     <BrowserRouter>
-      <ThemeProvider>
-        <ScrollToTop />
-        <ToastContainerConfig />
-        {/* <BaseOptionChartStyle /> */}
-        <Router  />
-      </ThemeProvider>
+      <UserAuthContextProvider>
+        <ThemeProvider>
+          <ScrollToTop />
+          <ToastContainerConfig />
+          {/* <BaseOptionChartStyle /> */}
+          <Router />
+        </ThemeProvider>
+      </UserAuthContextProvider>
     </BrowserRouter>
   );
 }

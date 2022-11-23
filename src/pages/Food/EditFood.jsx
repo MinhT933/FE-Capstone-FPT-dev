@@ -104,17 +104,13 @@ export default function EditFood() {
       formData.append("price", formik.values.price);
       formData.append("foodCategoryId", formik.values.foodCategoryId);
       try {
-        const res = await API(
-          "PUT",
-          URL_API + `/foods/update-food/${id}`,
-          formData
-        );
+        const res = await API("PUT", URL_API + `/foods/${id}`, formData, token);
 
         CustomizedToast({
           message: `Cập nhập ${formik.values.name}`,
           type: "SUCCESS",
         });
-        navigate("/dashboard/admin/food");
+        // navigate("/dashboard/admin/food");
       } catch (err) {
         CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
       }

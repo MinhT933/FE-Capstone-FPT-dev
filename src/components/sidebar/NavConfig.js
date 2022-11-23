@@ -86,17 +86,6 @@ const navConfigAdmin = [
         icon: getIcon("eva:people-fill"),
       },
 
-      {
-        title: "Tài xế",
-        path: "/dashboard/admin/shipperAccount",
-        icon: getIcon("ri:motorbike-fill"),
-      },
-
-      {
-        title: "Bếp",
-        path: "/dashboard/admin/kitchenAccount",
-        icon: getIcon("mdi:chef-hat"),
-      },
       //admin
       {
         title: "Quản trị viên",
