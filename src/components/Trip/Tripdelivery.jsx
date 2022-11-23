@@ -67,9 +67,9 @@ export default function Tripdelivery() {
     const textTile = "";
     for (var i = 0; i < shipperofkichen.length; i++) {
       item.push({
-        id: Slot[i].id,
+        id: Slot[i]?.id,
 
-        title: Slot[i].startTime,
+        title: Slot[i]?.startTime,
       });
     }
     return item;

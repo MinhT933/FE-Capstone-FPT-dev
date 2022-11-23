@@ -137,7 +137,7 @@ export default function Food() {
   const getOptions = () => [
     { id: "active", title: "Active" },
     { id: "inActive", title: "InActive" },
-    { id: "All", title: "Tất" },
+    { id: "All", title: "Tất cả" },
   ];
   React.useEffect(() => {
     const callAPI = async () => {
@@ -336,9 +336,20 @@ export default function Food() {
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="left">
-                            {decoded.role === "manager" && (
+                            {/* {decoded.role === "manager" && (
                               <ButtonCustomize
                                 nameButton="Cập nhập"
+                                onClick={() => handleDelete(id, token)}
+                              />
+                            )} */}
+                            {status === "active" ? (
+                              <ButtonCustomize
+                                nameButton="Ngưng Bán"
+                                onClick={() => handleDelete(id, token)}
+                              />
+                            ) : (
+                              <ButtonCustomize
+                                nameButton="Mở bán"
                                 onClick={() => handleDelete(id, token)}
                               />
                             )}

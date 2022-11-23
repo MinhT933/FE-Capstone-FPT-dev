@@ -85,11 +85,11 @@ const navConfigAdmin = [
         path: "/dashboard/admin/userAccount",
         icon: getIcon("eva:people-fill"),
       },
-      {
-        title: "Bếp",
-        path: "/dashboard/admin/kitchenAccount",
-        icon: getIcon("mdi:chef-hat"),
-      },
+      // {
+      //   title: "Bếp",
+      //   path: "/dashboard/admin/kitchenAccount",
+      //   icon: getIcon("mdi:chef-hat"),
+      // },
       //admin
       {
         title: "Quản trị viên",
