@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { makeStyles } from "@mui/styles";
 
-const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+  const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //yub dùng để validation trong reactjs
 // khởi tạo schema để so sánh value(theo tao hiểu)
