@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { makeStyles } from "@mui/styles";
 
-  const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //yub dùng để validation trong reactjs
 // khởi tạo schema để so sánh value(theo tao hiểu)
@@ -148,8 +148,8 @@ export default function NewFood() {
   return (
     <Box>
       <PageHeader
-        width="80%"
-        marginLeft="12%"
+        width="60%"
+        marginLeft="20%"
         title="Thêm thức ăn"
         subTitle="Tinh hoa ẩm thực "
         icon={getIcon("emojione-monotone:pot-of-food")}
@@ -163,9 +163,9 @@ export default function NewFood() {
             display: "flex",
             justifyContent: "center",
             boxShadow: 12,
-            paddingLeft: "12%",
-            width: "80%",
-            marginLeft: "12%",
+            paddingLeft: "7%",
+            width: "60%",
+            marginLeft: "20%",
           }}
         >
           {/* // à nhớ bỏ cái form ở đây thì nó mới hiểu và làm onsubmit đc */}
@@ -279,7 +279,7 @@ export default function NewFood() {
             </Grid>
           </Box>
 
-          <Box sx={{ float: "left", width: "40%", mt: "2rem", ml: "5rem" }}>
+          <Box sx={{ float: "left", width: "60%", mt: "2rem", pl: "20%" }}>
             <label htmlFor="contained-button-file">
               <Input
                 accept="image/*"

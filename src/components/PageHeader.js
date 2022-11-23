@@ -37,7 +37,7 @@ export default function PageHeader(props) {
       className={classes.root}
       sx={{ width: { width }, marginLeft: { marginLeft } }}
     >
-      <div className={classes.pageHeader}>
+        <div className={classes.pageHeader}>
         <div className={classes.pageTitle}>
           <Typography variant="h6" component="div">
             {title}
