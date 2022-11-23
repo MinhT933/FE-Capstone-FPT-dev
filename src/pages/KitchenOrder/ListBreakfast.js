@@ -34,7 +34,11 @@ import {
 import MealListToolBar from "../../sections/@dashboard/user/MealListToolBar";
 import PageHeader from "../../components/PageHeader";
 import { Grid } from "@mui/joy";
-
+import { callAPIKitchenPrepareOrder } from "../../redux/action/acction";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import jwt_decode from "jwt-decode";
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
 // ko nhát thiết phải thêm table head ở dưới
@@ -82,6 +86,42 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function ListBreakfast() {
+  const location = useLocation();
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIKitchenPrepareOrder(token));
+    };
+    callAPI();
+  }, [dispatch]);
+
+
+  const station = useSelector((state) => {
+    return state.userReducer.listPrepareFood;
+  });
+
+
+
+
+
+
+
+
+
+
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
   // const [OpenPopUp, SetOpenPopUp] = useState(false);

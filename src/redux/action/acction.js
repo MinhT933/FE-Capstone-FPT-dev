@@ -79,9 +79,7 @@ export const callAPIgetListFoodActive = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -379,6 +377,7 @@ export const callAPIGetSlot = (token) => {
     } catch (err) {}
   };
 };
+
 export const callAPIgetOrdertoCreateDeliveryTrip = (
   token,
   slot,
@@ -386,11 +385,22 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
   stationID
 ) => {
   return async (dispatch) => {
+    console.log(slot);
+    console.log(valueStarTime);
+    console.log(stationID);
     try {
       const res = await API(
         "GET",
         URL_API +
-          `/orders/byKitchen?stationId=f2fda2c1-1809-4cb3-8ffe-f2526a18302b&time_slotId=f67h8204ih3945h893u45uh89hjh98345h9&deliveryDate=2022-11-08`,
+          "/orders/byKitchen?stationId=" +
+          stationID +
+          "&time_slotId=" +
+          slot +
+          "&deliveryDate=" +
+          valueStarTime,
+
+        // `/orders/byKitchen?stationId=f2fda2c1-1809-4cb3-8ffe-f2526a18302b&time_slotId=f67h8204ih3945h893u45uh89hjh98345h9&deliveryDate=2022-11-08`,
+
         null,
         token
       );
@@ -883,5 +893,26 @@ export const callAPIgetAccountKitchenByStatus = (token, status) => {
         })
       );
     } catch (err) {}
+  };
+};
+
+export const callAPIKitchenPrepareOrder = (token, date, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/orders/food-prepare?deliveryDate=${date}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
   };
 };

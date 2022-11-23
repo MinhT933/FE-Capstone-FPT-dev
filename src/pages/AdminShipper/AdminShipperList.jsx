@@ -349,7 +349,7 @@ export default function AdminShipperList() {
                               component={RouterLink}
                               to={`${location.pathname}/updateshipper/${id}`}
                             >
-                              Cập nhật
+                              Chi tiết
                             </Button1>
                           </TableCell>
                         </TableRow>

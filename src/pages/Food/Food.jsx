@@ -300,6 +300,8 @@ export default function Food() {
                               {name}
                             </Typography>
                           </TableCell>
+
+
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">
                             {foodCategory.name}
@@ -400,3 +402,4 @@ export default function Food() {
     </Page>
   );
 }
+

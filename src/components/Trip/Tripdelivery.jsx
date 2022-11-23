@@ -19,6 +19,7 @@ import {
 } from "../../redux/action/acction";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { slotShouldForwardProp } from "@mui/material/styles/styled";
 
 export default function Tripdelivery() {
   //   const idKitchen = profiles.id;
@@ -65,7 +66,7 @@ export default function Tripdelivery() {
   const getSlot = () => {
     const item = [];
     const textTile = "";
-    for (var i = 0; i < shipperofkichen.length; i++) {
+    for (var i = 0; i < Slot.length; i++) {
       item.push({
         id: Slot[i]?.id,
 
@@ -89,39 +90,97 @@ export default function Tripdelivery() {
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
   const [stationID, setStationID] = useState("");
   const [slot, setSlot] = useState("");
+  const [result, setResult] = useState("");
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "nameFood", headerName: "Tên Món", width: 130 },
-    { field: "station", headerName: "Địa điểm", width: 130 },
+    // { field: "id", headerName: "ID", flex: 1 },
+    { field: "nameFood", headerName: "Tên Món", flex: 1 },
     {
-      field: "address",
-      headerName: "địa chỉ",
-      type: "number",
-      width: 90,
+      field: "station", headerName: "Địa điểm", flex: 1,
+      renderCell: (param) => {
+        return param.row.station.address
+      }
+
     },
     {
-      field: "openTime",
-      headerName: "Giờ mở cửa",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
+      field: "name", headerName: "Tên trạm", flex: 1,
+      renderCell: (param) => {
+        return param.row.station.name
+      }
+
     },
+    // {
+    //   field: "openTime", headerName: "Giờ mở cửa", flex: 1,
+    //   renderCell: (param) => {
+    //     return param.row.station.openTime
+    //   }
+
+    // },
+    // {
+    //   field: "phone", headerName: "Điện thoại ", flex: 1,
+    //   renderCell: (param) => {
+    //     return param.row.station.phone
+    //   }
+
+    // },
+    // {
+    //   field: "deliveryDate", headerName: "Ngày giao", flex: 1,
+    //   renderCell: (param) => {
+    //     return param.row.station.deliveryDate
+    //   }
+
+    // },
+    // {
+    //   field: "address",
+    //   headerName: "địa chỉ",
+    //   type: "number",
+    //   width: 90,
+    // },
+    // {
+    //   field: "openTime",
+    //   headerName: "Giờ mở cửa",
+    //   description: "This column has a value getter and is not sortable.",
+    //   sortable: false,
+    //   width: 160,
+    // },
   ];
 
   const rows = [
-    { id: 1, nameFood: "Phở bò", firstName: "Jon", age: 35 },
-    { id: 2, nameFood: "Bún Bò", firstName: "Cersei", age: 42 },
-    { id: 3, nameFood: "Cơm chiên", firstName: "Jaime", age: 45 },
-    { id: 4, nameFood: "Phở bò", firstName: "Arya", age: 16 },
-    { id: 5, nameFood: "Cơm hến", firstName: "Daenerys", age: null },
-    { id: 6, nameFood: "ngon", firstName: null, age: 150 },
-    { id: 7, nameFood: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, nameFood: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, nameFood: "Roxie", firstName: "Harvey", age: 65 },
+
   ];
 
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
+  function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+  const resultList = useSelector((state) => {
+    return state.userReducer.orderToCreate;
+  });
+  console.log(resultList)
+  console.log(rows)
+  const handleClickFind = async () => {
+
+    dispatch(
+      await callAPIgetOrdertoCreateDeliveryTrip(
+        token,
+        slot,
+        convert(valueStarTime.$d),
+        stationID
+      ))
+
+    // .then((res) =>
+    //   console.log(res)
+    // ).catch((error) => {
+    //   console.log(error)
+    // })
+
+  }
+
   return (
     // <div>Tripdelivery</div>
     <Paper>
@@ -136,7 +195,7 @@ export default function Tripdelivery() {
             <Grid item xs={3}>
               <DatePicker
                 variant="outlined"
-                name="startSale"
+                name="valueStarTime"
                 label="Ngày mở bán"
                 width="16rem"
                 inputFormat="YYYY-MM-DD"
@@ -165,7 +224,7 @@ export default function Tripdelivery() {
             </Grid> */}
             <Grid item xs={3}>
               <Controls.Select
-                name="foodCategoryId"
+                name="stationID"
                 label="Địa điểm"
                 // defaultValue={categoriesFood[0].name}
 
@@ -181,12 +240,14 @@ export default function Tripdelivery() {
             </Grid>
             <Grid item xs={3}>
               <Controls.Select
-                name="Chỗ trống"
+                name="slot"
                 label="Giờ"
                 onChange={(e) => {
-                  const a = stationOfkichen.find(
+                  const a = Slot.find(
                     (c) => c.id === e.target.value
                   );
+                  console.log(a)
+                  console.log(e.target.value)
                   setSlot(a.id);
                 }}
                 options={getSlot()}
@@ -196,33 +257,38 @@ export default function Tripdelivery() {
             <Grid item xs={3}>
               <ButtonCustomize
                 nameButton="Tìm chuyến"
-                onClick={dispatch(
-                  callAPIgetOrdertoCreateDeliveryTrip(
-                    token,
-                    slot,
-                    valueStarTime,
-                    stationID
-                  )
-                )}
+                onClick={handleClickFind}
               />
             </Grid>
           </Grid>
           <Box>
             <div style={{ height: 400, width: 800, marginTop: 20 }}>
-              <DataGrid
+
+              {resultList ? <DataGrid
+                rows={resultList}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                getRowId={(row) => row.id}
+                // checkboxSelection
+                pagination
+              /> : <DataGrid
                 rows={rows}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
-                checkboxSelection
-              />
+                getRowId={(row) => row.id}
+                // checkboxSelection
+                pagination
+              />}
+
             </div>
           </Box>
           <ButtonCustomize
             nameButton="Tạo chuyến đi"
             marginLeft="35%"
             marginTop="3%"
-            // paddingBottom="3%"
+          // paddingBottom="3%"
           />
         </Box>
       </form>

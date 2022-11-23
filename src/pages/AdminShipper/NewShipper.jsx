@@ -150,8 +150,8 @@ export default function NewShipper() {
       <PageHeader
         // display="left"
         title="Thêm tài xế "
-        subTitle="Vui lòng điền đầy đủ thông tin."
-        icon={getIcon("emojione-v1:double-exclamation-mark")}
+        subTitle="Vui lòng điền đầy đủ thông tin"
+        icon={getIcon("carbon:delivery")}
       />
       <form onSubmit={formik.handleSubmit}>
         <Box
@@ -159,10 +159,10 @@ export default function NewShipper() {
           display="flex"
           justifyContent="left"
           alignItems="left"
-          sx={{ marginLeft: "25%" }}
+          sx={{ marginLeft: "33%" }}
         >
           <Grid container spacing={4} columns={20}>
-            <Grid item xs={8} marginLeft="10%">
+            <Grid item xs={12} >
               <Stack spacing={3}>
                 <Controls.Input
                   variant="outlined"

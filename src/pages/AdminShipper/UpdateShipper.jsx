@@ -170,7 +170,7 @@ export default function UpdateShipper() {
                 display="left"
                 title="Cập nhập tài xế"
                 subTitle="Vui lòng điền đầy đủ thông tin"
-                icon={getIcon("emojione-monotone:pot-of-food")}
+                icon={getIcon("carbon:delivery")}
             />
             <form onSubmit={formik.handleSubmit}>
                 <Box
@@ -179,9 +179,10 @@ export default function UpdateShipper() {
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
+                    sx={{ marginLeft: "33%" }}
                 >
                     <Grid container spacing={4} columns={20}>
-                        <Grid item xs={8} marginLeft="10%">
+                        <Grid item xs={12}>
                             <Stack spacing={3}>
                                 <Controls.Input
                                     variant="outlined"
@@ -280,11 +281,6 @@ export default function UpdateShipper() {
                                     </FormHelperText>
                                 )}
                             </Stack>
-                        </Grid>
-                        <Grid item xs={8} display="right" marginTop="2%">
-                            {/* <Box sx={{ float: "right", width: "40%" }}>
-               
-              </Box> */}
                         </Grid>
                     </Grid>
                 </Box>

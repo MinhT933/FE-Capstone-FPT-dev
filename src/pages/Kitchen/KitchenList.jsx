@@ -44,6 +44,7 @@ import KitchenMoreMenu from "./KitchenMoreMenu";
 // import KITCHENLIST from "./KitchenSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolbar";
 
 // ----------------------------------------------------------------------
 
@@ -100,6 +101,14 @@ function applySortFilter(array, comparator, query) {
 const token = localStorage.getItem("token");
 
 export default function KitchenList() {
+  //Thay đổi trạng thái
+  const getOptions = () => [
+    { id: "active", title: "Hoạt động" },
+    { id: "inActive", title: "Đóng cửa" },
+    { id: "", title: "Tất cả" },
+  ];
+
+
   const location = useLocation();
   //callAPIgetListKitchen========================================
   const dispatch = useDispatch();
@@ -110,22 +119,14 @@ export default function KitchenList() {
     callAPI();
   }, [dispatch]);
 
-  // const token = localStorage.getItem("token");
-
-  // var decoded = jwt_decode(token);
-  // console.log(decoded);
   const Navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
   if (token === null) {
     Navigate("/");
   }
   try {
     var decoded = jwt_decode(token);
-    // valid token format
   } catch (error) {
-    // return <Navigate to="/" replace />;
     Navigate("/");
   }
 
@@ -260,10 +261,11 @@ export default function KitchenList() {
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <KitchenListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -302,16 +304,8 @@ export default function KitchenList() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, fullName)}
-                            /> */}
-                          </TableCell>
+                          <TableCell align="left">{""}</TableCell>
 
                           <TableCell align="left">
                             {row.account.profile.fullName}
@@ -327,27 +321,39 @@ export default function KitchenList() {
                           </TableCell>
 
                           <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={
-                                (row.account.status === "inActive" &&
-                                  "error") ||
-                                "success"
-                              }
-                            >
-                              {row.account.status}
-                            </Label>
+                            <div>
+                              {row.account.status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Đóng cửa</Label>
+                              )}
+                              {row.account.status === "active" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                            </div>
                           </TableCell>
 
-                          <TableCell align="left">
-                            <Button1
-                              variant="outlined"
-                              onClick={() => {
-                                handleDelete(id, fullName);
-                              }}
-                            >
-                              Đổi
-                            </Button1>
+
+                          <TableCell align="center">
+                            {row.account.status === "active" ? (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => {
+                                  handleDelete(id, fullName);
+                                }}
+                              >
+                                Đóng
+                              </Button1>
+                            ) : (
+                              <Button1
+                                variant="outlined"
+                                onClick={() => {
+                                  handleDelete(id, fullName);
+                                }}
+                              >
+                                Mở
+                              </Button1>
+                            )}
                           </TableCell>
 
                           <TableCell align="left">

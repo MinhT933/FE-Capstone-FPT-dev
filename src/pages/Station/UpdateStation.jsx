@@ -173,9 +173,9 @@ export default function UpdateStation() {
         >
             <PageHeader
                 display="left"
-                title="Cập nhập địa điểm"
-                subTitle="Đồ ăn đến rồi, đồ ăn đến rồi!!!"
-                icon={getIcon("emojione-monotone:pot-of-food")}
+                title="Cập nhập trạm"
+                subTitle="Vui lòng điền đầy đủ thông tin"
+                icon={getIcon("carbon:location-company")}
             />
             <form onSubmit={formik.handleSubmit}>
                 <Box
@@ -184,9 +184,10 @@ export default function UpdateStation() {
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
+                    sx={{ marginLeft: "33%" }}
                 >
                     <Grid container spacing={4} columns={20}>
-                        <Grid item xs={8} marginLeft="10%">
+                        <Grid item xs={12} >
                             <Stack spacing={3}>
                                 <Controls.Input
                                     variant="outlined"
@@ -273,11 +274,6 @@ export default function UpdateStation() {
                                     </Grid>
                                 </Box>
                             </Stack>
-                        </Grid>
-                        <Grid item xs={8} display="right" marginTop="2%">
-                            {/* <Box sx={{ float: "right", width: "40%" }}>
-               
-              </Box> */}
                         </Grid>
                     </Grid>
                 </Box>
