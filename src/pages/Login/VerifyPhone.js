@@ -1,9 +1,17 @@
-import { Container, Button, Grid, Paper, TextField } from "@mui/material";
+import {
+  Container,
+  Button,
+  Grid,
+  Paper,
+  TextField,
+  Alert,
+} from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 // import { firebase } from "firebase/app";
 import * as firebase from "./firebase";
+import { useNavigate } from "react-router-dom";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#5dc9bc"),
@@ -15,22 +23,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function VerifyPhone() {
-  const [values, setValues] = useState({
-    otp: "",
-  });
-
-  //   const handleClick = () => {
-  //     let recapcha = new firebase.auth.RecaptchaVerifier("recapcha");
-  //     let num = "+84969080408";
-  //     firebase
-  //       .auth()
-  //       .signInWithPhonenumber(num, recapcha)
-  //       .then(function (e) {
-  //         let code = prompt("enter OTP ", "");
-  //         if (code === null) return;
-  //         e.confirm(code).then();
-  //       });
-  //   };
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   return (
     <Box
@@ -55,7 +49,8 @@ export default function VerifyPhone() {
                   Nhập mã OTP được gửi đến số điện thoại để xác thực.
                 </p>
               </div>
-              <form>
+              {error && <Alert variant="danger">{error}</Alert>}
+              {/* <form onSubmit={verifyOtp}>
                 <Grid container direction="column" spacing={2}>
                   <Grid item>
                     <TextField
@@ -64,6 +59,7 @@ export default function VerifyPhone() {
                       label="Mã xác thực OTP"
                       placeholder="Mã OTP"
                       variant="outlined"
+                      onChange={(e) => setOtp(e.target.value)}
                       required
                     />
                   </Grid>
@@ -74,12 +70,12 @@ export default function VerifyPhone() {
                     fullWidth
                     variant="contained"
                     sx={{ padding: "5%" }}
-                    href="/changepassword"
+                    // href="/changepassword"
                   >
                     Xác thực
                   </ColorButton>
                 </Grid>
-              </form>
+              </form> */}
             </Paper>
           </Grid>
         </Container>
