@@ -78,6 +78,7 @@ export default function UserListToolbar({
   const dispatch = useDispatch();
   const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
+    console.log(event.target.value)
     setHaha(event.target.value === "All" ? "" : event.target.value);
 
     dispatch(
@@ -86,10 +87,10 @@ export default function UserListToolbar({
         event.target.value === "All"
           ? ""
           : event.target.value === "All"
-          ? ""
-          : event.target.value === "All"
-          ? ""
-          : event.target.value
+            ? ""
+            : event.target.value === "All"
+              ? ""
+              : event.target.value
       )
     );
     dispatch(
@@ -110,10 +111,10 @@ export default function UserListToolbar({
         event.target.value === "All"
           ? ""
           : event.target.value === "All"
-          ? ""
-          : event.target.value === "All"
-          ? ""
-          : event.target.value
+            ? ""
+            : event.target.value === "All"
+              ? ""
+              : event.target.value
       )
     );
 

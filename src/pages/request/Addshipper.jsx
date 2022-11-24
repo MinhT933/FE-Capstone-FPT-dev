@@ -69,7 +69,7 @@ export default function Addshipper(props) {
       try {
         dispatch(callAPIgetListReq(token));
         CustomizedToast({
-          message: `Đã chuyển trạng thái thông công`,
+          message: `Đã chuyển trạng thái thành công`,
           type: "SUCCESS",
         });
       } catch (err) {
