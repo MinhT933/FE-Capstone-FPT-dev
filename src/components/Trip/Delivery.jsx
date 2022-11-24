@@ -187,7 +187,9 @@ export default function Delivery() {
         };
         callAPI();
     }, [select, convert(valueStarTime.$d)]);
+
     console.log(valueStarTime)
+
     const station = useSelector((state) => {
         return state.userReducer.listDelivery;
     });
@@ -278,38 +280,39 @@ export default function Delivery() {
     }
     const row = []
     return (
-        <Paper title="Chuyến hàng"
-            elevation={3}
-            sx={{
-                padding: "2%",
-                marginBottom: "10%",
-                margin: "2%",
-            }}>
-            <PageHeader
-                title="Thông tin chuyến giao hàng"
-                subTitle="Vui lòng điền đầy đủ thông tin"
-                icon={getIcon("icon-park-outline:delivery")}
-            />
-            <form>
-                <Box sx={{ marginLeft: '8%', height: '35rem', width: '140%', marginTop: '2%' }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={2.2}>
-                            <Typography variant="h4" gutterBottom>
-                                {/* User */}
-                                <DatePicker
-                                    variant="outlined"
-                                    name="valueStarTime"
-                                    label="Chọn ngày"
-                                    width="16rem"
-                                    inputFormat="YYYY-MM-DD"
-                                    value={valueStarTime}
-                                    onChange={(e) => {
-                                        setValueStarTime(e);
-                                    }}
-                                />
-                            </Typography>
+        <Page title="Chuyến hàng">
+            <Paper
+                elevation={3}
+                sx={{
+                    padding: "2%",
+                    marginBottom: "10%",
+                    margin: "2%",
+                }}>
+                <PageHeader
+                    title="Thông tin chuyến giao hàng"
+                    subTitle="Vui lòng điền đầy đủ thông tin"
+                    icon={getIcon("icon-park-outline:delivery")}
+                />
+                <form>
+                    <Box sx={{ marginLeft: '8%', height: '35rem', width: '140%', marginTop: '2%' }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={2.2}>
+                                <Typography variant="h4" gutterBottom>
+                                    {/* User */}
+                                    <DatePicker
+                                        variant="outlined"
+                                        name="valueStarTime"
+                                        label="Chọn ngày"
+                                        width="16rem"
+                                        inputFormat="YYYY-MM-DD"
+                                        value={valueStarTime}
+                                        onChange={(e) => {
+                                            setValueStarTime(e);
+                                        }}
+                                    />
+                                </Typography>
 
-                            {/* {decoded.role === "kitchen" && (
+                                {/* {decoded.role === "kitchen" && (
                                 <ButtonCustomize
                                     variant="contained"
                                     component={RouterLink}
@@ -317,57 +320,58 @@ export default function Delivery() {
                                     nameButton="Tạo chuyến đi"
                                 />
                             )} */}
-                        </Grid>
+                            </Grid>
 
 
-                        <Grid item xs={3.6}>
-                            <Controls.Select
-                                label="Trạng thái"
-                                width="10rem"
-                                options={getOptions()}
-                                onChange={handleChange}
-                                value={select}
-                            />
-                        </Grid>
-
-
-                        <Grid item xs={1.5} marginTop="0.5%">
-                            {decoded.role === "kitchen" && (
-                                <ButtonCustomize
-                                    variant="contained"
-                                    component={RouterLink}
-                                    to="/dashboard/kitchen/tripDelivery"
-                                    nameButton="Tạo chuyến đi"
+                            <Grid item xs={3.6}>
+                                <Controls.Select
+                                    label="Trạng thái"
+                                    width="10rem"
+                                    options={getOptions()}
+                                    onChange={handleChange}
+                                    value={select}
                                 />
-                            )}
+                            </Grid>
+
+
+                            <Grid item xs={1.5} marginTop="0.5%">
+                                {decoded.role === "kitchen" && (
+                                    <ButtonCustomize
+                                        variant="contained"
+                                        component={RouterLink}
+                                        to="/dashboard/kitchen/tripDelivery"
+                                        nameButton="Tạo chuyến đi"
+                                    />
+                                )}
+                            </Grid>
+
                         </Grid>
+                        <Box>
+                            <div style={{ height: '25rem', width: '60%', marginTop: '1%' }}>
 
-                    </Grid>
-                    <Box>
-                        <div style={{ height: '25rem', width: '60%', marginTop: '1%' }}>
+                                {station ? <DataGrid
+                                    rows={station}
+                                    columns={columns}
+                                    pageSize={5}
+                                    rowsPerPageOptions={[5]}
+                                    getRowId={(row) => row.id}
+                                    pagination
+                                /> : <DataGrid
+                                    rows={row}
+                                    columns={columns}
+                                    pageSize={5}
+                                    rowsPerPageOptions={[5]}
+                                    getRowId={(row) => row.id}
+                                    pagination
+                                />}
 
-                            {station ? <DataGrid
-                                rows={station}
-                                columns={columns}
-                                pageSize={5}
-                                rowsPerPageOptions={[5]}
-                                getRowId={(row) => row.id}
-                                pagination
-                            /> : <DataGrid
-                                rows={row}
-                                columns={columns}
-                                pageSize={5}
-                                rowsPerPageOptions={[5]}
-                                getRowId={(row) => row.id}
-                                pagination
-                            />}
+                            </div>
+                        </Box>
 
-                        </div>
+
                     </Box>
-
-
-                </Box>
-            </form>
-        </Paper>
+                </form>
+            </Paper>
+        </Page>
     );
 }

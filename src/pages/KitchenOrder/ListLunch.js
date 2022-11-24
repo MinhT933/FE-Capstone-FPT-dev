@@ -80,7 +80,8 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ListLunch() {
+export default function ListLunch(props) {
+  const { kitchenLunch } = props
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
   // const [OpenPopUp, SetOpenPopUp] = useState(false);
@@ -134,7 +135,7 @@ export default function ListLunch() {
   };
 
   const filteredKitchen = applySortFilter(
-    KITCHENORDERLIST,
+    kitchenLunch,
     getComparator(order, orderBy),
     filterName
   );
@@ -206,20 +207,20 @@ export default function ListLunch() {
                 {filteredKitchen
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const { id, name } = row;
-                    const isItemSelected = selected.indexOf(id) !== -1;
+                    const { nameFood, quantity, flag } = row;
+                    const isItemSelected = selected.indexOf(nameFood) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={id}
+                        key={nameFood}
                         tabIndex={-1}
                         role="checkbox"
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
                       >
-                        <TableCell align="left">{id}</TableCell>
-                        <TableCell align="left">{name}</TableCell>
+                        <TableCell align="left">{nameFood}</TableCell>
+                        <TableCell align="left">{quantity}</TableCell>
                       </TableRow>
                     );
                   })}

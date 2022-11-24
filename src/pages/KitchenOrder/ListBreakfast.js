@@ -85,7 +85,9 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ListBreakfast() {
+export default function ListBreakfast(props) {
+  const { kitchenMorning } = props;
+  console.log(kitchenMorning)
   const location = useLocation();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -100,13 +102,25 @@ export default function ListBreakfast() {
     Navigate("/");
   }
 
+  function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+  const [select, setSelect] = useState('')
+  const [valueStarTime, setValueStarTime] = React.useState(new Date());
+
+
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIKitchenPrepareOrder(token));
+      await dispatch(callAPIKitchenPrepareOrder(token, convert(valueStarTime), select));
     };
     callAPI();
-  }, [dispatch]);
+  }, [select, convert(valueStarTime.$d)]);
+
 
 
   const station = useSelector((state) => {
@@ -175,7 +189,7 @@ export default function ListBreakfast() {
   };
 
   const filteredKitchen = applySortFilter(
-    KITCHENORDERLIST,
+    kitchenMorning,
     getComparator(order, orderBy),
     filterName
   );
@@ -251,6 +265,7 @@ export default function ListBreakfast() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                     const { nameFood, quantity, flag } = row;
+                    // console.log(nameFood)
                     const isItemSelected = selected.indexOf(nameFood) !== -1;
 
                     return (

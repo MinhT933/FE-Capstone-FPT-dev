@@ -44,6 +44,11 @@ const navConfigAdmin = [
     icon: getIcon("eva:pie-chart-2-fill"),
     // component: Home
   },
+  {
+    title: "Đơn hàng",
+    path: "/dashboard/admin/adminorder",
+    icon: getIcon("eos-icons:subscription-management"),
+  },
   // {
   //   title: "Sản phẩm",
   //   icon: getIcon("tabler:building-warehouse"),
@@ -106,11 +111,7 @@ const navConfigAdmin = [
     path: "/dashboard/admin/station",
     icon: getIcon("carbon:location-company"),
   },
-  {
-    title: "Đơn hàng",
-    path: "/dashboard/admin/adminorder",
-    icon: getIcon("eos-icons:subscription-management"),
-  },
+
   {
     title: "Quản lí bếp",
     path: "/dashboard/admin/kitchen",
@@ -170,11 +171,11 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/delivery",
     icon: getIcon("mdi:language-go"),
   },
-  {
-    title: "Chuyến giao hàng add",
-    path: "/dashboard/kitchen/tripDelivery",
-    icon: getIcon("mdi:language-go"),
-  },
+  // {
+  //   title: "Chuyến giao hàng add",
+  //   path: "/dashboard/kitchen/tripDelivery",
+  //   icon: getIcon("mdi:language-go"),
+  // },
 ];
 const navConfig = [
   {
