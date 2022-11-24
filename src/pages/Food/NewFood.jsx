@@ -268,11 +268,11 @@ export default function NewFood() {
               </Grid>
 
               <Box>
-                <Stack width="200px" marginTop={"10%"} ml={"98%"} mb={"2rem"}>
+                <Stack width="200px" marginTop={"10%"} ml={"9rem"} mb={"2rem"}>
                   <ButtonCustomize
                     variant="contained"
                     type="submit"
-                    nameButton="Tạo thực phẩm"
+                    nameButton="Thêm thức ăn"
                   />
                 </Stack>
               </Box>

@@ -404,9 +404,6 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
   stationID
 ) => {
   return async (dispatch) => {
-    console.log(slot);
-    console.log(valueStarTime);
-    console.log(stationID);
     try {
       const res = await API(
         "GET",
@@ -515,6 +512,27 @@ export const LoginAthen = (user, navigate) => {
     } catch (error) {
       CustomizedToast({
         message: "Tên đăng nhập hoặc mật khẩu sai",
+        type: "ERROR",
+      });
+    }
+  };
+};
+//------------------------------------------------------------------
+export const checkphone = (phone) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("POST", URL_API + `/auths/login`, phone);
+      localStorage.setItem("token", res.data.result.access_token);
+
+      dispatch(
+        createAction({
+          type: PathAction.LOGIN_USER,
+          payload: res.data.result,
+        })
+      );
+    } catch (error) {
+      CustomizedToast({
+        message: "số điện thoại không đúng",
         type: "ERROR",
       });
     }
