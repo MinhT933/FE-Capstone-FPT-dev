@@ -49,7 +49,7 @@ const TABLE_HEAD = [
   { id: "type", label: "Phân loại", alignRight: false },
   { id: "createdAt", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
-  { id: "status", label: "Status", alignRight: false },
+  { id: "status", label: "Trạng thái", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
   { id: "SetStatus", label: "Thay đổi trạng thái", alignRight: false },
 ];
@@ -301,7 +301,6 @@ export default function Food() {
                             </Typography>
                           </TableCell>
 
-
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">
                             {foodCategory.name}
@@ -324,14 +323,14 @@ export default function Food() {
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
-                                <Label color="error">Không hoạt động</Label>
+                                <Label color="error">Ngưng bán</Label>
                               )}
                               {status === "waiting" && (
                                 // <Alert severity="info">waiting</Alert>
                                 <Label color="warning">Đang chờ</Label>
                               )}
                               {status === "active" && (
-                                <Label color="success">Hoạt động</Label>
+                                <Label color="success">Đang bán</Label>
                               )}
                             </div>
                           </TableCell>
@@ -402,4 +401,3 @@ export default function Food() {
     </Page>
   );
 }
-

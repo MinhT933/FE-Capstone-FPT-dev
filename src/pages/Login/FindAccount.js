@@ -15,6 +15,9 @@ import { auth } from "./firebase";
 import Redirect, { Link, useNavigate } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useUserAuth } from "./UserAuthContextProvider";
+import API from "../../Axios/API/API";
+import { URL_API } from "../../Axios/URL_API/URL";
+import { checkphone } from "../../redux/action/acction";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#5dc9bc"),
@@ -46,18 +49,9 @@ export default function FindAccount() {
   const [flag, setFlag] = useState(false);
   const [otp, setOtp] = useState("");
   const [result, setResult] = useState("");
+
   const { setUpRecaptha } = useUserAuth();
   const navigate = useNavigate();
-
-  // function setUpRecaptha(number) {
-  //   const recaptchaVerifier = new RecaptchaVerifier(
-  //     "recaptcha-container",
-  //     {},
-  //     auth
-  //   );
-  //   recaptchaVerifier.render();
-  //   return signInWithPhoneNumber(auth, number, recaptchaVerifier);
-  // }
 
   const getOtp = async (e) => {
     e.preventDefault();
@@ -67,10 +61,12 @@ export default function FindAccount() {
       return setError("Please enter a valid phone number!");
     try {
       const response = await setUpRecaptha(number);
+      const res = API("POST", URL_API + "/auths/checkPhone");
       console.log(response);
       if (response) {
         setResult(response);
         setFlag(true);
+        // navigate("/verifyphone");
       }
     } catch (err) {
       setError(err.message);
@@ -82,8 +78,9 @@ export default function FindAccount() {
     setError("");
     if (otp === "" || otp === null) return;
     try {
-      await result.confirm(otp);
-      navigate("/");
+      const res = await result.confirm(otp);
+      console.log(res);
+      navigate("/changepassword");
     } catch (err) {
       setError(err.message);
     }
@@ -112,110 +109,106 @@ export default function FindAccount() {
                 </p>
               </div>
               {error && <Alert variant="danger">{error}</Alert>}
-              <form onSubmit={getOtp}>
-                <Grid container direction="column" spacing={2}>
-                  <Grid item>
-                    <TextField
-                      type="phoneNumber"
-                      fullWidth
-                      label="Nhập số điện thoại"
-                      placeholder="Số điện thoại"
-                      variant="outlined"
-                      required
-                      value={number}
-                      onChange={(e) => {
-                        setNumber(e.target.value);
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-                <div id="recaptcha-container"></div>
-                <Grid item style={{ margin: "7%" }}>
-                  <div className="button-right">
-                    {/* <Link to="/">
-                      <Button variant="secondary">Cancel</Button>
-                    </Link> */}
-                    &nbsp;
-                    <ColorButton
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      // href="/verifyphone"
-                      sx={{ padding: "5%" }}
-                    >
-                      Xác nhận
-                    </ColorButton>
+              {flag ? (
+                <Box
+                  sx={{ float: "center", width: "100%" }}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <div>
+                    <Container maxWidth="sm">
+                      <Grid
+                        container
+                        spacing={2}
+                        direction="column"
+                        justifyContent="center"
+                        style={{ minHeight: "100vh" }}
+                      >
+                        <Paper
+                          elevation={3}
+                          sx={{ padding: 10, marginBottom: 0.5 }}
+                        >
+                          <div style={{ marginBottom: "4%" }}>
+                            <h1> Xác thực số điện thoại </h1>
+                            <p sx={{ paddingLeft: "1%", paddingBottom: "2%" }}>
+                              Nhập mã OTP được gửi đến số điện thoại để xác
+                              thực.
+                            </p>
+                          </div>
+                          {error && <Alert variant="danger">{error}</Alert>}
+                          <form onSubmit={verifyOtp}>
+                            <Grid container direction="column" spacing={2}>
+                              <Grid item>
+                                <TextField
+                                  type="otp"
+                                  fullWidth
+                                  label="Mã xác thực OTP"
+                                  placeholder="Mã OTP"
+                                  variant="outlined"
+                                  onChange={(e) => setOtp(e.target.value)}
+                                  required
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid item style={{ margin: "7%" }}>
+                              <ColorButton
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ padding: "5%" }}
+                                // href="/changepassword"
+                              >
+                                Xác thực
+                              </ColorButton>
+                            </Grid>
+                          </form>
+                        </Paper>
+                      </Grid>
+                    </Container>
                   </div>
+                </Box>
+              ) : (
+                <Grid>
+                  <form onSubmit={getOtp}>
+                    <Grid container direction="column" spacing={2}>
+                      <Grid item>
+                        <TextField
+                          type="phoneNumber"
+                          fullWidth
+                          label="Nhập số điện thoại"
+                          placeholder="Số điện thoại"
+                          variant="outlined"
+                          required
+                          value={number}
+                          onChange={(e) => {
+                            setNumber(e.target.value);
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                    <div id="recaptcha-container"></div>
+                    <Grid item style={{ margin: "7%" }}>
+                      <div className="button-right">
+                        &nbsp;
+                        <ColorButton
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          sx={{ padding: "5%" }}
+                          onClick={checkphone(number)}
+                        >
+                          Xác nhận
+                        </ColorButton>
+                      </div>
+                    </Grid>
+                  </form>
                 </Grid>
-              </form>
+              )}
             </Paper>
           </Grid>
         </Container>
       </div>
     </Box>
-    // <>
-    //   <div className="p-4 box">
-    //     <h2 className="mb-3">Firebase Phone Auth</h2>
-    //     {error && <Alert variant="danger">{error}</Alert>}
-    //     <form onSubmit={getOtp} style={{ display: !flag ? "block" : "none" }}>
-    //       {/* <Form.Group className="mb-3" controlId="formBasicEmail"> */}
-    //       <TextField
-    //         type="phoneNumber"
-    //         fullWidth
-    //         label="Nhập số điện thoại"
-    //         placeholder="Số điện thoại"
-    //         variant="outlined"
-    //         required
-    //         value={number}
-    //         onChange={(e) => {
-    //           setNumber(e.target.value);
-    //         }}
-    //       />
-    //       <div id="recaptcha-container"></div>
-    //       {/* </Form.Group> */}
-    //       <div className="button-right">
-    //         <Link to="/">
-    //           <Button variant="secondary">Cancel</Button>
-    //         </Link>
-    //         &nbsp;
-    //         <Button type="submit" variant="primary">
-    //           Send Otp
-    //         </Button>
-    //       </div>
-    //     </form>
-
-    //     <form onSubmit={verifyOtp} style={{ display: flag ? "block" : "none" }}>
-    //       {/* <Form.Group className="mb-3" controlId="formBasicOtp"> */}
-    //       {/* <Form.Control
-    //         type="otp"
-    //         placeholder="Enter OTP"
-
-    //       /> */}
-    //       <TextField
-    //         type="phoneNumber"
-    //         fullWidth
-    //         label="Nhập số điện thoại"
-    //         placeholder="Số điện thoại"
-    //         variant="outlined"
-    //         required
-    //         value={number}
-    //         onChange={(e) => {
-    //           setOtp(e.target.value);
-    //         }}
-    //       />
-    //       {/* onChange={(e) => setOtp(e.target.value)} */}
-    //       {/* </Form.Group> */}
-    //       <div className="button-right">
-    //         <Link to="/">
-    //           <Button variant="secondary">Cancel</Button>
-    //         </Link>
-    //         &nbsp;
-    //         <Button type="submit" variant="primary">
-    //           Verify
-    //         </Button>
-    //       </div>
-    //     </form>
-    //   </div>
-    // </>
   );
 }
