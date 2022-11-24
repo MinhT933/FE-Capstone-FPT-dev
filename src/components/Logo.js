@@ -33,7 +33,7 @@ export default function Logo({ disabledLink = false, sx }) {
       <Box
         component="img"
         src="/static/logo7.png"
-        sx={{ width: 80, height: 60, ...sx }}
+        sx={{ width: 82, height: 65, ...sx }}
       />
       <defs>
         <linearGradient id="BG1" x1="100%" x2="50%" y1="9.946%" y2="50%">

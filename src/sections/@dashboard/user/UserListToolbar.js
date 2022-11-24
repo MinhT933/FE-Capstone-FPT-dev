@@ -10,11 +10,10 @@ import {
   InputAdornment,
 } from "@mui/material";
 // component
-import Box from "@mui/material/Box";
-import Iconify from "../../../components/hook-form/Iconify";
-import { Controller } from "react-hook-form";
-import Controls from "./../../../components/Control/Controls";
 
+import Iconify from "../../../components/hook-form/Iconify";
+
+import Controls from "./../../../components/Control/Controls";
 
 import {
   callAPIgetAccountAdminByStatus,
@@ -30,7 +29,6 @@ import {
   callAPIgetListStationByStatus,
   callAPIgetShipperOfKitchen,
 } from "../../../redux/action/acction";
-
 
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -80,7 +78,7 @@ export default function UserListToolbar({
 
   const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
-    console.log(event.target.value)
+    console.log(event.target.value);
     setHaha(event.target.value === "All" ? "" : event.target.value);
 
     dispatch(
@@ -89,10 +87,10 @@ export default function UserListToolbar({
         event.target.value === "All"
           ? ""
           : event.target.value === "All"
-            ? ""
-            : event.target.value === "All"
-              ? ""
-              : event.target.value
+          ? ""
+          : event.target.value === "All"
+          ? ""
+          : event.target.value
       )
     );
     dispatch(
@@ -113,13 +111,14 @@ export default function UserListToolbar({
         event.target.value === "All"
           ? ""
           : event.target.value === "All"
-            ? ""
-            : event.target.value === "All"
-              ? ""
-              : event.target.value
+          ? ""
+          : event.target.value === "All"
+          ? ""
+          : event.target.value
       )
     );
 
+    //Admin
     dispatch(
       await callAPIgetListStationByStatus(
         token,

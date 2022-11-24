@@ -39,6 +39,7 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import GroupFoodListtoolbar from "../../sections/@dashboard/user/GroupFoodListtoolbar";
 
 // ----------------------------------------------------------------------
 
@@ -138,7 +139,7 @@ export default function ListFoodGroup() {
     // { id: "waiting", title: "Waiting" },
     { id: "active", title: "Active" },
     { id: "inActive", title: "InActive" },
-    { id: "All", title: "All" },
+    { id: "All", title: "Tất cả" },
   ];
   // const token = localStorage.getItem("token");
   // var decoded = jwt_decode(token);
@@ -280,7 +281,7 @@ export default function ListFoodGroup() {
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <GroupFoodListtoolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}

@@ -158,8 +158,10 @@ export const callAPIGetListPack = async (token, status) => {
       );
       // console.log(res.data.result);
     } catch (err) {
-      //
-      // console.log("hehehe");
+      CustomizedToast({
+        message: "Không tìm thấy gói ăn",
+        type: "ERROR",
+      });
     }
   };
 };
@@ -190,6 +192,36 @@ export const callAPIgetListStation = (token) => {
         })
       );
     } catch (err) { }
+  };
+};
+
+export const callAPIgetListStationbyidKitchen = (token, id) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/stations/byKitchenId?kitchenId=${id}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_STATIONS_KITCHENID,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_STATIONS_KITCHENID,
+          payload: null,
+        })
+      );
+      CustomizedToast({
+        message: `${err.response.data.message}`,
+        type: "ERROR",
+      });
+    }
   };
 };
 
@@ -275,7 +307,14 @@ export const callAPIgetGroupFoodByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+
+    } catch (err) {
+      CustomizedToast({
+        message: "Không tìm thấy nhóm thức",
+        type: "ERROR",
+      });
+    }
+
   };
 };
 
@@ -378,36 +417,44 @@ export const callAPIGetSlot = (token) => {
   };
 };
 
-
 export const callAPIGetListDelivery = (token, status, valueStarTime) => {
   return async (dispatch) => {
     try {
       // const res = await API("GET", URL_API + `/delivery_trips/byKitchen?status=${status}&deliveryDate=${valueStarTime}`, null, token);
 
-      const res = await API("GET", URL_API + '/delivery_trips/byKitchen?status=' + status + '&deliveryDate=' + valueStarTime, null, token);
-      console.log(res)
+      const res = await API(
+        "GET",
+        URL_API +
+          "/delivery_trips/byKitchen?status=" +
+          status +
+          "&deliveryDate=" +
+          valueStarTime,
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_LIST_DELIVERY,
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+    } catch (err) {}
   };
 };
-
 
 export const callAPIgetOrdertoCreateDeliveryTrip = (
   token,
   slot,
   valueStarTime,
-  stationID
+  stationID,
+  kitchenID
 ) => {
   return async (dispatch) => {
     try {
       const res = await API(
         "GET",
         URL_API +
+
         "/orders/byKitchen?stationId=" +
         stationID +
         "&time_slotId=" +
@@ -415,7 +462,7 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
         "&deliveryDate=" +
         valueStarTime,
 
-        // `/orders/byKitchen?stationId=f2fda2c1-1809-4cb3-8ffe-f2526a18302b&time_slotId=f67h8204ih3945h893u45uh89hjh98345h9&deliveryDate=2022-11-08`,
+
 
         null,
         token
@@ -570,6 +617,7 @@ export const LogOut = (token, navigate) => {
       // console.log(res.data.result);
 
       navigate("/");
+      localStorage.removeItem("token");
     } catch (error) {
       // console.log(error);
     }
@@ -954,4 +1002,3 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
     }
   };
 };
-

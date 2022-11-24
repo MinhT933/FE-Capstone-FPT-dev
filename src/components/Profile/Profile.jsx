@@ -358,9 +358,10 @@ export default function Profile() {
                       <Grid item xs={12}>
                         <Controls.DatePicker
                           label="Ngày tháng năm sinh"
+                          name="DOB"
                           width="28rem"
                           inputFormat="DD-MM-YYYY"
-                          value={valueStarTime}
+                          // value={valueStarTime}
                           onChange={(e) => {
                             setValueStarTime(e);
                           }}

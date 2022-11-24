@@ -27,6 +27,12 @@ const navConfigManager = [
     path: "/dashboard/manager/package",
     icon: getIcon("eva:shopping-bag-fill"),
   },
+
+  {
+    title: "Chuyến giao hàng",
+    path: "/dashboard/manager/tripDelivery",
+    icon: getIcon("mdi:language-go"),
+  },
   // ],
   // },
 ];
@@ -144,17 +150,6 @@ const navConfigKichen = [
     icon: getIcon("eos-icons:subscription-management"),
   },
 
-  {
-    title: "Người giao hàng",
-    path: "/dashboard/kitchen/kitchenshipper",
-    icon: getIcon("carbon:delivery"),
-  },
-  {
-    title: "Chuyến giao hàng",
-
-    path: "/dashboard/kitchen/tripDelivery",
-    icon: getIcon("mdi:language-go"),
-  },
 
 ];
 const navConfig = [
