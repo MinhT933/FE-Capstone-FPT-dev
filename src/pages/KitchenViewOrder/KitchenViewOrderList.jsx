@@ -9,7 +9,9 @@ import {
   Stack,
   // Avatar,
   Paper,
+  Grid,
   Box,
+  Button,
   TableRow,
   TableBody,
   TableCell,
@@ -24,6 +26,8 @@ import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
+import { DataGrid } from "@mui/x-data-grid";
+import Iconify from "../../components/hook-form/Iconify";
 //callAPI
 import * as React from "react";
 import { useDispatch } from "react-redux";
@@ -48,13 +52,15 @@ import FormControl from "@mui/material/FormControl";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import KitchenListToolbar from "./../../sections/@dashboard/user/KitchenListToolbar";
 import * as moment from "moment";
+import PageHeader from "../../components/PageHeader";
+import Controls from "../../components/Control/Controls";
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
 // ko nhát thiết phải thêm table head ở dưới
 
 const TABLE_HEAD = [
   { id: "", label: "", alignRight: false },
-  { id: "id", label: "Mã đơn", alignRight: false },
+  // { id: "id", label: "Mã đơn", alignRight: false },
   { id: "name", label: "Món ăn", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
   { id: "station", label: "Điểm giao", alignRight: false },
@@ -64,6 +70,112 @@ const TABLE_HEAD = [
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
+
+const columns = [
+  // { field: "id", headerName: "ID", flex: 1 },
+
+  // <TableCell align="left">{food.name}</TableCell>
+  // <TableCell align="left">
+  //   {subscription.customer.account.phone}
+  // </TableCell>
+  // <TableCell align="left">{station.address}</TableCell>
+  // <TableCell align="left">{timeSlot.flag}</TableCell>
+  // <TableCell align="left">
+  //   {timeSlot.startTime}
+  // </TableCell>
+  // <TableCell align="left">{timeSlot.endTime}</TableCell>
+  {
+    field: "name", headerName: "Tên món", flex: 1,
+    renderCell: (param) => {
+      return param.row.food.name
+
+    }
+  },
+  {
+    field: "phone", headerName: "Điện thoại", flex: 1,
+    renderCell: (param) => {
+      return param.row.subscription.customer.account.phone
+
+    }
+  },
+  {
+    field: "station", headerName: "Điểm giao", flex: 3,
+    renderCell: (param) => {
+      return param.row.station.address
+
+    }
+  },
+  {
+    field: "timeSlot", headerName: "Buổi", flex: 1,
+    renderCell: (param) => {
+      return param.row.timeSlot.flag
+
+      // return (
+      //   <div>
+
+      //     {param.row.timeSlot.flag === "1" && (
+      //       <TableCell>Trưa</TableCell>
+      //     )}
+
+      //   </div>
+      // );
+
+    }
+  },
+  {
+    field: "startTime", headerName: "Bắt đầu giao", flex: 1,
+    renderCell: (param) => {
+      return param.row.timeSlot.startTime
+
+    }
+  },
+  {
+    field: "endTime", headerName: "Kết thúc giao", flex: 1,
+    renderCell: (param) => {
+      return param.row.timeSlot.endTime
+
+    }
+  },
+  {
+    field: "status", headerName: "Trạng thái", flex: 1.5,
+    renderCell: (param) => {
+      // return param.row.status
+      return (
+        <div>
+          {param.row.status === "progress" && (
+            <Label color="warning">Chờ giao hàng</Label>
+          )}
+
+          {param.row.status === "delivery" && (
+            <Label color="warning">Đang giao</Label>
+          )}
+
+          {param.row.status === "arrived" && (
+            <Label color="success">Đã đến</Label>
+          )}
+
+          {param.row.status === "done" && (
+            // <Alert severity="info">waiting</Alert>
+            <Label color="success">Hoàn thành</Label>
+          )}
+
+          {param.row.status === "pending" && (
+            // <Alert severity="info">waiting</Alert>
+            <Label color="error">Chưa thanh toán</Label>
+          )}
+
+          {param.row.status === "ready" && (
+            // <Alert severity="info">waiting</Alert>
+            <Label color="success">Đã thanh toán</Label>
+          )}
+        </div>
+      );
+
+    }
+
+
+  },
+]
 
 // ----------------------------------------------------------------------
 
@@ -108,16 +220,49 @@ function applySortFilter(array, comparator, query) {
 }
 
 const getOptions = () => [
-  { id: "done", title: "Done" },
-  { id: "active", title: "Active" },
-  { id: "delivery", title: "Delivery" },
-  { id: "pending  ", title: "Đang chờ" },
-  { id: "progress", title: "Progress" },
-  { id: "", title: "All" },
+
+  { id: "progress", title: "Chờ giao hàng" },
+  { id: "delivery", title: "Đang giao" },
+  { id: "arrived", title: "Đã đến" },
+  { id: "done", title: "Hoàn thành" },
+  { id: "pending  ", title: "Chưa thanh toán" },
+  { id: "ready", title: "Đã thanh toán" },
+
+  { id: "", title: "Tất cả" },
 ];
+
+
+const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
+
 export default function KitchenViewOrderList() {
   //callAPIKitchenGetListOrder========================================
   const dispatch = useDispatch();
+
+
+  const [valueStarTime, setValueStarTime] = React.useState(new Date());
+
+  const [select, setSelect] = useState("All");
+  // const [haha, setHaha] = useState("All");
+
+  const handleChange1 = async (event) => {
+    console.log(event.target.value)
+    setSelect(event.target.value === "All" ? "" : event.target.value);
+
+    if (date) {
+      dispatch(
+        await callAPIGetListOderByDay(
+          token,
+          date,
+          event.target.value === "All" ? "" : event.target.value
+        )
+      );
+    }
+  };
+
+  const handleChange = (event) => {
+    setMeal(event.target.value);
+  };
 
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -131,6 +276,15 @@ export default function KitchenViewOrderList() {
     // return <Navigate to="/" replace />;
     Navigate("/");
   }
+
+  function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+
 
   const handleDelete = (id) => {
     API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
@@ -197,6 +351,7 @@ export default function KitchenViewOrderList() {
     };
     callAPI();
   }, [dispatch, date, token]);
+
   const orderlist = useSelector((state) => {
     return state.userReducer.listOderByDate;
   });
@@ -212,174 +367,101 @@ export default function KitchenViewOrderList() {
   const isKitchenNotFound = filteredKitchen.length === 0;
   const [meal, setMeal] = React.useState("");
 
-  const handleChange = (event) => {
-    setMeal(event.target.value);
-  };
+
+
+  const Button1 = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC33"),
+    backgroundColor: "#FFCC33",
+
+    // display: "center"
+  }));
+
+  const row = []
 
   return (
-    <Page title="Kitchen">
-      <Container>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={3}
-        >
-          <Paper
-            sx={{
-              background: "#FFCC33",
-              color: "black",
-              height: "50%",
-              width: "33%",
-            }}
-          >
-            <Typography
-              variant="h3"
-              gutterBottom
-              sx={{
-                display: "flex",
-                marginLeft: "7%",
-                marginTop: "2%",
-              }}
-            >
-              Đơn hàng trong ngày
-            </Typography>
-          </Paper>
-        </Stack>
+    <Page title="Đơn hàng">
+      <Paper
+        elevation={3}
+        sx={{
+          padding: "2%",
+          marginBottom: "10%",
+          margin: "2%",
+        }}>
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={3}
-        >
-          <FormControl sx={{ width: "25%" }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Chọn ngày"
-                value={date}
-                onChange={(newValue) => {
-                  const b = new Date(newValue).toLocaleDateString().split("/");
-                  setDate(`${b[2]}-${b[1]}-${b[0]}`);
-                }}
-                inputFormat="DD-MM-YYYY"
-                renderInput={({ inputRef, inputProps, InputProps }) => (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <input ref={inputRef} {...inputProps} />
-                    {InputProps?.endAdornment}
-                  </Box>
-                )}
-              />
-            </LocalizationProvider>
-          </FormControl>
-        </Stack>
-        <Card>
-          <UserListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-            options={getOptions()}
-            date={date}
-          />
+        <PageHeader
+          title="Thông tin đơn hàng trong ngày"
+          subTitle="Vui lòng chọn ngày"
+          icon={getIcon("icon-park-outline:delivery")}
+        />
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={orderlist.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+        <form>
+          <Box sx={{ marginLeft: '8%', height: '35rem', width: '140%', marginTop: '2%' }}>
+            <Grid container spacing={2}>
+              <Grid item xs={2.2}>
+                <Typography variant="h4" gutterBottom>
+                  {/* User */}
+                  <DatePicker
+                    variant="outlined"
+                    name="valueStarTime"
+                    label="Chọn ngày"
+                    width="16rem"
+                    inputFormat="YYYY-MM-DD"
+                    value={valueStarTime}
+                    onChange={(e) => {
+                      setValueStarTime(e);
+                    }}
+                  />
+                </Typography>
+
+                {/* {decoded.role === "kitchen" && (
+                                <ButtonCustomize
+                                    variant="contained"
+                                    component={RouterLink}
+                                    to="/dashboard/kitchen/tripDelivery"
+                                    nameButton="Tạo chuyến đi"
+                                />
+                            )} */}
+              </Grid>
+
+
+              <Grid item xs={3.6}>
+                <Controls.Select
+                  label="Trạng thái"
+                  width="10rem"
+                  options={getOptions()}
+                  // onChange={(e) => { handleChange(e) }}
+                  onChange={handleChange1}
+                  // value={haha}
+                  value={select}
                 />
-                <TableBody>
-                  {filteredKitchen
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      // const Slot
-                      const {
-                        id,
-                        subscription,
-                        station,
-                        food,
-                        timeSlot,
-                        order,
-                        note,
-                        status,
-                      } = row;
+              </Grid>
 
-                      return (
-                        <TableRow hover key={id} tabIndex={-1}>
-                          <TableCell align="left">{""}</TableCell>
-                          <TableCell align="left">{id}</TableCell>
-                          <TableCell align="left">{food.name}</TableCell>
-                          <TableCell align="left">
-                            {subscription.customer.account.phone}
-                          </TableCell>
-                          <TableCell align="left">{station.address}</TableCell>
-                          <TableCell align="left">{timeSlot.flag}</TableCell>
-                          <TableCell align="left">
-                            {timeSlot.startTime}
-                          </TableCell>
-                          <TableCell align="left">{timeSlot.endTime}</TableCell>
+            </Grid>
+            <Box>
+              <div style={{ height: '25rem', width: '60%', marginTop: '1%' }}>
 
-                          <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={
-                                (status === "Cooking" && "error") || "success"
-                              }
-                            >
-                              {status}
-                            </Label>
-                          </TableCell>
-                          {/* <Button1 sx={{ marginTop: "10%", marginRight: "8%", marginBottom: "5%" }} */}
+                {orderlist ? <DataGrid
+                  rows={orderlist}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  getRowId={(row) => row.id}
+                  pagination
+                /> : <DataGrid
+                  rows={row}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  getRowId={(row) => row.id}
+                  pagination
+                />}
 
-                          <TableCell align="left">
-                            {decoded.role === "kitchen" && (
-                              <ButtonCustomize
-                                nameButton="Cập nhập"
-                                onClick={() => handleDelete(id, token)}
-                              />
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                </TableBody>
+              </div>
+            </Box>
+          </Box>
 
-                {isKitchenNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 20]}
-            component="div"
-            count={orderlist.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            // fix languge in footer tables
-            labelRowsPerPage={"Số hàng trên một trang"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return "" + from + "-" + to + " của " + count;
-            }}
-          />
-        </Card>
-      </Container>
-      {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
+        </form>
+      </Paper>
     </Page>
   );
 }

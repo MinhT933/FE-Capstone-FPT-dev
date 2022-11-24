@@ -49,6 +49,40 @@ const navConfigAdmin = [
     path: "/dashboard/admin/adminorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
+
+  // {
+  //   title: "Sản phẩm",
+  //   icon: getIcon("tabler:building-warehouse"),
+  //   children: [
+  //     // {
+  //     //   title: "Thức ăn",
+  //     //   path: "/dashboard/admin/food",
+  //     //   icon: getIcon("ep:food"),
+  //     // },
+  //     {
+  //       title: "Nhóm thức ăn",
+  //       path: "/dashboard/admin/foodGroup",
+  //       icon: getIcon("clarity:blocks-group-line"),
+  //     },
+  //     {
+  //       title: "Gói ăn",
+  //       path: "/dashboard/admin/package",
+  //       icon: getIcon("eva:shopping-bag-fill"),
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Gói ăn",
+  //   path: "/dashboard/admin/package",
+  //   icon: getIcon("eva:shopping-bag-fill"),
+  // },
+  // {
+  //   title: "Người Dùng",
+  //   path: "/dashboard/admin/users",
+  //   icon: getIcon("eva:people-fill"),
+  // },
+
+
   {
     title: "Tài Khoản",
     icon: getIcon("bxs:user-detail"),
@@ -116,11 +150,7 @@ const navConfigKichen = [
     icon: getIcon("eos-icons:subscription-management"),
   },
 
-  // {
-  //   title: "Người giao hàng",
-  //   path: "/dashboard/kitchen/kitchenshipper",
-  //   icon: getIcon("carbon:delivery"),
-  // },
+
 ];
 const navConfig = [
   {

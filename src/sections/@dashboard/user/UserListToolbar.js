@@ -27,6 +27,7 @@ import {
   callAPIGetListPack,
   callAPIgetListReqByStatus,
   callAPIgetListStationByStatus,
+  callAPIgetShipperOfKitchen,
 } from "../../../redux/action/acction";
 
 import { useDispatch } from "react-redux";
@@ -74,6 +75,7 @@ export default function UserListToolbar({
   date,
 }) {
   const dispatch = useDispatch();
+
   const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
     console.log(event.target.value);
@@ -155,6 +157,14 @@ export default function UserListToolbar({
       )
     );
 
+    dispatch(
+      await callAPIgetShipperOfKitchen(
+        token,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
+ 
+
     if (date) {
       dispatch(
         await callAPIGetListOderByDay(
@@ -164,6 +174,9 @@ export default function UserListToolbar({
         )
       );
     }
+
+
+
   };
   return (
     <RootStyle
