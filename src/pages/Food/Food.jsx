@@ -39,6 +39,7 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
+import Foodlistoolbar from "../../sections/@dashboard/user/Foodlistoolbar";
 
 // ----------------------------------------------------------------------
 
@@ -139,7 +140,6 @@ export default function Food() {
     { id: "inActive", title: "InActive" },
 
     { id: "All", title: "Tất cả" },
-
   ];
   React.useEffect(() => {
     const callAPI = async () => {
@@ -247,7 +247,7 @@ export default function Food() {
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <Foodlistoolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}

@@ -209,7 +209,14 @@ export default function Router() {
         //admin quản lí shipper
         //CURD + chuyển shipper cho bếp
         { path: "adminshipper", element: <AdminShipperList /> },
-
+        {
+          path: "tripDelivery",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <Tripdelivery />
+            // </ProtectedRouteAuthen>
+          ),
+        },
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
         { path: "foodGroup/updatefood/:id", element: <UpdateFood /> },
@@ -253,14 +260,7 @@ export default function Router() {
             // </ProtectedRouteAuthen>
           ),
         },
-        {
-          path: "tripDelivery",
-          element: (
-            // <ProtectedRouteAuthen role="kitchen">
-            <Tripdelivery />
-            // </ProtectedRouteAuthen>
-          ),
-        },
+
         { path: "delivery", element: <Delivery /> },
 
         //kitchen xem đơn hàng

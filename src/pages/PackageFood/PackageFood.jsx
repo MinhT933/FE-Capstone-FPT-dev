@@ -41,6 +41,7 @@ import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import DetailPackage from "./DetailPackage";
+import PackageListToolbar from "../../sections/@dashboard/user/PackageListToolbar";
 
 //Link routers
 
@@ -80,7 +81,7 @@ const getOptions = () => [
   { id: "waiting", title: "Waiting" },
   { id: "active", title: "Active" },
   { id: "inActive", title: "InActive" },
-  { id: "All", title: "All" },
+  { id: "All", title: "Tất cả" },
 ];
 // console.log(getOptions().id);
 
@@ -242,12 +243,12 @@ export default function PackageFood() {
           )}
         </Stack>
         <Card>
-          <UserListToolbar
+          <PackageListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
             options={getOptions()}
-          // value
+            // value
           />
 
           <Scrollbar>

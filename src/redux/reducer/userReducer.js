@@ -62,9 +62,11 @@ const initialState = {
   listOderByDate: [],
   listGroupFoodByStatus: [],
   listShipperActive: [],
-  
+
   shipPerOfKitchen: [],
   listSlots: [],
+  listStatiobyidkitchen: [],
+  // stationOfkichen: [],
 
   listDelivery: [],
   listFoodPrepare: [],
@@ -129,7 +131,9 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_ACCOUNT_KITCHEN:
       state.accountKitchen = payload;
       break;
-
+    case PathAction.GET_LIST_STATIONS_KITCHENID:
+      state.listStatiobyidkitchen = payload;
+      break;
     //=====================================================
     case PathAction.GET_LIST_KITCHEN:
       state.listKitchen = payload;

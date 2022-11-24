@@ -72,9 +72,7 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
         },
       }}
     >
-      <Box
-        sx={{ px: 2.5, py: 3, display: "inline-flex" }}
-      >
+      <Box sx={{ px: 2.5, py: 3, display: "inline-flex" }}>
         <Logo />
       </Box>
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -102,15 +100,20 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
           sx={{ pt: 5, borderRadius: 2, position: "relative" }}
         >
           <Box>
-            <img sx={{ width: 100, position: "absolute", top: -50, height: 100 }}
-              src="/static/shipper-1-1.png" />
+            <img
+              sx={{
+                width: 100,
+                position: "absolute",
+                top: "-50%",
+                height: 100,
+              }}
+              src="/static/shipper-1-1.png"
+              alt=".."
+            />
           </Box>
-
-
-
         </Stack>
-      </Box >
-    </Scrollbar >
+      </Box>
+    </Scrollbar>
   );
 
   return (
