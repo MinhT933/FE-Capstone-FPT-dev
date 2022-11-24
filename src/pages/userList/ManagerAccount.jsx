@@ -82,7 +82,9 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_stations) =>
-        _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _stations.profile.fullName
+          ?.toLowerCase()
+          .indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -256,7 +258,7 @@ export default function ManagerAccount() {
               variant="contained"
               component={RouterLink}
               to="/dashboard/admin/newManager"
-              nameButton="Thêm"
+              nameButton="Thêm quản lí"
             />
           )}
         </Stack>
@@ -313,9 +315,7 @@ export default function ManagerAccount() {
                           </TableCell>
 
                           {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">
-                            {row.profile.fullName}
-                          </TableCell>
+                          <TableCell align="left">{profile.fullName}</TableCell>
 
                           {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack

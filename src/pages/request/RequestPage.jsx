@@ -40,7 +40,7 @@ import Addshipper from "./Addshipper";
 
 const TABLE_HEAD = [
   { id: "images", name: "", alignRight: false },
-  { id: "name", label: "Lí do", alignRight: false },
+  { id: "reason", label: "Lí do", alignRight: false },
   { id: "price", label: "Sô lượng tài xế", alignRight: false },
   { id: "quality", label: "Lí do từ chối", alignRight: false },
   { id: "createdate", label: "Ngày thêm", alignRight: false },
@@ -77,10 +77,10 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) => _user.reason?.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
-  return stabilizedThis?.map((el) => el[0]);
+  return stabilizedThis.map((el) => el[0]);
 }
 
 export default function RequestPage() {
@@ -90,7 +90,7 @@ export default function RequestPage() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("reason");
 
   const [filterName, setFilterName] = useState("");
 
@@ -319,40 +319,46 @@ export default function RequestPage() {
                             </div>
                           </TableCell>
                           <TableCell align="left">
-                            <ButtonCustomize
-                              nameButton={
-                                status === "waiting" ? "Chờ xử lí" : "duyệt"
-                              }
-                              onClick={() => {
-                                if (status === "waiting") {
-                                  status !== "reject"
-                                    ? handleAccept(id, token)
-                                    : CustomizedToast({
-                                        message: `Đã Từ chối không thể đồng ý`,
-                                        type: "ERROR",
-                                      });
-                                } else {
-                                  setOpenPopUp(true);
-                                  setValueKitChenID(kitchen.id);
-                                  setValueId(id);
-                                  // handleAccept(id, token);
-                                }
-                              }}
-                            />
+                            {status === "waiting" ||
+                              (status === "pending" && (
+                                <ButtonCustomize
+                                  nameButton={
+                                    status === "waiting" ? "Chờ xử lí" : "duyệt"
+                                  }
+                                  onClick={() => {
+                                    if (status === "waiting") {
+                                      status !== "reject"
+                                        ? handleAccept(id, token)
+                                        : CustomizedToast({
+                                            message: `Đã Từ chối không thể đồng ý`,
+                                            type: "ERROR",
+                                          });
+                                    } else {
+                                      setOpenPopUp(true);
+                                      setValueKitChenID(kitchen.id);
+                                      setValueId(id);
+                                      // handleAccept(id, token);
+                                    }
+                                  }}
+                                />
+                              ))}
                           </TableCell>
 
                           <TableCell align="right">
-                            <ButtonCustomize
-                              nameButton="Từ chối"
-                              onClick={() => {
-                                status === "processed"
-                                  ? CustomizedToast({
-                                      message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
-                                      type: "ERROR",
-                                    })
-                                  : handleReject(id, token);
-                              }}
-                            />
+                            {status === "waiting" ||
+                              (status === "pending" && (
+                                <ButtonCustomize
+                                  nameButton="Từ chối"
+                                  onClick={() => {
+                                    status === "processed"
+                                      ? CustomizedToast({
+                                          message: `không thể thực hiện yêu cầu này vì đã xác nhận rồi`,
+                                          type: "ERROR",
+                                        })
+                                      : handleReject(id, token);
+                                  }}
+                                />
+                              ))}
                           </TableCell>
                         </TableRow>
                       );

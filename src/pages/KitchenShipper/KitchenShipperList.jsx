@@ -141,6 +141,13 @@ export default function KitchenShipperList() {
     return state.userReducer.shipPerOfKitchen;
   });
 
+  const getOptions = () => [
+    { id: "active", title: "Hoạt động" },
+    { id: "inActive", title: "Tạm nghỉ" },
+    { id: "All", title: "Tất cả" },
+  ];
+
+
   //CallAPIgetListShipper=====================================
 
   const [Open, setOpen] = useState(false);
@@ -267,6 +274,7 @@ export default function KitchenShipperList() {
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
+                  options={getOptions()}
                 />
                 <TableBody>
                   {filteredKitchen
@@ -319,15 +327,18 @@ export default function KitchenShipperList() {
                             {row.profile.email}
                           </TableCell> */}
                           <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={
-                                (status === "Closed" && "error") || "success"
-                              }
-                            >
-                              {status}
-                            </Label>
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Tạm nghỉ</Label>
+                              )}
+                              {status === "active" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                            </div>
                           </TableCell>
+
                         </TableRow>
                       );
                     })}

@@ -49,7 +49,7 @@ const TABLE_HEAD = [
   { id: "type", label: "Phân loại", alignRight: false },
   { id: "createdAt", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
-  { id: "status", label: "Status", alignRight: false },
+  { id: "status", label: "Trạng thái", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
   { id: "SetStatus", label: "Thay đổi trạng thái", alignRight: false },
 ];
@@ -137,7 +137,9 @@ export default function Food() {
   const getOptions = () => [
     { id: "active", title: "Active" },
     { id: "inActive", title: "InActive" },
-    { id: "All", title: "Tất" },
+
+    { id: "All", title: "Tất cả" },
+
   ];
   React.useEffect(() => {
     const callAPI = async () => {
@@ -301,7 +303,6 @@ export default function Food() {
                             </Typography>
                           </TableCell>
 
-
                           <TableCell align="left">{price}</TableCell>
                           <TableCell align="left">
                             {foodCategory.name}
@@ -324,23 +325,34 @@ export default function Food() {
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
-                                <Label color="error">Không hoạt động</Label>
+                                <Label color="error">Ngưng bán</Label>
                               )}
                               {status === "waiting" && (
                                 // <Alert severity="info">waiting</Alert>
                                 <Label color="warning">Đang chờ</Label>
                               )}
                               {status === "active" && (
-                                <Label color="success">Hoạt động</Label>
+                                <Label color="success">Đang bán</Label>
                               )}
                             </div>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="left">
-                            {decoded.role === "manager" && (
+                            {/* {decoded.role === "manager" && (
                               <ButtonCustomize
                                 nameButton="Cập nhập"
+                                onClick={() => handleDelete(id, token)}
+                              />
+                            )} */}
+                            {status === "active" ? (
+                              <ButtonCustomize
+                                nameButton="Ngưng Bán"
+                                onClick={() => handleDelete(id, token)}
+                              />
+                            ) : (
+                              <ButtonCustomize
+                                nameButton="Mở bán"
                                 onClick={() => handleDelete(id, token)}
                               />
                             )}
@@ -391,4 +403,3 @@ export default function Food() {
     </Page>
   );
 }
-

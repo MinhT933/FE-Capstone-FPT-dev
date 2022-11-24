@@ -104,17 +104,13 @@ export default function EditFood() {
       formData.append("price", formik.values.price);
       formData.append("foodCategoryId", formik.values.foodCategoryId);
       try {
-        const res = await API(
-          "PUT",
-          URL_API + `/foods/update-food/${id}`,
-          formData
-        );
+        const res = await API("PUT", URL_API + `/foods/${id}`, formData, token);
 
         CustomizedToast({
           message: `Cập nhập ${formik.values.name}`,
           type: "SUCCESS",
         });
-        navigate("/dashboard/admin/food");
+        // navigate("/dashboard/admin/food");
       } catch (err) {
         CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
       }
@@ -127,10 +123,12 @@ export default function EditFood() {
     setInput(URL.createObjectURL(e.target.files[0]));
   }
   return (
-    <Paper>
+    <Box>
       <PageHeader
         title="Điều chỉnh món ăn"
         subTitle="Tinh hoa ẩm thực "
+        width="60%"
+        marginLeft="20%"
         icon={getIcon("emojione-monotone:pot-of-food")}
       />
 
@@ -142,12 +140,14 @@ export default function EditFood() {
           display: "flex",
           justifyContent: "center",
           boxShadow: 12,
-          paddingLeft: "12%",
+          paddingLeft: "7%",
+          width: "60%",
+          marginLeft: "20%",
         }}
       >
         <form onSubmit={formik.handleSubmit}>
           <Box
-            sx={{ float: "left", width: "50%", flexGrow: 1, mt: "2rem" }}
+            sx={{ float: "left", width: "40%", flexGrow: 1, mt: "2rem" }}
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -211,7 +211,7 @@ export default function EditFood() {
               </Grid>
               <Grid item xs={12}>
                 <Controls.TextArea
-                  width="24.5rem"
+                  width="85%"
                   row={2}
                   maxRows={4}
                   multiline
@@ -235,12 +235,7 @@ export default function EditFood() {
               </Grid>
 
               <Box>
-                <Stack
-                  width="200px"
-                  marginTop={"10rem"}
-                  ml={"18rem"}
-                  mb={"2rem"}
-                >
+                <Stack width="200px" marginTop={"10%"} ml={"9rem"} mb={"2rem"}>
                   <ButtonCustomize
                     variant="contained"
                     type="submit"
@@ -250,7 +245,7 @@ export default function EditFood() {
               </Box>
             </Grid>
           </Box>
-          <Box sx={{ float: "left", width: "40%", mt: "2rem", ml: "5rem" }}>
+          <Box sx={{ float: "left", width: "60%", mt: "2rem", pl: "20%" }}>
             <label htmlFor="contained-button-file">
               <Input
                 accept="image/*"
@@ -263,7 +258,7 @@ export default function EditFood() {
                 variant="contained"
                 component="span"
                 sx={{
-                  marginLeft: "20%",
+                  marginLeft: "21%",
                 }}
               >
                 Tải lên...
@@ -291,6 +286,6 @@ export default function EditFood() {
           </Box>
         </form>
       </Box>
-    </Paper>
+    </Box>
   );
 }

@@ -8,12 +8,6 @@ import AccountPopover from "./../topbar/AccountPopover";
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 const navConfigManager = [
-  // {
-  //   title: "Trang Chủ",
-  //   path: "/dashboard/admin/app",
-  //   icon: getIcon("eva:pie-chart-2-fill"),
-  //   // component: Home
-  // },
   {
     // title: "Sản phẩm",
     // icon: getIcon("tabler:building-warehouse"),
@@ -44,38 +38,11 @@ const navConfigAdmin = [
     icon: getIcon("eva:pie-chart-2-fill"),
     // component: Home
   },
-  // {
-  //   title: "Sản phẩm",
-  //   icon: getIcon("tabler:building-warehouse"),
-  //   children: [
-  //     // {
-  //     //   title: "Thức ăn",
-  //     //   path: "/dashboard/admin/food",
-  //     //   icon: getIcon("ep:food"),
-  //     // },
-  //     {
-  //       title: "Nhóm thức ăn",
-  //       path: "/dashboard/admin/foodGroup",
-  //       icon: getIcon("clarity:blocks-group-line"),
-  //     },
-  //     {
-  //       title: "Gói ăn",
-  //       path: "/dashboard/admin/package",
-  //       icon: getIcon("eva:shopping-bag-fill"),
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "Gói ăn",
-  //   path: "/dashboard/admin/package",
-  //   icon: getIcon("eva:shopping-bag-fill"),
-  // },
-  // {
-  //   title: "Người Dùng",
-  //   path: "/dashboard/admin/users",
-  //   icon: getIcon("eva:people-fill"),
-  // },
-
+  {
+    title: "Đơn hàng",
+    path: "/dashboard/admin/adminorder",
+    icon: getIcon("eos-icons:subscription-management"),
+  },
   {
     title: "Tài Khoản",
     icon: getIcon("bxs:user-detail"),
@@ -84,11 +51,6 @@ const navConfigAdmin = [
         title: "Khách hàng",
         path: "/dashboard/admin/userAccount",
         icon: getIcon("eva:people-fill"),
-      },
-      {
-        title: "Bếp",
-        path: "/dashboard/admin/kitchenAccount",
-        icon: getIcon("mdi:chef-hat"),
       },
       //admin
       {
@@ -106,17 +68,10 @@ const navConfigAdmin = [
     ],
   },
 
-
   {
     title: "Người giao hàng",
-    // path: "/dashboard/admin/adminshipper",
     path: "/dashboard/admin/shipperAccount",
     icon: getIcon("carbon:delivery"),
-  },
-  {
-    title: "Yêu cầu shipper",
-    path: "/dashboard/admin/request",
-    icon: getIcon("fluent-mdl2:feedback-request-solid"),
   },
 
   {
@@ -124,14 +79,9 @@ const navConfigAdmin = [
     path: "/dashboard/admin/station",
     icon: getIcon("carbon:location-company"),
   },
-  {
-    title: "Đơn hàng",
-    path: "/dashboard/admin/adminorder",
-    icon: getIcon("eos-icons:subscription-management"),
-  },
+
   {
     title: "Quản lí bếp",
-    // path: "/dashboard/admin/kitchen",
     path: "/dashboard/admin/kitchenAccount",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
@@ -140,26 +90,6 @@ const navConfigAdmin = [
     path: "/dashboard/admin/adminshipper",
     icon: getIcon("carbon:delivery"),
   },
-  {
-    title: "Yêu cầu shipper",
-    path: "/dashboard/admin/request",
-    icon: getIcon("fluent-mdl2:feedback-request-solid"),
-  },
-
-
-  // // {
-  //   title: "Admin quản lí Người giao hàng",
-  //   path: "/dashboard/admin/adminshipper",
-  //   icon: getIcon("carbon:delivery"),
-  // },
-  //=========================================================
-  // {
-  //   title: "Xem đánh giá bếp",
-  //   path: "/dashboard/admin/adminviewfeedback",
-  //   icon: getIcon("teenyicons:star-circle-outline"),
-  // },
-
-  //===================================
 ];
 
 const navConfigKichen = [
@@ -236,12 +166,6 @@ const navConfig = [
     icon: getIcon("carbon:location-company"),
   },
 
-  // {
-  //   title: "Admin quản lí đơn hàng",
-  //   path: "/dashboard/admin/adminorder",
-  //   icon: getIcon("icon-park-outline:transaction-order"),
-  // },
-
   {
     title: "Admin quản lí đơn hàng",
     path: "/dashboard/admin/adminorder",
@@ -276,23 +200,6 @@ const navConfig = [
     path: "/dashboard/kitchen/kitcheviewnorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
-
-  //=========================================================
-  // {
-  //   title: "Bếp xem bếp",
-  //   path: "/dashboard/kitchen/kitchen",
-  //   icon: getIcon("mdi:card-account-details-star-outline"),
-  // },
-  // {
-  //   title: "Bếp xem thông tin bếp",
-  //   path: "/dashboard/kitchen/kitchenprofile",
-  //   icon: getIcon("mdi:card-account-details-star-outline"),
-  // },
-  // {
-  //   title: "Bếp quản lí Người giao hàng",
-  //   path: "/dashboard/kitchen/kitchenshipper",
-  //   icon: getIcon("carbon:delivery"),
-  // },
 ];
 const exportedObject = {
   navConfig,

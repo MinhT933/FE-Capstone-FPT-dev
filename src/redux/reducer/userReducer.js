@@ -62,9 +62,12 @@ const initialState = {
   listOderByDate: [],
   listGroupFoodByStatus: [],
   listShipperActive: [],
-  listPrepareFood: [],
+  
   shipPerOfKitchen: [],
   listSlots: [],
+
+  listDelivery: [],
+  listFoodPrepare: [],
 };
 
 // const initialStateAuthen = admin
@@ -152,6 +155,17 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.profileKitchen = payload;
       break;
     //=====================================================
+
+    case PathAction.GET_LIST_DELIVERY:
+      state.listDelivery = payload;
+      // console.log(payload);
+      break;
+
+    case PathAction.GET_LIST_PREPARE_ORDER_BY_DATE:
+      state.listFoodPrepare = payload;
+      // console.log(payload);
+      break;
+
     case PathAction.GET_FOOD:
       state.food = payload;
       break;

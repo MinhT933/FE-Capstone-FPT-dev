@@ -45,8 +45,8 @@ import jwt_decode from "jwt-decode";
 
 const TABLE_HEAD = [
   // { id: "", label: "" },
-  { id: "id", label: "Tên món", alignRight: false },
-  { id: "name", label: "Số lượng", alignRight: false },
+  { id: "nameFood", label: "Tên món", alignRight: false },
+  { id: "quantity", label: "Số lượng", alignRight: false },
   { id: "" },
 ];
 
@@ -79,7 +79,7 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_kitchen) =>
-        _kitchen.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _kitchen.nameFood.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -110,7 +110,7 @@ export default function ListBreakfast() {
 
 
   const station = useSelector((state) => {
-    return state.userReducer.listPrepareFood;
+    return state.userReducer.listFoodPrepare;
   });
 
 
@@ -131,7 +131,7 @@ export default function ListBreakfast() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("nameFood");
 
   const [filterName, setFilterName] = useState("");
 
@@ -145,18 +145,18 @@ export default function ListBreakfast() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = KITCHENORDERLIST.map((n) => n.name);
+      const newSelecteds = KITCHENORDERLIST.map((n) => n.nameFood);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, nameFood) => {
+    const selectedIndex = selected.indexOf(nameFood);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, nameFood);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -235,12 +235,6 @@ export default function ListBreakfast() {
             </Grid>
           </Paper>
 
-          {/* <MealListToolBar
-                        numSelected={selected.length}
-                        filterName={filterName}
-                        onFilterName={handleFilterByName}
-                    /> */}
-
           <TableContainer sx={{ minWidth: 390, width: 390 }}>
             <Table>
               <UserListHead
@@ -256,20 +250,20 @@ export default function ListBreakfast() {
                 {filteredKitchen
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const { id, name } = row;
-                    const isItemSelected = selected.indexOf(id) !== -1;
+                    const { nameFood, quantity, flag } = row;
+                    const isItemSelected = selected.indexOf(nameFood) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={id}
+                        key={nameFood}
                         tabIndex={-1}
-                        role="checkbox"
-                        selected={isItemSelected}
+                        // role="checkbox"
+                        // selected={isItemSelected}
                         aria-checked={isItemSelected}
                       >
-                        <TableCell align="left">{id}</TableCell>
-                        <TableCell align="left">{name}</TableCell>
+                        <TableCell align="left">{nameFood}</TableCell>
+                        <TableCell align="left">{quantity}</TableCell>
                       </TableRow>
                     );
                   })}

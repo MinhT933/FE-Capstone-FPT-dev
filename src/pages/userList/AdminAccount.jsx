@@ -82,7 +82,9 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_stations) =>
-        _stations.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _stations.profile.fullName
+          ?.toLowerCase()
+          .indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -95,9 +97,6 @@ export default function AdminAccount() {
     { id: "ban", title: "Bị cấm" },
     { id: "All", title: "Tất cả" },
   ];
-
-
-
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
@@ -176,7 +175,6 @@ export default function AdminAccount() {
     }, []);
   };
 
-
   const station = useSelector((state) => {
     return state.userReducer.accountAdmin;
   });
@@ -252,15 +250,13 @@ export default function AdminAccount() {
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h4" gutterBottom>
-
-          </Typography>
+          <Typography variant="h4" gutterBottom></Typography>
           {decoded.role === "admin" && (
             <ButtonCustomize
               variant="contained"
               component={RouterLink}
               to="/dashboard/admin/newadmin"
-              nameButton="Thêm"
+              nameButton="Thêm Quản trị viên"
             />
           )}
         </Stack>
@@ -317,9 +313,7 @@ export default function AdminAccount() {
                           </TableCell>
 
                           {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">
-                            {row.profile.fullName}
-                          </TableCell>
+                          <TableCell align="left">{profile.fullName}</TableCell>
 
                           {/* <TableCell component="th" scope="row" padding="none">
                                                         <Stack
@@ -377,12 +371,10 @@ export default function AdminAccount() {
                               </Button1>
                             )}
                           </TableCell>
-
                         </TableRow>
                       );
                     })}
                 </TableBody>
-
                 {isStationNotFound && (
                   <TableBody>
                     <TableRow>
