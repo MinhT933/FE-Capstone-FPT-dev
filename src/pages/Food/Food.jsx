@@ -31,7 +31,10 @@ import {
 // mock
 // import food from "../../_mock/foodsample";
 
-import { callAPIgetListFood } from "../../redux/action/acction";
+import {
+  callAPIgetListCategory,
+  callAPIgetListFood,
+} from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Iconify from "../../components/hook-form/Iconify";
@@ -138,12 +141,12 @@ export default function Food() {
   const getOptions = () => [
     { id: "active", title: "Active" },
     { id: "inActive", title: "InActive" },
-
     { id: "All", title: "Tất cả" },
   ];
   React.useEffect(() => {
     const callAPI = async () => {
       await dispatch(callAPIgetListFood(token));
+      await dispatch(callAPIgetListCategory(token));
     };
     callAPI();
   }, [dispatch]);
@@ -165,6 +168,7 @@ export default function Food() {
   const food = useSelector((state) => {
     return state.userReducer.listFood;
   });
+
   //========================================================
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -225,7 +229,7 @@ export default function Food() {
 
   return (
     <Page title="Thức ăn">
-      <Container>
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
@@ -253,9 +257,8 @@ export default function Food() {
             onFilterName={handleFilterByName}
             options={getOptions()}
           />
-
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1400 }}>
+            <TableContainer>
               <Table>
                 <UserListHead
                   order={order}

@@ -40,6 +40,7 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { Avatar } from "@mui/joy";
+import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolbar";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -263,7 +264,7 @@ export default function KitchenAccount() {
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <KitchenListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}

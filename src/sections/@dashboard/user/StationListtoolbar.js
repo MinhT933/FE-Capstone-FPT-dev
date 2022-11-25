@@ -56,7 +56,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-KitchenListToolbar.propTypes = {
+StationListtoolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
@@ -66,7 +66,7 @@ const token = localStorage.getItem("token");
 if (token === "null") {
 }
 
-export default function KitchenListToolbar({
+export default function StationListtoolbar({
   numSelected,
   filterName,
   onFilterName,
@@ -76,10 +76,12 @@ export default function KitchenListToolbar({
   const dispatch = useDispatch();
   const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
+    console.log(event.target.value);
     setHaha(event.target.value === "All" ? "" : event.target.value);
 
+    //Admin
     dispatch(
-      await callAPIgetAccountKitchenByStatus(
+      await callAPIgetListStationByStatus(
         token,
         event.target.value === "All" ? "" : event.target.value
       )

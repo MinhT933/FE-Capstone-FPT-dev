@@ -66,6 +66,7 @@ const initialState = {
   shipPerOfKitchen: [],
   listSlots: [],
   listStatiobyidkitchen: [],
+  listShipperActiveAccount: [],
   // stationOfkichen: [],
 
   listDelivery: [],
@@ -197,9 +198,12 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_SHIPPER_ACTIVE:
       state.listShipperActive = payload;
-      state.valueTag = payload.listShipperActive.map(
+      state.valueTag = payload.listShipperActive?.map(
         (item) => item.account.profile.fullName
       );
+      break;
+    case PathAction.GET_SHIPPER_ACTIVE_ACCOUNT:
+      state.accountShipper = payload;
       break;
     case PathAction.GET_PROFILE:
       state.profiles = payload;

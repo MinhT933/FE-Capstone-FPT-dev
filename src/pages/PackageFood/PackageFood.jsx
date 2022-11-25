@@ -222,7 +222,7 @@ export default function PackageFood() {
   const isUserNotFound = filteredUsers.length === 0;
   return (
     <Page title="Gói thức ăn">
-      <Container>
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
@@ -252,7 +252,7 @@ export default function PackageFood() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 2000 }}>
+            <TableContainer>
               <Table>
                 <UserListHead
                   order={order}

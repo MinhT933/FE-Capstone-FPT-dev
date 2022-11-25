@@ -255,8 +255,8 @@ export default function ListFoodGroup() {
     setValueId(id);
   };
   return (
-    <Page title="Nhóm thức ăn" sx={{ maxWith: false }}>
-      <Container>
+    <Page title="Nhóm thức ăn">
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
@@ -289,7 +289,7 @@ export default function ListFoodGroup() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: "80rem" }}>
+            <TableContainer>
               <Table>
                 <UserListHead
                   order={order}
