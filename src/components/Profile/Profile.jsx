@@ -114,7 +114,7 @@ export default function Profile() {
       await dispatch(callAPIProfile(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const profiles = useSelector((state) => {
     return state.userReducer.profiles;

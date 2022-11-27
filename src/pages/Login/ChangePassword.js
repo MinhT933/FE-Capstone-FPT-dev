@@ -20,16 +20,16 @@ import API from "../../Axios/API/API";
 import { useNavigate } from "react-router-dom";
 
 export default function ChangePassword() {
-  const [values, setValues] = useState({
+  const [pass, setPass] = useState({
     newPass: "",
     confirmPass: "",
     showPass: false,
   });
 
   const handlePassVisibilty = () => {
-    setValues({
-      ...values,
-      showPass: !values.showPass,
+    setPass({
+      ...pass,
+      showPass: !pass.showPass,
     });
   };
   const Navigate = useNavigate();
@@ -43,22 +43,18 @@ export default function ChangePassword() {
     // validationSchema: schema,
     validateOnMount: true,
     validateOnBlur: true,
-    //khởi tạo kho để bỏ data vào
     // initialValues: {
-    //   name: "",
-    //   price: "",
-    //   description: "",
-    //   foodCategoryId: "",
-    //   image: null,
+    //   pass,
     // },
 
     //onSubmit ngay từ cái tên đầu nó dùng đẩy data xuống BE
     onSubmit: async (values) => {
+      console.log(values);
       try {
         const res = await API(
           "PUT",
           URL_API + "/accounts/forgotPassword",
-          values,
+          pass.newPass,
           token
         );
 
@@ -114,11 +110,12 @@ export default function ChangePassword() {
                 <Grid container direction="column" spacing={2}>
                   <Grid item>
                     <TextField
-                      type={values.showPass ? "text" : "newPass"}
+                      type={pass.showPass ? "text" : "newPass"}
                       fullWidth
                       label="Nhập mật khẩu mới"
                       placeholder="Mật khẩu"
                       variant="outlined"
+                      value={pass.newPass}
                       required
                       InputProps={{
                         endAdornment: (
@@ -128,7 +125,7 @@ export default function ChangePassword() {
                               aria-label="toggle password"
                               edge="end"
                             >
-                              {values.showPass ? (
+                              {pass.showPass ? (
                                 <VisibilityOffIcon />
                               ) : (
                                 <VisibilityIcon />
@@ -142,11 +139,12 @@ export default function ChangePassword() {
 
                   <Grid item>
                     <TextField
-                      type={values.showPass ? "text" : "confirmPass"}
+                      type={pass.showPass ? "text" : "confirmPass"}
                       fullWidth
                       label="Nhập lại mật khẩu"
                       placeholder="Mật khẩu"
                       variant="outlined"
+                      // value={pass.confirmPass}
                       required
                       InputProps={{
                         endAdornment: (
@@ -156,7 +154,7 @@ export default function ChangePassword() {
                               aria-label="toggle password"
                               edge="end"
                             >
-                              {values.showPass ? (
+                              {pass.showPass ? (
                                 <VisibilityOffIcon />
                               ) : (
                                 <VisibilityIcon />
