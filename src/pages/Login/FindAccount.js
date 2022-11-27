@@ -18,6 +18,7 @@ import { useUserAuth } from "./UserAuthContextProvider";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { checkphone } from "../../redux/action/acction";
+import VerifyPhone from "./VerifyPhone";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#5dc9bc"),
@@ -49,18 +50,23 @@ export default function FindAccount() {
   const [flag, setFlag] = useState(false);
   const [otp, setOtp] = useState("");
   const [result, setResult] = useState("");
-
+  const [phoneNumber, setPhoneNumber] = useState("");
   const { setUpRecaptha } = useUserAuth();
   const navigate = useNavigate();
-
+  console.log("sdt" + phoneNumber);
   const getOtp = async (e) => {
     e.preventDefault();
-    console.log(number);
+    const numberArr = [...number];
+    let temp = numberArr.shift();
+    let a = numberArr.join("");
+    console.log(a);
+    const phoneNumber = "+84" + a;
+    setPhoneNumber(phoneNumber);
     setError("");
-    if (number === "" || number === undefined)
+    if (phoneNumber === "" || phoneNumber === undefined)
       return setError("Please enter a valid phone number!");
     try {
-      const response = await setUpRecaptha(number);
+      const response = await setUpRecaptha(phoneNumber);
       const res = API("POST", URL_API + "/auths/checkPhone");
       console.log(response);
       if (response) {
@@ -79,7 +85,7 @@ export default function FindAccount() {
     if (otp === "" || otp === null) return;
     try {
       const res = await result.confirm(otp);
-      console.log(res);
+      // console.log(res);
       navigate("/changepassword");
     } catch (err) {
       setError(err.message);
@@ -196,7 +202,7 @@ export default function FindAccount() {
                           fullWidth
                           variant="contained"
                           sx={{ padding: "5%" }}
-                          onClick={checkphone(number)}
+                          onClick={() => checkphone(phoneNumber)}
                         >
                           Xác nhận
                         </ColorButton>

@@ -9,7 +9,9 @@ import {
   Stack,
   // Avatar,
   Paper,
+  Grid,
   Box,
+  Button,
   TableRow,
   TableBody,
   TableCell,
@@ -24,6 +26,8 @@ import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
+import { DataGrid } from "@mui/x-data-grid";
+import Iconify from "../../components/hook-form/Iconify";
 //callAPI
 import * as React from "react";
 import { useDispatch } from "react-redux";
@@ -48,6 +52,8 @@ import FormControl from "@mui/material/FormControl";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import KitchenListToolbar from "./../../sections/@dashboard/user/KitchenListToolbar";
 import * as moment from "moment";
+import PageHeader from "../../components/PageHeader";
+import Controls from "../../components/Control/Controls";
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
 // ko nhát thiết phải thêm table head ở dưới
@@ -64,6 +70,112 @@ const TABLE_HEAD = [
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
+
+const columns = [
+  // { field: "id", headerName: "ID", flex: 1 },
+
+  // <TableCell align="left">{food.name}</TableCell>
+  // <TableCell align="left">
+  //   {subscription.customer.account.phone}
+  // </TableCell>
+  // <TableCell align="left">{station.address}</TableCell>
+  // <TableCell align="left">{timeSlot.flag}</TableCell>
+  // <TableCell align="left">
+  //   {timeSlot.startTime}
+  // </TableCell>
+  // <TableCell align="left">{timeSlot.endTime}</TableCell>
+  {
+    field: "name", headerName: "Tên món", flex: 1,
+    renderCell: (param) => {
+      return param.row.food.name
+
+    }
+  },
+  {
+    field: "phone", headerName: "Điện thoại", flex: 1,
+    renderCell: (param) => {
+      return param.row.subscription.customer.account.phone
+
+    }
+  },
+  {
+    field: "station", headerName: "Điểm giao", flex: 3,
+    renderCell: (param) => {
+      return param.row.station.address
+
+    }
+  },
+  {
+    field: "timeSlot", headerName: "Buổi", flex: 1,
+    renderCell: (param) => {
+      return param.row.timeSlot.flag
+
+      // return (
+      //   <div>
+
+      //     {param.row.timeSlot.flag === "1" && (
+      //       <TableCell>Trưa</TableCell>
+      //     )}
+
+      //   </div>
+      // );
+
+    }
+  },
+  {
+    field: "startTime", headerName: "Bắt đầu giao", flex: 1,
+    renderCell: (param) => {
+      return param.row.timeSlot.startTime
+
+    }
+  },
+  {
+    field: "endTime", headerName: "Kết thúc giao", flex: 1,
+    renderCell: (param) => {
+      return param.row.timeSlot.endTime
+
+    }
+  },
+  {
+    field: "status", headerName: "Trạng thái", flex: 1.5,
+    renderCell: (param) => {
+      // return param.row.status
+      return (
+        <div>
+          {param.row.status === "progress" && (
+            <Label color="warning">Chờ giao hàng</Label>
+          )}
+
+          {param.row.status === "delivery" && (
+            <Label color="warning">Đang giao</Label>
+          )}
+
+          {param.row.status === "arrived" && (
+            <Label color="success">Đã đến</Label>
+          )}
+
+          {param.row.status === "done" && (
+            // <Alert severity="info">waiting</Alert>
+            <Label color="success">Hoàn thành</Label>
+          )}
+
+          {param.row.status === "pending" && (
+            // <Alert severity="info">waiting</Alert>
+            <Label color="error">Chưa thanh toán</Label>
+          )}
+
+          {param.row.status === "ready" && (
+            // <Alert severity="info">waiting</Alert>
+            <Label color="success">Đã thanh toán</Label>
+          )}
+        </div>
+      );
+
+    }
+
+
+  },
+]
 
 // ----------------------------------------------------------------------
 
@@ -119,9 +231,39 @@ const getOptions = () => [
   { id: "", title: "Tất cả" },
 ];
 
+
+
+const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
+
 export default function KitchenViewOrderList() {
   //callAPIKitchenGetListOrder========================================
   const dispatch = useDispatch();
+
+
+  const [valueStarTime, setValueStarTime] = React.useState(new Date());
+
+  const [select, setSelect] = useState("All");
+  // const [haha, setHaha] = useState("All");
+
+  const handleChange1 = async (event) => {
+    console.log(event.target.value)
+    setSelect(event.target.value === "All" ? "" : event.target.value);
+
+    if (date) {
+      dispatch(
+        await callAPIGetListOderByDay(
+          token,
+          date,
+          event.target.value === "All" ? "" : event.target.value
+        )
+      );
+    }
+  };
+
+  const handleChange = (event) => {
+    setMeal(event.target.value);
+  };
 
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -135,6 +277,15 @@ export default function KitchenViewOrderList() {
     // return <Navigate to="/" replace />;
     Navigate("/");
   }
+
+  function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+
 
   const handleDelete = (id) => {
     API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
@@ -201,6 +352,7 @@ export default function KitchenViewOrderList() {
     };
     callAPI();
   }, [dispatch, date, token]);
+
   const orderlist = useSelector((state) => {
     return state.userReducer.listOderByDate;
   });
@@ -216,11 +368,19 @@ export default function KitchenViewOrderList() {
   const isKitchenNotFound = filteredKitchen.length === 0;
   const [meal, setMeal] = React.useState("");
 
-  const handleChange = (event) => {
-    setMeal(event.target.value);
-  };
+
+
+  const Button1 = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC33"),
+    backgroundColor: "#FFCC33",
+
+    // display: "center"
+  }));
+
+  const row = []
 
   return (
+
     <Page title="Kitchen">
       <Container>
         <Stack

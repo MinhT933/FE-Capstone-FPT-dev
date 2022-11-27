@@ -125,11 +125,11 @@ const navConfigAdmin = [
     path: "/dashboard/admin/kitchenAccount",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
-  {
-    title: "Người giao hàng",
-    path: "/dashboard/admin/adminshipper",
-    icon: getIcon("carbon:delivery"),
-  },
+  // {
+  //   title: "Người giao hàng",
+  //   path: "/dashboard/admin/adminshipper",
+  //   icon: getIcon("carbon:delivery"),
+  // },
 ];
 
 const navConfigKichen = [

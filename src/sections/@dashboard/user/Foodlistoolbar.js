@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import * as React from "react";
 // material
 import { styled } from "@mui/material/styles";
 import {
@@ -15,10 +16,16 @@ import Iconify from "../../../components/hook-form/Iconify";
 import { Controller } from "react-hook-form";
 import Controls from "./../../../components/Control/Controls";
 
-import { callAPIgetListFoodByStatus } from "../../../redux/action/acction";
+import {
+  callAPIgetListCategory,
+  callAPIgetListFoodByStatus,
+  callAPIgetListFoodfilterCate,
+} from "../../../redux/action/acction";
 
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import { Grid } from "@mui/material";
+import { useSelector } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -59,12 +66,13 @@ export default function Foodlistoolbar({
   filterName,
   onFilterName,
   options,
+  optionsCate,
   date,
 }) {
+  const [id, setID] = useState("");
   const dispatch = useDispatch();
   const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
-    console.log(event.target.value);
     setHaha(event.target.value === "All" ? "" : event.target.value);
 
     dispatch(
@@ -74,6 +82,33 @@ export default function Foodlistoolbar({
       )
     );
   };
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetListCategory(token));
+    };
+    callAPI();
+  }, [dispatch]);
+
+  const category = useSelector((state) => {
+    return state.userReducer.listCategory;
+  });
+
+  console.log(haha);
+
+  const OptionCate = () => {
+    //tạo mảng rỗng để chứa data ở đây là name và id của categoriesFood
+    //hình dung nó giống nhà kho vậy á
+    // sau này trước khi muốn gọi cái gì đó phải tạo 1 mảng rỗng để bỏ vào
+    const item = [];
+    // vòng food này để đẩy data từ categoriesFood vào trong items ( vì nó có nhiều object) nên phải làm vậy
+    for (var i = 0; i < category.length; i++) {
+      item.push({ id: category[i].id, title: category[i].name });
+    }
+
+    return item;
+    //trả về item đã có data muốn biết thì console.log ra mà xem
+  };
+
   return (
     <RootStyle
       sx={{
@@ -102,14 +137,32 @@ export default function Foodlistoolbar({
               </InputAdornment>
             }
           />
-          <Controls.Select
-            label="Trạng thái"
-            width="10rem"
-            marginRight="50%  "
-            options={options}
-            onChange={handleChange}
-            value={haha}
-          />
+
+          <Grid
+            container
+            spacing={2}
+            sx={{ marginLeft: "5%", marginTop: "0.1rem" }}
+          >
+            <Controls.Select
+              label="Trạng thái"
+              width="10rem"
+              // marginRight="25%"
+              options={options}
+              onChange={handleChange}
+              value={haha}
+            />
+            <Controls.Select
+              label="Loại thức ăn"
+              width="10rem"
+              options={OptionCate()}
+              onChange={async (e) => {
+                const a = category.find((c) => c.id === e.target.value);
+                setID(a.id);
+                await dispatch(callAPIgetListFoodfilterCate(token, id, haha));
+              }}
+              value={id}
+            />
+          </Grid>
         </>
       )}
 

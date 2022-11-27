@@ -11,6 +11,7 @@ import DatePicker from "../Control/DatePicker";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch } from "react-redux";
+import * as moment from "moment";
 import {
   callAPIgetListKitchen,
   callAPIgetListStationbyidKitchen,
@@ -184,11 +185,13 @@ export default function Tripdelivery() {
   console.log(resultList);
 
   const handleClickFind = async () => {
+    const date = moment(valueStarTime).format("YYYY-MM-DD ");
     dispatch(
       await callAPIgetOrdertoCreateDeliveryTrip(
         token,
         slot,
-        convert(valueStarTime.$d),
+        // convert(valueStarTime.$d),
+        date,
         stationID,
         idkitchen
       )
