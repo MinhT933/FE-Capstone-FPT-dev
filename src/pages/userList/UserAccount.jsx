@@ -39,6 +39,7 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { Avatar } from "@mui/joy";
+import UserAccountListToolbar from "../../sections/@dashboard/user/UserAccountListToolbar";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -244,7 +245,7 @@ export default function UserAccount() {
     <Page title="Khách hàng">
       <Container>
         <Card>
-          <UserListToolbar
+          <UserAccountListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}

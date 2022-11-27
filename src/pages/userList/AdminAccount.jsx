@@ -40,6 +40,7 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { Avatar } from "@mui/joy";
+import AdminAccountListToolbar from "../../sections/@dashboard/user/AdminAccountListToolbar";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -262,7 +263,7 @@ export default function AdminAccount() {
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <AdminAccountListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}

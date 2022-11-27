@@ -63,6 +63,37 @@ export const callAPIgetListFoodByStatus = (token, status) => {
   };
 };
 
+export const callAPIgetListFoodfilterCate = (token, id, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/foods/byCatefory_filter?categoryId=${id}&status${status}`,
+        null,
+        token
+      );
+
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_FOOD,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_FOOD,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: `Không tìm thấy data`,
+        type: "ERROR",
+      });
+    }
+  };
+};
+
 export const callAPIgetListFoodActive = (token) => {
   return async (dispatch) => {
     try {
@@ -158,6 +189,12 @@ export const callAPIGetListPack = async (token, status) => {
       );
       // console.log(res.data.result);
     } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PACKAGE_FOOD,
+          payload: [],
+        })
+      );
       CustomizedToast({
         message: "Không tìm thấy gói ăn",
         type: "ERROR",
@@ -240,7 +277,20 @@ export const callAPIgetListStationByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_STATIONS,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: "Không tìm thấy gói ăn",
+        type: "ERROR",
+      });
+    }
+
   };
 };
 
@@ -288,7 +338,20 @@ export const getAPIgetGroupFoodByStatus = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_GROUPFOOD_BY_STATUS,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: "Không tìm thấy gói ăn",
+        type: "ERROR",
+      });
+    }
+
   };
 };
 
@@ -309,6 +372,12 @@ export const callAPIgetGroupFoodByStatus = (token, status) => {
       );
 
     } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_GROUP_FOOD,
+          payload: [],
+        })
+      );
       CustomizedToast({
         message: "Không tìm thấy nhóm thức",
         type: "ERROR",
@@ -455,13 +524,12 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
         "GET",
         URL_API +
 
-        "/orders/byKitchen?stationId=" +
-        stationID +
-        "&time_slotId=" +
-        slot +
-        "&deliveryDate=" +
-        valueStarTime,
-
+          "/orders/byKitchen?stationId=" +
+          stationID +
+          "&time_slotId=" +
+          slot +
+          "&deliveryDate=" +
+          valueStarTime,
 
 
         null,
@@ -990,7 +1058,7 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         null,
         token
       );
-      console.log(res)
+
       dispatch(
         createAction({
           type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,
