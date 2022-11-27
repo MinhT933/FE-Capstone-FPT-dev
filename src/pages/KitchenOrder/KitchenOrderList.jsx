@@ -62,24 +62,42 @@ export default function KitchenOrderList() {
     // return <Navigate to="/" replace />;
     Navigate("/");
   }
+
+  function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+
+  const [value, setValue] = React.useState(new Date());
   //callAPIKitchenGetListOrder========================================
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIKitchenPrepareOrder(token));
+      await dispatch(callAPIKitchenPrepareOrder(token, convert(value.$d)));
     };
     callAPI();
-  }, [dispatch]);
+  }, [value]);
 
 
   const kitchen = useSelector((state) => {
     return state.userReducer.listFoodPrepare;
   });
-
+  console.log(kitchen)
   //callAPIKitchenGetListOrder========================================
 
-  const [value, setValue] = React.useState(new Date());
+
   // const [spacing, setSpacing] = React.useState(2);
+  let kitchenMorning = [];
+  let kitchenLunch = [];
+  let kitchenDinner = [];
+
+  kitchenMorning = kitchen.filter(x => x.flag === 0)
+  kitchenLunch = kitchen.filter(x => x.flag === 1)
+  kitchenDinner = kitchen.filter(x => x.flag === 2)
+
 
   return (
     <Page title="Kitchen">
@@ -144,14 +162,15 @@ export default function KitchenOrderList() {
         </Stack>
 
         <Grid container spacing={1}>
+
           <Grid>
-            <ListBreakfast />
+            <ListBreakfast kitchenMorning={kitchenMorning} />
           </Grid>
           <Grid>
-            <ListLunch />
+            <ListLunch kitchenLunch={kitchenLunch} />
           </Grid>
           <Grid>
-            <ListDinner />
+            <ListDinner kitchenDinner={kitchenDinner} />
           </Grid>
         </Grid>
       </Container>

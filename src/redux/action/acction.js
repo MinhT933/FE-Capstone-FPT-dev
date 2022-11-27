@@ -42,30 +42,6 @@ export const callAPIgetListFood = (token) => {
     } catch (err) {}
   };
 };
-export const callAPIgetListFoodfilterCate = (token, idcate, status) => {
-  return async (dispatch) => {
-    try {
-      const res = await API(
-        "GET",
-        URL_API +
-          `/foods/byCatefory_filter?categoryId=${idcate}&status=${status}`,
-        null,
-        token
-      );
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_FOOD,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {
-      CustomizedToast({
-        message: `${err.response.data.message}`,
-        type: "ERROR",
-      });
-    }
-  };
-};
 
 export const callAPIgetListFoodByStatus = (token, status) => {
   return async (dispatch) => {
@@ -182,12 +158,6 @@ export const callAPIGetListPack = async (token, status) => {
       );
       // console.log(res.data.result);
     } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_PACKAGE_FOOD,
-          payload: [],
-        })
-      );
       CustomizedToast({
         message: "Không tìm thấy gói ăn",
         type: "ERROR",
@@ -270,16 +240,7 @@ export const callAPIgetListStationByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      createAction({
-        type: PathAction.GET_LIST_STATIONS,
-        payload: [],
-      });
-      CustomizedToast({
-        message: "Không tìm thấy dữ liệu",
-        type: "ERROR",
-      });
-    }
+    } catch (err) {}
   };
 };
 
@@ -491,7 +452,12 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
       const res = await API(
         "GET",
         URL_API +
-          `/orders/byKitchen?stationId=${stationID}&kitchenId=${kitchenID}&time_slotId=${slot}&deliveryDate=${valueStarTime}`,
+          "/orders/byKitchen?stationId=" +
+          stationID +
+          "&time_slotId=" +
+          slot +
+          "&deliveryDate=" +
+          valueStarTime,
 
         null,
         token
@@ -851,14 +817,7 @@ export const callAPIgetAccountCustomerByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_ACCOUNT_CUSTOMER,
-          payload: [],
-        })
-      );
-    }
+    } catch (err) {}
   };
 };
 
@@ -896,18 +855,7 @@ export const callAPIgetAccountAdminByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_ACCOUNT_ADMIN,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: "Không tìm thấy dữ liệu",
-        type: "ERROR",
-      });
-    }
+    } catch (err) {}
   };
 };
 
@@ -945,16 +893,7 @@ export const callAPIgetAccountManagerByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      createAction({
-        type: PathAction.GET_ACCOUNT_MANAGER,
-        payload: [],
-      });
-      CustomizedToast({
-        message: "Không tìm thấy dữ liệu",
-        type: "ERROR",
-      });
-    }
+    } catch (err) {}
   };
 };
 
@@ -982,29 +921,20 @@ export const callAPIgetAccountShipperByStatus = (token, status) => {
     try {
       const res = await API(
         "GET",
+
         URL_API + `/accounts?role=shipper&status=${status}`,
+
         null,
         token
       );
       dispatch(
         createAction({
-          type: PathAction.GET_SHIPPER_ACTIVE_ACCOUNT,
+          type: PathAction.GET_SHIPPER_ACTIVE,
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_SHIPPER_ACTIVE_ACCOUNT,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: "Không tim thấy data",
-        type: "ERROR",
-      });
-      console.log("sai nha");
-    }
+      console.log(res.data.result);
+    } catch (err) {}
   };
 };
 
@@ -1042,18 +972,7 @@ export const callAPIgetAccountKitchenByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_ACCOUNT_KITCHEN,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: "Không tìm thấy  dữ liệu",
-        type: "ERROR",
-      });
-    }
+    } catch (err) {}
   };
 };
 
@@ -1066,6 +985,7 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         null,
         token
       );
+      console.log(res);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,

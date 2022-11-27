@@ -108,7 +108,7 @@ export default function Foodlistoolbar({
     return item;
     //trả về item đã có data muốn biết thì console.log ra mà xem
   };
-  const handleChangeCategory = async (event) => {};
+
   return (
     <RootStyle
       sx={{
