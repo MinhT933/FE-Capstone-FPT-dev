@@ -96,8 +96,6 @@ export default function AdminOrderList() {
   ];
 
 
-
-
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -133,7 +131,7 @@ export default function AdminOrderList() {
           dispatch(callAPIAdminGetListOrder(token));
 
           CustomizedToast({
-            message: `Đã Cập nhập trạng thái ${name}`,
+            message: `Đã cập nhập trạng thái ${name}`,
             type: "SUCCESS",
           });
 
@@ -223,6 +221,7 @@ export default function AdminOrderList() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -286,6 +285,19 @@ export default function AdminOrderList() {
                             >
                               {row.packages.status}
                             </Label>
+                          </TableCell>
+
+                          <TableCell align="left">
+                            <div>
+                              {status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Đóng cửa</Label>
+                              )}
+                              {status === "active" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                            </div>
                           </TableCell>
 
                           <TableCell align="center">

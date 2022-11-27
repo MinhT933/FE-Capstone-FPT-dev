@@ -113,14 +113,14 @@ export default function KitchenListToolbar({
               </InputAdornment>
             }
           />
-          <Controls.Select
+          {/* <Controls.Select
             label="Trạng thái"
             width="10rem"
             marginRight="50%  "
             options={options}
             onChange={handleChange}
             value={haha}
-          />
+          /> */}
         </>
       )}
 

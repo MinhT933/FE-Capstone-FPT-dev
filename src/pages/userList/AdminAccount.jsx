@@ -243,7 +243,7 @@ export default function AdminAccount() {
   }));
 
   return (
-    <Page title="Admin">
+    <Page title="Quản trị viên">
       <Container>
         <Stack
           direction="row"

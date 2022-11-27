@@ -243,7 +243,7 @@ export default function ManagerAccount() {
   }));
 
   return (
-    <Page title="Manager">
+    <Page title="Quản lí">
       <Container>
         <Stack
           direction="row"

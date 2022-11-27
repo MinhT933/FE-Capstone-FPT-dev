@@ -72,6 +72,7 @@ export default function KitchenOrderList() {
 
 
   const [value, setValue] = React.useState(new Date());
+
   //callAPIKitchenGetListOrder========================================
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -101,79 +102,85 @@ export default function KitchenOrderList() {
 
   return (
     <Page title="Chuẩn bị món">
-      <Container maxWidth={false}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={3}
-        >
-          <Paper
-            sx={{
-              // justifyContent: "center",
-              background: "#FFCC33",
-              color: "black",
-              height: "50%",
-              width: "40%",
-
-              // alignItems:"center",
-              // justifyContent:"center",
-              // direction: "column",
-              // marginLeft: "47%",
-            }}
+      <Paper
+        elevation={3}
+        sx={{
+          padding: "2%",
+          marginBottom: "10%",
+        }}>
+        <Container maxWidth={false}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={3}
           >
-            <Typography
-              variant="h3"
-              gutterBottom
+            <Paper
               sx={{
-                display: "flex",
-                marginLeft: "8%",
-                marginTop: "2%",
+                // justifyContent: "center",
+                background: "#FFCC33",
+                color: "black",
+                height: "50%",
+                width: "40%",
+                marginLeft: "30%"
+                // alignItems:"center",
+                // justifyContent:"center",
+                // direction: "column",
+                // marginLeft: "47%",
               }}
             >
-              Số lượng món cần nấu
-            </Typography>
-          </Paper>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-          sx={{ marginLeft: "1%" }}
-        >
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Chọn ngày"
-              value={value}
-              onChange={(newValue) => {
-                console.log(newValue)
-                setValue(newValue);
-              }}
-              inputFormat="DD-MM-YYYY"
-              renderInput={({ inputRef, inputProps, InputProps }) => (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <input ref={inputRef} {...inputProps} />
-                  {InputProps?.endAdornment}
-                </Box>
-              )}
-            />
-          </LocalizationProvider>
-        </Stack>
+              <Typography
+                variant="h3"
+                gutterBottom
+                sx={{
+                  display: "flex",
+                  marginLeft: "8%",
+                  marginTop: "2%",
+                }}
+              >
+                Số lượng món cần nấu
+              </Typography>
+            </Paper>
+          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={5}
+            sx={{ marginLeft: "1%" }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Chọn ngày"
+                value={value}
+                onChange={(newValue) => {
+                  console.log(newValue)
+                  setValue(newValue);
+                }}
+                inputFormat="DD-MM-YYYY"
+                renderInput={({ inputRef, inputProps, InputProps }) => (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <input ref={inputRef} {...inputProps} />
+                    {InputProps?.endAdornment}
+                  </Box>
+                )}
+              />
+            </LocalizationProvider>
+          </Stack>
 
-        <Grid container spacing={1}>
-
-          <Grid>
-            <ListBreakfast kitchenMorning={kitchenMorning} />
+          <Grid container spacing={1}>
+            <Grid>
+              <ListBreakfast kitchenMorning={kitchenMorning} />
+            </Grid>
+            <Grid>
+              <ListLunch kitchenLunch={kitchenLunch} />
+            </Grid>
+            <Grid>
+              <ListDinner kitchenDinner={kitchenDinner} />
+            </Grid>
           </Grid>
-          <Grid>
-            <ListLunch kitchenLunch={kitchenLunch} />
-          </Grid>
-          <Grid>
-            <ListDinner kitchenDinner={kitchenDinner} />
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </Paper>
     </Page>
   );
 }
