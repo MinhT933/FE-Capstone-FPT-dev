@@ -196,8 +196,8 @@ export default function ListBreakfast(props) {
   const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
-    <Page>
-      <Container sx={{ minWidth: 380, width: 380 }}>
+    <Page title="Chuẩn bị món">
+      <Container maxWidth={false} sx={{ minWidth: 380, width: 380 }}>
         {/* <PageHeader
                     title="SÁNG"
                     // icon={getIcon("line-md:moon-alt-to-sunny-outline-loop-transition")}
