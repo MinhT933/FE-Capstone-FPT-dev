@@ -155,10 +155,10 @@ export default function Foodlistoolbar({
               label="Loại thức ăn"
               width="10rem"
               options={OptionCate()}
-              onChange={(e) => {
+              onChange={async (e) => {
                 const a = category.find((c) => c.id === e.target.value);
                 setID(a.id);
-                dispatch(callAPIgetListFoodfilterCate(token, id, haha));
+                await dispatch(callAPIgetListFoodfilterCate(token, id, haha));
               }}
               value={id}
             />
