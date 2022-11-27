@@ -39,7 +39,7 @@ export const callAPIgetListFood = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -59,7 +59,7 @@ export const callAPIgetListFoodByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -110,7 +110,7 @@ export const callAPIgetListFoodActive = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -127,7 +127,7 @@ export const callAPIGetListPackage = (token) => {
         })
       );
       // console.log(res.data.result);
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -214,7 +214,7 @@ export const callAPIgetListCategory = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -228,7 +228,7 @@ export const callAPIgetListStation = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -277,6 +277,7 @@ export const callAPIgetListStationByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
+
     } catch (err) {
       dispatch(
         createAction({
@@ -289,6 +290,7 @@ export const callAPIgetListStationByStatus = (token, status) => {
         type: "ERROR",
       });
     }
+
   };
 };
 
@@ -302,7 +304,7 @@ export const callAPIgetShipperByID = (token, id) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -317,7 +319,7 @@ export const callAPIgetGroupFood = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -336,6 +338,7 @@ export const getAPIgetGroupFoodByStatus = (token) => {
           payload: res.data.result,
         })
       );
+
     } catch (err) {
       dispatch(
         createAction({
@@ -348,6 +351,7 @@ export const getAPIgetGroupFoodByStatus = (token) => {
         type: "ERROR",
       });
     }
+
   };
 };
 
@@ -366,6 +370,7 @@ export const callAPIgetGroupFoodByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
+
     } catch (err) {
       dispatch(
         createAction({
@@ -378,6 +383,7 @@ export const callAPIgetGroupFoodByStatus = (token, status) => {
         type: "ERROR",
       });
     }
+
   };
 };
 
@@ -391,7 +397,7 @@ export const callAPIProfile = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -410,7 +416,7 @@ export const callAPIgetFoodbyGroupFoodId = (id, token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 //---------------------------------------------------------------
@@ -424,7 +430,7 @@ export const callAPIgetTimeFrame = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 export const callAPIgetShipperOfKitchen = (token, id) => {
@@ -442,7 +448,7 @@ export const callAPIgetShipperOfKitchen = (token, id) => {
           payload: res.data.result.shippers,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -461,7 +467,7 @@ export const callAPIGetStationByKitchen = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -476,7 +482,7 @@ export const callAPIGetSlot = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -517,12 +523,14 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
       const res = await API(
         "GET",
         URL_API +
+
           "/orders/byKitchen?stationId=" +
           stationID +
           "&time_slotId=" +
           slot +
           "&deliveryDate=" +
           valueStarTime,
+
 
         null,
         token
@@ -534,7 +542,7 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 export const callAPIgetCatePackage = (token) => {
@@ -552,7 +560,7 @@ export const callAPIgetCatePackage = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -567,7 +575,7 @@ export const callAPIgetTimeFramebyID = (id) => {
           payload: res.data.result.dateFilter,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -694,7 +702,7 @@ export const callAPIgetListShipper = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -714,7 +722,7 @@ export const callAPIAdminCreateShipper = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -728,7 +736,7 @@ export const callAPIgetListKitchen = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 export const callAPIgetListReq = (token) => {
@@ -794,7 +802,7 @@ export const callAPIKitchenGetListOrder = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 //----------------------------------------------------------------
@@ -808,7 +816,7 @@ export const callAPIAdminGetListOrder = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -830,7 +838,7 @@ export const callAPIgetShipperActive = (token) => {
         })
       );
       console.log(res.data.result);
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -844,7 +852,7 @@ export const callAPIgetProfileKitchen = () => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -863,7 +871,7 @@ export const callAPIgetAccountCustomer = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -882,7 +890,7 @@ export const callAPIgetAccountCustomerByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -901,7 +909,7 @@ export const callAPIgetAccountAdmin = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -920,7 +928,7 @@ export const callAPIgetAccountAdminByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -939,7 +947,7 @@ export const callAPIgetAccountManager = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -958,7 +966,7 @@ export const callAPIgetAccountManagerByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -977,7 +985,7 @@ export const callAPIgetAccountShipper = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -999,7 +1007,7 @@ export const callAPIgetAccountShipperByStatus = (token, status) => {
         })
       );
       console.log(res.data.result);
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1018,7 +1026,7 @@ export const callAPIgetAccountKitchen = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1037,7 +1045,7 @@ export const callAPIgetAccountKitchenByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1050,7 +1058,7 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         null,
         token
       );
-      console.log(res);
+
       dispatch(
         createAction({
           type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,

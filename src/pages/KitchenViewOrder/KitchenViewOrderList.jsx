@@ -64,9 +64,9 @@ const TABLE_HEAD = [
   { id: "name", label: "Món ăn", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
   { id: "station", label: "Điểm giao", alignRight: false },
-  { id: "slot", label: "Slot", alignRight: false },
-  { id: "timeSlot", label: "Bắt đầu", alignRight: false },
-  { id: "endTime", label: " Kết thúc", alignRight: false },
+  { id: "slot", label: "Buổi", alignRight: false },
+  { id: "timeSlot", label: "Bắt đầu giao", alignRight: false },
+  { id: "endTime", label: " Kết thúc giao", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
@@ -232,6 +232,7 @@ const getOptions = () => [
 ];
 
 
+
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 
@@ -379,89 +380,179 @@ export default function KitchenViewOrderList() {
   const row = []
 
   return (
-    <Page title="Đơn hàng">
-      <Paper
-        elevation={3}
-        sx={{
-          padding: "2%",
-          marginBottom: "10%",
-          margin: "2%",
-        }}>
 
-        <PageHeader
-          title="Thông tin đơn hàng trong ngày"
-          subTitle="Vui lòng chọn ngày"
-          icon={getIcon("icon-park-outline:delivery")}
-        />
+    <Page title="Kitchen">
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={3}
+        >
+          <Paper
+            sx={{
+              background: "#FFCC33",
+              color: "black",
+              height: "50%",
+              width: "33%",
+            }}
+          >
+            <Typography
+              variant="h3"
+              gutterBottom
+              sx={{
+                display: "flex",
+                marginLeft: "7%",
+                marginTop: "2%",
+              }}
+            >
+              Đơn hàng trong ngày
+            </Typography>
+          </Paper>
+        </Stack>
 
-        <form>
-          <Box sx={{ marginLeft: '8%', height: '35rem', width: '140%', marginTop: '2%' }}>
-            <Grid container spacing={2}>
-              <Grid item xs={2.2}>
-                <Typography variant="h4" gutterBottom>
-                  {/* User */}
-                  <DatePicker
-                    variant="outlined"
-                    name="valueStarTime"
-                    label="Chọn ngày"
-                    width="16rem"
-                    inputFormat="YYYY-MM-DD"
-                    value={valueStarTime}
-                    onChange={(e) => {
-                      setValueStarTime(e);
-                    }}
-                  />
-                </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={3}
+        >
+          <FormControl sx={{ width: "25%" }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Chọn ngày giao"
+                value={date}
+                onChange={(newValue) => {
+                  const b = new Date(newValue).toLocaleDateString().split("/");
+                  setDate(`${b[2]}-${b[1]}-${b[0]}`);
+                }}
+                inputFormat="DD-MM-YYYY"
+                renderInput={({ inputRef, inputProps, InputProps }) => (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <input ref={inputRef} {...inputProps} />
+                    {InputProps?.endAdornment}
+                  </Box>
+                )}
+              />
+            </LocalizationProvider>
+          </FormControl>
+        </Stack>
+        <Card>
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+            options={getOptions()}
+            date={date}
+          />
 
-                {/* {decoded.role === "kitchen" && (
-                                <ButtonCustomize
-                                    variant="contained"
-                                    component={RouterLink}
-                                    to="/dashboard/kitchen/tripDelivery"
-                                    nameButton="Tạo chuyến đi"
-                                />
-                            )} */}
-              </Grid>
-
-
-              <Grid item xs={3.6}>
-                <Controls.Select
-                  label="Trạng thái"
-                  width="10rem"
-                  options={getOptions()}
-                  // onChange={(e) => { handleChange(e) }}
-                  onChange={handleChange1}
-                  // value={haha}
-                  value={select}
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 800 }}>
+              <Table>
+                <UserListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={orderlist.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
                 />
-              </Grid>
+                <TableBody>
+                  {filteredKitchen
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      // const Slot
+                      const {
+                        id,
+                        subscription,
+                        station,
+                        food,
+                        timeSlot,
+                        order,
+                        note,
+                        status,
+                      } = row;
 
-            </Grid>
-            <Box>
-              <div style={{ height: '25rem', width: '60%', marginTop: '1%' }}>
+                      return (
+                        <TableRow hover key={id} tabIndex={-1}>
+                          <TableCell align="left">{""}</TableCell>
+                          {/* <TableCell align="left">{id}</TableCell> */}
+                          <TableCell align="left">{food.name}</TableCell>
+                          <TableCell align="left">
+                            {subscription.customer.account.phone}
+                          </TableCell>
+                          <TableCell align="left">{station.name}</TableCell>
+                          <TableCell align="left">{timeSlot.flag}</TableCell>
+                          <TableCell align="left">
+                            {timeSlot.startTime}
+                          </TableCell>
+                          <TableCell align="left">{timeSlot.endTime}</TableCell>
 
-                {orderlist ? <DataGrid
-                  rows={orderlist}
-                  columns={columns}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                  getRowId={(row) => row.id}
-                  pagination
-                /> : <DataGrid
-                  rows={row}
-                  columns={columns}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                  getRowId={(row) => row.id}
-                  pagination
-                />}
+                          <TableCell align="left">
+                            <div>
+                              {status === "progress" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="warning">Chờ giao hàng</Label>
+                              )}
+                              {status === "delivery" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="warning">Đang giao</Label>
+                              )}
+                              {status === "arrived" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Đã đến</Label>
+                              )}
+                              {status === "done" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Hoàn thành</Label>
+                              )}
+                              {status === "pending" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="error">Chưa thanh toán</Label>
+                              )}
+                              {status === "ready" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Đã thanh toán</Label>
+                              )}
+                            </div>
+                          </TableCell>
 
-              </div>
-            </Box>
-          </Box>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
 
-        </form>
-      </Paper>
+                {isKitchenNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20]}
+            component="div"
+            count={orderlist.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            // fix languge in footer tables
+            labelRowsPerPage={"Số hàng trên một trang"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return "" + from + "-" + to + " của " + count;
+            }}
+          />
+        </Card>
+      </Container>
+      {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
     </Page>
   );
 }
