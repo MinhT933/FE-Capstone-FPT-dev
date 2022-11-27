@@ -113,11 +113,12 @@ const Login = () => {
                       label="Số điện thoại"
                       placeholder="số điện thoại"
                       variant="outlined"
+                      required
                       value={formik.values.phone}
                       onChange={(e) => {
                         formik.handleChange(e);
                       }}
-                      // required
+                    // required
                     />
                     {formik.touched.phone && formik.errors.phone && (
                       <FormHelperText

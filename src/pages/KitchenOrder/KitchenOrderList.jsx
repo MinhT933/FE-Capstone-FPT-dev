@@ -100,8 +100,8 @@ export default function KitchenOrderList() {
 
 
   return (
-    <Page title="Kitchen">
-      <Container>
+    <Page title="Chuẩn bị món">
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"

@@ -222,7 +222,7 @@ export default function StationList() {
 
   return (
     <Page title="Trạm">
-      <Container>
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
