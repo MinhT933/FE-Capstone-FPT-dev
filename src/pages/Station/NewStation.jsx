@@ -165,7 +165,7 @@ export default function NewStation() {
           display="flex"
           justifyContent="left"
           alignItems="left"
-          sx={{ marginLeft: "33%" }}
+          sx={{ marginLeft: "33%", marginTop: "2%", }}
         >
           <Grid container spacing={4} columns={20}>
             <Grid item xs={12} >

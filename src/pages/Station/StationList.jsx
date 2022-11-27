@@ -282,9 +282,9 @@ export default function StationList() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          // role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
+                        // role="checkbox"
+                        // selected={isItemSelected}
+                        // aria-checked={isItemSelected}
                         >
                           <TableCell align="left">{""}</TableCell>
 
@@ -307,7 +307,7 @@ export default function StationList() {
                             </div>
                           </TableCell>
 
-                          <TableCell align="center">
+                          <TableCell align="left">
                             {status === "active" ? (
                               <Button1
                                 variant="outlined"
@@ -329,7 +329,7 @@ export default function StationList() {
                             )}
                           </TableCell>
 
-                          <TableCell>
+                          <TableCell align="left">
                             {decoded.role === "admin" && (
                               <Button1
                                 variant="outlined"

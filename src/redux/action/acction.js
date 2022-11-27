@@ -165,7 +165,7 @@ export const callAPIGetListOderByDay = (token, date, status) => {
       // console.log(res.data.result);
     } catch (err) {
       CustomizedToast({
-        message: `${err.response.data.message}`,
+        message: "Không tìm thấy đơn hàng",
         type: "ERROR",
       });
     }
@@ -286,7 +286,7 @@ export const callAPIgetListStationByStatus = (token, status) => {
         })
       );
       CustomizedToast({
-        message: "Không tìm thấy gói ăn",
+        message: "Không tìm thấy trạm",
         type: "ERROR",
       });
     }
@@ -379,7 +379,7 @@ export const callAPIgetGroupFoodByStatus = (token, status) => {
         })
       );
       CustomizedToast({
-        message: "Không tìm thấy nhóm thức",
+        message: "Không tìm thấy nhóm thức ăn",
         type: "ERROR",
       });
     }
@@ -494,10 +494,10 @@ export const callAPIGetListDelivery = (token, status, valueStarTime) => {
       const res = await API(
         "GET",
         URL_API +
-          "/delivery_trips/byKitchen?status=" +
-          status +
-          "&deliveryDate=" +
-          valueStarTime,
+        "/delivery_trips/byKitchen?status=" +
+        status +
+        "&deliveryDate=" +
+        valueStarTime,
         null,
         token
       );
@@ -507,7 +507,7 @@ export const callAPIGetListDelivery = (token, status, valueStarTime) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -524,12 +524,12 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
         "GET",
         URL_API +
 
-          "/orders/byKitchen?stationId=" +
-          stationID +
-          "&time_slotId=" +
-          slot +
-          "&deliveryDate=" +
-          valueStarTime,
+        "/orders/byKitchen?stationId=" +
+        stationID +
+        "&time_slotId=" +
+        slot +
+        "&deliveryDate=" +
+        valueStarTime,
 
 
         null,
@@ -816,7 +816,12 @@ export const callAPIAdminGetListOrder = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+    } catch (err) {
+      CustomizedToast({
+        message: "Không tìm thấy món cần nấu",
+        type: "ERROR",
+      });
+    }
   };
 };
 
@@ -965,7 +970,7 @@ export const callAPIgetAccountManagerByStatus = (token, status) => {
           type: PathAction.GET_ACCOUNT_MANAGER,
           payload: res.data.result,
         })
-      );
+      ); 
     } catch (err) { }
   };
 };

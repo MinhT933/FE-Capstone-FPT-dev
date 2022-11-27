@@ -135,7 +135,7 @@ export default function NewAdmin() {
         color: theme.palette.text.secondary,
     }));
     return (
-        <Paper
+        <Paper title="Quản trị viên"
             elevation={3}
             sx={{
                 padding: "2%",
@@ -156,7 +156,7 @@ export default function NewAdmin() {
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
-                    sx={{ marginLeft: "33%" }}
+                    sx={{ marginLeft: "33%", marginTop: "2%", }}
                 >
                     <Grid container spacing={4} columns={20}>
                         <Grid item xs={12} >

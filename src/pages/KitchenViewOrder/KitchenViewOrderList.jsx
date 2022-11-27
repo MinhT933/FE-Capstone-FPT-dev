@@ -25,6 +25,7 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
+import Iconify from "../../components/hook-form/Iconify";
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
 // mock
 // import STATIONLIST from "./StationSample";
@@ -45,6 +46,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import DatePicker from "../../components/Control/DatePicker";
 
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import OrderListToolbar from "../../sections/@dashboard/user/OrderListToolbar";
+import PageHeader from "../../components/PageHeader";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -94,6 +97,9 @@ function applySortFilter(array, comparator, query) {
     }
     return stabilizedThis.map((el) => el[0]);
 }
+
+const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
 
 export default function KitchenViewOrderList() {
     const [OpenPopUp, SetOpenPopUp] = useState(false);
@@ -241,192 +247,211 @@ export default function KitchenViewOrderList() {
 
     return (
         <Page title="Đơn hàng">
-            <Container maxWidth={false}>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={3}
-                >
-                    <Paper
-                        sx={{
-                            background: "#FFCC33",
-                            color: "black",
-                            height: "50%",
-                            width: "33%",
-                        }}
+            <Paper
+                elevation={3}
+                sx={{
+                    padding: "2%",
+                    marginBottom: "10%",
+                    // margin: "2%",
+                }}>
+
+                <Container maxWidth={false}>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        mb={3}
                     >
-                        <Typography
-                            variant="h3"
-                            gutterBottom
+                        <Paper
                             sx={{
-                                display: "flex",
-                                marginLeft: "7%",
-                                marginTop: "2%",
+                                background: "#FFCC33",
+                                color: "black",
+                                height: "50%",
+                                width: "35%",
+                                marginLeft: "33%"
                             }}
                         >
-                            Đơn hàng trong ngày
-                        </Typography>
-                    </Paper>
-                </Stack>
-
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={3}
-                >
-                    <FormControl sx={{ width: "25%" }}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label="Chọn ngày giao"
-                                value={date}
-                                onChange={(newValue) => {
-                                    const b = new Date(newValue).toLocaleDateString().split("/");
-                                    setDate(`${b[2]}-${b[1]}-${b[0]}`);
+                            <Typography
+                                variant="h3"
+                                gutterBottom
+                                sx={{
+                                    display: "flex",
+                                    marginLeft: "7%",
+                                    marginTop: "2%",
                                 }}
-                                inputFormat="DD-MM-YYYY"
-                                renderInput={({ inputRef, inputProps, InputProps }) => (
-                                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                                        <input ref={inputRef} {...inputProps} />
-                                        {InputProps?.endAdornment}
-                                    </Box>
-                                )}
-                            />
-                        </LocalizationProvider>
-                    </FormControl>
-                </Stack>
+                            >
+                                Đơn hàng trong ngày
+                            </Typography>
+                        </Paper>
+                    </Stack>
 
-                <Card>
-                    <UserListToolbar
-                        numSelected={selected.length}
-                        filterName={filterName}
-                        onFilterName={handleFilterByName}
-                        options={getOptions()}
-                        date={date}
-                    />
-
-                    <Scrollbar>
-                        <TableContainer sx={{ minWidth: 800 }}>
-                            <Table>
-                                <UserListHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    headLabel={TABLE_HEAD}
-                                    rowCount={station.length}
-                                    numSelected={selected.length}
-                                    onRequestSort={handleRequestSort}
-                                    onSelectAllClick={handleSelectAllClick}
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        mb={3}
+                    >
+                        <FormControl sx={{ width: "25%" }}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                    label="Chọn ngày giao"
+                                    value={date}
+                                    onChange={(newValue) => {
+                                        const b = new Date(newValue).toLocaleDateString().split("/");
+                                        setDate(`${b[2]}-${b[1]}-${b[0]}`);
+                                    }}
+                                    inputFormat="DD-MM-YYYY"
+                                    renderInput={({ inputRef, inputProps, InputProps }) => (
+                                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                                            <input ref={inputRef} {...inputProps} />
+                                            {InputProps?.endAdornment}
+                                        </Box>
+                                    )}
                                 />
-                                <TableBody>
-                                    {filteredStations
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row) => {
-                                            const {
-                                                id,
-                                                subscription,
-                                                station,
-                                                food,
-                                                timeSlot,
-                                                order,
-                                                name,
-                                                note,
-                                                status,
-                                            } = row;
-                                            const isItemSelected = selected.indexOf(name) !== -1;
+                            </LocalizationProvider>
+                        </FormControl>
+                    </Stack>
 
-                                            return (
-                                                <TableRow hover key={id} tabIndex={-1}>
-                                                    <TableCell align="left">{""}</TableCell>
-                                                    {/* <TableCell align="left">{id}</TableCell> */}
-                                                    <TableCell align="left">{food.name}</TableCell>
-                                                    <TableCell align="left">
-                                                        {subscription.customer.account.phone}
-                                                    </TableCell>
-                                                    <TableCell align="left">{station.name}</TableCell>
-                                                    <TableCell align="left">
-                                                        {/* {timeSlot.flag} */}
-                                                        <div>
-                                                            {timeSlot.flag === "0" && (
-                                                                <Label>Sáng</Label>
-                                                            )}
-                                                            {timeSlot.flag === "1" && (
-                                                                <Label >Trưa</Label>
-                                                            )}
-                                                            {timeSlot.flag === "2" && (
-                                                                <Label>Chiều</Label>
-                                                            )}
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {timeSlot.startTime}
-                                                    </TableCell>
-                                                    <TableCell align="left">{timeSlot.endTime}</TableCell>
+                    <Card>
+                        <OrderListToolbar
+                            numSelected={selected.length}
+                            filterName={filterName}
+                            onFilterName={handleFilterByName}
+                            options={getOptions()}
+                            date={date}
+                        />
 
-                                                    <TableCell align="left">
-                                                        <div>
-                                                            {status === "progress" && (
-                                                                // <Alert severity="warning">inActive</Alert>
-                                                                <Label color="warning">Chờ giao hàng</Label>
-                                                            )}
-                                                            {status === "delivery" && (
-                                                                // <Alert severity="info">waiting</Alert>
-                                                                <Label color="warning">Đang giao</Label>
-                                                            )}
-                                                            {status === "arrived" && (
-                                                                // <Alert severity="info">waiting</Alert>
-                                                                <Label color="success">Đã đến</Label>
-                                                            )}
-                                                            {status === "done" && (
-                                                                // <Alert severity="info">waiting</Alert>
-                                                                <Label color="success">Hoàn thành</Label>
-                                                            )}
-                                                            {status === "pending" && (
-                                                                // <Alert severity="info">waiting</Alert>
-                                                                <Label color="error">Chưa thanh toán</Label>
-                                                            )}
-                                                            {status === "ready" && (
-                                                                // <Alert severity="info">waiting</Alert>
-                                                                <Label color="success">Đã thanh toán</Label>
-                                                            )}
-                                                        </div>
-                                                    </TableCell>
-
-                                                </TableRow>
-                                            );
-                                        })}
-                                </TableBody>
-
-                                {isStationNotFound && (
+                        <Scrollbar>
+                            <TableContainer sx={{ minWidth: 800 }}>
+                                <Table>
+                                    <UserListHead
+                                        order={order}
+                                        orderBy={orderBy}
+                                        headLabel={TABLE_HEAD}
+                                        rowCount={station.length}
+                                        numSelected={selected.length}
+                                        onRequestSort={handleRequestSort}
+                                        onSelectAllClick={handleSelectAllClick}
+                                    />
                                     <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                <SearchNotFound searchQuery={filterName} />
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                )}
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                                        {filteredStations
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row) => {
+                                                const {
+                                                    id,
+                                                    subscription,
+                                                    station,
+                                                    food,
+                                                    timeSlot,
+                                                    order,
+                                                    name,
+                                                    note,
+                                                    startTime,
+                                                    status,
+                                                } = row;
+                                                const isItemSelected = selected.indexOf(name) !== -1;
 
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 20]}
-                        component="div"
-                        count={station.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        // fix languge in footer tables
-                        labelRowsPerPage={"Số hàng trên một trang"}
-                        labelDisplayedRows={({ from, to, count }) => {
-                            return "" + from + "-" + to + " của " + count;
-                        }}
-                    />
-                </Card>
-            </Container>
-            {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
-        </Page>
+                                                return (
+                                                    <TableRow hover key={id} tabIndex={-1}>
+                                                        <TableCell align="left">{""}</TableCell>
+                                                        {/* <TableCell align="left">{id}</TableCell> */}
+                                                        <TableCell align="left">{food.name}</TableCell>
+                                                        <TableCell align="left">
+                                                            {subscription.customer.account.phone}
+                                                        </TableCell>
+                                                        <TableCell align="left">{station.name}</TableCell>
+                                                        <TableCell align="left">
+                                                            {/* {timeSlot.flag} */}
+                                                            <div>
+                                                                {timeSlot.flag === 0 && (
+                                                                    "Sáng"
+                                                                )}
+                                                                {timeSlot.flag === 1 && (
+                                                                    "Trưa"
+                                                                )}
+                                                                {timeSlot.flag === 2 && (
+                                                                    "Chiều"
+                                                                )}
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell align="left">
+                                                            {/* {timeSlot.startTime} */}
+                                                            <div>
+                                                                {moment(timeSlot.startTime, "HH:mm:ss").format("hh:mm")}
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell align="left">
+                                                            {/* {timeSlot.endTime} */}
+                                                            <div>
+                                                                {moment(timeSlot.endTime, "HH:mm:ss").format("hh:mm")}
+                                                            </div>
+                                                        </TableCell>
+
+                                                        <TableCell align="left">
+                                                            <div>
+                                                                {status === "progress" && (
+                                                                    // <Alert severity="warning">inActive</Alert>
+                                                                    <Label color="warning">Chờ giao hàng</Label>
+                                                                )}
+                                                                {status === "delivery" && (
+                                                                    // <Alert severity="info">waiting</Alert>
+                                                                    <Label color="warning">Đang giao</Label>
+                                                                )}
+                                                                {status === "arrived" && (
+                                                                    // <Alert severity="info">waiting</Alert>
+                                                                    <Label color="success">Đã đến</Label>
+                                                                )}
+                                                                {status === "done" && (
+                                                                    // <Alert severity="info">waiting</Alert>
+                                                                    <Label color="success">Hoàn thành</Label>
+                                                                )}
+                                                                {status === "pending" && (
+                                                                    // <Alert severity="info">waiting</Alert>
+                                                                    <Label color="error">Chưa thanh toán</Label>
+                                                                )}
+                                                                {status === "ready" && (
+                                                                    // <Alert severity="info">waiting</Alert>
+                                                                    <Label color="success">Đã thanh toán</Label>
+                                                                )}
+                                                            </div>
+                                                        </TableCell>
+
+                                                    </TableRow>
+                                                );
+                                            })}
+                                    </TableBody>
+
+                                    {isStationNotFound && (
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                                                    <SearchNotFound searchQuery={filterName} />
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    )}
+                                </Table>
+                            </TableContainer>
+                        </Scrollbar>
+
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 20]}
+                            component="div"
+                            count={station.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            // fix languge in footer tables
+                            labelRowsPerPage={"Số hàng trên một trang"}
+                            labelDisplayedRows={({ from, to, count }) => {
+                                return "" + from + "-" + to + " của " + count;
+                            }}
+                        />
+                    </Card>
+                </Container>
+                {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
+            </Paper>
+        </Page >
     );
 }

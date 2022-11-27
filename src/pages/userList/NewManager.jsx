@@ -135,7 +135,7 @@ export default function NewManager() {
         color: theme.palette.text.secondary,
     }));
     return (
-        <Paper
+        <Paper title="Quản lí"
             elevation={3}
             sx={{
                 padding: "2%",
@@ -156,7 +156,7 @@ export default function NewManager() {
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
-                    sx={{ marginLeft: "33%" }}
+                    sx={{ marginLeft: "33%", marginTop: "2%", }}
                 >
                     <Grid container spacing={4} columns={20}>
                         <Grid item xs={12}>
@@ -223,7 +223,7 @@ export default function NewManager() {
                                     type={values.showPass ? "text" : "password"}
                                     name="password"
                                     // sx={{'.css-r0m7rw-MuiInputBase-root-MuiOutlinedInput-root: 20rem'}}
-                                    sx={{ width: "24rem" }}
+                                    sx={{ width: "23.2rem" }}
                                     label="Mật khẩu"
                                     placeholder="Mật khẩu"
                                     variant="outlined"

@@ -143,7 +143,7 @@ export default function ListDinner(props) {
 
   return (
     <Page title="Chuẩn bị món">
-      <Container maxWidth={false} sx={{ minWidth: 380, width: 380 }}>
+      <Container maxWidth={false} sx={{ minWidth: 370, width: 370 }}>
         {/* <PageHeader
                     title="SÁNG"
                     // icon={getIcon("line-md:moon-alt-to-sunny-outline-loop-transition")}
@@ -200,7 +200,7 @@ export default function ListDinner(props) {
                         onFilterName={handleFilterByName}
                     /> */}
 
-          <TableContainer sx={{ minWidth: 390, width: 390 }}>
+          <TableContainer sx={{ minWidth: 370, width: 370 }}>
             <Table>
               <UserListHead
                 order={order}

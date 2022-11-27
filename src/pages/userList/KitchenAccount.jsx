@@ -244,7 +244,7 @@ export default function KitchenAccount() {
   }));
 
   return (
-    <Page title="Tài khoản bếp">
+    <Page title="Bếp">
       <Container>
         <Stack
           direction="row"
