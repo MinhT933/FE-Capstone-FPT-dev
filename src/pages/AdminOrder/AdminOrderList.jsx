@@ -38,6 +38,7 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolbar";
+import AdminOrderListToolBar from "../../sections/@dashboard/user/AdminOrderListToolBar";
 
 // ----------------------------------------------------------------------
 
@@ -222,7 +223,7 @@ export default function AdminOrderList() {
       <Container maxWidth={false}>
 
         <Card>
-          <KitchenListToolbar
+          <AdminOrderListToolBar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}

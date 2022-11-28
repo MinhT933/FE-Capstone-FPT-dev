@@ -23,6 +23,7 @@ const Controls = {
   TagInput,
   InputTagCheckBox,
   TextField,
+  
 };
 
 export default Controls;

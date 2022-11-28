@@ -261,7 +261,7 @@ export default function KitchenViewOrderList() {
                         alignItems="center"
                         justifyContent="space-between"
                         mb={3}
-                    >
+                    > 
                         <Paper
                             sx={{
                                 justifyContent: "center",

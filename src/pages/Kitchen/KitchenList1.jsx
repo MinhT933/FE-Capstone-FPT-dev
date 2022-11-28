@@ -1,6 +1,5 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import * as React from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
@@ -19,38 +18,50 @@ import {
   TableContainer,
   TablePagination,
 } from "@mui/material";
+
+//callAPI
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import * as React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { callAPIgetListKitchen } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
+
 // components
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
+// import NewStationPopup from "src/pages/Station/NewStationPopup";
+import KitchenMoreMenu from "./KitchenMoreMenu";
 // mock
+// import KITCHENLIST from "./KitchenSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import {
-  callAPIgetAccountAdmin,
-  callAPIgetAccountCustomer,
-  callAPIgetListStation,
-} from "../../redux/action/acction";
-import ButtonCustomize from "./../../components/Button/ButtonCustomize";
-import jwt_decode from "jwt-decode";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import { Avatar } from "@mui/joy";
-import AdminAccountListToolbar from "../../sections/@dashboard/user/AdminAccountListToolbar";
+import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolbar";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "", label: "", alignRight: false },
-  { id: "fullName", label: "Họ tên", alignRight: false },
-  { id: "email", label: "Email", alignRight: false },
+  { id: "", label: " ", alignRight: false },
+
+  { id: "fullName", label: "Tên bếp", alignRight: false },
+  { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
+  { id: "ability", label: "Công suất", alignRight: false },
+  // { id: "openTime", label: "Mở cửa", alignRight: false },
+  { id: "email", label: "Email", alignRight: false },
 
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
+  // { id: "createdAt", label: "Ngày tạo", alignRight: false },
+  // { id: "updatedAt", label: "Cập nhật", alignRight: false },
   { id: "" },
 ];
 
@@ -82,22 +93,68 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_stations) =>
-        _stations.profile.fullName
-          ?.toLowerCase()
-          .indexOf(query.toLowerCase()) !== -1
+      (_kitchen) =>
+        _kitchen.account.profile.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
+const token = localStorage.getItem("token");
 
-export default function AdminAccount() {
+export default function KitchenList() {
+  //Thay đổi trạng thái
   const getOptions = () => [
     { id: "active", title: "Hoạt động" },
-    { id: "inActive", title: "Tạm nghỉ" },
-    { id: "ban", title: "Bị cấm" },
+    { id: "inActive", title: "Đóng cửa" },
     { id: "All", title: "Tất cả" },
   ];
+
+
+  const location = useLocation();
+  //callAPIgetListKitchen========================================
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetListKitchen(token));
+    };
+    callAPI();
+  }, [dispatch]);
+
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+  } catch (error) {
+    Navigate("/");
+  }
+
+
+  const handleDelete = (id, fullName) => {
+    API("PUT", URL_API + `/kitchens/status/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetListKitchen(token));
+
+        CustomizedToast({
+          message: `Đã cập nhập trạng thái ${fullName}`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${fullName} thất bại`,
+          type: "ERROR",
+        });
+      }
+    }, []);
+  };
+
+  const kitchen = useSelector((state) => {
+    return state.userReducer.listKitchen;
+  });
+
+  //callAPIgetListKitchen========================================
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
@@ -112,75 +169,6 @@ export default function AdminAccount() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  //CALL API====================================================
-  const location = useLocation();
-
-  // const token = localStorage.getItem("token");
-
-  // const decoded = jwt_decode(token);
-  const Navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  if (token === null) {
-    Navigate("/");
-  }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
-
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    const callAPI = async () => {
-      await dispatch(callAPIgetAccountAdmin(token));
-    };
-    callAPI();
-  }, [dispatch]);
-
-  const handleDelete = (id, fullName) => {
-    API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
-      try {
-        dispatch(callAPIgetAccountAdmin(token));
-
-        CustomizedToast({
-          message: `Đã cập nhập trạng thái ${fullName}`,
-          type: "SUCCESS",
-        });
-      } catch (err) {
-        CustomizedToast({
-          message: `Cập nhập trạng thái ${fullName} thất bại`,
-          type: "ERROR",
-        });
-      }
-    }, []);
-  };
-
-  const handleActive = (id, fullName) => {
-    API("PUT", URL_API + `/accounts/unBan/${id}`, null, token).then((res) => {
-      try {
-        dispatch(callAPIgetAccountAdmin(token));
-
-        CustomizedToast({
-          message: `Đã cập nhập trạng thái ${fullName}`,
-          type: "SUCCESS",
-        });
-      } catch (err) {
-        CustomizedToast({
-          message: `Cập nhập trạng thái ${fullName} thất bại`,
-          type: "ERROR",
-        });
-      }
-    }, []);
-  };
-
-  const station = useSelector((state) => {
-    return state.userReducer.accountAdmin;
-  });
-  //CALL API=====================================================
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -189,7 +177,7 @@ export default function AdminAccount() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = station.map((n) => n.fullName);
+      const newSelecteds = kitchen.map((n) => n.fullName);
       setSelected(newSelecteds);
       return;
     }
@@ -227,43 +215,54 @@ export default function AdminAccount() {
     setFilterName(event.target.value);
   };
 
-  const filteredStations = applySortFilter(
-    station,
+  const filteredKitchen = applySortFilter(
+    kitchen,
     getComparator(order, orderBy),
     filterName
   );
+  //setColor button
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC32"),
+    backgroundColor: "#FFCC33",
+    "&:hover": {
+      backgroundColor: "#ffee32",
+    },
+    display: "center",
+  }));
 
-  const isStationNotFound = filteredStations.length === 0;
+  const Button1 = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC33"),
+    backgroundColor: "#FFCC33",
+    // width: "50%",
+    // height: "70%",
+    // display: "center"
+  }));
 
-  // const Button1 = styled(Button)(({ theme }) => ({
-  //   color: theme.palette.getContrastText("#FFCC33"),
-  //   backgroundColor: "#FFCC33",
-
-  //   // display: "center"
-  // }));
+  const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
-    <Page title="Quản trị viên">
-      <Container>
+    <Page title="Bếp">
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h4" gutterBottom></Typography>
-          {decoded.role === "admin" && (
-            <ButtonCustomize
-              variant="contained"
-              component={RouterLink}
-              to="/dashboard/admin/newadmin"
-              nameButton="Thêm Quản trị viên"
-            />
-          )}
+          <Typography variant="h4" gutterBottom>
+            {/* User */}
+          </Typography>
+          <ColorButton
+            variant="contained"
+            component={RouterLink}
+            to="/dashboard/admin/newkitchen"
+          >
+            Thêm bếp
+          </ColorButton>
         </Stack>
 
         <Card>
-          <AdminAccountListToolbar
+          <KitchenListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -271,29 +270,33 @@ export default function AdminAccount() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1000 }}>
+            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={station.length}
+                  rowCount={kitchen.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredStations
+                  {filteredKitchen
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
                         id,
-                        profile,
-                        avatar,
                         fullName,
-                        email,
+                        address,
                         phone,
+                        ability,
+                        email,
+                        openTime,
+                        closeTime,
                         status,
+                        createdAt,
+                        updatedAt,
                       } = row;
                       const isItemSelected = selected.indexOf(fullName) !== -1;
 
@@ -302,85 +305,75 @@ export default function AdminAccount() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        /> */}
-                          </TableCell>
-
-                          {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">{profile.fullName}</TableCell>
-
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar alt={fullName} src={avatar} />
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {fullName}
-                                                            </Typography>
-                                                        </Stack>
-                                                    </TableCell> */}
+                          <TableCell align="left">{""}</TableCell>
 
                           <TableCell align="left">
-                            {row.profile.email}
+                            {row.account.profile.fullName}
                           </TableCell>
-                          <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left" flex="1">{address}</TableCell>
+
+                          <TableCell align="left">
+                            {row.account.phone}
+                          </TableCell>
+                          <TableCell align="left">{ability}</TableCell>
+                          <TableCell align="left">
+                            {row.account.profile.email}
+                          </TableCell>
 
                           <TableCell align="left">
                             <div>
-                              {status === "inActive" && (
+                              {row.account.status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
-                                <Label color="warning">Tạm nghỉ</Label>
+                                <Label color="error">Đóng cửa</Label>
                               )}
-                              {status === "active" && (
+                              {row.account.status === "active" && (
                                 // <Alert severity="info">waiting</Alert>
                                 <Label color="success">Hoạt động</Label>
-                              )}
-                              {status === "ban" && (
-                                // <Alert severity="info">waiting</Alert>
-                                <Label color="error">Bị cấm</Label>
                               )}
                             </div>
                           </TableCell>
 
-                          <TableCell align="left">
-                            {status === "ban" ? (
+
+                          <TableCell align="center">
+                            {row.account.status === "active" ? (
                               <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
-                                  // handleDelete(id, fullName);
-                                  handleActive(id, profile.fullName);
+                                  handleDelete(id, fullName);
                                 }}
-                                nameButton="Mở chặn"
+                                nameButton="Đóng"
                               >
-                                Mở chặn
+                                Đóng
                               </ButtonCustomize>
                             ) : (
                               <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
-                                  // handleActive(id, fullName);
-                                  handleDelete(id, profile.fullName);
+                                  handleDelete(id, fullName);
                                 }}
-                                nameButton="Chặn"
+                                nameButton="Mở"
                               >
-                                Chặn
+                                Mở
                               </ButtonCustomize>
                             )}
+                          </TableCell>
+
+                          <TableCell align="left">
+                            <ButtonCustomize
+                              variant="outlined"
+                              display="TableCell"
+                              component={RouterLink}
+                              to={`${location.pathname}/updatekitchen/${id}`}
+                              nameButton="Chi tiết"
+                            />
                           </TableCell>
                         </TableRow>
                       );
                     })}
                 </TableBody>
-                {isStationNotFound && (
+
+                {isKitchenNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -396,7 +389,7 @@ export default function AdminAccount() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={station.length}
+            count={kitchen.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

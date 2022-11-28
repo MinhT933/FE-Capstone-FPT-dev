@@ -359,7 +359,7 @@ export default function ManagerAccount() {
                                 variant="outlined"
                                 onClick={() => {
                                   // handleDelete(id, fullName);
-                                  handleActive(id, fullName);
+                                  handleActive(id, profile.fullName);
                                 }}
                                 nameButton="Mở chặn"
                               >
@@ -370,7 +370,7 @@ export default function ManagerAccount() {
                                 variant="outlined"
                                 onClick={() => {
                                   // handleActive(id, fullName);
-                                  handleDelete(id, fullName);
+                                  handleDelete(id, profile.fullName);
                                 }}
                                 nameButton="Chặn"
                               >
