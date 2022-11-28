@@ -81,7 +81,16 @@ export default function KitchenOrderList() {
     };
     callAPI();
   }, [value]);
-
+  // dispatch(
+  //   createAction({
+  //     type: PathAction.GET_LIST_FOOD,
+  //     payload: [],
+  //   })
+  // );
+  // CustomizedToast({
+  //   message: `Không tìm thấy data`,
+  //   type: "ERROR",
+  // });
 
   const kitchen = useSelector((state) => {
     return state.userReducer.listFoodPrepare;
@@ -113,18 +122,17 @@ export default function KitchenOrderList() {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            mb={3}
+            mb={5}
           >
             <Paper
               sx={{
-                // justifyContent: "center",
+                justifyContent: "center",
                 background: "#FFCC33",
                 color: "black",
                 height: "50%",
                 width: "40%",
                 marginLeft: "30%"
-                // alignItems:"center",
-                // justifyContent:"center",
+                // alignItems: "center",
                 // direction: "column",
                 // marginLeft: "47%",
               }}
@@ -134,8 +142,9 @@ export default function KitchenOrderList() {
                 gutterBottom
                 sx={{
                   display: "flex",
-                  marginLeft: "8%",
+                  // marginLeft: "8%",
                   marginTop: "2%",
+                  justifyContent: "center",
                 }}
               >
                 Số lượng món cần nấu
@@ -146,8 +155,9 @@ export default function KitchenOrderList() {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
+            // justifyContent="center"
             mb={5}
-            sx={{ marginLeft: "1%" }}
+            sx={{ marginLeft: "3%" }}
           >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -168,7 +178,12 @@ export default function KitchenOrderList() {
             </LocalizationProvider>
           </Stack>
 
-          <Grid container spacing={1}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-around"
+            alignItems="stretch"
+          >
             <Grid>
               <ListBreakfast kitchenMorning={kitchenMorning} />
             </Grid>
@@ -181,6 +196,6 @@ export default function KitchenOrderList() {
           </Grid>
         </Container>
       </Paper>
-    </Page>
+    </Page >
   );
 }

@@ -145,7 +145,7 @@ export default function NewShipper() {
         marginBottom: "10%",
         margin: "2%",
 
-        // marginTop: "2%",
+        marginTop: "2%",
         // marginLeft: "5%",
         // MarginRounded: "4%"
       }}

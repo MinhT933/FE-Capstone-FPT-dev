@@ -45,7 +45,7 @@ import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolba
 
 const TABLE_HEAD = [
   { id: "", label: "", alignRight: false },
-  { id: "fullName", label: "Họ tên", alignRight: false },
+  { id: "fullName", label: "Tên bếp", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
 
@@ -165,7 +165,7 @@ export default function KitchenAccount() {
         dispatch(callAPIgetAccountKitchen(token));
 
         CustomizedToast({
-          message: `Đã Cập nhập trạng thái ${fullName}`,
+          message: `Đã cập nhập trạng thái ${fullName}`,
           type: "SUCCESS",
         });
       } catch (err) {
@@ -245,7 +245,7 @@ export default function KitchenAccount() {
 
   return (
     <Page title="Bếp">
-      <Container>
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
@@ -353,24 +353,28 @@ export default function KitchenAccount() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {status === "active" ? (
-                              <Button1
+                            {status === "ban" ? (
+                              <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
-                                  handleDelete(id, fullName);
-                                }}
-                              >
-                                Chặn
-                              </Button1>
-                            ) : (
-                              <Button1
-                                variant="outlined"
-                                onClick={() => {
+                                  // handleDelete(id, fullName);
                                   handleActive(id, fullName);
                                 }}
+                                nameButton="Mở chặn"
                               >
                                 Mở chặn
-                              </Button1>
+                              </ButtonCustomize>
+                            ) : (
+                              <ButtonCustomize
+                                variant="outlined"
+                                onClick={() => {
+                                  // handleActive(id, fullName);
+                                  handleDelete(id, fullName);
+                                }}
+                                nameButton="Chặn"
+                              >
+                                Chặn
+                              </ButtonCustomize>
                             )}
                           </TableCell>
                         </TableRow>

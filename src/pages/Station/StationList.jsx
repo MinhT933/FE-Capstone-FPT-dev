@@ -38,17 +38,19 @@ import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
+import moment from "moment";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: "id", label: "", alignRight: false },
   // { id: "id", label: "Mã trạm", alignRight: false },
 
-  { id: "name", label: "Địa điểm", alignRight: false },
+  { id: "name", label: "Tên trạm", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Số điện thoại", alignRight: false },
-  { id: "openTime", label: "Mở cửa", alignRight: false },
-  { id: "closeTime", label: "Đóng cửa", alignRight: false },
+  // { id: "openTime", label: "Mở cửa", alignRight: false },
+  // { id: "closeTime", label: "Đóng cửa", alignRight: false },
+  { id: "time", label: "Thời gian hoạt động", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
   { id: "" },
@@ -134,7 +136,7 @@ export default function StationList() {
           dispatch(callAPIgetListStation(token));
 
           CustomizedToast({
-            message: `Đã Cập nhập trạng thái ${name}`,
+            message: `Đã cập nhập trạng thái ${name}`,
             type: "SUCCESS",
           });
         } catch (err) {
@@ -291,8 +293,15 @@ export default function StationList() {
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">{openTime}</TableCell>
-                          <TableCell align="left">{closeTime}</TableCell>
+                          {/* <TableCell align="left">{openTime}</TableCell> */}
+                          {/* <TableCell align="left">{closeTime}</TableCell> */}
+                          <TableCell align="left">
+                            <div>
+                              {moment(openTime, "HH:mm:ss").format("hh:mm")} -  {moment(closeTime, "HH:mm:ss").format("hh:mm")}
+                            </div>
+                          </TableCell>
+
+
 
                           <TableCell align="left">
                             <div>
@@ -309,36 +318,39 @@ export default function StationList() {
 
                           <TableCell align="left">
                             {status === "active" ? (
-                              <Button1
+                              <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
                                   handleDelete(id, name);
                                 }}
+                                nameButton="Đóng"
                               >
                                 Đóng
-                              </Button1>
+                              </ButtonCustomize>
                             ) : (
-                              <Button1
+                              <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
                                   handleDelete(id, name);
                                 }}
+                                nameButton="Mở"
                               >
                                 Mở
-                              </Button1>
+                              </ButtonCustomize>
                             )}
                           </TableCell>
 
                           <TableCell align="left">
                             {decoded.role === "admin" && (
-                              <Button1
+                              <ButtonCustomize
                                 variant="outlined"
                                 display="TableCell"
                                 component={RouterLink}
                                 to={`${location.pathname}/updatestation/${id}`}
+                                nameButton="Chi tiết"
                               >
                                 Chi tiết
-                              </Button1>
+                              </ButtonCustomize>
                             )}
                           </TableCell>
                         </TableRow>
