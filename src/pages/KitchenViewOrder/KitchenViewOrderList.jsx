@@ -57,14 +57,12 @@ const TABLE_HEAD = [
     { id: "phone", label: "Điện thoại", alignRight: false },
     { id: "station", label: "Điểm giao", alignRight: false },
     { id: "slot", label: "Buổi", alignRight: false },
-    { id: "timeSlot", label: "Bắt đầu giao", alignRight: false },
-    { id: "endTime", label: " Kết thúc giao", alignRight: false },
+    { id: "startTime", label: "Thời gian giao", alignRight: false },
     { id: "status", label: "Trạng thái", alignRight: false },
     { id: "" },
 ];
 
 // ----------------------------------------------------------------------
-
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -81,6 +79,7 @@ function getComparator(order, orderBy) {
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+
 function applySortFilter(array, comparator, query) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -92,7 +91,8 @@ function applySortFilter(array, comparator, query) {
         return filter(
             array,
             (_stations) =>
-                _stations.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+                _stations.food.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+            // console.log(_stations)
         );
     }
     return stabilizedThis.map((el) => el[0]);
@@ -109,7 +109,7 @@ export default function KitchenViewOrderList() {
 
     const [selected, setSelected] = useState([]);
 
-    const [orderBy, setOrderBy] = useState("timeSlot");
+    const [orderBy, setOrderBy] = useState("name");
 
     const [filterName, setFilterName] = useState("");
 
@@ -264,11 +264,12 @@ export default function KitchenViewOrderList() {
                     >
                         <Paper
                             sx={{
+                                justifyContent: "center",
                                 background: "#FFCC33",
                                 color: "black",
                                 height: "50%",
-                                width: "35%",
-                                marginLeft: "33%"
+                                width: "40%",
+                                marginLeft: "30%"
                             }}
                         >
                             <Typography
@@ -276,8 +277,9 @@ export default function KitchenViewOrderList() {
                                 gutterBottom
                                 sx={{
                                     display: "flex",
-                                    marginLeft: "7%",
+                                    // marginLeft: "7%",
                                     marginTop: "2%",
+                                    justifyContent: "center",
                                 }}
                             >
                                 Đơn hàng trong ngày
@@ -377,15 +379,15 @@ export default function KitchenViewOrderList() {
                                                         <TableCell align="left">
                                                             {/* {timeSlot.startTime} */}
                                                             <div>
-                                                                {moment(timeSlot.startTime, "HH:mm:ss").format("hh:mm")}
+                                                                {moment(timeSlot.startTime, "HH:mm:ss").format("hh:mm")} -  {moment(timeSlot.endTime, "HH:mm:ss").format("hh:mm")}
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell align="left">
-                                                            {/* {timeSlot.endTime} */}
-                                                            <div>
+                                                        {/* <TableCell align="left"> */}
+                                                        {/* {timeSlot.endTime} */}
+                                                        {/* <div>
                                                                 {moment(timeSlot.endTime, "HH:mm:ss").format("hh:mm")}
-                                                            </div>
-                                                        </TableCell>
+                                                            </div> */}
+                                                        {/* </TableCell> */}
 
                                                         <TableCell align="left">
                                                             <div>

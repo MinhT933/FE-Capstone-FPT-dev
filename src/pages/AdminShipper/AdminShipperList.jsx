@@ -38,6 +38,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import jwt_decode from "jwt-decode";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
 
 // ----------------------------------------------------------------------
 
@@ -83,7 +84,8 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_kitchen) =>
-        _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _kitchen.account.profile.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      // console.log(_kitchen)
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -219,18 +221,18 @@ export default function AdminShipperList() {
     display: "center",
   }));
 
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
+  // const Button1 = styled(Button)(({ theme }) => ({
+  //   color: theme.palette.getContrastText("#FFCC33"),
+  //   backgroundColor: "#FFCC33",
 
-    // display: "center"
-  }));
+  //   // display: "center"
+  // }));
 
   const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
-    <Page title="Manager Shipper">
-      <Container>
+    <Page title="Người giao hàng">
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
@@ -242,13 +244,14 @@ export default function AdminShipperList() {
           </Typography>
 
           {/* {token.role === "admin" && ( */}
-          <ColorButton
+          <ButtonCustomize
             variant="contained"
             component={RouterLink}
             to="/dashboard/admin/newshipper"
+            nameButton="Thêm tài xế"
           >
             Thêm tài xế
-          </ColorButton>
+          </ButtonCustomize>
           {/* )} */}
         </Stack>
 
@@ -300,12 +303,7 @@ export default function AdminShipperList() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, fullName)}
-                            /> */}
-                          </TableCell>
+                          <TableCell >  </TableCell>
 
                           <TableCell component="th" scope="row" padding="none">
                             <Stack
@@ -322,6 +320,8 @@ export default function AdminShipperList() {
                               </Typography>
                             </Stack>
                           </TableCell>
+
+
                           <TableCell align="left">
                             {row.account?.phone}
                           </TableCell>
@@ -333,25 +333,29 @@ export default function AdminShipperList() {
                           <TableCell align="left">{row.kitchen?.address}</TableCell>
 
                           <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={
-                                (status === "Closed" && "error") || "success"
-                              }
-                            >
-                              {status}
-                            </Label>
+                            <div>
+                              {status === "inActive" && (
+                                <Label color="warning">Tạm nghỉ</Label>
+                              )}
+                              {status === "active" && (
+                                <Label color="success">Hoạt động</Label>
+                              )}
+                              {status === "ban" && (
+                                <Label color="error">Bị cấm</Label>
+                              )}
+                            </div>
                           </TableCell>
 
                           <TableCell align="left">
-                            <Button1
+                            <ButtonCustomize
                               variant="outlined"
                               display="TableCell"
                               component={RouterLink}
                               to={`${location.pathname}/updateshipper/${id}`}
+                              nameButton="Chi tiết"
                             >
                               Chi tiết
-                            </Button1>
+                            </ButtonCustomize>
                           </TableCell>
                         </TableRow>
                       );

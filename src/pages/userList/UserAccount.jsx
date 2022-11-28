@@ -314,24 +314,28 @@ export default function UserAccount() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {status === "active" ? (
-                              <Button1
+                            {status === "ban" ? (
+                              <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
-                                  handleDelete(id, fullName);
-                                }}
-                              >
-                                Chặn
-                              </Button1>
-                            ) : (
-                              <Button1
-                                variant="outlined"
-                                onClick={() => {
+                                  // handleDelete(id, fullName);
                                   handleActive(id, fullName);
                                 }}
+                                nameButton="Mở chặn"
                               >
                                 Mở chặn
-                              </Button1>
+                              </ButtonCustomize>
+                            ) : (
+                              <ButtonCustomize
+                                variant="outlined"
+                                onClick={() => {
+                                  // handleActive(id, fullName);
+                                  handleDelete(id, fullName);
+                                }}
+                                nameButton="Chặn"
+                              >
+                                Chặn
+                              </ButtonCustomize>
                             )}
                           </TableCell>
                         </TableRow>

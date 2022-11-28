@@ -109,7 +109,7 @@ const Login = () => {
                     <TextField
                       type="phoneNumber"
                       fullWidth
-                      name="phone"
+                      name="phone" 
                       label="Số điện thoại"
                       placeholder="số điện thoại"
                       variant="outlined"

@@ -78,45 +78,11 @@ export default function OrderListToolbar({
     options,
     date,
 }) {
-
-    const location = useLocation();
-    const Navigate = useNavigate();
-    const token = localStorage.getItem("token");
-    if (token === null) {
-        Navigate("/");
-    }
-    try {
-        var decoded = jwt_decode(token);
-        // valid token format
-    } catch (error) {
-        // return <Navigate to="/" replace />;
-        Navigate("/");
-    }
-
     const dispatch = useDispatch();
-
-    const [datee, setDate] = React.useState(
-        moment(new Date()).format("YYYY-MM-DD")
-    );
-
-    React.useEffect(() => {
-        const callAPI = async () => {
-            dispatch(await callAPIGetListOderByDay(token, date, null));
-        };
-        callAPI();
-    }, [dispatch, date, token]);
-
-    const station = useSelector((state) => {
-        return state.userReducer.listOderByDate;
-    });
-
-
-
     const [haha, setHaha] = useState("All");
     const handleChange = async (event) => {
         console.log(event.target.value);
         setHaha(event.target.value === "All" ? "" : event.target.value);
-
 
         if (date) {
             dispatch(
@@ -127,8 +93,6 @@ export default function OrderListToolbar({
                 )
             );
         }
-
-
 
     };
     return (

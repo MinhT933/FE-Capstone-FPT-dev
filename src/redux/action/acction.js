@@ -87,7 +87,7 @@ export const callAPIgetListFoodfilterCate = (token, id, status) => {
         })
       );
       CustomizedToast({
-        message: `Không tìm thấy data`,
+        message: `Không tìm thấy dữ liệu`,
         type: "ERROR",
       });
     }
@@ -279,6 +279,7 @@ export const callAPIgetListStationByStatus = (token, status) => {
       );
 
     } catch (err) {
+      console.log({ err });
       dispatch(
         createAction({
           type: PathAction.GET_LIST_STATIONS,
@@ -286,7 +287,7 @@ export const callAPIgetListStationByStatus = (token, status) => {
         })
       );
       CustomizedToast({
-        message: "Không tìm thấy trạm",
+        message: `Không tìm thấy dữ liệu trạm`,
         type: "ERROR",
       });
     }
@@ -895,7 +896,19 @@ export const callAPIgetAccountCustomerByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+    } catch (err) {
+      console.log({ err });
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_CUSTOMER,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: `Không tìm thấy dữ liệu người dùng`,
+        type: "ERROR",
+      });
+    }
   };
 };
 
@@ -914,7 +927,18 @@ export const callAPIgetAccountAdmin = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+    } catch (err) {
+      // dispatch(
+      //   createAction({
+      //     type: PathAction.GET_ACCOUNT_ADMIN,
+      //     payload: [],
+      //   })
+      // );
+      // CustomizedToast({
+      //   message: `Không tìm thấy dữ liệu người dùng`,
+      //   type: "ERROR",
+      // });
+    }
   };
 };
 
@@ -933,7 +957,19 @@ export const callAPIgetAccountAdminByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) { }
+    } catch (err) {
+      console.log({ err });
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_ADMIN,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: `Không tìm thấy dữ liệu người dùng`,
+        type: "ERROR",
+      });
+    }
   };
 };
 
@@ -970,8 +1006,20 @@ export const callAPIgetAccountManagerByStatus = (token, status) => {
           type: PathAction.GET_ACCOUNT_MANAGER,
           payload: res.data.result,
         })
-      ); 
-    } catch (err) { }
+      );
+    } catch (err) {
+      console.log({ err });
+      dispatch(
+        createAction({
+          type: PathAction.GET_ACCOUNT_MANAGER,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: `Không tìm thấy dữ liệu người dùng`,
+        type: "ERROR",
+      });
+    }
   };
 };
 
@@ -1055,6 +1103,7 @@ export const callAPIgetAccountKitchenByStatus = (token, status) => {
 };
 
 export const callAPIKitchenPrepareOrder = (token, date, status) => {
+  // console.log(date)
   return async (dispatch) => {
     try {
       const res = await API(
@@ -1063,7 +1112,7 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         null,
         token
       );
-
+      console.log(res)
       dispatch(
         createAction({
           type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,
@@ -1071,7 +1120,17 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         })
       );
     } catch (err) {
-      console.log({ err });
+      // console.log({ err });
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: `Không tìm thấy dữ liệu`,
+        type: "ERROR",
+      });
     }
   };
 };
