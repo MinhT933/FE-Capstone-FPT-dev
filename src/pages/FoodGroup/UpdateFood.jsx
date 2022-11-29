@@ -32,7 +32,7 @@ import Avatar from "@mui/material/Avatar";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import { SET_VALUE_TAG } from "../../redux/PathAction";
 import FormHelperText from "@mui/material/FormHelperText";
-import  jwt_decode  from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
@@ -228,7 +228,7 @@ export default function UpdateFood() {
             <div>
               <FormControl sx={{ width: "27.5rem" }}>
                 <InputLabel id="demo-multiple-checkbox-label">
-                  Chọn Thức ăn
+                  Món ăn
                 </InputLabel>
                 <Select
                   labelId="demo-multiple-checkbox-label"

@@ -30,6 +30,7 @@ export default function Select(props) {
         display: "grid",
         gridTemplateColumns: { sm: "6fr 1fr" },
         marginRight: marginRight,
+        width: width,
       }}
     >
       <InputLabel id={id}>{label}</InputLabel>
@@ -46,7 +47,7 @@ export default function Select(props) {
         onClick={onClick}
         defaultValue={"hiuhi"}
         multiline
-        sx={{ width: width, marginTop: marginTop }}
+        sx={{ marginTop: marginTop }}
       >
         {options?.map((item) => (
           <MenuItem key={item.id} value={item.id}>

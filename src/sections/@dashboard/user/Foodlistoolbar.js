@@ -11,9 +11,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 // component
-import Box from "@mui/material/Box";
 import Iconify from "../../../components/hook-form/Iconify";
-import { Controller } from "react-hook-form";
 import Controls from "./../../../components/Control/Controls";
 
 import {
@@ -66,8 +64,6 @@ export default function Foodlistoolbar({
   filterName,
   onFilterName,
   options,
-  optionsCate,
-  date,
 }) {
   const [id, setID] = useState("");
   const dispatch = useDispatch();
@@ -75,16 +71,11 @@ export default function Foodlistoolbar({
   const handleChange = async (event) => {
     setHaha(event.target.value === "All" ? "" : event.target.value);
 
-    dispatch(
-      await callAPIgetListFoodByStatus(
-        token,
-        event.target.value === "All" ? "" : event.target.value
-      )
-    );
+    dispatch(await callAPIgetListFoodfilterCate(token, id, haha));
   };
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIgetListCategory(token));
+      dispatch(await callAPIgetListCategory(token));
     };
     callAPI();
   }, [dispatch]);
@@ -93,20 +84,12 @@ export default function Foodlistoolbar({
     return state.userReducer.listCategory;
   });
 
-  console.log(haha);
-
   const OptionCate = () => {
-    //tạo mảng rỗng để chứa data ở đây là name và id của categoriesFood
-    //hình dung nó giống nhà kho vậy á
-    // sau này trước khi muốn gọi cái gì đó phải tạo 1 mảng rỗng để bỏ vào
     const item = [];
-    // vòng food này để đẩy data từ categoriesFood vào trong items ( vì nó có nhiều object) nên phải làm vậy
     for (var i = 0; i < category.length; i++) {
       item.push({ id: category[i].id, title: category[i].name });
     }
-
     return item;
-    //trả về item đã có data muốn biết thì console.log ra mà xem
   };
 
   return (
@@ -146,7 +129,6 @@ export default function Foodlistoolbar({
             <Controls.Select
               label="Trạng thái"
               width="10rem"
-              // marginRight="25%"
               options={options}
               onChange={handleChange}
               value={haha}
@@ -155,12 +137,12 @@ export default function Foodlistoolbar({
               label="Loại thức ăn"
               width="10rem"
               options={OptionCate()}
+              value={id}
               onChange={async (e) => {
                 const a = category.find((c) => c.id === e.target.value);
                 setID(a.id);
-                await dispatch(callAPIgetListFoodfilterCate(token, id, haha));
+                await dispatch(callAPIgetListFoodfilterCate(token, a.id, haha));
               }}
-              value={id}
             />
           </Grid>
         </>

@@ -1,13 +1,9 @@
 import { Dialog, DialogContent, DialogTitle, Grid, Paper } from "@mui/material";
-import CardHeader from "@mui/material/CardHeader";
-import Card from "@mui/material/Card";
 import React from "react";
 import { useFormik } from "formik";
 import Controls from "../../../components/Control/Controls";
 import PageHeader from "../../../components/PageHeader";
-import Stack from "@mui/material/Stack";
-// import Button from "@mui/material/Button";
-// import { styled } from "@mui/material/styles";
+
 import * as yup from "yup";
 // import { URL_API } from "./../../Axios/URL_API/URL";
 import Iconify from "../../../components/hook-form/Iconify";
@@ -26,7 +22,6 @@ import { CustomizedToast } from "../../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../../components/Button/ButtonCustomize";
 import {
   callAPIgetGroupFood,
-  callAPIgetListFood,
   callAPIgetListFoodActive,
 } from "../../../redux/action/acction";
 import Box from "@mui/material/Box";
@@ -77,7 +72,7 @@ export default function NewFoodGroup(props) {
     const {
       target: { value },
     } = e;
-    
+
     const a = listFoodSelectbox.find((c) => c.id === value);
     console.log(a);
     setValueTag(
@@ -123,9 +118,7 @@ export default function NewFoodGroup(props) {
         const res = await API("POST", URL_API + `/food-groups`, data, token);
         await dispatch(callAPIgetGroupFood(token));
         CustomizedToast({
-
           message: `Đã Thêm ${formik.values.name}`,
-
           type: "SUCCESS",
         });
       } catch (error) {
@@ -143,7 +136,7 @@ export default function NewFoodGroup(props) {
         <DialogTitle>
           <PageHeader
             title="Thêm nhóm thức ăn"
-            subTitle="Tinh hoa ẩm thực "
+            subTitle="vui lòng điền đầy đủ thông tin "
             icon={getIcon("emojione-monotone:pot-of-food")}
           />
         </DialogTitle>
@@ -151,7 +144,11 @@ export default function NewFoodGroup(props) {
         <DialogContent>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ maxWidth: "900px", maxHeight: "900px" }}>
-              <Grid container spacing={2} sx={{ marginLeft: "5%" }}>
+              <Grid
+                container
+                spacing={2}
+                sx={{ marginLeft: "5%", marginTop: "2%" }}
+              >
                 <Grid item xs={12}>
                   <Controls.Input
                     variant="outlined"
@@ -196,7 +193,7 @@ export default function NewFoodGroup(props) {
                   <div>
                     <FormControl sx={{ width: "28.5rem" }}>
                       <InputLabel id="demo-multiple-checkbox-label">
-                        Tag
+                        Món ăn
                       </InputLabel>
                       <Select
                         labelId="demo-multiple-checkbox-label"
@@ -204,7 +201,7 @@ export default function NewFoodGroup(props) {
                         multiple={true}
                         value={valueTag} 
                         onChange={(e) => handleChange(e)}
-                        input={<OutlinedInput label="Tag" />}
+                        input={<OutlinedInput label="Món ăn" />}
                         renderValue={(selected) => selected.join(", ")}
                         MenuProps={MenuProps}
                       >

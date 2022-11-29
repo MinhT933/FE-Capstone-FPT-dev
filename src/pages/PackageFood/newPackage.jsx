@@ -249,9 +249,7 @@ export default function NewPackage() {
         }
         setBit(temp);
       })
-      .catch((err) => {
-      
-      });
+      .catch((err) => {});
   };
 
   //hàm check buổi
@@ -591,7 +589,7 @@ export default function NewPackage() {
                   variant="outlined"
                   name="startSale"
                   label="Ngày mở bán"
-                  width="16rem"
+                  width="85%"
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
@@ -626,7 +624,7 @@ export default function NewPackage() {
                   name="endSale"
                   label="Ngày kết thúc bán"
                   value={valueEndTime}
-                  width="16rem"
+                  width="85%"
                   onChange={(e) => {
                     setValueEndtime(e);
                   }}
@@ -645,7 +643,7 @@ export default function NewPackage() {
                       name="categoryID"
                       label="Chọn loại package"
                       id="categoryID"
-                      width="13rem"
+                      width="19vw"
                       value={formik.values.categoryID}
                       // defaultValue=
                       onChange={(e) => {
@@ -657,9 +655,7 @@ export default function NewPackage() {
                     />
                   </Box>
 
-                  <Box
-                    sx={{ mr: "20%", height: "15%", width: "15%", mt: "3%" }}
-                  >
+                  <Box sx={{ height: "15%", width: "15%", mt: "3%" }}>
                     <IconButton
                       onClick={() => {
                         SetOpenPopUpCate(true);
@@ -672,10 +668,10 @@ export default function NewPackage() {
               </Grid>
               <Grid item xs={6}>
                 <Controls.TextArea
-                  width="16rem"
                   variant="outlined"
                   placeholder="Mô tả"
                   name="description"
+                  width="85%"
                   value={formik.values.description}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -702,7 +698,7 @@ export default function NewPackage() {
                     <Controls.Select
                       name="timeFrameID"
                       label="Chọn khung thời gian"
-                      width="13rem"
+                      width="19vw"
                       value={formik.values.timeFrameID}
                       onChange={(e) => {
                         const a = timeframe.find(
@@ -736,7 +732,7 @@ export default function NewPackage() {
                     )}
                   </Box>
                   <Box
-                    sx={{ mr: "20%", height: "15%", width: "15%", mt: "3%" }}
+                    sx={{ mr: "20%", height: "15%", width: "12%", mt: "3%" }}
                   >
                     <IconButton
                       onClick={() => {
@@ -761,7 +757,7 @@ export default function NewPackage() {
               </Box>
 
               <Box>
-                <Stack width="200px" mt={"2rem"} ml={"24rem"} mb={"1rem"}>
+                <Stack width="200px" mt={"50%"} mb={"1rem"}>
                   <ButtonCustomize
                     variant="contained"
                     type="submit"

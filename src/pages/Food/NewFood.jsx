@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Paper,
-  Grid,
-  Box,
-  Button,
-  styled,
-  FormHelperText,
-} from "@mui/material";
+import { Grid, Box, Button, styled, FormHelperText } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 //componets
@@ -26,7 +19,6 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import { makeStyles } from "@mui/styles";
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
@@ -150,8 +142,8 @@ export default function NewFood() {
       <PageHeader
         width="60%"
         marginLeft="20%"
-        title="Thêm thức ăn"
-        subTitle="Tinh hoa ẩm thực "
+        title="Thêm món ăn"
+        subTitle="Vui lòng điền đầy đủ thông tin "
         icon={getIcon("emojione-monotone:pot-of-food")}
       />
       <form onSubmit={formik.handleSubmit}>

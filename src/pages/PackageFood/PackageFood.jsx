@@ -24,11 +24,7 @@ import Label from "./../../components/label/label";
 import Scrollbar from "./../../components/hook-form/Scrollbar";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 
 import { callAPIGetListPackage } from "../../redux/action/acction";
 
@@ -40,7 +36,6 @@ import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import DetailPackage from "./DetailPackage";
 import PackageListToolbar from "../../sections/@dashboard/user/PackageListToolbar";
 
 //Link routers
@@ -238,7 +233,7 @@ export default function PackageFood() {
               variant="contained"
               component={RouterLink}
               to="/dashboard/manager/newpackage"
-              nameButton="Thêm Gói Ăn"
+              nameButton="Thêm gói ăn"
             />
           )}
         </Stack>

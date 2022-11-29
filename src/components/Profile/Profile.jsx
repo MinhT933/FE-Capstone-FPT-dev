@@ -114,7 +114,7 @@ export default function Profile() {
       await dispatch(callAPIProfile(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const profiles = useSelector((state) => {
     return state.userReducer.profiles;
@@ -166,7 +166,7 @@ export default function Profile() {
           dispatch(callAPIProfile(token));
         });
         CustomizedToast({
-          message: `chỉnh sửa thành công`,
+          message: `Chỉnh sửa trang cá nhân thành công`,
           type: "SUCCESS",
         });
       } catch (error) {

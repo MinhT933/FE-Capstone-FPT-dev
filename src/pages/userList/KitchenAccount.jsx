@@ -30,16 +30,13 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
-  callAPIgetAccountCustomer,
   callAPIgetAccountKitchen,
-  callAPIgetListStation,
 } from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import { Avatar } from "@mui/joy";
 import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolbar";
 // ----------------------------------------------------------------------
 
