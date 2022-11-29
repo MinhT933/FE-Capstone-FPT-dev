@@ -12,6 +12,7 @@ import {
   Checkbox,
   TableRow,
   TableBody,
+  Avatar,
   TableCell,
   Container,
   Typography,
@@ -36,6 +37,9 @@ import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolbar";
+import AdminOrderListToolBar from "../../sections/@dashboard/user/AdminOrderListToolBar";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -44,11 +48,12 @@ const TABLE_HEAD = [
   { id: "totalPrice", label: "Giá", alignRight: false },
   { id: "totalDate", label: "Tổng ngày", alignRight: false },
   { id: "totalMeal", label: "Tổng bữa ăn", alignRight: false },
+  { id: "totalMeal", label: "Tổng món ăn", alignRight: false },
   { id: "startDelivery", label: "Ngày giao", alignRight: false },
 
   { id: "status", label: "Trạng thái", alignRight: false },
-  { label: "Thay đổi trạng thái", alignRight: false },
-  { id: "" },
+  // { label: "Thay đổi trạng thái", alignRight: false },
+  // { id: "" },
 ];
 
 // ----------------------------------------------------------------------
@@ -80,7 +85,8 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_stations) =>
-        _stations.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _stations.packages.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      // console.log(_stations)
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -94,8 +100,6 @@ export default function AdminOrderList() {
     { id: "cancel", title: "Bị cấm" },
     { id: "All", title: "Tất cả" },
   ];
-
-
 
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
@@ -133,7 +137,7 @@ export default function AdminOrderList() {
           dispatch(callAPIAdminGetListOrder(token));
 
           CustomizedToast({
-            message: `Đã Cập nhập trạng thái ${name}`,
+            message: `Đã cập nhập trạng thái ${name}`,
             type: "SUCCESS",
           });
 
@@ -215,14 +219,15 @@ export default function AdminOrderList() {
   }));
 
   return (
-    <Page title="Trạm">
-      <Container>
+    <Page title="Đơn hàng">
+      <Container maxWidth={false}>
 
         <Card>
-          <UserListToolbar
+          <AdminOrderListToolBar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            options={getOptions()}
           />
 
           <Scrollbar>
@@ -245,6 +250,7 @@ export default function AdminOrderList() {
                         id,
                         name,
                         phone,
+                        image,
                         address,
                         openTime,
                         closeTime,
@@ -270,14 +276,32 @@ export default function AdminOrderList() {
                           aria-checked={isItemSelected}
                         >
                           <TableCell align="left"></TableCell>
-                          <TableCell align="left">{packages?.name}</TableCell>
+
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={2}
+                            >
+                              <Avatar
+                                alt={name}
+                                src={row.packages?.image}
+                              />
+                              <Typography variant="subtitle2" noWrap>
+                                {row.packages?.name}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+
+                          {/* <TableCell align="left">{packages?.name}</TableCell> */}
                           <TableCell align="left">{totalPrice}</TableCell>
                           {/* <TableCell align="left">{phone}</TableCell> */}
                           <TableCell align="left">{packages?.totalDate}</TableCell>
                           <TableCell align="left">{packages?.totalMeal}</TableCell>
+                          <TableCell align="left">{packages?.totalFood}</TableCell>
                           <TableCell align="left">{startDelivery}</TableCell>
 
-                          <TableCell align="left">
+                          {/* <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={
@@ -286,9 +310,22 @@ export default function AdminOrderList() {
                             >
                               {row.packages.status}
                             </Label>
+                          </TableCell> */}
+
+                          <TableCell align="left">
+                            <div>
+                              {row.packages.status === "inActive" && (
+                                // <Alert severity="warning">inActive</Alert>
+                                <Label color="error">Đã giao</Label>
+                              )}
+                              {row.packages.status === "active" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="success">Đang giao</Label>
+                              )}
+                            </div>
                           </TableCell>
 
-                          <TableCell align="center">
+                          {/* <TableCell align="center">
                             {status === "active" ? (
                               <Button1
                                 variant="outlined"
@@ -306,9 +343,7 @@ export default function AdminOrderList() {
                             )
 
                             }
-                          </TableCell>
-
-
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}

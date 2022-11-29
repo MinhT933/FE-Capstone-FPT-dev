@@ -167,7 +167,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             sx={{
               width: 200,
               position: "absolute",
-              top: -75,
+              // top: -75,
+              marginTop: "-60%",
               backgroundColor: "white",
             }}
           />

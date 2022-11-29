@@ -48,10 +48,14 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
-    fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
-    phone: yup.string().required("Điền đầy đủ thông tin").trim(),
-    email: yup.string().required("Điền đầy đủ thông tin").trim(),
-    password: yup.string().required("Điền đầy đủ thông tin").trim(),
+    // fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
+    // phone: yup.string().required("Điền đầy đủ thông tin").trim(),
+    // email: yup.string().required("Điền đầy đủ thông tin").trim(),
+    // password: yup.string().required("Điền đầy đủ thông tin").trim(),
+    fullName: yup.string().required("").trim(),
+    phone: yup.string().required("").trim(),
+    email: yup.string().required("").trim(),
+    password: yup.string().required("").trim(),
 });
 
 //callAPIforCreateStation========================================
@@ -135,7 +139,7 @@ export default function NewManager() {
         color: theme.palette.text.secondary,
     }));
     return (
-        <Paper
+        <Paper title="Quản lí"
             elevation={3}
             sx={{
                 padding: "2%",
@@ -156,16 +160,21 @@ export default function NewManager() {
                     display="flex"
                     justifyContent="left"
                     alignItems="left"
-                    sx={{ marginLeft: "33%" }}
+                    sx={{ marginLeft: "30%", marginTop: "2%", }}
                 >
                     <Grid container spacing={4} columns={20}>
                         <Grid item xs={12}>
                             <Stack spacing={3}>
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Họ tên"
+                                <Controls.TextField
+                                    // type="fullName"
+                                    fullWidth
                                     name="fullName"
+                                    label="Họ tên"
+                                    placeholder="Họ tên"
+                                    variant="outlined"
+                                    required
                                     value={formik.values.fullName}
+
                                     onChange={(e) => {
                                         formik.handleChange(e);
                                     }}
@@ -180,10 +189,15 @@ export default function NewManager() {
                                     </FormHelperText>
                                 )}
 
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Điện thoại"
+                                <Controls.TextField
+                                    type='number'
+                                    fullWidth
                                     name="phone"
+                                    label="Điện thoại"
+                                    placeholder="Điện thoại"
+                                    variant="outlined"
+                                    required
+
                                     value={formik.values.phone}
                                     onChange={(e) => {
                                         formik.handleChange(e);
@@ -199,10 +213,15 @@ export default function NewManager() {
                                     </FormHelperText>
                                 )}
 
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Email"
+                                <Controls.TextField
+                                    type="email"
+                                    fullWidth
                                     name="email"
+                                    label="Email"
+                                    placeholder="Email"
+                                    variant="outlined"
+                                    required
+
                                     value={formik.values.email}
                                     onChange={(e) => {
                                         formik.handleChange(e);
@@ -223,7 +242,8 @@ export default function NewManager() {
                                     type={values.showPass ? "text" : "password"}
                                     name="password"
                                     // sx={{'.css-r0m7rw-MuiInputBase-root-MuiOutlinedInput-root: 20rem'}}
-                                    sx={{ width: "24rem" }}
+                                    // sx={{ width: "23.2rem" }}
+                                    fullWidth
                                     label="Mật khẩu"
                                     placeholder="Mật khẩu"
                                     variant="outlined"

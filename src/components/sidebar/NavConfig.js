@@ -108,12 +108,16 @@ const navConfigAdmin = [
     ],
   },
 
+  // {
+  //   title: "Người giao hàng",
+  //   path: "/dashboard/admin/shipperAccount",
+  //   icon: getIcon("carbon:delivery"),
+  // },
   {
     title: "Người giao hàng",
-    path: "/dashboard/admin/shipperAccount",
+    path: "/dashboard/admin/adminshipper",
     icon: getIcon("carbon:delivery"),
   },
-
   {
     title: "Trạm",
     path: "/dashboard/admin/station",
@@ -122,14 +126,15 @@ const navConfigAdmin = [
 
   {
     title: "Quản lí bếp",
-    path: "/dashboard/admin/kitchenAccount",
+    path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
   // {
-  //   title: "Người giao hàng",
-  //   path: "/dashboard/admin/adminshipper",
-  //   icon: getIcon("carbon:delivery"),
+  //   title: "Quản lí bếp",
+  //   path: "/dashboard/admin/kitchenAccount",
+  //   icon: getIcon("fa6-solid:kitchen-set"),
   // },
+
 ];
 
 const navConfigKichen = [

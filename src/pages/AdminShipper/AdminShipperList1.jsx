@@ -1,6 +1,6 @@
+import * as React from "react";
 import { filter } from "lodash";
 import { useState } from "react";
-import * as React from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
@@ -8,7 +8,7 @@ import {
   Card,
   Table,
   Stack,
-  // Avatar,
+  Avatar,
   Button,
   Checkbox,
   TableRow,
@@ -24,33 +24,34 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-// mock
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
+//callAPI
+import { callAPIgetListShipper } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  callAPIgetAccountAdmin,
-  callAPIgetAccountCustomer,
-  callAPIgetListStation,
-} from "../../redux/action/acction";
-import ButtonCustomize from "./../../components/Button/ButtonCustomize";
-import jwt_decode from "jwt-decode";
+import Iconify from "../../components/hook-form/Iconify";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
+
+// mock
+// import ADMINSHIPPERLIST from "./AdminShipperSample";
+import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import jwt_decode from "jwt-decode";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import { Avatar } from "@mui/joy";
-import AdminAccountListToolbar from "../../sections/@dashboard/user/AdminAccountListToolbar";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "", label: "", alignRight: false },
-  { id: "fullName", label: "Họ tên", alignRight: false },
-  { id: "email", label: "Email", alignRight: false },
+  { id: "", label: "" },
+  { id: "fullName", label: "Họ Tên", alignRight: false },
+  // { id: "id", label: "Mã tài xế", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
-
+  { id: "noPlate", label: "Biển số xe", alignRight: false },
+  { id: "vehicleType", label: "Loại xe", alignRight: false },
+  { id: "email", label: "Tên tài khoản", alignRight: false },
+  { id: "kitchenID", label: "Bếp", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
-  { label: "Thay đổi trạng thái", alignRight: false },
   { id: "" },
 ];
 
@@ -82,23 +83,68 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_stations) =>
-        _stations.profile.fullName
-          ?.toLowerCase()
-          .indexOf(query.toLowerCase()) !== -1
+      (_kitchen) =>
+        _kitchen.account.profile.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      // console.log(_kitchen)
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function AdminAccount() {
-  const getOptions = () => [
-    { id: "active", title: "Hoạt động" },
-    { id: "inActive", title: "Tạm nghỉ" },
-    { id: "ban", title: "Bị cấm" },
-    { id: "All", title: "Tất cả" },
-  ];
+export default function AdminShipperList() {
+  //CallAPIgetListShipper=====================================
+  const location = useLocation();
 
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  // var decoded = jwt_decode(token);
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+
+
+
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetListShipper(token));
+    };
+    callAPI();
+  }, [dispatch]);
+
+
+  const handleDelete = (id, fullName) => {
+    API("PUT", URL_API + `/shippers/update-status/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetListShipper(token));
+
+        CustomizedToast({
+          message: `Đã cập nhập trạng thái ${fullName}`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${fullName} thất bại`,
+          type: "ERROR",
+        });
+      }
+    }, []);
+  };
+
+  const shipper = useSelector((state) => {
+    return state.userReducer.listShipper;
+  });
+  // const token = localStorage.getItem("token");
+
+  //CallAPIgetListShipper=====================================
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -112,75 +158,6 @@ export default function AdminAccount() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  //CALL API====================================================
-  const location = useLocation();
-
-  // const token = localStorage.getItem("token");
-
-  // const decoded = jwt_decode(token);
-  const Navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  if (token === null) {
-    Navigate("/");
-  }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
-
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    const callAPI = async () => {
-      await dispatch(callAPIgetAccountAdmin(token));
-    };
-    callAPI();
-  }, [dispatch]);
-
-  const handleDelete = (id, fullName) => {
-    API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
-      try {
-        dispatch(callAPIgetAccountAdmin(token));
-
-        CustomizedToast({
-          message: `Đã cập nhập trạng thái ${fullName}`,
-          type: "SUCCESS",
-        });
-      } catch (err) {
-        CustomizedToast({
-          message: `Cập nhập trạng thái ${fullName} thất bại`,
-          type: "ERROR",
-        });
-      }
-    }, []);
-  };
-
-  const handleActive = (id, fullName) => {
-    API("PUT", URL_API + `/accounts/unBan/${id}`, null, token).then((res) => {
-      try {
-        dispatch(callAPIgetAccountAdmin(token));
-
-        CustomizedToast({
-          message: `Đã cập nhập trạng thái ${fullName}`,
-          type: "SUCCESS",
-        });
-      } catch (err) {
-        CustomizedToast({
-          message: `Cập nhập trạng thái ${fullName} thất bại`,
-          type: "ERROR",
-        });
-      }
-    }, []);
-  };
-
-  const station = useSelector((state) => {
-    return state.userReducer.accountAdmin;
-  });
-  //CALL API=====================================================
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -189,7 +166,7 @@ export default function AdminAccount() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = station.map((n) => n.fullName);
+      const newSelecteds = shipper.map((n) => n.fullName);
       setSelected(newSelecteds);
       return;
     }
@@ -227,13 +204,23 @@ export default function AdminAccount() {
     setFilterName(event.target.value);
   };
 
-  const filteredStations = applySortFilter(
-    station,
+  // const emptyRows =
+  //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ADMINSHIPPERLIST.length) : 0;
+
+  const filteredKitchen = applySortFilter(
+    shipper,
     getComparator(order, orderBy),
     filterName
   );
-
-  const isStationNotFound = filteredStations.length === 0;
+  //setColor button
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#FFCC32"),
+    backgroundColor: "#FFCC33",
+    "&:hover": {
+      backgroundColor: "#ffee32",
+    },
+    display: "center",
+  }));
 
   // const Button1 = styled(Button)(({ theme }) => ({
   //   color: theme.palette.getContrastText("#FFCC33"),
@@ -242,58 +229,69 @@ export default function AdminAccount() {
   //   // display: "center"
   // }));
 
+  const isKitchenNotFound = filteredKitchen.length === 0;
+
   return (
-    <Page title="Quản trị viên">
-      <Container>
+    <Page title="Người giao hàng">
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h4" gutterBottom></Typography>
-          {decoded.role === "admin" && (
-            <ButtonCustomize
-              variant="contained"
-              component={RouterLink}
-              to="/dashboard/admin/newadmin"
-              nameButton="Thêm Quản trị viên"
-            />
-          )}
+          <Typography variant="h4" gutterBottom>
+            {/* User */}
+          </Typography>
+
+          {/* {token.role === "admin" && ( */}
+          <ButtonCustomize
+            variant="contained"
+            component={RouterLink}
+            to="/dashboard/admin/newshipper"
+            nameButton="Thêm tài xế"
+          >
+            Thêm tài xế
+          </ButtonCustomize>
+          {/* )} */}
         </Stack>
 
         <Card>
-          <AdminAccountListToolbar
+          <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
-            options={getOptions()}
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1000 }}>
+            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={station.length}
+                  rowCount={shipper.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
+
                 <TableBody>
-                  {filteredStations
+                  {filteredKitchen
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
                         id,
-                        profile,
                         avatar,
                         fullName,
-                        email,
                         phone,
+                        noPlate,
+                        vehicleType,
                         status,
+                        email,
+                        account,
+                        kitchen,
+                        address,
                       } = row;
                       const isItemSelected = selected.indexOf(fullName) !== -1;
 
@@ -306,81 +304,66 @@ export default function AdminAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        /> */}
+                          <TableCell >  </TableCell>
+
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={2}
+                            >
+                              <Avatar
+                                alt={fullName}
+                                src={row.profile?.avatar}
+                              />
+                              <Typography variant="subtitle2" noWrap>
+                                {row.account.profile?.fullName}
+                              </Typography>
+                            </Stack>
                           </TableCell>
 
-                          {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">{profile.fullName}</TableCell>
-
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar alt={fullName} src={avatar} />
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {fullName}
-                                                            </Typography>
-                                                        </Stack>
-                                                    </TableCell> */}
 
                           <TableCell align="left">
-                            {row.profile.email}
+                            {row.account?.phone}
                           </TableCell>
-                          <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left">{noPlate}</TableCell>
+                          <TableCell align="left">{vehicleType}</TableCell>
+                          <TableCell align="left">
+                            {row.account.profile?.email}
+                          </TableCell>
+                          <TableCell align="left">{row.kitchen?.address}</TableCell>
 
                           <TableCell align="left">
                             <div>
                               {status === "inActive" && (
-                                // <Alert severity="warning">inActive</Alert>
                                 <Label color="warning">Tạm nghỉ</Label>
                               )}
                               {status === "active" && (
-                                // <Alert severity="info">waiting</Alert>
                                 <Label color="success">Hoạt động</Label>
                               )}
                               {status === "ban" && (
-                                // <Alert severity="info">waiting</Alert>
                                 <Label color="error">Bị cấm</Label>
                               )}
                             </div>
                           </TableCell>
 
                           <TableCell align="left">
-                            {status === "ban" ? (
-                              <ButtonCustomize
-                                variant="outlined"
-                                onClick={() => {
-                                  // handleDelete(id, fullName);
-                                  handleActive(id, profile.fullName);
-                                }}
-                                nameButton="Mở chặn"
-                              >
-                                Mở chặn
-                              </ButtonCustomize>
-                            ) : (
-                              <ButtonCustomize
-                                variant="outlined"
-                                onClick={() => {
-                                  // handleActive(id, fullName);
-                                  handleDelete(id, profile.fullName);
-                                }}
-                                nameButton="Chặn"
-                              >
-                                Chặn
-                              </ButtonCustomize>
-                            )}
+                            <ButtonCustomize
+                              variant="outlined"
+                              display="TableCell"
+                              component={RouterLink}
+                              to={`${location.pathname}/updateshipper/${id}`}
+                              nameButton="Chi tiết"
+                            >
+                              Chi tiết
+                            </ButtonCustomize>
                           </TableCell>
                         </TableRow>
                       );
                     })}
                 </TableBody>
-                {isStationNotFound && (
+
+                {isKitchenNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -396,7 +379,7 @@ export default function AdminAccount() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={station.length}
+            count={shipper.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
