@@ -30,14 +30,10 @@ export default function ConfirmDialog(props) {
     open,
     setOpen,
   } = props;
-
+  console.log(content);
   return (
     <div>
-      <ButtonCustomize
-        variant="outlined"
-        onClick={handleClickOpen}
-        nameButton={titleDialog}
-      />
+      
 
       <Dialog
         open={open}
