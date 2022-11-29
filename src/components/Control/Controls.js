@@ -8,7 +8,9 @@ import TextArea from "./TextArea";
 import TimeInput from "./TimeInput";
 import TagInput from "./Taginput";
 import InputTagCheckBox from "./InputTagCheckBox";
-
+import {
+  TextField,
+} from "@mui/material";
 const Controls = {
   Input,
   RadioGroup,
@@ -20,6 +22,8 @@ const Controls = {
   TimeInput,
   TagInput,
   InputTagCheckBox,
+  TextField,
+  
 };
 
 export default Controls;

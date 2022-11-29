@@ -302,12 +302,7 @@ export default function ShipperAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        /> */}
-                          </TableCell>
+                          <TableCell >  </TableCell>
 
                           {/* <TableCell align="left">{id}</TableCell> */}
                           <TableCell align="left">
@@ -351,23 +346,23 @@ export default function ShipperAccount() {
 
                           <TableCell align="left">
                             {status === "active" ? (
-                              <Button1
+                              <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
                                   handleDelete(id, fullName);
                                 }}
                               >
                                 Chặn
-                              </Button1>
+                              </ButtonCustomize>
                             ) : (
-                              <Button1
+                              <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
                                   handleActive(id, fullName);
                                 }}
                               >
                                 Mở chặn
-                              </Button1>
+                              </ButtonCustomize>
                             )}
                           </TableCell>
                         </TableRow>
