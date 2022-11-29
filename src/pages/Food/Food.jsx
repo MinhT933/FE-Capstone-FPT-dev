@@ -334,30 +334,11 @@ export default function Food() {
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
                           <TableCell align="left">
-                            {/* {status === "active" ? (
-                              <ConfirmDialog
-                                open={open}
-                                content={name}
-                                handleClickOpen={handleClickOpen}
-                                handleClose={handleClose}
-                                titleDialog="Ngưng bán"
-                                onClick={() => handleDelete(id, token)}
-                              />
-                            ) : (
-                              <ConfirmDialog
-                                open={open}
-                                handleClickOpen={handleClickOpen}
-                                handleClose={handleClose}
-                                content={name}
-                                titleDialog="Bán"
-                                onClick={() => handleDelete(id, token)}
-                              />
-                            )} */}
                             <ButtonCustomize
                               variant="outlined"
                               onClick={() => handleClickOpen(row)}
                               nameButton={
-                                status === "active" ? "ngung ban" : "ban"
+                                status === "active" ? "Ngưng bán" : "Bán"
                               }
                             />
                           </TableCell>

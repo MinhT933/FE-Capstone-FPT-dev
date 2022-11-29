@@ -21,20 +21,10 @@ function Confirm(props) {
 }
 
 export default function ConfirmDialog(props) {
-  const {
-    titleDialog,
-    content,
-    onClick,
-    handleClickOpen,
-    handleClose,
-    open,
-    setOpen,
-  } = props;
+  const { content, onClick, handleClose, open } = props;
   console.log(content);
   return (
     <div>
-      
-
       <Dialog
         open={open}
         onClose={handleClose}
