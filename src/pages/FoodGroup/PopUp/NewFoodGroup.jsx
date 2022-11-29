@@ -202,7 +202,7 @@ export default function NewFoodGroup(props) {
                         labelId="demo-multiple-checkbox-label"
                         id="demo-multiple-checkbox"
                         multiple={true}
-                        value={valueTag}
+                        value={valueTag} 
                         onChange={(e) => handleChange(e)}
                         input={<OutlinedInput label="Tag" />}
                         renderValue={(selected) => selected.join(", ")}

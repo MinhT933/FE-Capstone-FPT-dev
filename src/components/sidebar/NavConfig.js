@@ -126,9 +126,14 @@ const navConfigAdmin = [
 
   {
     title: "Quản lí bếp",
-    path: "/dashboard/admin/kitchenAccount",
+    path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
+  // {
+  //   title: "Quản lí bếp",
+  //   path: "/dashboard/admin/kitchenAccount",
+  //   icon: getIcon("fa6-solid:kitchen-set"),
+  // },
 
 ];
 

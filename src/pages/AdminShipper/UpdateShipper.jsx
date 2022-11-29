@@ -207,7 +207,7 @@ export default function UpdateShipper() {
 
                                 <Controls.DatePicker
                                     label="Ngày sinh"
-                                    width="26.5rem"
+                                    // width="26.5rem"
                                     inputFormat="DD-MM-YYYY"
                                     value={valueStarTime}
                                     onChange={(e) => {

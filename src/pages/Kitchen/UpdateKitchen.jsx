@@ -154,6 +154,7 @@ export default function UpdateKitchen() {
         padding: "2%",
         marginBottom: "10%",
         margin: "2%",
+        marginTop: "2%",
       }}
     >
       <PageHeader

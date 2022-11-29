@@ -145,7 +145,7 @@ export default function UserAccount() {
         dispatch(callAPIgetAccountCustomer(token));
 
         CustomizedToast({
-          message: `Đã Cập nhập trạng thái ${fullName}`,
+          message: `Đã cập nhập trạng thái ${fullName}`,
           type: "SUCCESS",
         });
       } catch (err) {
@@ -163,7 +163,7 @@ export default function UserAccount() {
         dispatch(callAPIgetAccountCustomer(token));
 
         CustomizedToast({
-          message: `Đã Cập nhập trạng thái ${fullName}`,
+          message: `Đã cập nhập trạng thái ${fullName}`,
           type: "SUCCESS",
         });
       } catch (err) {
@@ -318,8 +318,8 @@ export default function UserAccount() {
                               <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
-                                  // handleDelete(id, fullName);
-                                  handleActive(id, fullName);
+                                  // handleDelete(id, profile.fullName);
+                                  handleActive(id, profile.fullName);
                                 }}
                                 nameButton="Mở chặn"
                               >
@@ -329,8 +329,8 @@ export default function UserAccount() {
                               <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
-                                  // handleActive(id, fullName);
-                                  handleDelete(id, fullName);
+                                  // handleActive(id, profile.fullName);
+                                  handleDelete(id, profile.fullName);
                                 }}
                                 nameButton="Chặn"
                               >

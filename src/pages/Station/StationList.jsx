@@ -329,7 +329,7 @@ export default function StationList() {
                               </ButtonCustomize>
                             ) : (
                               <ButtonCustomize
-                                variant="outlined"
+                                variant="outlined" 
                                 onClick={() => {
                                   handleDelete(id, name);
                                 }}
