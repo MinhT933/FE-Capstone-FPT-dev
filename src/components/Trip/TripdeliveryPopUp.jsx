@@ -1,17 +1,8 @@
-import { Dialog, DialogContent, DialogTitle, Grid, Paper } from "@mui/material";
-import CardHeader from "@mui/material/CardHeader";
-import Card from "@mui/material/Card";
+import { Dialog, DialogContent, DialogTitle, Paper } from "@mui/material";
 import React from "react";
 import { useFormik } from "formik";
-import Stack from "@mui/material/Stack";
-// import Button from "@mui/material/Button";
-// import { styled } from "@mui/material/styles";
 import * as yup from "yup";
-// import { URL_API } from "./../../Axios/URL_API/URL";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -22,17 +13,16 @@ import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
-import Controls from "../Control/Controls";
 import PageHeader from "../PageHeader";
 import Iconify from "../hook-form/Iconify";
 import { CustomizedToast } from "../Toast/ToastCustom";
 import ButtonCustomize from "../Button/ButtonCustomize";
 import {
+  callAPIgetOrdertoCreateDeliveryTrip,
   callAPIgetShipperActive,
-  callAPIgetShipperOfKitchen,
   callAPIGetSlot,
   callAPIGetStationByKitchen,
+  callAPIgetTripActive,
 } from "../../redux/action/acction";
 import { URL_API } from "../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
@@ -58,8 +48,11 @@ export default function TripdeliveryPopUp(props) {
     stationID,
     valueStarTime,
     selectionModel,
+    idKitchen,
     slot,
   } = props;
+
+  // console.log(selectionModel);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -81,10 +74,10 @@ export default function TripdeliveryPopUp(props) {
   const profiles = useSelector((state) => {
     return state.userReducer.profiles;
   });
-  const idKitchen = profiles.id;
+  // const idKitchen = profiles.id;
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
-      dispatch(await callAPIgetShipperActive(token));
+      dispatch(await callAPIgetTripActive(token));
       dispatch(await callAPIGetStationByKitchen(token));
       dispatch(await callAPIGetSlot(token));
     };
@@ -101,8 +94,6 @@ export default function TripdeliveryPopUp(props) {
   const [valueTag, setValueTag] = React.useState([]);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-
     setValueTag(e.target.value);
   };
 
@@ -130,38 +121,47 @@ export default function TripdeliveryPopUp(props) {
       shippers: [],
     },
     onSubmit: async (values) => {
-      // const a = [];
-
-      console.log(1);
-      // for (const i of valueTag) {
-      //     const arr = listShipperSelectbox.filter((item) => item.name === i);
-
-      //     if (arr.length > 0) {
-      //         a.push(arr[0].id);
-      //     }
-      // }
       const data = {
         shipperId: valueTag,
-        // shipperId: formik.values.shipperId,
         timeSlotId: slot,
         stationId: stationID,
-        deliveryDate: convert(valueStarTime.$d),
+        kitchenId: idKitchen,
+        deliveryDate: convert(valueStarTime),
         ordersIds: selectionModel,
-        // ordersIds: a,
       };
 
-      console.log(data);
       try {
         const res = await API("POST", URL_API + `/delivery_trips`, data, token);
         CustomizedToast({
-          message: `Đã tạo chuyếns thành công`,
+          message: `Đã tạo chuyến thành công`,
           type: "SUCCESS",
         });
+        dispatch(
+          await callAPIgetOrdertoCreateDeliveryTrip(
+            token,
+            slot,
+            convert(valueStarTime),
+            stationID,
+            idKitchen
+          )
+        );
       } catch (error) {
-        CustomizedToast({
-          message: "Vui lòng xem lại thông tin",
-          type: "ERROR",
-        });
+        if (idKitchen === "") {
+          CustomizedToast({
+            message: "Vui lòng thêm bếp",
+            type: "ERROR",
+          });
+        } else if (stationID === "") {
+          CustomizedToast({
+            message: "Vui lòng chọn địa điểm giao hàng",
+            type: "ERROR",
+          });
+        } else if (slot === "") {
+          CustomizedToast({
+            message: "Vui lòng chọn thời gian giao hàng",
+            type: "ERROR",
+          });
+        }
       }
     },
   });

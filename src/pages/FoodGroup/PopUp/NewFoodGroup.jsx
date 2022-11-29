@@ -122,10 +122,20 @@ export default function NewFoodGroup(props) {
           type: "SUCCESS",
         });
       } catch (error) {
-        CustomizedToast({
-          message: "Vui lòng xem lại thông tin",
-          type: "ERROR",
-        });
+        // eslint-disable-next-line no-lone-blocks
+        {
+          error.response.data.message ===
+          "Foods must be less than or equal to TotalFood"
+            ? CustomizedToast({
+                message:
+                  "Số thức ăn được chọn phải bé hơn hoặc bằng tổng số thức ăn",
+                type: "ERROR",
+              })
+            : CustomizedToast({
+                message: "Vui lòng xem lại thông tin",
+                type: "ERROR",
+              });
+        }
       }
     },
   });
@@ -222,6 +232,7 @@ export default function NewFoodGroup(props) {
                 <Grid item xs={12}>
                   <Controls.TextArea
                     variant="outlined"
+                    label="Mô tả" 
                     placeholder="Mô tả"
                     name="description"
                     value={formik.values.description}

@@ -130,7 +130,7 @@ export default function Foodlistoolbar({
           <Grid
             container
             spacing={2}
-            sx={{ marginLeft: "5%", marginTop: "0.1rem" }}
+            sx={{ marginLeft: "2%", marginTop: "0.1rem" }}
           >
             <Controls.Select
               label="Trạng thái"

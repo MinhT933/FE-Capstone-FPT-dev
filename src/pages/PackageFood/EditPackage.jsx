@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Paper } from "@mui/material";
-
+import * as moment from "moment";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as yup from "yup";
@@ -29,7 +29,6 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { Stack } from "@mui/system";
 import dayjs from "dayjs";
 import DateTime from "./../../components/Control/DateTime";
-import jwt_decode from "jwt-decode";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -64,15 +63,9 @@ export default function EditPackage() {
 
   let { id } = useParams();
 
-  const [value, setValue] = useState();
-
   const [input, setInput] = useState([]);
 
-  const [groupfood, setGroupFood] = useState([]);
-
   const dispatch = useDispatch();
-
-  const [data, setData] = useState([]);
 
   const [valueStarTime, setValueStarTime] = React.useState(
     dayjs("2022-10-26T21:11:5")
@@ -210,6 +203,8 @@ export default function EditPackage() {
       // const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
       // console.log(startSale, endSale);
       // console.log(startSale);
+      const startSale = moment(valueStarTime).format("YYYY-MM-DD hh:mm:ss");
+      const endSale = moment(valueEndTime).format("YYYY-MM-DD hh:mm:ss");
 
       // const startDate = new Date(valueStarTime).toLocaleDateString();
       // const endDate = new Date(valueEndTime).toLocaleDateString();
@@ -220,8 +215,8 @@ export default function EditPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
-      formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
+      formData.append("endSale", endSale);
+      formData.append("startSale", startSale);
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
@@ -251,11 +246,11 @@ export default function EditPackage() {
         await Promise.all(arrayPromise);
 
         CustomizedToast({
-          message: `Đã thêm món ${formik.values.name}`,
+          message: `Đã chỉnh sửa ${formik.values.name}`,
           type: "SUCCESS",
         });
       } catch (error) {
-        CustomizedToast({ message: "Tạo thất bại", type: "ERROR" });
+        CustomizedToast({ message: "Chỉnh sửa thất bại", type: "ERROR" });
       }
     },
   });
@@ -493,12 +488,11 @@ export default function EditPackage() {
                   variant="outlined"
                   name="startSale"
                   label="Ngày mở bán"
-                  width="16rem"
+                  width="85%"
                   // disablePast
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
-                    console.log(e);
                   }}
                 />
               </Grid>
@@ -530,7 +524,7 @@ export default function EditPackage() {
                   name="endSale"
                   label="Ngày kết thúc bán"
                   value={valueEndTime}
-                  width="16rem"
+                  width="85%"
                   onChange={(e) => {
                     setValueEndtime(e);
                   }}
@@ -553,7 +547,7 @@ export default function EditPackage() {
               </Grid>
               <Grid item xs={6}>
                 <Controls.TextArea
-                  width="16rem"
+                  width="85%"
                   variant="outlined"
                   placeholder="Mô tả"
                   name="description"
@@ -583,7 +577,7 @@ export default function EditPackage() {
                     <Controls.Select
                       name="timeFrameID"
                       label="Chọn khung thời gian"
-                      width="13rem"
+                      width="23.5vw"
                       disabled
                       value={formik.values.timeFrameID}
                       onChange={(e) => {
@@ -624,7 +618,7 @@ export default function EditPackage() {
                   return <>{item}</>;
                 })}
               <Box>
-                <Stack width="200px" mt={"2rem"} ml={"24rem"} mb={"1rem"}>
+                <Stack width="200px" mt={"2rem"} ml={"280%"} mb={"1rem"}>
                   <ButtonCustomize
                     variant="contained"
                     type="submit"
@@ -663,8 +657,6 @@ export default function EditPackage() {
                 {/* css button input img */}
                 <Box
                   sx={{
-                    // height: "100%",
-                    // width: "100%",
                     maxHeight: { xs: 233, md: 167 },
                     maxWidth: { xs: 350, md: 250 },
                     marginTop: "10%",

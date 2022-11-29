@@ -14,6 +14,7 @@ import {
 import Iconify from "../../../components/hook-form/Iconify";
 
 import Controls from "./../../../components/Control/Controls";
+import { Grid } from "@mui/material";
 
 import { callAPIgetGroupFoodByStatus } from "../../../redux/action/acction";
 
@@ -97,19 +98,25 @@ export default function GroupFoodListtoolbar({
               <InputAdornment position="start">
                 <Iconify
                   icon="eva:search-fill"
-                  sx={{ color: "text.disabled", width: 20, height: 20 }}
+                  sx={{ color: "text.disabled", width: "20", height: 20 }}
                 />
               </InputAdornment>
             }
           />
-          <Controls.Select
-            label="Trạng thái"
-            width="10rem"
-            marginRight="50%  "
-            options={options}
-            onChange={handleChange}
-            value={haha}
-          />
+          <Grid
+            container
+            spacing={2}
+            sx={{ marginLeft: "2%", marginTop: "0.1rem" }}
+          >
+            <Controls.Select
+              label="Trạng thái"
+              width="20%"
+              marginRight="55%"
+              options={options}
+              onChange={handleChange}
+              value={haha}
+            />
+          </Grid>
         </>
       )}
 
