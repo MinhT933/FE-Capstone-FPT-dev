@@ -535,6 +535,49 @@ export const callAPIGetListDelivery = (token, status, valueStarTime) => {
     } catch (err) {}
   };
 };
+export const callAPIgetAccountShipperByStatusActive = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+
+        URL_API + `/accounts?role=shipper&status=active`,
+
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_SHIPPER_ACTIVE,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {}
+  };
+};
+
+export const callAPIgetTripActive = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+
+        URL_API + `/shippers?status=active`,
+
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_SHIPPER_ACTIVE,
+          payload: res.data.result,
+        })
+      );
+      console.log(res.data.result);
+    } catch (err) {}
+  };
+};
 
 export const callAPIgetOrdertoCreateDeliveryTrip = (
   token,
@@ -545,20 +588,20 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
 ) => {
   return async (dispatch) => {
     try {
-      const res = await API(
-        "GET",
-        URL_API +
-          `/orders/byKitchen?stationId=f2fda2c1-1809-4cb3-8ffe-f2526a18302b&kitchenId=4f0b492d-d646-4e2b-9b39-1c453e4e6c9f&time_slotId=f67h8204ih3945h893u45uh89hjh98345h9&deliveryDate=2022-11-24`,
-        null,
-        token
-      );
       // const res = await API(
       //   "GET",
       //   URL_API +
-      //     `/orders/byKitchen?stationId=${stationID}&kitchenId=${kitchenID}&time_slotId=${slot}&deliveryDate=${valueStarTime}`,
+      //     `/orders/byKitchen?stationId=f2fda2c1-1809-4cb3-8ffe-f2526a18302b&kitchenId=4f0b492d-d646-4e2b-9b39-1c453e4e6c9f&time_slotId=f67h8204ih3945h893u45uh89hjh98345h9&deliveryDate=2022-11-24`,
       //   null,
       //   token
       // );
+      const res = await API(
+        "GET",
+        URL_API +
+          `/orders/byKitchen?stationId=${stationID}&kitchenId=${kitchenID}&time_slotId=${slot}&deliveryDate=${valueStarTime}`,
+        null,
+        token
+      );
       dispatch(
         createAction({
           type: PathAction.GET_LIST_ORDER_TO_CREATE,
@@ -573,7 +616,44 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
         })
       );
       CustomizedToast({
-        message: "KHông tìm thấy dữ liệu",
+        message: "Không tìm thấy dữ liệu",
+        type: "ERROR",
+      });
+    }
+  };
+};
+
+export const callAPIgetallOrder = (token) => {
+  return async (dispatch) => {
+    try {
+      // const res = await API(
+      //   "GET",
+      //   URL_API +
+      //     `/orders/byKitchen?stationId=f2fda2c1-1809-4cb3-8ffe-f2526a18302b&kitchenId=4f0b492d-d646-4e2b-9b39-1c453e4e6c9f&time_slotId=f67h8204ih3945h893u45uh89hjh98345h9&deliveryDate=2022-11-24`,
+      //   null,
+      //   token
+      // );
+      const res = await API(
+        "GET",
+        URL_API + `/orders/byStatus?status=progress`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_ORDER_TO_CREATE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_ORDER_TO_CREATE,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: "Không tìm thấy dữ liệu",
         type: "ERROR",
       });
     }

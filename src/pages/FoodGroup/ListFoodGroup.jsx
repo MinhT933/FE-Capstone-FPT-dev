@@ -22,7 +22,7 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 
 // import DnDFoodGroup from "./DnDFoodGroup";
 import jwt_decode from "jwt-decode";
@@ -37,6 +37,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import GroupFoodListtoolbar from "../../sections/@dashboard/user/GroupFoodListtoolbar";
+import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
 
 // ----------------------------------------------------------------------
 
@@ -106,6 +107,9 @@ export default function ListFoodGroup() {
 
   const [valueId, setValueId] = useState();
 
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+
   const GroupFood = useSelector((state) => {
     return state.userReducer.listGroupFood;
   });
@@ -115,6 +119,15 @@ export default function ListFoodGroup() {
       await dispatch(callAPIgetGroupFood(token));
     };
     getGroupfood();
+  }, []);
+
+  const handleClickOpen = React.useCallback((item) => {
+    setOpen(true);
+    setValue(item);
+  }, []);
+
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
   }, []);
 
   const handleRequestSort = (event, property) => {
@@ -134,8 +147,8 @@ export default function ListFoodGroup() {
 
   const getOptions = () => [
     // { id: "waiting", title: "Waiting" },
-    { id: "active", title: "Hoạt động" },
-    { id: "inActive", title: "Không hoạt động" },
+    { id: "active", title: "Đang bán" },
+    { id: "inActive", title: "Ngưng bán" },
     { id: "All", title: "Tất cả" },
   ];
   // const token = localStorage.getItem("token");
@@ -212,8 +225,10 @@ export default function ListFoodGroup() {
   const handleAccept = (id, name) => {
     API("PUT", URL_API + `/food-groups/active/${id}`, null, token).then(
       (res) => {
+        console.log(res);
         try {
           dispatch(callAPIgetGroupFood(token));
+          handleClose();
           CustomizedToast({
             message: `Đã Cập nhập trạng thái ${name}`,
             type: "SUCCESS",
@@ -233,6 +248,7 @@ export default function ListFoodGroup() {
       (res) => {
         try {
           dispatch(callAPIgetGroupFood(token));
+          handleClose();
           CustomizedToast({
             message: `Đã ngưng bán ${name} thành công`,
             type: "SUCCESS",
@@ -340,14 +356,14 @@ export default function ListFoodGroup() {
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
-                                <Label color="error">Không hoạt động</Label>
+                                <Label color="error">Ngưng bán</Label>
                               )}
                               {status === "waiting" && (
                                 // <Alert severity="info">waiting</Alert>
-                                <Label color="warning">Đang chờ</Label>
+                                <Label color="warning">Đang chờ...</Label>
                               )}
                               {status === "active" && (
-                                <Label color="success">Hoạt động</Label>
+                                <Label color="success">Đang bán</Label>
                               )}
                             </div>
                           </TableCell>
@@ -369,7 +385,7 @@ export default function ListFoodGroup() {
 
                           {/* {decoded.role === "manage" && ( */}
                           <TableCell align="center">
-                            {status === "active" ? (
+                            {/* {status === "active" ? (
                               <ButtonCustomize
                                 nameButton="Ngưng bán"
                                 onClick={() => handleReject(id, name)}
@@ -384,17 +400,19 @@ export default function ListFoodGroup() {
                                 nameButton="Mở bán"
                                 onClick={() => handleAccept(id, name)}
                               />
-                            )}
+                            )} */}
+                            <ButtonCustomize
+                              variant="outlined"
+                              onClick={() => handleClickOpen(row)}
+                              nameButton={
+                                status === "active" ? "Ngưng bán" : "Bán"
+                              }
+                            />
                           </TableCell>
                           {/* )} */}
                         </TableRow>
                       );
                     })}
-                  {/* {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )} */}
                 </TableBody>
 
                 {isUserNotFound && (
@@ -418,12 +436,24 @@ export default function ListFoodGroup() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            //fix languge
             labelRowsPerPage={"Số hàng trên một trang"}
             labelDisplayedRows={({ from, to, count }) => {
               return "" + from + "-" + to + " của " + count;
             }}
           />
+          {open && (
+            <ConfirmDialog
+              open={open}
+              content={value.name}
+              handleClickOpen={handleClickOpen}
+              handleClose={handleClose}
+              onClick={
+                value.status === "active"
+                  ? () => handleReject(value.id, value.name)
+                  : () => handleAccept(value.id, value.name)
+              }
+            />
+          )}
         </Card>
       </Container>
       <NewFoodGroup

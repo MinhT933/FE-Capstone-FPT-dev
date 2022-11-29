@@ -17,6 +17,8 @@ import {
   callAPIgetListStationbyidKitchen,
   callAPIgetOrdertoCreateDeliveryTrip,
   callAPIGetSlot,
+  callAPIgetAccountShipperByStatusActive,
+  callAPIgetallOrder,
 } from "../../redux/action/acction";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -40,17 +42,17 @@ export default function Tripdelivery() {
   // const idKitchen = profiles.id;
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
-      // dispatch(await callAPIgetShipperOfKitchen(token, idKitchen));
-      // dispatch(await callAPIgetListStation(token));
       dispatch(await callAPIGetSlot(token));
+      dispatch(await callAPIgetallOrder(token));
       // dispatch(await callAPIgetListStationbyidKitchen(token, idkitchen));
       dispatch(await callAPIgetListKitchen(token));
+      dispatch(await callAPIgetAccountShipperByStatusActive(token));
     };
     getfoodByFoodGroupId();
   }, [dispatch, token, idkitchen]);
 
   const shipperofkichen = useSelector((state) => {
-    return state.userReducer.shipPerOfKitchen;
+    return state.userReducer.listShipperActive;
   });
 
   const listKichen = useSelector((state) => {
@@ -114,35 +116,46 @@ export default function Tripdelivery() {
   const [stationID, setStationID] = useState("");
   const [slot, setSlot] = useState("");
   const [result, setResult] = useState("");
+  const [pageSize, setPageSize] = React.useState(5);
 
+  console.log(valueStarTime);
   const columns = [
     // { field: "id", headerName: "ID", flex: 1 },
     { field: "nameFood", headerName: "Tên Món", flex: 1 },
     {
+      field: "kitchen",
+      headerName: "Bếp",
+      flex: 1,
+      renderCell: (param) => {
+        return param.row.kitchen.address;
+      },
+    },
+    {
       field: "name",
-      headerName: "Tên trạm",
+      headerName: "Điểm giao",
       flex: 1,
       renderCell: (param) => {
         return param.row.station.name;
       },
     },
-    {
-      field: "station",
-      headerName: "Địa chỉ",
-      flex: 1,
-      renderCell: (param) => {
-        return param.row.station.address;
-      },
-    },
+    // {
+    //   field: "station",
+    //   headerName: "Địa chỉ",
+    //   flex: 1,
+    //   renderCell: (param) => {
+    //     return param.row.station.address;
+    //   },
+    // },
 
-    {
-      field: "openTime",
-      headerName: "Giờ mở cửa",
-      flex: 1,
-      renderCell: (param) => {
-        return param.row.station.openTime;
-      },
-    },
+    // {
+    //   field: "openTime",
+    //   headerName: "Giờ mở cửa",
+    //   flex: 1,
+    //   renderCell: (param) => {
+    //     return param.row.station.openTime;
+    //   },
+    // },
+
     {
       field: "phone",
       headerName: "Điện thoại ",
@@ -159,13 +172,6 @@ export default function Tripdelivery() {
         return param.row.station.deliveryDate;
       },
     },
-    // {
-    //   field: "timeslotID", headerName: "Ngày giao", flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.deliveryDate
-    //   }
-
-    // },
   ];
 
   const rows = [];
@@ -185,12 +191,11 @@ export default function Tripdelivery() {
   console.log(resultList);
 
   const handleClickFind = async () => {
-    const date = moment(valueStarTime).format("YYYY-MM-DD ");
     dispatch(
       await callAPIgetOrdertoCreateDeliveryTrip(
         token,
         slot,
-        date,
+        convert(valueStarTime),
         stationID,
         idkitchen
       )
@@ -234,6 +239,7 @@ export default function Tripdelivery() {
                 inputFormat="YYYY-MM-DD"
                 value={valueStarTime}
                 onChange={(e) => {
+                  console.log(e);
                   setValueStarTime(e);
                 }}
               />
@@ -304,25 +310,44 @@ export default function Tripdelivery() {
                 <DataGrid
                   rows={resultList}
                   columns={columns}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
+                  pageSize={pageSize}
+                  rowsPerPageOptions={[5, 10, 20]}
                   getRowId={(row) => row.id}
                   checkboxSelection
+                  onPageSizeChange={(newPage) => setPageSize(newPage)}
                   onSelectionModelChange={(newSelectionModel) => {
-                    console.log(newSelectionModel);
                     setSelectionModel(newSelectionModel);
                   }}
                   pagination
+                  localeText={{
+                    MuiTablePagination: {
+                      labelRowsPerPage: "Số hàng trên một trang",
+                      labelDisplayedRows: ({ from, to, count }) =>
+                        `${from} - ${to} của ${count}`,
+                    },
+                  }}
+                  // labelRowsPerPage="Số hàng trên một trang"
+                  // labelDisplayedRows={({ from, to, count }) => {
+                  //   return "" + from + "-" + to + " của " + count;
+                  // }}
                 />
               ) : (
                 <DataGrid
                   rows={rows}
                   columns={columns}
-                  pageSize={5}
+                  pageSize={pageSize}
                   rowsPerPageOptions={[5]}
+                  onPageSizeChange={(newPage) => setPageSize(newPage)}
                   getRowId={(row) => row.id}
                   checkboxSelection
                   pagination
+                  localeText={{
+                    MuiTablePagination: {
+                      labelRowsPerPage: "Số hàng trên một trang",
+                      labelDisplayedRows: ({ from, to, count }) =>
+                        `${from} - ${to} của ${count}`,
+                    },
+                  }}
                 />
               )}
             </div>
@@ -347,6 +372,7 @@ export default function Tripdelivery() {
         valueStarTime={valueStarTime}
         selectionModel={selectionModel}
         slot={slot}
+        idKitchen={idkitchen}
       ></TripdeliveryPopUp>
     </Paper>
   );

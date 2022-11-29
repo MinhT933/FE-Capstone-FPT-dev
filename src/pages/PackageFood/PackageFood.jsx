@@ -1,14 +1,12 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { sentenceCase } from "change-case";
 import * as React from "react";
 
 import {
   Card,
   Table,
   Stack,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -73,9 +71,9 @@ function descendingComparator(a, b, orderBy) {
 }
 
 const getOptions = () => [
-  { id: "waiting", title: "Waiting" },
-  { id: "active", title: "Active" },
-  { id: "inActive", title: "InActive" },
+  { id: "waiting", title: "Đang chờ" },
+  { id: "active", title: "Đang bán" },
+  { id: "inActive", title: "Ngưng bán" },
   { id: "All", title: "Tất cả" },
 ];
 // console.log(getOptions().id);
@@ -311,16 +309,6 @@ export default function PackageFood() {
                           <TableCell align="left">{totalFood}</TableCell>
                           <TableCell align="left">{totalStation}</TableCell>
                           <TableCell align="left">
-                            {/* <Label
-                              variant="ghost"
-                              color={
-                                (status === "inactive" && "error") ||
-                                (status === "waiting" && "warning") ||
-                                "success"
-                              }
-                            >
-                              {status}
-                            </Label> */}
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
