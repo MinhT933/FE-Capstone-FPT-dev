@@ -110,14 +110,15 @@ export default function Food() {
 
   // const [open, setOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
+  const [value, setValue] = React.useState(null);
+  const handleClickOpen = React.useCallback((item) => {
     setOpen(true);
-  };
+    setValue(item);
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -332,9 +333,8 @@ export default function Food() {
                             </div>
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
-
                           <TableCell align="left">
-                            {status === "active" ? (
+                            {/* {status === "active" ? (
                               <ConfirmDialog
                                 open={open}
                                 content={name}
@@ -352,10 +352,16 @@ export default function Food() {
                                 titleDialog="Bán"
                                 onClick={() => handleDelete(id, token)}
                               />
-                            )}
+                            )} */}
+                            <ButtonCustomize
+                              variant="outlined"
+                              onClick={() => handleClickOpen(row)}
+                              nameButton={
+                                status === "active" ? "ngung ban" : "ban"
+                              }
+                            />
                           </TableCell>
-
-                          <TableCell align="right">
+                          <TableCell align="left">
                             <ButtonCustomize
                               nameButton="Chi tiết"
                               component={RouterLink}
@@ -392,6 +398,15 @@ export default function Food() {
               return "" + from + "-" + to + " của " + count;
             }}
           />
+          {open && (
+            <ConfirmDialog
+              open={open}
+              content={value.name}
+              handleClickOpen={handleClickOpen}
+              handleClose={handleClose}
+              onClick={() => handleDelete(value.id, token)}
+            />
+          )}
         </Card>
       </Container>
     </Page>

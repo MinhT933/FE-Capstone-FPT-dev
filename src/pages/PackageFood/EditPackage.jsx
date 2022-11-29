@@ -345,7 +345,7 @@ export default function EditPackage() {
                 name="foodGroupID"
                 label={handleLabel(item.itemCode)}
                 width="20rem"
-                value={getGroupfood.find((i) => i.id === item.foodGroup.id).id}
+                value={getGroupfood.find((i) => i.id === item.foodGroup.id)?.id}
                 onChange={(e) => handleChangeGroupFood(e, item.id)}
                 onBlur={formik.handleBlur}
                 options={getGroupFoodOptions()}
