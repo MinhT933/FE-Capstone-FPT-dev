@@ -145,16 +145,17 @@ export default function Food() {
     callAPI();
   }, [dispatch, token]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, token) => {
     await API("PUT", URL_API + `/foods/update-status/${id}`, null, token)
       .then((res) => {
-        if (res) {
+        console.log(res);
+        if (res.data.statusCode === 200) {
           dispatch(callAPIgetListFood(token));
-          handleClose();
           CustomizedToast({
             message: "Cập nhập trạng thái thành công",
             type: "SUCCESS",
           });
+          handleClose();
         }
       })
       .catch((err) => {
@@ -217,9 +218,6 @@ export default function Food() {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
-
-  // const emptyRows =
-  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - food.length) : 0;
 
   const filterFood = applySortFilter(
     food,
