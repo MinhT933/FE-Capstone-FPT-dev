@@ -146,7 +146,7 @@ export default function ManagerAccount() {
         dispatch(callAPIgetAccountManager(token));
 
         CustomizedToast({
-          message: `Đã Cập nhập trạng thái ${fullName}`,
+          message: `Đã cập nhập trạng thái ${fullName}`,
           type: "SUCCESS",
         });
       } catch (err) {
@@ -164,7 +164,7 @@ export default function ManagerAccount() {
         dispatch(callAPIgetAccountManager(token));
 
         CustomizedToast({
-          message: `Đã Cập nhập trạng thái ${fullName}`,
+          message: `Đã cập nhập trạng thái ${fullName}`,
           type: "SUCCESS",
         });
       } catch (err) {
@@ -243,7 +243,7 @@ export default function ManagerAccount() {
   }));
 
   return (
-    <Page title="Manager">
+    <Page title="Quản lí">
       <Container>
         <Stack
           direction="row"
@@ -354,24 +354,28 @@ export default function ManagerAccount() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {status === "active" ? (
-                              <Button1
+                            {status === "ban" ? (
+                              <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
-                                  handleDelete(id, fullName);
+                                  // handleDelete(id, fullName);
+                                  handleActive(id, profile.fullName);
                                 }}
-                              >
-                                Chặn
-                              </Button1>
-                            ) : (
-                              <Button1
-                                variant="outlined"
-                                onClick={() => {
-                                  handleActive(id, fullName);
-                                }}
+                                nameButton="Mở chặn"
                               >
                                 Mở chặn
-                              </Button1>
+                              </ButtonCustomize>
+                            ) : (
+                              <ButtonCustomize
+                                variant="outlined"
+                                onClick={() => {
+                                  // handleActive(id, fullName);
+                                  handleDelete(id, profile.fullName);
+                                }}
+                                nameButton="Chặn"
+                              >
+                                Chặn
+                              </ButtonCustomize>
                             )}
                           </TableCell>
 

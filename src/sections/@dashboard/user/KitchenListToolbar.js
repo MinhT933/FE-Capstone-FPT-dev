@@ -16,17 +16,8 @@ import Iconify from "../../../components/hook-form/Iconify";
 import Controls from "./../../../components/Control/Controls";
 
 import {
-  callAPIgetAccountAdminByStatus,
-  callAPIgetAccountCustomerByStatus,
-  callAPIgetAccountKitchenByStatus,
-  callAPIgetAccountManagerByStatus,
-  callAPIgetAccountShipperByStatus,
-  callAPIgetGroupFoodByStatus,
-  callAPIgetListFoodByStatus,
-  callAPIGetListOderByDay,
-  callAPIGetListPack,
-  callAPIgetListReqByStatus,
-  callAPIgetListStationByStatus,
+  callAPIgetListKitchenByStatus,
+
 } from "../../../redux/action/acction";
 
 import { useDispatch } from "react-redux";
@@ -76,10 +67,12 @@ export default function KitchenListToolbar({
   const dispatch = useDispatch();
   const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
+    console.log(event.target.value);
     setHaha(event.target.value === "All" ? "" : event.target.value);
 
+    //Admin
     dispatch(
-      await callAPIgetAccountKitchenByStatus(
+      await callAPIgetListKitchenByStatus(
         token,
         event.target.value === "All" ? "" : event.target.value
       )

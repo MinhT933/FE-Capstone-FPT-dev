@@ -164,6 +164,7 @@ export default function UpdateShipper() {
                 padding: "2%",
                 marginBottom: "10%",
                 margin: "2%",
+                marginTop: "2%",
             }}
         >
             <PageHeader
@@ -206,7 +207,7 @@ export default function UpdateShipper() {
 
                                 <Controls.DatePicker
                                     label="Ngày sinh"
-                                    width="26.5rem"
+                                    // width="26.5rem"
                                     inputFormat="DD-MM-YYYY"
                                     value={valueStarTime}
                                     onChange={(e) => {

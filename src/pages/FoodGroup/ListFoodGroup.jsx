@@ -230,7 +230,7 @@ export default function ListFoodGroup() {
           dispatch(callAPIgetGroupFood(token));
           handleClose();
           CustomizedToast({
-            message: `Đã Cập nhập trạng thái ${name}`,
+            message: `Đã cập nhập trạng thái ${name}`,
             type: "SUCCESS",
           });
         } catch (err) {

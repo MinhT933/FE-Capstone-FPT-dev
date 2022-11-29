@@ -142,8 +142,8 @@ export default function ListLunch(props) {
   const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
-    <Page title="Breakfast">
-      <Container sx={{ minWidth: 380, width: 380 }}>
+    <Page title="Chuẩn bị món">
+      <Container maxWidth={false} sx={{ minWidth: 370, width: 370 }}>
         {/* <PageHeader
                     title="SÁNG"
                     // icon={getIcon("line-md:moon-alt-to-sunny-outline-loop-transition")}
@@ -192,7 +192,7 @@ export default function ListLunch(props) {
               </Grid>
             </Grid>
           </Paper>
-          <TableContainer sx={{ minWidth: 390, width: 390 }}>
+          <TableContainer sx={{ minWidth: 370, width: 370 }}>
             <Table>
               <UserListHead
                 order={order}

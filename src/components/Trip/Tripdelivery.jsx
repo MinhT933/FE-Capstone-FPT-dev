@@ -88,6 +88,7 @@ export default function Tripdelivery() {
     }
     return item;
   };
+  
   const getSlot = () => {
     const item = [];
     const textTile = "";
