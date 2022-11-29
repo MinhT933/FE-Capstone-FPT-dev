@@ -21,6 +21,19 @@ export default function ButtonCustomize(props) {
       backgroundColor: "#ffee32",
     },
     display: "center",
+    textTransform: "none",
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
   }));
   return (
     <ColorButton

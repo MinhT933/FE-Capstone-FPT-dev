@@ -190,18 +190,11 @@ export default function Tripdelivery() {
       await callAPIgetOrdertoCreateDeliveryTrip(
         token,
         slot,
-        // convert(valueStarTime.$d),
         date,
         stationID,
         idkitchen
       )
     );
-
-    // .then((res) =>
-    //   console.log(res)
-    // ).catch((error) => {
-    //   console.log(error)
-    // })
   };
 
   const [selectionModel, setSelectionModel] = React.useState([]);
@@ -225,19 +218,19 @@ export default function Tripdelivery() {
       <form>
         <Box
           sx={{
-            marginLeft: "9%",
+            marginLeft: "0.5%",
             height: "35rem",
-            width: "100%",
+            width: "120%",
             marginTop: "2%",
           }}
         >
           <Grid container>
-            <Grid item xs={2.75}>
+            <Grid item xs={2}>
               <DatePicker
                 variant="outlined"
                 name="valueStarTime"
                 label="Ngày giao"
-                width="14rem"
+                width="90%"
                 inputFormat="YYYY-MM-DD"
                 value={valueStarTime}
                 onChange={(e) => {
@@ -245,14 +238,11 @@ export default function Tripdelivery() {
                 }}
               />
             </Grid>
-            <Grid item xs={2.75}>
+            <Grid item xs={2}>
               <Controls.Select
                 name="KitchenId"
                 label="Bếp"
-                width="12rem"
-                // defaultValue={categoriesFood[0].name}
-
-                //   value={formik.values.foodCategoryId}
+                width="90%"
                 onChange={(e) => {
                   // map tên với adi hiện thị name nhưng chọn ẩn ở dưới là id
                   const a = listKichen.find((c) => c.id === e.target.value);
@@ -266,11 +256,11 @@ export default function Tripdelivery() {
               />
             </Grid>
 
-            <Grid item xs={2.75}>
+            <Grid item xs={2}>
               <Controls.Select
                 name="stationID"
                 label="Địa điểm giao"
-                width="12rem"
+                width="90%"
                 // defaultValue={categoriesFood[0].name}
 
                 //   value={formik.values.foodCategoryId}
@@ -285,11 +275,11 @@ export default function Tripdelivery() {
               />
             </Grid>
 
-            <Grid item xs={2.75}>
+            <Grid item xs={2}>
               <Controls.Select
                 name="slot"
                 label="Thời gian giao"
-                width="12rem"
+                width="90%"
                 onChange={(e) => {
                   const a = Slot.find((c) => c.id === e.target.value);
                   console.log(a);
@@ -300,7 +290,7 @@ export default function Tripdelivery() {
               />
             </Grid>
 
-            <Grid item xs={2.75}>
+            <Grid item xs={2}>
               <ButtonCustomize
                 marginTop="1%"
                 nameButton="Tìm kiếm"
@@ -338,7 +328,6 @@ export default function Tripdelivery() {
             </div>
           </Box>
           <ButtonCustomize
-            // variant="contained"
             component={RouterLink}
             to="#"
             onClick={() => {

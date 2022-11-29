@@ -32,9 +32,6 @@ import { useDispatch } from "react-redux";
 import DetailFoodinGroup from "./PopUp/DetailFoodinGroup";
 // import { createTheme, ThemeProvider } from "@mui/material";
 import NewFoodGroup from "./PopUp/NewFoodGroup";
-import BlockIcon from "@mui/icons-material/Block";
-import IconButton from "@mui/material/IconButton";
-import CheckIcon from "@mui/icons-material/Check";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
@@ -137,8 +134,8 @@ export default function ListFoodGroup() {
 
   const getOptions = () => [
     // { id: "waiting", title: "Waiting" },
-    { id: "active", title: "Active" },
-    { id: "inActive", title: "InActive" },
+    { id: "active", title: "Hoạt động" },
+    { id: "inActive", title: "Không hoạt động" },
     { id: "All", title: "Tất cả" },
   ];
   // const token = localStorage.getItem("token");
@@ -203,6 +200,7 @@ export default function ListFoodGroup() {
   );
   //setColor button
   const ColorButton = styled(Button)(({ theme }) => ({
+    textTransform: "none",
     color: theme.palette.getContrastText("#FFCC32"),
     backgroundColor: "#FFCC33",
     "&:hover": {

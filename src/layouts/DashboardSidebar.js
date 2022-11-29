@@ -113,7 +113,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         }}
       >
         <Logo />
-        <h1>Mesup</h1>
+        <Box sx={{ py: 1 }}>
+          <h1>MeSup</h1>
+        </Box>
       </Box>
       <Box sx={{ backgroundColor: "white" }}>
         <Box sx={{ mb: 5, mx: 2.5, backgroundColor: "white" }}>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Paper, Grid, Box, Button, styled } from "@mui/material";
+import { Grid, Box, Button, styled } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 //componets
@@ -20,16 +20,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import FormHelperText from "@mui/material/FormHelperText";
+import { jwt_decode } from "jwt-decode";
 
 //-------------------------------------------------------------------
 
 //styles paper
-const useStyles = styled("Paper")(({ theme }) => ({
-  pageContent: {
-    margin: theme.spacing(5),
-    padding: theme.spacing(9),
-  },
-}));
+
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 const schema = yup.object().shape({
@@ -46,10 +42,13 @@ export default function EditFood() {
 
   const [input, setInput] = useState(null);
 
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
 
   const formData = new FormData();
-  const token = localStorage.getItem("token");
   React.useEffect(() => {
     const getlistCateFood = async () => {
       await dispatch(callAPIgetListCategory(token));
@@ -126,7 +125,7 @@ export default function EditFood() {
     <Box>
       <PageHeader
         title="Điều chỉnh món ăn"
-        subTitle="Tinh hoa ẩm thực "
+        subTitle="Vui lòng điền đầy đủ thông tin"
         width="60%"
         marginLeft="20%"
         icon={getIcon("emojione-monotone:pot-of-food")}

@@ -8,7 +8,6 @@ import {
   Table,
   Stack,
   Avatar,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -16,18 +15,13 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  Paper,
 } from "@mui/material";
 // components
 import Label from "./../../components/label/label";
 import Scrollbar from "./../../components/hook-form/Scrollbar";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 // mock
 // import food from "../../_mock/foodsample";
 
@@ -43,6 +37,8 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import Foodlistoolbar from "../../sections/@dashboard/user/Foodlistoolbar";
+import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 // ----------------------------------------------------------------------
 
@@ -55,7 +51,8 @@ const TABLE_HEAD = [
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
-  { id: "SetStatus", label: "Thay đổi trạng thái", alignRight: false },
+  { id: "setStatus", label: "Thay đổi trạng thái", alignRight: false },
+  { id: "detail", label: "Chi tiết món ăn", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -111,36 +108,33 @@ export default function Food() {
 
   const [categoryName, setcategoryName] = useState([]);
 
+  // const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const dispatch = useDispatch();
-
-  //gọi trên action.js ==> accctions.js
-  //đây khởi chạy lần đầu tiên gọi thằng gọi tra gg để useEffect()
-  // theo toa hiểu  ở đây useEffect sẽ được gọi mỗi khi components thay đổi
-  // kiểu cái gì mà ko có lần đầu tiên project cũng vậy cũng có lần đầu tiên gọi api chứu
-
-  // nó lifecycle gg.com để biết thêm thông tin
-
-  // cách search một vần đề why  + 'vấn đề ' in 'thư viện or component'
-  //vd: why slectBox not working in mui
   const Navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
   if (token === null) {
     Navigate("/");
   }
   try {
     var decoded = jwt_decode(token);
-    // valid token format
   } catch (error) {
-    // return <Navigate to="/" replace />;
     Navigate("/");
   }
   const location = useLocation();
 
   const getOptions = () => [
-    { id: "active", title: "Active" },
-    { id: "inActive", title: "InActive" },
+    { id: "active", title: "Đang bán" },
+    { id: "inActive", title: "Ngưng bán" },
     { id: "All", title: "Tất cả" },
   ];
   React.useEffect(() => {
@@ -149,20 +143,29 @@ export default function Food() {
       await dispatch(callAPIgetListCategory(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
-  const handleDelete = (id) => {
-    API("PUT", URL_API + `/foods/update-status/${id}`, null, token).then(
-      (res) => {
-        try {
+  const handleDelete = async (id) => {
+    await API("PUT", URL_API + `/foods/update-status/${id}`, null, token)
+      .then((res) => {
+        if (res) {
           dispatch(callAPIgetListFood(token));
-        } catch (err) {
-          alert("Ban fail" + id);
+          handleClose();
+          CustomizedToast({
+            message: "Cập nhập trạng thái thành công",
+            type: "SUCCESS",
+          });
         }
-      },
-      []
-    );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  // CustomizedToast({
+  //   message: "Cập nhập trạng thái thất bại",
+  //   type: "ERROR",
+  // });
 
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
   const food = useSelector((state) => {
@@ -175,7 +178,6 @@ export default function Food() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = food.map((n) => n.name);
@@ -317,14 +319,6 @@ export default function Food() {
                             {new Date(updatedAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">
-                            {/* <Label
-                              variant="ghost"
-                              color={
-                                (status === "inActive" && "error") || "success"
-                              }
-                            >
-                              {status}
-                            </Label> */}
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
@@ -342,31 +336,30 @@ export default function Food() {
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="left">
-                            {/* {decoded.role === "manager" && (
-                              <ButtonCustomize
-                                nameButton="Cập nhập"
-                                onClick={() => handleDelete(id, token)}
-                              />
-                            )} */}
                             {status === "active" ? (
-                              <ButtonCustomize
-                                nameButton="Ngưng Bán"
+                              <ConfirmDialog
+                                open={open}
+                                content={name}
+                                handleClickOpen={handleClickOpen}
+                                handleClose={handleClose}
+                                titleDialog="Ngưng bán"
                                 onClick={() => handleDelete(id, token)}
                               />
                             ) : (
-                              <ButtonCustomize
-                                nameButton="Mở bán"
+                              <ConfirmDialog
+                                open={open}
+                                handleClickOpen={handleClickOpen}
+                                handleClose={handleClose}
+                                content={name}
+                                titleDialog="Bán"
                                 onClick={() => handleDelete(id, token)}
                               />
                             )}
                           </TableCell>
 
                           <TableCell align="right">
-                            {/* <UserMoreMenu id={id} /> */}
-                          </TableCell>
-                          <TableCell align="right">
                             <ButtonCustomize
-                              nameButton="Chi Tiết"
+                              nameButton="Chi tiết"
                               component={RouterLink}
                               to={`${location.pathname}/${id}`}
                             />

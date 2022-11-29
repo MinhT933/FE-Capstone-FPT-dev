@@ -166,7 +166,7 @@ export default function Profile() {
           dispatch(callAPIProfile(token));
         });
         CustomizedToast({
-          message: `chỉnh sửa thành công`,
+          message: `Chỉnh sửa trang cá nhân thành công`,
           type: "SUCCESS",
         });
       } catch (error) {
