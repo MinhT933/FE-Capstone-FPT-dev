@@ -66,11 +66,34 @@ export const callAPIgetListFoodByStatus = (token, status) => {
 export const callAPIgetListFoodfilterCate = (token, id, status) => {
   return async (dispatch) => {
     if (id === null || id === undefined || id === "") {
-      CustomizedToast({
-        message: `Vui lòng chọn loại thức ăn trước`,
 
-        type: "ERROR",
-      });
+      try {
+        const res = await API(
+          "GET",
+          URL_API + `/foods/byCatefory_filter?status=${status}`,
+          null,
+          token
+        );
+
+        dispatch(
+          createAction({
+            type: PathAction.GET_LIST_FOOD,
+            payload: res.data.result,
+          })
+        );
+      } catch (err) {
+        dispatch(
+          createAction({
+            type: PathAction.GET_LIST_FOOD,
+            payload: [],
+          })
+        );
+        CustomizedToast({
+          message: `Không tìm thấy dữ liệu`,
+          type: "ERROR",
+        });
+      }
+
     } else {
       try {
         const res = await API(
@@ -265,7 +288,7 @@ export const callAPIgetListStationbyidKitchen = (token, id) => {
       );
       CustomizedToast({
         // message: `${err.response.data.message}`,
-        message: "Không tìm thất địa điểm giao",
+        message: "Không tìm thấy địa điểm giao",
         type: "ERROR",
       });
     }

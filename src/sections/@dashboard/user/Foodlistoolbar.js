@@ -16,7 +16,6 @@ import Controls from "./../../../components/Control/Controls";
 
 import {
   callAPIgetListCategory,
-  callAPIgetListFoodByStatus,
   callAPIgetListFoodfilterCate,
 } from "../../../redux/action/acction";
 
@@ -67,11 +66,18 @@ export default function Foodlistoolbar({
 }) {
   const [id, setID] = useState("");
   const dispatch = useDispatch();
-  const [haha, setHaha] = useState("All");
-  const handleChange = async (event) => {
-    setHaha(event.target.value === "All" ? "" : event.target.value);
+  const [status, setStatus] = useState("All");
 
-    dispatch(await callAPIgetListFoodfilterCate(token, id, haha));
+  const handleChange = async (event) => {
+    setStatus(event.target.value === "All" ? "" : event.target.value);
+
+    await dispatch(
+      callAPIgetListFoodfilterCate(
+        token,
+        id,
+        event.target.value === "All" ? "" : event.target.value
+      )
+    );
   };
   React.useEffect(() => {
     const callAPI = async () => {
@@ -131,7 +137,7 @@ export default function Foodlistoolbar({
               width="10rem"
               options={options}
               onChange={handleChange}
-              value={haha}
+              value={status}
             />
             <Controls.Select
               label="Loại thức ăn"
@@ -141,7 +147,9 @@ export default function Foodlistoolbar({
               onChange={async (e) => {
                 const a = category.find((c) => c.id === e.target.value);
                 setID(a.id);
-                await dispatch(callAPIgetListFoodfilterCate(token, a.id, haha));
+                dispatch(
+                  await callAPIgetListFoodfilterCate(token, a.id, status)
+                );
               }}
             />
           </Grid>
