@@ -25,15 +25,11 @@ import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 // mock
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  callAPIgetAccountCustomer,
-  callAPIgetAccountManager,
-  callAPIgetListStation,
-} from "../../redux/action/acction";
+import { callAPIgetAccountManager } from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
@@ -41,6 +37,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { Avatar } from "@mui/joy";
 import ManagerAccountListToolbar from "../../sections/@dashboard/user/ManagerAccountListToolbar";
+import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -101,6 +98,17 @@ export default function ManagerAccount() {
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
+
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+  const handleClickOpen = React.useCallback((item) => {
+    setOpen(true);
+    setValue(item);
+  }, []);
+
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
+  }, []);
 
   const [order, setOrder] = useState("asc");
 
@@ -317,20 +325,6 @@ export default function ManagerAccount() {
 
                           {/* <TableCell align="left">{id}</TableCell> */}
                           <TableCell align="left">{profile.fullName}</TableCell>
-
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar alt={fullName} src={avatar} />
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {fullName}
-                                                            </Typography>
-                                                        </Stack>
-                                                    </TableCell> */}
-
                           <TableCell align="left">
                             {row.profile.email}
                           </TableCell>
@@ -354,67 +348,12 @@ export default function ManagerAccount() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {status === "ban" ? (
-                              <ButtonCustomize
-                                variant="outlined"
-                                onClick={() => {
-                                  // handleDelete(id, fullName);
-                                  handleActive(id, profile.fullName);
-                                }}
-                                nameButton="Mở chặn"
-                              >
-                                Mở chặn
-                              </ButtonCustomize>
-                            ) : (
-                              <ButtonCustomize
-                                variant="outlined"
-                                onClick={() => {
-                                  // handleActive(id, fullName);
-                                  handleDelete(id, profile.fullName);
-                                }}
-                                nameButton="Chặn"
-                              >
-                                Chặn
-                              </ButtonCustomize>
-                            )}
+                            <ButtonCustomize
+                              variant="outlined"
+                              onClick={() => handleClickOpen(row)}
+                              nameButton={status === "ban" ? "Mở chặn" : "Chặn"}
+                            />
                           </TableCell>
-
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-
-                                                            <Label
-                                                                variant="ghost"
-                                                                color={
-                                                                    (status === "ban" && "error") || "success"
-                                                                }
-                                                            >
-                                                                {status}
-                                                            </Label>
-                                                            <Button1
-                                                                variant="outlined"
-                                                                onClick={() => { handleDelete(id, fullName) }}
-                                                            >
-                                                                Chặn
-                                                            </Button1>
-                                                        </Stack>
-                                                    </TableCell> */}
-
-                          {/* <TableCell>
-                            {decoded.role === "admin" && (
-                              <Button1
-                                variant="outlined"
-                                display="TableCell"
-                                component={RouterLink}
-                                to={`${location.pathname}/updatestation/${id}`}
-                              >
-                                Cập nhập
-                              </Button1>
-                            )}
-                          </TableCell> */}
                         </TableRow>
                       );
                     })}
@@ -447,6 +386,19 @@ export default function ManagerAccount() {
               return "" + from + "-" + to + " của " + count;
             }}
           />
+          {open && (
+            <ConfirmDialog
+              open={open}
+              content={value.profile.fullName}
+              handleClickOpen={handleClickOpen}
+              handleClose={handleClose}
+              onClick={
+                value.status === "active"
+                  ? () => handleDelete(value.id, value.profile.fullName)
+                  : () => handleActive(value.id, value.profile.fullName)
+              }
+            />
+          )}
         </Card>
       </Container>
       {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
