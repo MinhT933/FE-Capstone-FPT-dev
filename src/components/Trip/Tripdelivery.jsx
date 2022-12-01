@@ -310,10 +310,6 @@ export default function Tripdelivery() {
                         `${from} - ${to} của ${count}`,
                     },
                   }}
-                  // labelRowsPerPage="Số hàng trên một trang"
-                  // labelDisplayedRows={({ from, to, count }) => {
-                  //   return "" + from + "-" + to + " của " + count;
-                  // }}
                 />
               ) : (
                 <DataGrid

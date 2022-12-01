@@ -2,6 +2,7 @@ import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+
 // material
 import {
   Card,
@@ -29,7 +30,10 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
-import { callAPIgetListKitchen, callAPIKitchenPrepareOrder } from "../../redux/action/acction";
+import {
+  callAPIgetListKitchen,
+  callAPIKitchenPrepareOrder,
+} from "../../redux/action/acction";
 import jwt_decode from "jwt-decode";
 
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
@@ -70,9 +74,8 @@ export default function KitchenOrderList() {
     return [date.getFullYear(), mnth, day].join("-");
   }
 
-
   const [value, setValue] = React.useState(new Date());
-
+  // const date = moment(value).format("YYYY-MM-DD");
   //callAPIKitchenGetListOrder========================================
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -80,7 +83,7 @@ export default function KitchenOrderList() {
       await dispatch(callAPIKitchenPrepareOrder(token, convert(value.$d)));
     };
     callAPI();
-  }, [value]);
+  }, [value, dispatch, token]);
   // dispatch(
   //   createAction({
   //     type: PathAction.GET_LIST_FOOD,
@@ -95,19 +98,17 @@ export default function KitchenOrderList() {
   const kitchen = useSelector((state) => {
     return state.userReducer.listFoodPrepare;
   });
-  console.log(kitchen)
+  console.log(kitchen);
   //callAPIKitchenGetListOrder========================================
-
 
   // const [spacing, setSpacing] = React.useState(2);
   let kitchenMorning = [];
   let kitchenLunch = [];
   let kitchenDinner = [];
 
-  kitchenMorning = kitchen.filter(x => x.flag === 0)
-  kitchenLunch = kitchen.filter(x => x.flag === 1)
-  kitchenDinner = kitchen.filter(x => x.flag === 2)
-
+  kitchenMorning = kitchen.filter((x) => x.flag === 0);
+  kitchenLunch = kitchen.filter((x) => x.flag === 1);
+  kitchenDinner = kitchen.filter((x) => x.flag === 2);
 
   return (
     <Page title="Chuẩn bị món">
@@ -116,7 +117,8 @@ export default function KitchenOrderList() {
         sx={{
           padding: "2%",
           marginBottom: "10%",
-        }}>
+        }}
+      >
         <Container maxWidth={false}>
           <Stack
             direction="row"
@@ -131,7 +133,7 @@ export default function KitchenOrderList() {
                 color: "black",
                 height: "50%",
                 width: "40%",
-                marginLeft: "30%"
+                marginLeft: "30%",
                 // alignItems: "center",
                 // direction: "column",
                 // marginLeft: "47%",
@@ -164,7 +166,7 @@ export default function KitchenOrderList() {
                 label="Chọn ngày"
                 value={value}
                 onChange={(newValue) => {
-                  console.log(newValue)
+                  console.log(newValue);
                   setValue(newValue);
                 }}
                 inputFormat="DD-MM-YYYY"
@@ -196,6 +198,6 @@ export default function KitchenOrderList() {
           </Grid>
         </Container>
       </Paper>
-    </Page >
+    </Page>
   );
 }

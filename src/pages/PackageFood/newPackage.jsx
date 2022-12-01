@@ -655,7 +655,7 @@ export default function NewPackage() {
                     />
                   </Box>
 
-                  <Box sx={{ height: "15%", width: "15%", mt: "3%" }}>
+                  <Box sx={{ height: "15%", width: "15%", }}>
                     <IconButton
                       onClick={() => {
                         SetOpenPopUpCate(true);
