@@ -651,13 +651,6 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
 ) => {
   return async (dispatch) => {
     try {
-      // const res = await API(
-      //   "GET",
-      //   URL_API +
-      //     `/orders/byKitchen?stationId=f2fda2c1-1809-4cb3-8ffe-f2526a18302b&kitchenId=4f0b492d-d646-4e2b-9b39-1c453e4e6c9f&time_slotId=f67h8204ih3945h893u45uh89hjh98345h9&deliveryDate=2022-11-24`,
-      //   null,
-      //   token
-      // );
       const res = await API(
         "GET",
         URL_API +

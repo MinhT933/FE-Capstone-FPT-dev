@@ -70,21 +70,15 @@ export default function TripdeliveryPopUp(props) {
     },
   };
 
-  const profiles = useSelector((state) => {
-    return state.userReducer.profiles;
-  });
   // const idKitchen = profiles.id;
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
       dispatch(await callAPIgetShipperByActive(token));
       dispatch(await callAPIGetStationByKitchen(token));
       dispatch(await callAPIGetSlot(token));
-     
     };
     getfoodByFoodGroupId();
   }, [dispatch, idKitchen, token]);
-
-
 
   const [valueTag, setValueTag] = React.useState([]);
 
@@ -107,7 +101,7 @@ export default function TripdeliveryPopUp(props) {
   const handleClose = () => {
     SetOpenPopUp(false);
   };
-
+  console.log(slot);
   const formik = useFormik({
     validateOnMount: true,
     validateOnBlur: true,
