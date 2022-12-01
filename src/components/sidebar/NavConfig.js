@@ -13,7 +13,7 @@ const navConfigManager = [
     // icon: getIcon("tabler:building-warehouse"),
     // children: [
     //   {
-    title: "Thức ăn",
+    title: "Món ăn",
     path: "/dashboard/manager/food",
     icon: getIcon("ep:food"),
   },
@@ -29,8 +29,8 @@ const navConfigManager = [
   },
 
   {
-    title: "Chuyến giao hàng",
-    path: "/dashboard/manager/tripDelivery",
+    title: "Danh sách chuyến giao hàng",
+    path: "/dashboard/manager/ListDelivery",
     icon: getIcon("mdi:language-go"),
   },
   // ],
@@ -81,7 +81,6 @@ const navConfigAdmin = [
   //   path: "/dashboard/admin/users",
   //   icon: getIcon("eva:people-fill"),
   // },
-
 
   {
     title: "Tài Khoản",
@@ -134,7 +133,6 @@ const navConfigAdmin = [
   //   path: "/dashboard/admin/kitchenAccount",
   //   icon: getIcon("fa6-solid:kitchen-set"),
   // },
-
 ];
 
 const navConfigKichen = [
@@ -154,8 +152,6 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/kitcheviewnorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
-
-
 ];
 const navConfig = [
   {

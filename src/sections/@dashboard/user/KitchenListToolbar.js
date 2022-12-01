@@ -9,16 +9,14 @@ import {
   OutlinedInput,
   InputAdornment,
 } from "@mui/material";
+import { Grid } from "@mui/material";
 // component
 
 import Iconify from "../../../components/hook-form/Iconify";
 
 import Controls from "./../../../components/Control/Controls";
 
-import {
-  callAPIgetListKitchenByStatus,
-
-} from "../../../redux/action/acction";
+import { callAPIgetListKitchenByStatus } from "../../../redux/action/acction";
 
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -106,14 +104,21 @@ export default function KitchenListToolbar({
               </InputAdornment>
             }
           />
-          <Controls.Select
-            label="Trạng thái"
-            width="10rem"
-            marginRight="50%  "
-            options={options}
-            onChange={handleChange}
-            value={haha}
-          />
+          <Grid
+            container
+            spacing={2}
+            sx={{ marginLeft: "2%", marginTop: "0.1rem" }}
+          >
+            {" "}
+            <Controls.Select
+              label="Trạng thái"
+              width="10rem"
+              marginRight="50%  "
+              options={options}
+              onChange={handleChange}
+              value={haha}
+            />
+          </Grid>
         </>
       )}
 

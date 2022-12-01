@@ -63,6 +63,26 @@ export const callAPIgetListFoodByStatus = (token, status) => {
   };
 };
 
+export const callAPIgetAPIcount = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/delivery_trips?status=${status}`,
+        null,
+        token
+      );
+      console.log(res.data.result.length);
+      dispatch(
+        createAction({
+          type: PathAction.GET_COUNT,
+          payload: res.data.result.length,
+        })
+      );
+    } catch (err) {}
+  };
+};
+
 export const callAPIgetListFoodfilterCate = (token, id, status) => {
   return async (dispatch) => {
     if (id === null || id === undefined || id === "") {
@@ -541,9 +561,7 @@ export const callAPIgetAccountShipperByStatusActive = (token) => {
     try {
       const res = await API(
         "GET",
-
         URL_API + `/accounts?role=shipper&status=active`,
-
         null,
         token
       );
@@ -553,12 +571,11 @@ export const callAPIgetAccountShipperByStatusActive = (token) => {
           payload: res.data.result,
         })
       );
-      console.log(res.data.result);
     } catch (err) {}
   };
 };
 
-export const callAPIgetTripActive = (token) => {
+export const callAPIgetShipperByActive = (token) => {
   return async (dispatch) => {
     try {
       const res = await API(
@@ -575,11 +592,56 @@ export const callAPIgetTripActive = (token) => {
           payload: res.data.result,
         })
       );
-      console.log(res.data.result);
     } catch (err) {}
   };
 };
 
+export const callAPIgetTripByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/delivery_trips?status=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_TRIP_BY_STATUS,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_TRIP_BY_STATUS,
+          payload: [],
+        })
+      );
+    }
+  };
+};
+
+export const callAPIgetTripall = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API("GET", URL_API + `/delivery_trips`, null, token);
+      dispatch(
+        createAction({
+          type: PathAction.GET_TRIP_BY_STATUS,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_TRIP_BY_STATUS,
+          payload: [],
+        })
+      );
+    }
+  };
+};
 export const callAPIgetOrdertoCreateDeliveryTrip = (
   token,
   slot,

@@ -230,13 +230,6 @@ export default function KitchenList() {
     display: "center",
   }));
 
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-    // width: "50%",
-    // height: "70%",
-    // display: "center"
-  }));
 
   const isKitchenNotFound = filteredKitchen.length === 0;
 

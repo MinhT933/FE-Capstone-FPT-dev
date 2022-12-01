@@ -264,7 +264,7 @@ export default function NewFood() {
                   <ButtonCustomize
                     variant="contained"
                     type="submit"
-                    nameButton="Thêm thức ăn"
+                    nameButton="Thêm món ăn"
                   />
                 </Stack>
               </Box>
