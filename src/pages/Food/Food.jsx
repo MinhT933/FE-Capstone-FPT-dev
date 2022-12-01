@@ -146,29 +146,23 @@ export default function Food() {
     callAPI();
   }, [dispatch, token]);
 
-  const handleDelete = async (id, token) => {
+  const handleDelete = async (id) => {
     await API("PUT", URL_API + `/foods/update-status/${id}`, null, token)
       .then((res) => {
         console.log(res);
-        if (res.data.statusCode === 200) {
-          dispatch(callAPIgetListFood(token));
-        
-          CustomizedToast({
-            message: "Cập nhập trạng thái thành công",
-            type: "SUCCESS",
-          });
-          handleClose();
-        }
+
+        dispatch(callAPIgetListFood(token));
+
+        CustomizedToast({
+          message: "Cập nhập trạng thái thành công",
+          type: "SUCCESS",
+        });
+        handleClose();
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  // CustomizedToast({
-  //   message: "Cập nhập trạng thái thất bại",
-  //   type: "ERROR",
-  // });
 
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
   const food = useSelector((state) => {
@@ -228,7 +222,7 @@ export default function Food() {
   );
 
   const isUserNotFound = filterFood.length === 0;
-
+  console.log(food.id);
   return (
     <Page title="Thức ăn">
       <Container maxWidth={false}>
