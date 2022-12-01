@@ -87,7 +87,6 @@ function applySortFilter(array, comparator, query) {
 
 export default function ListBreakfast(props) {
   const { kitchenMorning } = props;
-  console.log(kitchenMorning)
   const location = useLocation();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -109,32 +108,20 @@ export default function ListBreakfast(props) {
     return [date.getFullYear(), mnth, day].join("-");
   }
 
-  const [select, setSelect] = useState('')
+  const [select, setSelect] = useState("");
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
 
+  // const dispatch = useDispatch();
+  // React.useEffect(() => {
+  //   const callAPI = async () => {
+  //     await dispatch(callAPIKitchenPrepareOrder(token, convert(valueStarTime), select));
+  //   };
+  //   callAPI();
+  // }, [select, convert(valueStarTime.$d)]);
 
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    const callAPI = async () => {
-      await dispatch(callAPIKitchenPrepareOrder(token, convert(valueStarTime), select));
-    };
-    callAPI();
-  }, [select, convert(valueStarTime.$d)]);
-
-
-
-  const station = useSelector((state) => {
-    return state.userReducer.listFoodPrepare;
-  });
-
-
-
-
-
-
-
-
-
+  // const station = useSelector((state) => {
+  //   return state.userReducer.listFoodPrepare;
+  // });
 
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 

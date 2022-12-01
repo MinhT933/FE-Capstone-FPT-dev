@@ -63,7 +63,6 @@ export default function NewStation() {
 
   // const decoded = jwt_decode(token);
 
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [idkitchen, setIdkitchen] = useState("");
 
   React.useEffect(() => {
@@ -170,19 +169,12 @@ export default function NewStation() {
       />
       <form onSubmit={formik.handleSubmit}>
         <Box
-          //   space-around="space-around"
-          // sx={{ float: "right", width: "60%", flexGrow: 1 }}
           display="flex"
-          // justifyContent="left"
-          // alignItems="left"
           sx={{
-            // marginLeft: "33%",
             marginTop: "2%",
           }}
         >
           <Grid
-            // container spacing={4}
-            // columns={20}
             container
             direction="column"
             justifyContent="center"
