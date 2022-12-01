@@ -32,6 +32,7 @@ const initialState = {
   listFoodPackage: [],
   listGroupFood: [],
   listTimeFrame: [],
+  count: [],
   listFoodByGroupFoodID: [],
   // TimeFrame: [],
 
@@ -105,6 +106,9 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_LIST_FOOD_ACTIVE:
       state.listFoodActive = payload;
       break;
+    case PathAction.GET_COUNT:
+      state.count = payload;
+      break;
     case PathAction.GET_LIST_FOODCATEGORY:
       state.listCategory = payload;
       break;
@@ -133,6 +137,9 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_ACCOUNT_SHIPPER:
       state.accountShipper = payload;
       break;
+    case PathAction.GET_TRIP_BY_STATUS:
+      state.tripbyStatus = payload;
+      break;
 
     case PathAction.GET_ACCOUNT_KITCHEN:
       state.accountKitchen = payload;
@@ -152,8 +159,6 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_LIST_KITCHEN_ACTIVE:
       state.listKitchenActive = payload;
       break;
-
-
 
     //=====================================================
     case PathAction.GET_LIST_SHIPPER:

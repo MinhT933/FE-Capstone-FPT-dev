@@ -168,6 +168,7 @@ export default function KitchenViewOrderList() {
     const station = useSelector((state) => {
         return state.userReducer.listOderByDate;
     });
+    console.log();
     //CALL API=====================================================
     //Thay đổi trạng thái
 
@@ -444,7 +445,6 @@ export default function KitchenViewOrderList() {
                             page={page}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
-                            // fix languge in footer tables
                             labelRowsPerPage={"Số hàng trên một trang"}
                             labelDisplayedRows={({ from, to, count }) => {
                                 return "" + from + "-" + to + " của " + count;

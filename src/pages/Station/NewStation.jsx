@@ -7,15 +7,8 @@ import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import Iconify from "../../components/hook-form/Iconify";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
 import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
-import MenuItem from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 //time
 import dayjs from "dayjs";
 import TextField from "@mui/material/TextField";
@@ -33,12 +26,8 @@ import * as yup from "yup";
 
 import { useSelector } from "react-redux";
 import {
-  callAPIgetListCategory,
-  callAPIgetListKitchen,
   callAPIgetListKitchenActive,
-  callAPIgetListKitchenById,
   callAPIgetListStation,
-  callAPIgetListStationbyidKitchen,
 } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -46,7 +35,6 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from 'jwt-decode';
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -57,22 +45,14 @@ const schema = yup.object().shape({
   name: yup.string().required("Điền đầy đủ thông tin").trim(),
   address: yup.string().required("Điền đầy đủ thông tin").trim(),
   phone: yup.string().required("Điền đầy đủ thông tin").trim(),
-  kitchen: yup.string().required("Điền đầy đủ thông tin").trim(),
+  kitchenId: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 
 //callAPIforCreateStation========================================
 export default function NewStation() {
-
   const navigate = useNavigate();
   //callAPIforCreateStation========================================
   const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   const getlistStation = async () => {
-  //     await dispatch(callAPIgetListStation());
-
-  //   };
-  //   getlistStation();
-  // }, []);
 
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -80,29 +60,11 @@ export default function NewStation() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
+
   // const decoded = jwt_decode(token);
 
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [idkitchen, setIdkitchen] = useState("");
-
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
 
   React.useEffect(() => {
     const getlistStation = async () => {
@@ -112,36 +74,6 @@ export default function NewStation() {
     };
     getlistStation();
   }, [dispatch, token, idkitchen]);
-
-  const [valueTag, setValueTag] = React.useState([]);
-
-  const handleChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-
-    const a = listKitchenActive.find((c) => c.id === value);
-    console.log(a);
-    setValueTag(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
-  // React.useEffect(() => {
-  //   const getfoodByFoodGroupId = async () => {
-  //     // dispatch(await callAPIgetShipperOfKitchen(token, idKitchen));
-  //     // dispatch(await callAPIgetListStation(token));
-  //     dispatch(await callAPIgetListStation(token));
-  //     // dispatch(await callAPIgetListStationbyidKitchen(token, idkitchen));
-  //     dispatch(await callAPIgetListKitchen(token));
-  //   };
-  //   getfoodByFoodGroupId();
-  // }, [dispatch, token, idkitchen]);
-
-  const station = useSelector((state) => {
-    return state.userReducer.listStation;
-  });
 
   const listKitchenActive = useSelector((state) => {
     return state.userReducer.listKitchenActive;
@@ -158,15 +90,11 @@ export default function NewStation() {
     return item;
   };
 
-  const Input = styled("input")({
-    display: "none",
-  });
   //xử lí hình ảnh
 
   const [opentime, setOpentime] = useState([dayjs("2022-10-18T21:11:5")]);
   const [closetime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
   // const token = localStorage.getItem("token");
-
 
   //formData để lưu data
 
@@ -177,40 +105,30 @@ export default function NewStation() {
     validateOnBlur: true,
     //khởi tạo kho để bỏ data vào
     initialValues: {
+      kitchenId: "",
       name: "",
       address: "",
       phone: "",
       opentime: "",
       closetime: "",
-
-      kitchenIds: [],
     },
 
     onSubmit: async (values) => {
-
-      const a = [];
-      for (const i of valueTag) {
-        const arr = listKitchenActive.filter((item) => item.name === i);
-
-        if (arr.length > 0) {
-          a.push(arr[0].id);
-        }
-      }
-
+      console.log(values);
       const closeTimeSplit = new Date(closetime).toTimeString().split(":");
       const openTimeSplit = new Date(opentime).toTimeString().split(":");
       const data = {
+        kitchenId: formik.values.kitchenId,
         name: formik.values.name,
         address: formik.values.address,
         phone: formik.values.phone,
+        // openTime: opentime,
+        // closeTime: closetime,
         openTime: `${openTimeSplit[0]}:${openTimeSplit[1]}`,
         closeTime: `${closeTimeSplit[0]}:${closeTimeSplit[1]}`,
-
-        kitchenIds: a,
       };
       try {
         const res = await API("POST", URL_API + "/stations", data, token);
-
         if (res) {
           CustomizedToast({
             message: `Đã thêm ${formik.values.name}`,
@@ -218,21 +136,14 @@ export default function NewStation() {
           });
         }
         navigate("/dashboard/admin/station");
-
       } catch (error) {
         CustomizedToast({
           message: "Vui lòng xem lại thông tin",
-          type: "ERROR"
+          type: "ERROR",
         });
       }
     },
   });
-
-  //   function _treat(e) {
-  //     formik.setFieldValue("image", e.target.files[0]);
-
-  //     setInput(URL.createObjectURL(e.target.files[0]));
-  //   }
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -241,7 +152,7 @@ export default function NewStation() {
     textAlign: "left",
     color: theme.palette.text.secondary,
   }));
-  console.log(new Date(opentime).toTimeString());
+
   return (
     <Paper
       elevation={3}
@@ -265,7 +176,7 @@ export default function NewStation() {
           // justifyContent="left"
           // alignItems="left"
           sx={{
-            // marginLeft: "33%", 
+            // marginLeft: "33%",
             marginTop: "2%",
           }}
         >
@@ -277,7 +188,7 @@ export default function NewStation() {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item xs={12} >
+            <Grid item xs={12}>
               <Stack spacing={3}>
                 <Controls.Input
                   fullWidth
@@ -299,7 +210,6 @@ export default function NewStation() {
                   </FormHelperText>
                 )}
 
-
                 <Controls.Input
                   fullWidth
                   variant="outlined"
@@ -319,7 +229,6 @@ export default function NewStation() {
                     {formik.errors.address}
                   </FormHelperText>
                 )}
-
 
                 <Controls.Input
                   fullWidth
@@ -341,57 +250,38 @@ export default function NewStation() {
                   </FormHelperText>
                 )}
 
-                <FormControl
-                  sx={{
-                    // width: "25.1rem",
-                    width: "85.8%",
-                  }}>
-                  <InputLabel id="demo-multiple-checkbox-label">
-                    Bếp
-                  </InputLabel>
-                  <Select
-                    // fullWidth
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    // multiple={true}
-                    value={valueTag}
-                    onChange={(e) => handleChange(e)}
-                    input={<OutlinedInput label="Bếp" />}
-                    // renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    {listKitchenActive.map((item) => (
-                      <MenuItem key={item.id} value={item.account.profile.fullName}>
-                        <Checkbox
-                          checked={valueTag.indexOf(item.account.profile.fullName) > -1}
-                        />
-                        <ListItemText primary={item.account.profile.fullName} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                {formik.touched.kitchen && formik.errors.kitchen && (
+                <Controls.Select
+                  label="Bếp"
+                  width="100%"
+                  name="kitchenId"
+                  options={getOptionsKichen()}
+                  value={formik.values.kitchenId}
+                  onChange={async (e) => {
+                    const a = listKitchenActive.find(
+                      (c) => c.id === e.target.value
+                    );
+
+                    formik.setFieldValue("kitchenId", a.id);
+                  }}
+                />
+                {formik.touched.kitchenId && formik.errors.kitchenId && (
                   <FormHelperText
                     error
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.kitchen}
+                    {formik.errors.kitchenId}
                   </FormHelperText>
                 )}
 
-
                 <Box sx={{ padding: "0" }}>
                   <Grid
-                    container spacing={3}
-                    // columns={24}
-                    // container
+                    container
+                    spacing={3}
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
                   >
-                    <Grid
-                      item xs={5.2}
-                    >
+                    <Grid item xs={5.2}>
                       <Item>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
@@ -406,9 +296,7 @@ export default function NewStation() {
                         </LocalizationProvider>
                       </Item>
                     </Grid>
-                    <Grid
-                      item xs={5.2}
-                    >
+                    <Grid item xs={5.2}>
                       <Item>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
@@ -427,7 +315,6 @@ export default function NewStation() {
                 </Box>
               </Stack>
             </Grid>
-
           </Grid>
         </Box>
 

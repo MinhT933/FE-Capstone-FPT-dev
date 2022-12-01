@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -9,7 +9,6 @@ import {
   Table,
   Stack,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   Avatar,
@@ -27,17 +26,17 @@ import Page from "../../components/setPage/Page";
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
 // mock
 // import STATIONLIST from "./StationSample";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { callAPIAdminGetListOrder, callAPIgetListStation } from "../../redux/action/acction";
-import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import {
+  callAPIAdminGetListOrder,
+} from "../../redux/action/acction";
 import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolbar";
 import AdminOrderListToolBar from "../../sections/@dashboard/user/AdminOrderListToolBar";
 
 // ----------------------------------------------------------------------
@@ -85,7 +84,8 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_stations) =>
-        _stations.packages.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _stations.packages.name.toLowerCase().indexOf(query.toLowerCase()) !==
+        -1
       // console.log(_stations)
     );
   }
@@ -101,7 +101,6 @@ export default function AdminOrderList() {
     { id: "All", title: "Tất cả" },
   ];
 
-
   const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -116,11 +115,10 @@ export default function AdminOrderList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   //CALL API====================================================
-  const location = useLocation();
 
   const token = localStorage.getItem("token");
 
-  const decoded = jwt_decode(token);
+
 
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -140,7 +138,6 @@ export default function AdminOrderList() {
             message: `Đã cập nhập trạng thái ${name}`,
             type: "SUCCESS",
           });
-
         } catch (err) {
           CustomizedToast({
             message: `Cập nhập trạng thái ${name} thất bại`,
@@ -221,7 +218,6 @@ export default function AdminOrderList() {
   return (
     <Page title="Đơn hàng">
       <Container maxWidth={false}>
-
         <Card>
           <AdminOrderListToolBar
             numSelected={selected.length}
@@ -249,20 +245,9 @@ export default function AdminOrderList() {
                       const {
                         id,
                         name,
-                        phone,
-                        image,
-                        address,
-                        openTime,
-                        closeTime,
-                        status,
                         totalPrice,
                         packages,
-                        totalDate,
-                        totalMeal,
-                        totalFood,
-                        totalStation,
                         startDelivery,
-
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -283,10 +268,7 @@ export default function AdminOrderList() {
                               alignItems="center"
                               spacing={2}
                             >
-                              <Avatar
-                                alt={name}
-                                src={row.packages?.image}
-                              />
+                              <Avatar alt={name} src={row.packages?.image} />
                               <Typography variant="subtitle2" noWrap>
                                 {row.packages?.name}
                               </Typography>
@@ -296,9 +278,15 @@ export default function AdminOrderList() {
                           {/* <TableCell align="left">{packages?.name}</TableCell> */}
                           <TableCell align="left">{totalPrice}</TableCell>
                           {/* <TableCell align="left">{phone}</TableCell> */}
-                          <TableCell align="left">{packages?.totalDate}</TableCell>
-                          <TableCell align="left">{packages?.totalMeal}</TableCell>
-                          <TableCell align="left">{packages?.totalFood}</TableCell>
+                          <TableCell align="left">
+                            {packages?.totalDate}
+                          </TableCell>
+                          <TableCell align="left">
+                            {packages?.totalMeal}
+                          </TableCell>
+                          <TableCell align="left">
+                            {packages?.totalFood}
+                          </TableCell>
                           <TableCell align="left">{startDelivery}</TableCell>
 
                           {/* <TableCell align="left">

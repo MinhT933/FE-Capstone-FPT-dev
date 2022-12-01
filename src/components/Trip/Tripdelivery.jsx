@@ -88,7 +88,7 @@ export default function Tripdelivery() {
     }
     return item;
   };
-  
+
   const getSlot = () => {
     const item = [];
     const textTile = "";
@@ -139,23 +139,6 @@ export default function Tripdelivery() {
         return param.row.station.name;
       },
     },
-    // {
-    //   field: "station",
-    //   headerName: "Địa chỉ",
-    //   flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.address;
-    //   },
-    // },
-
-    // {
-    //   field: "openTime",
-    //   headerName: "Giờ mở cửa",
-    //   flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.openTime;
-    //   },
-    // },
 
     {
       field: "phone",
