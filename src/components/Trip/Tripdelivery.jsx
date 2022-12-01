@@ -116,10 +116,9 @@ export default function Tripdelivery() {
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
   const [stationID, setStationID] = useState("");
   const [slot, setSlot] = useState("");
-  const [result, setResult] = useState("");
+
   const [pageSize, setPageSize] = React.useState(5);
 
-  console.log(valueStarTime);
   const columns = [
     // { field: "id", headerName: "ID", flex: 1 },
     { field: "nameFood", headerName: "Tên Món", flex: 1 },
@@ -128,7 +127,7 @@ export default function Tripdelivery() {
       headerName: "Bếp",
       flex: 1,
       renderCell: (param) => {
-        return param.row.kitchen.address;
+        return param.row.kitchen.account?.profile.fullName;
       },
     },
     {
@@ -172,6 +171,7 @@ export default function Tripdelivery() {
   const resultList = useSelector((state) => {
     return state.userReducer.orderToCreate;
   });
+  
   console.log(resultList);
 
   const handleClickFind = async () => {
