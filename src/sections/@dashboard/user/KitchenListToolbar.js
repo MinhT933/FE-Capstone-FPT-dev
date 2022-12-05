@@ -54,7 +54,7 @@ KitchenListToolbar.propTypes = {
 const token = localStorage.getItem("token");
 if (token === "null") {
 }
-
+//-------------------------------------------------------------------------
 export default function KitchenListToolbar({
   numSelected,
   filterName,
