@@ -111,13 +111,15 @@ export default function ListBreakfast(props) {
   const [select, setSelect] = useState("");
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
 
-  // const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   const callAPI = async () => {
-  //     await dispatch(callAPIKitchenPrepareOrder(token, convert(valueStarTime), select));
-  //   };
-  //   callAPI();
-  // }, [select, convert(valueStarTime.$d)]);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(
+        callAPIKitchenPrepareOrder(token, convert(valueStarTime), select)
+      );
+    };
+    callAPI();
+  }, [select, convert(valueStarTime.$d)]);
 
   // const station = useSelector((state) => {
   //   return state.userReducer.listFoodPrepare;
@@ -174,7 +176,6 @@ export default function ListBreakfast(props) {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
-
   const filteredKitchen = applySortFilter(
     kitchenMorning,
     getComparator(order, orderBy),

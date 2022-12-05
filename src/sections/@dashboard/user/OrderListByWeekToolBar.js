@@ -25,10 +25,11 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import ButtonCustomize from "../../../components/Button/ButtonCustomize";
 
 // ----------------------------------------------------------------------
-
+//----------------------
 const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
   display: "flex",
@@ -59,6 +60,7 @@ OrderListByWeekToolBar.propTypes = {
 
 const token = localStorage.getItem("token");
 if (token === "null") {
+  Navigate("/");
 }
 
 export default function OrderListByWeekToolBar({
@@ -159,7 +161,9 @@ export default function OrderListByWeekToolBar({
                   const b = new Date(lastday).toLocaleDateString().split("/");
 
                   let firstdate = a[2] + "-" + a[1] + "-" + a[0];
+                  console.log(firstdate);
                   let lastdate = b[2] + "-" + b[1] + "-" + b[0];
+                  console.log(lastdate);
                   dispatch(
                     await getFoodPrepareByWeek(token, firstdate, lastdate)
                   );
