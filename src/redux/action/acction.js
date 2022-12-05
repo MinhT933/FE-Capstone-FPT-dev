@@ -262,6 +262,68 @@ export const callAPIgetListStation = (token) => {
   };
 };
 
+export const callAPIgetListKitchenByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/kitchens/byStatus?status=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_KITCHEN,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_KITCHEN,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: `Không tìm thấy dữ liệu bếp`,
+        type: "ERROR",
+      });
+    }
+  };
+};
+
+export const callAPIgetShipperByStatus = (token, status) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/shippers/byStatus?statusAcc=${status}`,
+        null,
+        token
+      );
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_SHIPPER,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {
+      console.log({ err });
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_SHIPPER,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: `Không tìm thấy dữ liệu người dùng`,
+        type: "ERROR",
+      });
+    }
+  };
+};
+
 export const callAPIgetListStationbyidKitchen = (token, id) => {
   return async (dispatch) => {
     try {
@@ -1182,5 +1244,26 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
     } catch (err) {
       console.log({ err });
     }
+  };
+};
+
+
+export const callAPIgetListKitchenActive = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + "/kitchens/byStatus?status=active",
+        null,
+        token
+      );
+
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_KITCHEN_ACTIVE,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {}
   };
 };
