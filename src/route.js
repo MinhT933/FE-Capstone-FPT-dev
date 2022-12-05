@@ -50,6 +50,7 @@ import Tripdelivery from "./components/Trip/Tripdelivery";
 import Delivery from "./components/Trip/Delivery";
 import { List } from "@mui/icons-material";
 import ListDeliveryTrip from "./components/Trip/ListDeliveryTrip";
+import KitchenvieworderByWeek from "./pages/Kitchen/KitchenvieworderByWeek";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -258,6 +259,14 @@ export default function Router() {
           element: (
             // <ProtectedRouteAuthen role="kitchen">
             <KitchenViewOrderList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "kitcheViewOrderByWeek",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <KitchenvieworderByWeek />
             // </ProtectedRouteAuthen>
           ),
         },

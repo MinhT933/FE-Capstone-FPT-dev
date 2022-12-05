@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
+import Iconify from "../hook-form/Iconify";
 
 export default function ButtonCustomize(props) {
   const {
@@ -13,6 +14,7 @@ export default function ButtonCustomize(props) {
     marginTop,
     marginLeft,
     paddingBottom,
+    endIcon,
   } = props;
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC32"),
@@ -41,6 +43,15 @@ export default function ButtonCustomize(props) {
       onClick={onClick}
       component={component}
       to={to}
+      // endIcon={
+      //   <Iconify
+      //     icon={"material-symbols:navigate-next"}
+      //     width={15}
+      //     height={15}
+      //     color={"red"}
+      //   />
+      // }
+      endIcon={endIcon}
       sx={{
         width: { width },
         marginTop: { marginTop },

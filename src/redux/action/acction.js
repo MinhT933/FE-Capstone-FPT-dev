@@ -253,6 +253,39 @@ export const callAPIGetListPack = async (token, status) => {
   };
 };
 
+export const getFoodPrepareByWeek = async (token, startDate, endDate) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API +
+          `/orders/food-prepare/byWeek?startDate=${startDate}&endDate=${endDate}`,
+        null,
+        token
+      );
+
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PREPARE_ORDER_BY_WEEK,
+          payload: res.data.result,
+        })
+      );
+      // console.log(res.data.result);
+    } catch (err) {
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_PREPARE_ORDER_BY_WEEK,
+          payload: [],
+        })
+      );
+      CustomizedToast({
+        message: "Không tìm thấy gói ăn",
+        type: "ERROR",
+      });
+    }
+  };
+};
+
 //----------------------------------------------------------------
 export const callAPIgetListCategory = (token) => {
   return async (dispatch) => {
@@ -626,6 +659,7 @@ export const callAPIgetTripall = (token) => {
   return async (dispatch) => {
     try {
       const res = await API("GET", URL_API + `/delivery_trips`, null, token);
+      console.log(res);
       dispatch(
         createAction({
           type: PathAction.GET_TRIP_BY_STATUS,
@@ -1353,7 +1387,6 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         })
       );
     } catch (err) {
-
       dispatch(
         createAction({
           type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,

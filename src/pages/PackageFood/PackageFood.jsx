@@ -309,6 +309,7 @@ export default function PackageFood() {
                         image,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
+                      console.log(startSale);
                       return (
                         <TableRow
                           hover
