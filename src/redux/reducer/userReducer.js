@@ -149,6 +149,9 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_LIST_SHIPPER:
       state.listShipper = payload;
       break;
+    case PathAction.GET_LIST_PREPARE_ORDER_BY_DATE:
+      state.listFoodPrepare = payload;
+      break;
 
     case PathAction.GET_SHIPPER_STATUS:
       state.listShipperByStatus = payload;

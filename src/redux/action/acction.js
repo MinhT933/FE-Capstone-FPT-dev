@@ -1379,7 +1379,7 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         null,
         token
       );
-      console.log(res);
+      console.log(res.data.result);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,
