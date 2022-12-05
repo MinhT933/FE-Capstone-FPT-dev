@@ -61,15 +61,15 @@ export default function ListdeliveryTriptoolBar({
   if (token === null) {
     Navigate("/");
   }
-  React.useEffect(() => {
-    const callAPI = async () => {
-      dispatch(await callAPIgetTripByStatus(token, "delivery"));
-      dispatch(await callAPIgetTripByStatus(token, "waiting"));
-      dispatch(await callAPIgetTripByStatus(token, "arrived"));
-      dispatch(await callAPIgetTripByStatus(token, "reject"));
-    };
-    callAPI();
-  }, [dispatch, token]);
+  // React.useEffect(() => {
+  //   const callAPI = async () => {
+  //     dispatch(await callAPIgetTripByStatus(token, "delivery"));
+  //     dispatch(await callAPIgetTripByStatus(token, "waiting"));
+  //     dispatch(await callAPIgetTripByStatus(token, "arrived"));
+  //     dispatch(await callAPIgetTripByStatus(token, "reject"));
+  //   };
+  //   callAPI();
+  // }, [dispatch, token]);
   return (
     <RootStyle
       sx={{

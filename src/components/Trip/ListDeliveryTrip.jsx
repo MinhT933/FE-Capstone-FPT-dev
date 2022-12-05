@@ -122,7 +122,6 @@ export default function ListDeliveryTrip() {
   } catch (error) {
     Navigate("/");
   }
-  const location = useLocation();
 
   const getOptions = () => [
     { id: "active", title: "Đang bán" },
@@ -132,8 +131,6 @@ export default function ListDeliveryTrip() {
   React.useEffect(() => {
     const callAPI = async () => {
       await dispatch(callAPIgetTripall(token));
-      // await dispatch(callAPIgetAccountShipperByStatusActive(token));
-      await dispatch(callAPIgetListCategory(token));
     };
     callAPI();
   }, [dispatch, token]);

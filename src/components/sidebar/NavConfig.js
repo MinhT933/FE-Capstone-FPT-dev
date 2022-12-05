@@ -1,7 +1,6 @@
 // component
-import { Navigate, Outlet } from "react-router-dom";
+
 import Iconify from "../../components/hook-form/Iconify";
-import AccountPopover from "./../topbar/AccountPopover";
 
 // ----------------------------------------------------------------------
 
@@ -151,6 +150,11 @@ const navConfigKichen = [
     title: "Đơn hàng",
     path: "/dashboard/kitchen/kitcheviewnorder",
     icon: getIcon("eos-icons:subscription-management"),
+  },
+  {
+    title: "Món ăn chuẩn bị theo tuần",
+    path: "/dashboard/kitchen/kitcheViewOrderByWeek",
+    icon: getIcon("healthicons:i-schedule-school-date-time"),
   },
 ];
 const navConfig = [

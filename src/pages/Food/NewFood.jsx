@@ -193,12 +193,12 @@ export default function NewFood() {
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.name && formik.errors.name && (
+                {formik.touched.price && formik.errors.price && (
                   <FormHelperText
                     error={false}
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.name}
+                    {formik.errors.price}
                   </FormHelperText>
                 )}
               </Grid>

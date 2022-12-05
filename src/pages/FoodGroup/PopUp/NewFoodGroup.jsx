@@ -7,16 +7,10 @@ import PageHeader from "../../../components/PageHeader";
 import * as yup from "yup";
 // import { URL_API } from "./../../Axios/URL_API/URL";
 import Iconify from "../../../components/hook-form/Iconify";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import { useDispatch } from "react-redux";
-import FormControl from "@mui/material/FormControl";
 import { useSelector } from "react-redux";
+import TextField from "@mui/material/TextField";
 
 import { CustomizedToast } from "../../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../../components/Button/ButtonCustomize";
@@ -30,6 +24,9 @@ import API from "../../../Axios/API/API";
 import { URL_API } from "../../../Axios/URL_API/URL";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import Autocomplete from "@mui/material/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
@@ -39,6 +36,8 @@ const schema = yup.object().shape({
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function NewFoodGroup(props) {
   const { OpenPopUp, SetOpenPopUp } = props;
   const dispatch = useDispatch();
@@ -68,23 +67,42 @@ export default function NewFoodGroup(props) {
 
   const [valueTag, setValueTag] = React.useState([]);
 
-  const handleChange = (e) => {
-    const {
-      target: { value },
-    } = e;
+  const [OptionValue, setOptionValue] = React.useState([]);
 
-    const a = listFoodSelectbox.find((c) => c.id === value);
-    console.log(a);
-    setValueTag(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
+  const [selectedOptions, setSelectedOptions] = React.useState([]);
+
+  const handleChange = (event, value) => setSelectedOptions(value);
+
+  console.log(OptionValue);
+  // const handleChange = (e) => {
+  //   const {
+  //     target: { value },
+  //   } = e;
+
+  //   const a = listFoodSelectbox.find((c) => c.id === value);
+  //   console.log(a);
+  //   setValueTag(
+  //     // On autofill we get a stringified value.
+  //     typeof value === "string" ? value.split(",") : value
+  //   );
+  // };
 
   const listFoodSelectbox = useSelector((state) => {
     return state.userReducer.listFoodActive;
   });
 
+  const getOptions = () => {
+    const item = [];
+    for (var i = 0; i < listFoodSelectbox.length; i++) {
+      item.push({
+        id: listFoodSelectbox[i].id,
+        title: listFoodSelectbox[i].name,
+      });
+    }
+
+    return item;
+    //trả về item đã có data muốn biết thì console.log ra mà xem
+  };
   const handleClose = () => {
     SetOpenPopUp(false);
   };
@@ -112,7 +130,8 @@ export default function NewFoodGroup(props) {
         name: formik.values.name,
         description: formik.values.description,
         totalFood: formik.values.totalFood,
-        foodIds: a,
+        // foodIds: a,
+        foodIds: selectedOptions,
       };
       try {
         const res = await API("POST", URL_API + `/food-groups`, data, token);
@@ -200,7 +219,7 @@ export default function NewFoodGroup(props) {
                   </FormHelperText>
                 )}
                 <Grid item xs={12}>
-                  <div>
+                  {/* <div>
                     <FormControl sx={{ width: "28.5rem" }}>
                       <InputLabel id="demo-multiple-checkbox-label">
                         Món ăn
@@ -209,9 +228,16 @@ export default function NewFoodGroup(props) {
                         labelId="demo-multiple-checkbox-label"
                         id="demo-multiple-checkbox"
                         multiple={true}
-                        value={valueTag} 
+                        value={valueTag}
                         onChange={(e) => handleChange(e)}
-                        input={<OutlinedInput label="Món ăn" />}
+                        // input={<OutlinedInput label="Món ăn" />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Checkboxes"
+                            placeholder="Favorites"
+                          />
+                        )}
                         renderValue={(selected) => selected.join(", ")}
                         MenuProps={MenuProps}
                       >
@@ -227,12 +253,48 @@ export default function NewFoodGroup(props) {
                         ))}
                       </Select>
                     </FormControl>
-                  </div>
+                  </div> */}
+                  <Autocomplete
+                    multiple
+                    id="checkboxes-tags-demo"
+                    options={getOptions()}
+                    disableCloseOnSelect
+                    // value={valueTag}
+                    getOptionLabel={(option) => option.title}
+                    isOptionEqualToValue={(option, value) =>
+                      option.value === value.id
+                    }
+                    onChange={(e, value) => {
+                      console.log(value);
+                      const arr = [...OptionValue];
+                      arr.push(value.id);
+                      setOptionValue(arr);
+                    }}
+                    renderOption={(props, option, { selected }) => (
+                      <li {...props}>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {option.title}
+                      </li>
+                    )}
+                    style={{ width: "85%" }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Món ăn"
+                        placeholder="Tìm kiếm..."
+                      />
+                    )}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Controls.TextArea
                     variant="outlined"
-                    label="Mô tả" 
+                    label="Mô tả"
                     placeholder="Mô tả"
                     name="description"
                     value={formik.values.description}
