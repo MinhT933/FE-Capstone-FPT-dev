@@ -32,6 +32,7 @@ const initialState = {
   listFoodPackage: [],
   listGroupFood: [],
   listTimeFrame: [],
+  count: [],
   listFoodByGroupFoodID: [],
   // TimeFrame: [],
 
@@ -64,6 +65,7 @@ const initialState = {
   listShipperActive: [],
 
   shipPerOfKitchen: [],
+  orderByWeek: [],
   listSlots: [],
   listStatiobyidkitchen: [],
   listShipperActiveAccount: [],
@@ -78,32 +80,19 @@ const initialState = {
   listKitchenActive: [],
 };
 
-// const initialStateAuthen = admin
-//   ? { isLoggedIn: true, admin }
-//   : { isLoggedIn: false, admin: null };
-
-// const admin = JSON.parse(localStorage.getItem("admin"));
-
 export default function userReducer(state = initialState, { type, payload }) {
   switch (type) {
     case PathAction.GET_LIST_FOOD:
       state.listFood = payload;
-
-      //nôm na dòng 35 là là ừ với cái trường case GET_LIST_FOOD
-      //thì lưu data vào listFood
-      // giờ có data rồi nè muốn núm nó ra xài lúc nào ở đâu cũng đc
-      // cái này chỉ lưu khi m thấy nó cần xài nhiều chỗ
-      // hình dung như cái nhà kho zị á :v
-      // nếu mày quăng nhiều đồ ko cần thiết nó sẽ gây ra chật chỗ của mày
-      //b4 hãy vào food.jsx mà coi tiếp nha (cách núm data bỏ vào)
-
-      //lưu data
       break;
     case PathAction.SET_VALUE_TAG:
       state.valueTag = payload;
       break;
     case PathAction.GET_LIST_FOOD_ACTIVE:
       state.listFoodActive = payload;
+      break;
+    case PathAction.GET_COUNT:
+      state.count = payload;
       break;
     case PathAction.GET_LIST_FOODCATEGORY:
       state.listCategory = payload;
@@ -133,6 +122,9 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_ACCOUNT_SHIPPER:
       state.accountShipper = payload;
       break;
+    case PathAction.GET_TRIP_BY_STATUS:
+      state.tripbyStatus = payload;
+      break;
 
     case PathAction.GET_ACCOUNT_KITCHEN:
       state.accountKitchen = payload;
@@ -153,11 +145,12 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listKitchenActive = payload;
       break;
 
-
-
     //=====================================================
     case PathAction.GET_LIST_SHIPPER:
       state.listShipper = payload;
+      break;
+    case PathAction.GET_LIST_PREPARE_ORDER_BY_DATE:
+      state.listFoodPrepare = payload;
       break;
 
     case PathAction.GET_SHIPPER_STATUS:
@@ -187,9 +180,8 @@ export default function userReducer(state = initialState, { type, payload }) {
       // console.log(payload);
       break;
 
-    case PathAction.GET_LIST_PREPARE_ORDER_BY_DATE:
+    case PathAction.GET_LIST_PREPARE_ORDER_BY_WEEK:
       state.listFoodPrepare = payload;
-      // console.log(payload);
       break;
 
     case PathAction.GET_FOOD:
@@ -234,6 +226,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_LIST_ORDER_TO_CREATE:
       state.orderToCreate = payload;
+      break;
+    case PathAction.GET_LIST_PREPARE_ORDER_BY_WEEK:
+      state.orderByWeek = payload;
       break;
     case PathAction.GET_LIST_REQ:
       state.listRequests = payload;

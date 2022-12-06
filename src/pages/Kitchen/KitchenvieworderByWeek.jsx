@@ -25,34 +25,22 @@ import { UserListHead } from "../../sections/@dashboard/user";
 // mock
 // import food from "../../_mock/foodsample";
 
-import {
-  callAPIgetListCategory,
-  callAPIgetListFood,
-} from "../../redux/action/acction";
+import { getFoodPrepareByWeek } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Iconify from "../../components/hook-form/Iconify";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
-import Foodlistoolbar from "../../sections/@dashboard/user/Foodlistoolbar";
-import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import OrderListByWeekToolBar from "../../sections/@dashboard/user/OrderListByWeekToolBar";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: "images", name: "Hình", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
-  { id: "price", label: "Giá", alignRight: false },
-  { id: "type", label: "Phân loại", alignRight: false },
-  { id: "createdAt", label: "Ngày thêm", alignRight: false },
-  { id: "updatedate", label: "Ngày sửa", alignRight: false },
-  { id: "status", label: "Trạng thái", alignRight: false },
+  { id: "quantity", label: "Số lượng", alignRight: false },
+  { id: "deliveryDate", label: "Ngày giao", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
-  { id: "setStatus", label: "Thay đổi trạng thái", alignRight: false },
-  { id: "detail", label: "Chi tiết món ăn", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -83,7 +71,8 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) =>
+        _user.deliveryDate.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -93,14 +82,14 @@ const getIcon = (name) => (
   <Iconify icon={name} width={15} height={15} color={"red"} />
 );
 
-export default function Food() {
+export default function KitchenvieworderByWeek() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("createdAt");
+  const [orderBy, setOrderBy] = useState("deliveryDate");
 
   const [filterName, setFilterName] = useState("");
 
@@ -120,6 +109,8 @@ export default function Food() {
     setOpen(false);
   }, []);
 
+  //   console.log(last_date);
+
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -138,35 +129,31 @@ export default function Food() {
     { id: "inActive", title: "Ngưng bán" },
     { id: "All", title: "Tất cả" },
   ];
+
+
+  var curr = new Date(); // get current date
+  var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+  var last = first + 7; // last day is the first day + 6
+
+  var firstday = new Date(curr.setDate(first + 1)).toUTCString();
+  var lastday = new Date(curr.setDate(last)).toUTCString();
+
+  const a = new Date(firstday).toLocaleDateString().split("/");
+  const b = new Date(lastday).toLocaleDateString().split("/");
+
+  let firstdate = a[2] + "-" + a[1] + "-" + a[0];
+  let lastdate = b[2] + "-" + b[1] + "-" + b[0];
   React.useEffect(() => {
+    //   console.log(first_date);
     const callAPI = async () => {
-      await dispatch(callAPIgetListFood(token));
-      await dispatch(callAPIgetListCategory(token));
+      dispatch(await getFoodPrepareByWeek(token, firstdate, lastdate));
     };
     callAPI();
-  }, [dispatch, token]);
-
-  const handleDelete = async (id) => {
-    await API("PUT", URL_API + `/foods/update-status/${id}`, null, token)
-      .then((res) => {
-      
-
-        dispatch(callAPIgetListFood(token));
-
-        CustomizedToast({
-          message: "Cập nhập trạng thái thành công",
-          type: "SUCCESS",
-        });
-        handleClose();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  }, [dispatch, token, firstdate, lastdate]);
 
   //useSelector kéo data từ store(userReducer.js) zìa mà xài
-  const food = useSelector((state) => {
-    return state.userReducer.listFood;
+  const foodPrepare = useSelector((state) => {
+    return state.userReducer.listFoodPrepare;
   });
 
   //========================================================
@@ -177,7 +164,7 @@ export default function Food() {
   };
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = food.map((n) => n.name);
+      const newSelecteds = foodPrepare.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -215,13 +202,16 @@ export default function Food() {
     setFilterName(event.target.value);
   };
 
+  console.log(foodPrepare);
+
   const filterFood = applySortFilter(
-    food,
+    foodPrepare,
     getComparator(order, orderBy),
     filterName
   );
 
   const isUserNotFound = filterFood.length === 0;
+
   return (
     <Page title="Thức ăn">
       <Container maxWidth={false}>
@@ -246,7 +236,7 @@ export default function Food() {
         </Stack>
 
         <Card>
-          <Foodlistoolbar
+          <OrderListByWeekToolBar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -259,7 +249,7 @@ export default function Food() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={food.length}
+                  rowCount={foodPrepare.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -271,17 +261,14 @@ export default function Food() {
                     .map((row) => {
                       const {
                         id,
-                        name,
-                        price,
+                        nameFood,
+                        quantity,
                         description,
-                        createdAt,
-                        updatedAt,
-                        status,
-                        foodCategory,
+                        deliveryDate,
                         image,
                       } = row;
 
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      const isItemSelected = selected.indexOf(nameFood) !== -1;
 
                       return (
                         <TableRow
@@ -293,56 +280,21 @@ export default function Food() {
                           aria-checked={isItemSelected}
                         >
                           <TableCell>
-                            <Avatar alt={name} src={image} />
+                            <Avatar alt={nameFood} src={image} />
                           </TableCell>
                           <TableCell>
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {nameFood}
                             </Typography>
                           </TableCell>
 
-                          <TableCell align="left">{price}</TableCell>
+                          <TableCell align="left">{quantity}</TableCell>
+
                           <TableCell align="left">
-                            {foodCategory.name}
+                            {new Date(deliveryDate).toLocaleDateString()}
                           </TableCell>
-                          <TableCell align="left">
-                            {new Date(createdAt).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell align="left">
-                            {new Date(updatedAt).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell align="left">
-                            <div>
-                              {status === "inActive" && (
-                                // <Alert severity="warning">inActive</Alert>
-                                <Label color="error">Ngưng bán</Label>
-                              )}
-                              {status === "waiting" && (
-                                // <Alert severity="info">waiting</Alert>
-                                <Label color="warning">Đang chờ</Label>
-                              )}
-                              {status === "active" && (
-                                <Label color="success">Đang bán</Label>
-                              )}
-                            </div>
-                          </TableCell>
+
                           <TableCell align="left">{description}</TableCell>
-                          <TableCell align="left">
-                            <ButtonCustomize
-                              variant="outlined"
-                              onClick={() => handleClickOpen(row)}
-                              nameButton={
-                                status === "active" ? "Ngưng bán" : "Bán"
-                              }
-                            />
-                          </TableCell>
-                          <TableCell align="left">
-                            <ButtonCustomize
-                              nameButton="Chi tiết"
-                              component={RouterLink}
-                              to={`${location.pathname}/${id}`}
-                            />
-                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -362,7 +314,7 @@ export default function Food() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={food.length}
+            count={foodPrepare.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -373,7 +325,7 @@ export default function Food() {
               return "" + from + "-" + to + " của " + count;
             }}
           />
-          {open && (
+          {/* {open && (
             <ConfirmDialog
               open={open}
               content={value.name}
@@ -381,7 +333,7 @@ export default function Food() {
               handleClose={handleClose}
               onClick={() => handleDelete(value.id, value.name)}
             />
-          )}
+          )} */}
         </Card>
       </Container>
     </Page>

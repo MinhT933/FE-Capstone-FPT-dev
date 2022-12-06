@@ -29,6 +29,8 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { Stack } from "@mui/system";
 import dayjs from "dayjs";
 import DateTime from "./../../components/Control/DateTime";
+import DatePicker from "./../../components/Control/DatePicker";
+import { format } from "date-fns";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -74,6 +76,7 @@ export default function EditPackage() {
   const [valueEndTime, setValueEndtime] = React.useState(
     dayjs("2022-10-26T21:11:5")
   );
+  console.log(valueEndTime);
 
   const Input = styled("input")({
     display: "none",
@@ -159,6 +162,13 @@ export default function EditPackage() {
   };
 
   const [prices, setPrices] = useState([]);
+  const handleDate = (time) => {
+    const a = new Date(time).toLocaleDateString().split("/");
+    if (a[0] < 10) {
+      return `${a[2]}-${a[1]}-0${a[0]}`;
+    } else return `${a[2]}-${a[1]}-${a[0]}`;
+  };
+
   ///========================Change PackageItem
   const handleChangeGroupFood = (e, idPackage) => {
     const indexUpdate = packageItem.findIndex((a) => a.id === idPackage);
@@ -193,21 +203,22 @@ export default function EditPackage() {
       categoryID: "",
     },
 
-    // `${a[2]}-${a[1]}-${a[0]}`
-    // `0${b[2]}-${b[1]}-${b[0]}`
     onSubmit: async (values) => {
       console.log(values);
-      const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      const b = new Date(valueStarTime).toLocaleDateString().split("/");
+
       // const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
       // const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
       // console.log(startSale, endSale);
       // console.log(startSale);
+      const a = new Date(valueEndTime).toLocaleDateString().split("/");
+      const b = new Date(valueStarTime).toLocaleDateString().split("/");
+
       const startSale = moment(valueStarTime).format("YYYY-MM-DD hh:mm:ss");
       const endSale = moment(valueEndTime).format("YYYY-MM-DD hh:mm:ss");
-
       // const startDate = new Date(valueStarTime).toLocaleDateString();
       // const endDate = new Date(valueEndTime).toLocaleDateString();
+      // console.log(startSale);
+      // console.log(valueStarTime);
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -215,8 +226,10 @@ export default function EditPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      formData.append("endSale", endSale);
-      formData.append("startSale", startSale);
+      // formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
+      // formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
+      formData.append("endSale", handleDate(valueEndTime));
+      formData.append("startSale", handleDate(valueStarTime));
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
@@ -425,7 +438,7 @@ export default function EditPackage() {
                   variant="outlined"
                   label="Giá"
                   name="price"
-                  disabled
+                  // disabled
                   value={formik.values.price}
                   onChange={(event) => {
                     formik.handleChange(event);
@@ -484,12 +497,12 @@ export default function EditPackage() {
                 )}
               </Grid>
               <Grid item xs={6}>
-                <DateTime
+                <DatePicker
                   variant="outlined"
+                  inputFormat="DD-MM-YYYY"
                   name="startSale"
                   label="Ngày mở bán"
-                  width="85%"
-                  // disablePast
+                  width="100%"
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
@@ -519,12 +532,13 @@ export default function EditPackage() {
               </Grid>
 
               <Grid item xs={6}>
-                <DateTime
+                <DatePicker
                   variant="outlined"
                   name="endSale"
+                  width="100%"
+                  inputFormat="DD-MM-YYYY"
                   label="Ngày kết thúc bán"
                   value={valueEndTime}
-                  width="85%"
                   onChange={(e) => {
                     setValueEndtime(e);
                   }}
@@ -602,14 +616,15 @@ export default function EditPackage() {
                       onBlur={formik.handleBlur}
                       options={getTimeFrameOptions()}
                     />
-                    {formik.touched.timeFrameID && formik.errors.timeFrameID && (
-                      <FormHelperText
-                        error
-                        id="standard-weight-helper-text-username-login"
-                      >
-                        {formik.errors.timeFrameID}
-                      </FormHelperText>
-                    )}
+                    {formik.touched.timeFrameID &&
+                      formik.errors.timeFrameID && (
+                        <FormHelperText
+                          error
+                          id="standard-weight-helper-text-username-login"
+                        >
+                          {formik.errors.timeFrameID}
+                        </FormHelperText>
+                      )}
                   </Box>
                 </Box>
               </Grid>

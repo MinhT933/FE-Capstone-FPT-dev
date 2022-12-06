@@ -10,6 +10,7 @@ import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 //validate
 import { useFormik } from "formik";
+import IconButton from "@mui/material/IconButton";
 import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { callAPIgetListCategory } from "./../../redux/action/acction";
@@ -19,11 +20,12 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import NewCateFood from "./NewCateFood";
+import { width } from "@mui/system";
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
-//yub dùng để validation trong reactjs
-// khởi tạo schema để so sánh value(theo tao hiểu)
 const schema = yup.object().shape({
   name: yup.string().required().trim(),
   price: yup.string().required().trim(),
@@ -33,6 +35,8 @@ const schema = yup.object().shape({
 
 export default function NewFood() {
   const dispatch = useDispatch();
+
+  const [OpenPopUpCate, SetOpenPopUpCate] = useState(false);
   // const token = localStorage.getItem("token");
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -46,29 +50,20 @@ export default function NewFood() {
     // return <Navigate to="/" replace />;
     Navigate("/");
   }
-  //khởi tạo lần đầu gọi thằng getlist cate để nó hiện thị lên selectbox ô select của tao á
-  // ctr+ click chuột vào callAPIgetListCategory để xem nó cách callAPI getlistCateFood no giống y chan
-  //call Food list vậy thay vị đổ vào bảng thì mình đỗ vào selectbox
+
   React.useEffect(() => {
     const getlistCateFood = async () => {
       await dispatch(callAPIgetListCategory(token));
     };
     getlistCateFood();
-    //disparch để kết thúc vào lặp vô tận loop infinity á
   }, [dispatch]);
 
-  //kéo data categoriesFood từ store zìa mà xài nè
   const categoriesFood = useSelector((state) => {
     return state.userReducer.listCategory;
   });
 
-  /// get list options để hiển thị lên ô selectbox
   const getOptions = () => {
-    //tạo mảng rỗng để chứa data ở đây là name và id của categoriesFood
-    //hình dung nó giống nhà kho vậy á
-    // sau này trước khi muốn gọi cái gì đó phải tạo 1 mảng rỗng để bỏ vào
     const item = [];
-    // vòng food này để đẩy data từ categoriesFood vào trong items ( vì nó có nhiều object) nên phải làm vậy
     for (var i = 0; i < categoriesFood.length; i++) {
       item.push({ id: categoriesFood[i].id, title: categoriesFood[i].name });
     }
@@ -104,9 +99,6 @@ export default function NewFood() {
 
     //onSubmit ngay từ cái tên đầu nó dùng đẩy data xuống BE
     onSubmit: async (values) => {
-      //formdata.append gg.com => nôm na à đẩy giá trị vào formdata có key là 1 chuỗi
-      //value là formik.values.(something you want ) nó giống như muốn vào nhà ai đó thì phải biết tên m trước
-      //sau đó mới biết về bản thân m sau nôm na vậy đó hi vọng m hiểu
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -174,11 +166,7 @@ export default function NewFood() {
                   variant="outlined"
                   name="name"
                   label="Tên"
-                  // bỏ giá trị value vào đây để nó get giá trị đó xuống
-                  // nói chung là m nhập cái gì
-                  // thì nó bỏ xuống cái cái kho có tên mà m khởi tạo rồi đảy xuống BE
                   value={formik.values.name || ""}
-                  /// để nó ghi nhận sự thay đổi
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
@@ -205,33 +193,37 @@ export default function NewFood() {
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.name && formik.errors.name && (
+                {formik.touched.price && formik.errors.price && (
                   <FormHelperText
                     error={false}
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.name}
+                    {formik.errors.price}
                   </FormHelperText>
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Controls.Select
-                  name="foodCategoryId"
-                  label="Loại"
-                  // defaultValue={categoriesFood[0].name}
-
-                  value={formik.values.foodCategoryId}
-                  onChange={(e) => {
-                    // map tên với adi hiện thị name nhưng chọn ẩn ở dưới là id
-                    const a = categoriesFood.find(
-                      (c) => c.id === e.target.value
-                    );
-                    formik.setFieldValue("foodCategoryId", a.id);
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
                   }}
-                  onBlur={formik.handleBlur}
-                  //getOption để lấy giá trị category
-                  options={getOptions()}
-                />
+                >
+                  <Controls.Select
+                    name="foodCategoryId"
+                    label="Loại"
+                    width="21vw"
+                    value={formik.values.foodCategoryId}
+                    onChange={(e) => {
+                      const a = categoriesFood.find(
+                        (c) => c.id === e.target.value
+                      );
+                      formik.setFieldValue("foodCategoryId", a.id);
+                    }}
+                    onBlur={formik.handleBlur}
+                    options={getOptions()}
+                  />
+                </Box>
               </Grid>
               <Grid item xs={12}>
                 <Controls.TextArea
@@ -264,7 +256,7 @@ export default function NewFood() {
                   <ButtonCustomize
                     variant="contained"
                     type="submit"
-                    nameButton="Thêm thức ăn"
+                    nameButton="Thêm món ăn"
                   />
                 </Stack>
               </Box>
@@ -289,7 +281,6 @@ export default function NewFood() {
               >
                 Tải lên...
               </Button>
-              {/* css button input img */}
               <Box
                 sx={{
                   height: 165,
@@ -310,6 +301,10 @@ export default function NewFood() {
           </Box>
         </Box>
       </form>
+      <NewCateFood
+        OpenPopUpCate={OpenPopUpCate}
+        SetOpenPopUpCate={SetOpenPopUpCate}
+      />
     </Box>
   );
 }

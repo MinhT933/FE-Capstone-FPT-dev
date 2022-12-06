@@ -19,13 +19,12 @@ import { CustomizedToast } from "../Toast/ToastCustom";
 import ButtonCustomize from "../Button/ButtonCustomize";
 import {
   callAPIgetOrdertoCreateDeliveryTrip,
-  callAPIgetShipperActive,
   callAPIGetSlot,
   callAPIGetStationByKitchen,
-  callAPIgetTripActive,
 } from "../../redux/action/acction";
 import { URL_API } from "../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
+import { callAPIgetShipperByActive } from "./../../redux/action/acction";
 
 const schema = yup.object().shape({
   fullName: yup.string().required("Vui lòng điền đầy đủ thông tin").trim(),
@@ -71,25 +70,15 @@ export default function TripdeliveryPopUp(props) {
     },
   };
 
-  const profiles = useSelector((state) => {
-    return state.userReducer.profiles;
-  });
   // const idKitchen = profiles.id;
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
-      dispatch(await callAPIgetTripActive(token));
+      dispatch(await callAPIgetShipperByActive(token));
       dispatch(await callAPIGetStationByKitchen(token));
       dispatch(await callAPIGetSlot(token));
     };
     getfoodByFoodGroupId();
   }, [dispatch, idKitchen, token]);
-
-  const stationOfkichen = useSelector((state) => {
-    return state.userReducer.listShipperActive;
-  });
-  const Slot = useSelector((state) => {
-    return state.userReducer.listSlots;
-  });
 
   const [valueTag, setValueTag] = React.useState([]);
 
@@ -112,7 +101,7 @@ export default function TripdeliveryPopUp(props) {
   const handleClose = () => {
     SetOpenPopUp(false);
   };
-
+  console.log(slot);
   const formik = useFormik({
     validateOnMount: true,
     validateOnBlur: true,

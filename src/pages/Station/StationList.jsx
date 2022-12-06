@@ -9,7 +9,6 @@ import {
   Table,
   Stack,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -23,11 +22,8 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-import StationMoreMenu from "./StationMoreMenu";
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
-// mock
-// import STATIONLIST from "./StationSample";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+
+import { UserListHead } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -39,6 +35,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
 import moment from "moment";
+import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -48,8 +45,6 @@ const TABLE_HEAD = [
   { id: "name", label: "Tên trạm", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Số điện thoại", alignRight: false },
-  // { id: "openTime", label: "Mở cửa", alignRight: false },
-  // { id: "closeTime", label: "Đóng cửa", alignRight: false },
   { id: "time", label: "Thời gian hoạt động", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
@@ -92,7 +87,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function StationList() {
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -104,6 +98,16 @@ export default function StationList() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+  const handleClickOpen = React.useCallback((item) => {
+    setOpen(true);
+    setValue(item);
+  }, []);
+
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
+  }, []);
 
   //CALL API====================================================
   const location = useLocation();
@@ -134,7 +138,7 @@ export default function StationList() {
       (res) => {
         try {
           dispatch(callAPIgetListStation(token));
-
+          handleClose();
           CustomizedToast({
             message: `Đã cập nhập trạng thái ${name}`,
             type: "SUCCESS",
@@ -284,9 +288,9 @@ export default function StationList() {
                           hover
                           key={id}
                           tabIndex={-1}
-                        // role="checkbox"
-                        // selected={isItemSelected}
-                        // aria-checked={isItemSelected}
+                          // role="checkbox"
+                          // selected={isItemSelected}
+                          // aria-checked={isItemSelected}
                         >
                           <TableCell align="left">{""}</TableCell>
 
@@ -297,11 +301,10 @@ export default function StationList() {
                           {/* <TableCell align="left">{closeTime}</TableCell> */}
                           <TableCell align="left">
                             <div>
-                              {moment(openTime, "HH:mm:ss").format("hh:mm")} -  {moment(closeTime, "HH:mm:ss").format("hh:mm")}
+                              {moment(openTime, "HH:mm:ss").format("hh:mm")} -{" "}
+                              {moment(closeTime, "HH:mm:ss").format("hh:mm")}
                             </div>
                           </TableCell>
-
-
 
                           <TableCell align="left">
                             <div>
@@ -317,7 +320,7 @@ export default function StationList() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {status === "active" ? (
+                            {/* {status === "active" ? (
                               <ButtonCustomize
                                 variant="outlined"
                                 onClick={() => {
@@ -337,7 +340,15 @@ export default function StationList() {
                               >
                                 Mở
                               </ButtonCustomize>
-                            )}
+                            )} */}
+
+                            <ButtonCustomize
+                              variant="outlined"
+                              onClick={() => handleClickOpen(row)}
+                              nameButton={
+                                status === "active" ? "Chặn" : "Mở chặn"
+                              }
+                            />
                           </TableCell>
 
                           <TableCell align="left">
@@ -385,6 +396,15 @@ export default function StationList() {
               return "" + from + "-" + to + " của " + count;
             }}
           />
+          {open && (
+            <ConfirmDialog
+              open={open}
+              content={value.name}
+              handleClickOpen={handleClickOpen}
+              handleClose={handleClose}
+              onClick={() => handleDelete(value.id, value.name)}
+            />
+          )}
         </Card>
       </Container>
       {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}

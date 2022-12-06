@@ -17,8 +17,6 @@ import NewStation from "./pages/Station/NewStation";
 import KitchenList from "./pages/Kitchen/KitchenList";
 import NewKitchen from "./pages/Kitchen/NewKitchen";
 import AdminOrderList from "./pages/AdminOrder/AdminOrderList";
-import NewAdminOrder from "./pages/AdminOrder/NewAdminOrder";
-import StepDesignPacketFood from "./pages/PackageFood/Step/StepDesignPacketFood";
 import ListFoodGroup from "./pages/FoodGroup/ListFoodGroup";
 import UpdateStaion from "./pages/Station/UpdateStation";
 import UpdateKitchen from "./pages/Kitchen/UpdateKitchen";
@@ -50,6 +48,10 @@ import NewAdmin from "./pages/userList/NewAdmin";
 import NewManager from "./pages/userList/NewManager";
 import Tripdelivery from "./components/Trip/Tripdelivery";
 import Delivery from "./components/Trip/Delivery";
+import { List } from "@mui/icons-material";
+import ListDeliveryTrip from "./components/Trip/ListDeliveryTrip";
+import KitchenvieworderByWeek from "./pages/Kitchen/KitchenvieworderByWeek";
+import ListCateTime from "./pages/Time-Cate/ListCateTime";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -217,10 +219,12 @@ export default function Router() {
             // </ProtectedRouteAuthen>
           ),
         },
+        { path: "ListDelivery", element: <ListDeliveryTrip /> },
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
         { path: "foodGroup/updatefood/:id", element: <UpdateFood /> },
         { path: "package/updatePackageFood/:id", element: <EditPackage /> },
+        { path: "timeframe-category", element: <ListCateTime /> },
       ],
     },
 
@@ -257,6 +261,14 @@ export default function Router() {
           element: (
             // <ProtectedRouteAuthen role="kitchen">
             <KitchenViewOrderList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "kitcheViewOrderByWeek",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <KitchenvieworderByWeek />
             // </ProtectedRouteAuthen>
           ),
         },

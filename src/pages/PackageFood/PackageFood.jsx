@@ -35,6 +35,8 @@ import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import PackageListToolbar from "../../sections/@dashboard/user/PackageListToolbar";
+import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
+import { width } from "@mui/system";
 
 //Link routers
 
@@ -118,6 +120,17 @@ export default function PackageFood() {
 
   const dispatch = useDispatch();
 
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+  const handleClickOpen = React.useCallback((item) => {
+    setOpen(true);
+    setValue(item);
+  }, []);
+
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
+  }, []);
+
   const [valueId, setValueId] = useState();
 
   const token = localStorage.getItem("token");
@@ -146,6 +159,24 @@ export default function PackageFood() {
       return;
     }
     setSelected([]);
+  };
+
+  const handleDelete = async (id) => {
+    await API("PUT", URL_API + `/packages/confirm/${id}`, null, token)
+      .then((res) => {
+        console.log(res);
+
+        dispatch(callAPIGetListPackage(token));
+
+        CustomizedToast({
+          message: "Cập nhập trạng thái thành công",
+          type: "SUCCESS",
+        });
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleClick = (event, name) => {
@@ -278,6 +309,7 @@ export default function PackageFood() {
                         image,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
+                      console.log(startSale);
                       return (
                         <TableRow
                           hover
@@ -312,14 +344,14 @@ export default function PackageFood() {
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
-                                <Label color="error">Không hoạt động</Label>
+                                <Label color="error">Ngưng bán</Label>
                               )}
                               {status === "waiting" && (
                                 // <Alert severity="info">waiting</Alert>
                                 <Label color="warning">Đang chờ</Label>
                               )}
                               {status === "active" && (
-                                <Label color="success">Hoạt động</Label>
+                                <Label color="success">Đang bán</Label>
                               )}
                             </div>
                           </TableCell>
@@ -343,7 +375,13 @@ export default function PackageFood() {
                             </TableCell>
                           )}
                           <TableCell align="right">
-                            {/* <UserMoreMenu id={id} /> */}
+                            <ButtonCustomize
+                              variant="outlined"
+                              onClick={() => handleClickOpen(row)}
+                              nameButton={
+                                status === "active" ? "Ngưng bán" : "Mở bán"
+                              }
+                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -375,6 +413,15 @@ export default function PackageFood() {
               return "" + from + "-" + to + " của " + count;
             }}
           />
+          {open && (
+            <ConfirmDialog
+              open={open}
+              content={value.name}
+              handleClickOpen={handleClickOpen}
+              handleClose={handleClose}
+              onClick={() => handleDelete(value.id, value.name)}
+            />
+          )}
         </Card>
       </Container>
       {/* <DetailPackage

@@ -11,7 +11,6 @@ import DatePicker from "../Control/DatePicker";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch } from "react-redux";
-import * as moment from "moment";
 import {
   callAPIgetListKitchen,
   callAPIgetListStationbyidKitchen,
@@ -44,7 +43,6 @@ export default function Tripdelivery() {
     const getfoodByFoodGroupId = async () => {
       dispatch(await callAPIGetSlot(token));
       dispatch(await callAPIgetallOrder(token));
-      // dispatch(await callAPIgetListStationbyidKitchen(token, idkitchen));
       dispatch(await callAPIgetListKitchen(token));
       dispatch(await callAPIgetAccountShipperByStatusActive(token));
     };
@@ -88,7 +86,7 @@ export default function Tripdelivery() {
     }
     return item;
   };
-  
+
   const getSlot = () => {
     const item = [];
     const textTile = "";
@@ -116,10 +114,9 @@ export default function Tripdelivery() {
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
   const [stationID, setStationID] = useState("");
   const [slot, setSlot] = useState("");
-  const [result, setResult] = useState("");
+
   const [pageSize, setPageSize] = React.useState(5);
 
-  console.log(valueStarTime);
   const columns = [
     // { field: "id", headerName: "ID", flex: 1 },
     { field: "nameFood", headerName: "Tên Món", flex: 1 },
@@ -128,7 +125,8 @@ export default function Tripdelivery() {
       headerName: "Bếp",
       flex: 1,
       renderCell: (param) => {
-        return param.row.kitchen.address;
+        setIdkitchen(param.row.kitchen.id);
+        return param.row.kitchen.account?.profile.fullName;
       },
     },
     {
@@ -136,26 +134,11 @@ export default function Tripdelivery() {
       headerName: "Điểm giao",
       flex: 1,
       renderCell: (param) => {
+        setSlot(param.row.timeSlot.id);
+        setStationID(param.row.station.id);
         return param.row.station.name;
       },
     },
-    // {
-    //   field: "station",
-    //   headerName: "Địa chỉ",
-    //   flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.address;
-    //   },
-    // },
-
-    // {
-    //   field: "openTime",
-    //   headerName: "Giờ mở cửa",
-    //   flex: 1,
-    //   renderCell: (param) => {
-    //     return param.row.station.openTime;
-    //   },
-    // },
 
     {
       field: "phone",
@@ -189,7 +172,9 @@ export default function Tripdelivery() {
   const resultList = useSelector((state) => {
     return state.userReducer.orderToCreate;
   });
+
   console.log(resultList);
+  // console.log(resultList?.station?.id);
 
   const handleClickFind = async () => {
     dispatch(
@@ -275,7 +260,7 @@ export default function Tripdelivery() {
                   const a = stationOfkichen.find(
                     (c) => c.id === e.target.value
                   );
-                  console.log(a.id);
+
                   setStationID(a.id);
                 }}
                 options={getOptionsStation()}
@@ -289,8 +274,6 @@ export default function Tripdelivery() {
                 width="90%"
                 onChange={(e) => {
                   const a = Slot.find((c) => c.id === e.target.value);
-                  console.log(a);
-                  console.log(e.target.value);
                   setSlot(e.target.value);
                 }}
                 options={getSlot()}
@@ -327,10 +310,6 @@ export default function Tripdelivery() {
                         `${from} - ${to} của ${count}`,
                     },
                   }}
-                  // labelRowsPerPage="Số hàng trên một trang"
-                  // labelDisplayedRows={({ from, to, count }) => {
-                  //   return "" + from + "-" + to + " của " + count;
-                  // }}
                 />
               ) : (
                 <DataGrid

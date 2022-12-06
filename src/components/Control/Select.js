@@ -13,7 +13,6 @@ export default function Select(props) {
     value,
     onChange,
     options,
-    defaultValue,
     width,
     onClick,
     marginTop,

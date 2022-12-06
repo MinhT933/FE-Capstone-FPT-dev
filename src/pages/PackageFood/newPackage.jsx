@@ -10,7 +10,6 @@ import Controls from "./../../components/Control/Controls";
 
 import { FormHelperText } from "@mui/material";
 
-import IconButton from "@mui/material/IconButton";
 import { useFormik } from "formik";
 import { styled } from "@mui/material/styles";
 import PageHeader from "../../components/PageHeader";
@@ -29,9 +28,9 @@ import API from "../../Axios/API/API";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import NewTimeFrame from "./NewTimeFrame";
-import DateTime from "./../../components/Control/DateTime";
 import NewCate from "./newCate";
 import * as moment from "moment";
+import DatePicker from "../../components/Control/DatePicker";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -113,6 +112,13 @@ export default function NewPackage() {
     return groupFoodData;
   };
 
+  const handleDate = (time) => {
+    const a = new Date(time).toLocaleDateString().split("/");
+    if (a[0] < 10) {
+      return `${a[2]}-${a[1]}-0${a[0]}`;
+    } else return `${a[2]}-${a[1]}-${a[0]}`;
+  };
+
   const getcategoryOptions = () => {
     const CategoryData = [];
     for (var i = 0; i < category.length; i++) {
@@ -178,8 +184,8 @@ export default function NewPackage() {
       // console.log(startSale);
       const b = new Date(valueStarTime).toLocaleDateString().split("/");
       const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      const startDate = new Date(valueStarTime).toLocaleDateString();
-      const endDate = new Date(valueEndTime).toLocaleDateString();
+      // const startDate = new Date(valueStarTime).toLocaleDateString();
+      // const endDate = new Date(valueEndTime).toLocaleDateString();
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -187,8 +193,10 @@ export default function NewPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      formData.append("endSale", endSale);
-      formData.append("startSale", startSale);
+      // formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
+      // formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
+      formData.append("endSale", handleDate(valueEndTime));
+      formData.append("startSale", handleDate(valueEndTime));
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
@@ -221,7 +229,7 @@ export default function NewPackage() {
           type: "SUCCESS",
         });
 
-        window.location.reload(true);
+        // window.location.reload(true);
         // } else if (endDate < startDate || endDate === startDate) {
         //   CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
         // }
@@ -525,7 +533,6 @@ export default function NewPackage() {
                   variant="outlined"
                   label="Giá"
                   name="price"
-                  disabled
                   value={formik.values.price}
                   onChange={(event) => {
                     formik.handleChange(event);
@@ -584,11 +591,12 @@ export default function NewPackage() {
                 )}
               </Grid>
               <Grid item xs={6}>
-                <DateTime
+                <DatePicker
                   variant="outlined"
+                  inputFormat="DD-MM-YYYY"
                   name="startSale"
                   label="Ngày mở bán"
-                  width="85%"
+                  width="100%"
                   value={valueStarTime}
                   onChange={(e) => {
                     setValueStarTime(e);
@@ -618,12 +626,13 @@ export default function NewPackage() {
               </Grid>
 
               <Grid item xs={6}>
-                <DateTime
+                <DatePicker
                   variant="outlined"
                   name="endSale"
+                  width="100%"
+                  inputFormat="DD-MM-YYYY"
                   label="Ngày kết thúc bán"
                   value={valueEndTime}
-                  width="85%"
                   onChange={(e) => {
                     setValueEndtime(e);
                   }}
@@ -637,32 +646,20 @@ export default function NewPackage() {
                     flexDirection: "row",
                   }}
                 >
-                  <Box>
-                    <Controls.Select
-                      name="categoryID"
-                      label="Chọn loại package"
-                      id="categoryID"
-                      width="19vw"
-                      value={formik.values.categoryID}
-                      // defaultValue=
-                      onChange={(e) => {
-                        const a = category.find((c) => c.id === e.target.value);
-                        formik.setFieldValue("categoryID", a.id);
-                      }}
-                      onBlur={formik.handleBlur}
-                      options={getcategoryOptions()}
-                    />
-                  </Box>
-
-                  <Box sx={{ height: "15%", width: "15%", mt: "3%" }}>
-                    <IconButton
-                      onClick={() => {
-                        SetOpenPopUpCate(true);
-                      }}
-                    >
-                      <AddCircleOutlineIcon />
-                    </IconButton>
-                  </Box>
+                  <Controls.Select
+                    name="categoryID"
+                    label="Chọn loại package"
+                    id="categoryID"
+                    width="26rem"
+                    value={formik.values.categoryID}
+                    // defaultValue=
+                    onChange={(e) => {
+                      const a = category.find((c) => c.id === e.target.value);
+                      formik.setFieldValue("categoryID", a.id);
+                    }}
+                    onBlur={formik.handleBlur}
+                    options={getcategoryOptions()}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={6}>
@@ -693,54 +690,39 @@ export default function NewPackage() {
                     flexDirection: "row",
                   }}
                 >
-                  <Box>
-                    <Controls.Select
-                      name="timeFrameID"
-                      label="Chọn khung thời gian"
-                      width="19vw"
-                      value={formik.values.timeFrameID}
-                      onChange={(e) => {
-                        const a = timeframe.find(
-                          (c) => c.id === e.target.value
-                        );
-                        formik.setFieldValue(
-                          "totalMeal",
-                          a.dateFilter.split("").filter((i) => i === "1").length
-                        );
-                        formik.setFieldValue(
-                          "totalDate",
-                          a.name.split("-").length
-                        );
-                        formik.setFieldValue(
-                          "totalFood",
-                          a.dateFilter.split("").filter((i) => i === "1").length
-                        );
-                        formik.setFieldValue("timeFrameID", a.id);
-                        handClickTimeFrame(a.id);
-                      }}
-                      onBlur={formik.handleBlur}
-                      options={getTimeFrameOptions()}
-                    />
-                    {formik.touched.timeFrameID && formik.errors.timeFrameID && (
-                      <FormHelperText
-                        error
-                        id="standard-weight-helper-text-username-login"
-                      >
-                        {formik.errors.timeFrameID}
-                      </FormHelperText>
-                    )}
-                  </Box>
-                  <Box
-                    sx={{ mr: "20%", height: "15%", width: "12%", mt: "3%" }}
-                  >
-                    <IconButton
-                      onClick={() => {
-                        SetOpenPopUp(true);
-                      }}
+                  <Controls.Select
+                    name="timeFrameID"
+                    label="Chọn khung thời gian"
+                    width="26rem"
+                    value={formik.values.timeFrameID}
+                    onChange={(e) => {
+                      const a = timeframe.find((c) => c.id === e.target.value);
+                      formik.setFieldValue(
+                        "totalMeal",
+                        a.dateFilter.split("").filter((i) => i === "1").length
+                      );
+                      formik.setFieldValue(
+                        "totalDate",
+                        a.name.split("-").length
+                      );
+                      formik.setFieldValue(
+                        "totalFood",
+                        a.dateFilter.split("").filter((i) => i === "1").length
+                      );
+                      formik.setFieldValue("timeFrameID", a.id);
+                      handClickTimeFrame(a.id);
+                    }}
+                    onBlur={formik.handleBlur}
+                    options={getTimeFrameOptions()}
+                  />
+                  {formik.touched.timeFrameID && formik.errors.timeFrameID && (
+                    <FormHelperText
+                      error
+                      id="standard-weight-helper-text-username-login"
                     >
-                      <AddCircleOutlineIcon />
-                    </IconButton>
-                  </Box>
+                      {formik.errors.timeFrameID}
+                    </FormHelperText>
+                  )}
                 </Box>
               </Grid>
               <Box sx={{ marginLeft: "8rem" }}>

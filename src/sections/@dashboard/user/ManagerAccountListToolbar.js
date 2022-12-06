@@ -15,20 +15,8 @@ import Iconify from "../../../components/hook-form/Iconify";
 
 import Controls from "./../../../components/Control/Controls";
 
-import {
-  callAPIgetAccountAdminByStatus,
-  callAPIgetAccountCustomerByStatus,
-  callAPIgetAccountKitchenByStatus,
-  callAPIgetAccountManagerByStatus,
-  callAPIgetAccountShipperByStatus,
-  callAPIgetGroupFoodByStatus,
-  callAPIgetListFoodByStatus,
-  callAPIGetListOderByDay,
-  callAPIGetListPack,
-  callAPIgetListReqByStatus,
-  callAPIgetListStationByStatus,
-} from "../../../redux/action/acction";
-
+import { callAPIgetAccountManagerByStatus } from "../../../redux/action/acction";
+import { Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 
@@ -112,14 +100,20 @@ export default function ManagerAccountListToolbar({
               </InputAdornment>
             }
           />
-          <Controls.Select
-            label="Trạng thái"
-            width="10rem"
-            marginRight="50%  "
-            options={options}
-            onChange={handleChange}
-            value={haha}
-          />
+          <Grid
+            container
+            spacing={2}
+            sx={{ marginLeft: "2%", marginTop: "0.1rem" }}
+          >
+            <Controls.Select
+              label="Trạng thái"
+              width="10rem"
+              marginRight="50%  "
+              options={options}
+              onChange={handleChange}
+              value={haha}
+            />
+          </Grid>
         </>
       )}
 

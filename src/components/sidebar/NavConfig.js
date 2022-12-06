@@ -1,7 +1,6 @@
 // component
-import { Navigate, Outlet } from "react-router-dom";
+
 import Iconify from "../../components/hook-form/Iconify";
-import AccountPopover from "./../topbar/AccountPopover";
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +12,7 @@ const navConfigManager = [
     // icon: getIcon("tabler:building-warehouse"),
     // children: [
     //   {
-    title: "Thức ăn",
+    title: "Món ăn",
     path: "/dashboard/manager/food",
     icon: getIcon("ep:food"),
   },
@@ -27,12 +26,17 @@ const navConfigManager = [
     path: "/dashboard/manager/package",
     icon: getIcon("eva:shopping-bag-fill"),
   },
-
   {
-    title: "Chuyến giao hàng",
-    path: "/dashboard/manager/tripDelivery",
+    title: "Khung thời gian - phân loại",
+    path: "/dashboard/manager/timeframe-category",
+    icon: getIcon("material-symbols:category-outline"),
+  },
+  {
+    title: "Danh sách chuyến giao hàng",
+    path: "/dashboard/manager/ListDelivery",
     icon: getIcon("mdi:language-go"),
   },
+
   // ],
   // },
 ];
@@ -81,7 +85,6 @@ const navConfigAdmin = [
   //   path: "/dashboard/admin/users",
   //   icon: getIcon("eva:people-fill"),
   // },
-
 
   {
     title: "Tài Khoản",
@@ -134,7 +137,6 @@ const navConfigAdmin = [
   //   path: "/dashboard/admin/kitchenAccount",
   //   icon: getIcon("fa6-solid:kitchen-set"),
   // },
-
 ];
 
 const navConfigKichen = [
@@ -154,8 +156,11 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/kitcheviewnorder",
     icon: getIcon("eos-icons:subscription-management"),
   },
-
-
+  {
+    title: "Món ăn chuẩn bị theo tuần",
+    path: "/dashboard/kitchen/kitcheViewOrderByWeek",
+    icon: getIcon("healthicons:i-schedule-school-date-time"),
+  },
 ];
 const navConfig = [
   {

@@ -17,7 +17,10 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { callAPIgetCatePackage } from "./../../redux/action/acction";
+import {
+  callAPIgetCatePackage,
+  callAPIgetListCategory,
+} from "./../../redux/action/acction";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
@@ -28,7 +31,7 @@ const shema = yup.object().shape({
 const Inputs = styled("input")({
   display: "none",
 });
-export default function NewCate(props) {
+export default function NewCateFood(props) {
   const { OpenPopUpCate, SetOpenPopUpCate } = props;
   const [inputImage, setInputImage] = useState();
   // const token = localStorage.getItem("token");
@@ -37,14 +40,6 @@ export default function NewCate(props) {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
 
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -70,26 +65,26 @@ export default function NewCate(props) {
     },
 
     onSubmit: async (values) => {
-      console.log(values);
-      formData.append("image", formik.values.img);
-      formData.append("name", formik.values.name);
+      const data = {
+        name: formik.values.name,
+      };
       try {
         const res = await API(
           "POST",
-          URL_API + "/package-categories",
-          formData,
+          URL_API + "/food-categories",
+          data,
           token
         ).then((res) => {
-          dispatch(callAPIgetCatePackage(token));
+          dispatch(callAPIgetListCategory(token));
         });
         CustomizedToast({
-          message: `Đã thêm khung thời gian ${formik.values.name}`,
+          message: `Đã thêm loại thức ${formik.values.name}`,
           type: "SUCCESS",
         });
         SetOpenPopUpCate(false);
       } catch (error) {
         CustomizedToast({
-          message: "Thêm thất bại Vui lòng kiểm tra thông tin",
+          message: "Thêm thất bại vui lòng kiểm tra thông tin",
           type: "ERROR",
         });
       }
@@ -115,85 +110,38 @@ export default function NewCate(props) {
           >
             <DialogTitle>
               <PageHeader
-                title="Tạo loại gói ăn"
+                title="Tạo loại món ăn"
                 subTitle="Điền đầy đủ thông tin"
-                icon={getIcon("uil:schedule")}
+                icon={getIcon("carbon:collapse-categories")}
               />
             </DialogTitle>
             <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={4}>
-                <Grid item xs={8}>
-                  <Controls.Input
-                    label="Tên gói ăn"
-                    name="name"
-                    width="12rem"
-                    marginLeft="16%"
-                    marginTop="8%"
-                    // marginBottom="1%"
-                    value={formik.values.name}
-                    onChange={(e) => {
-                      formik.handleChange(e);
-                    }}
-                  />
-                  {formik.touched.name && formik.errors.name && (
-                    <FormHelperText
-                      error
-                      id="standard-weight-helper-text-username-login"
-                    >
-                      {formik.errors.name}
-                    </FormHelperText>
-                  )}
-                </Grid>
-                <Grid item xs={4}>
-                  <Box>
-                    <Paper
-                      sx={{
-                        marginBottom: "50%",
-                        paddingBottom: "10%",
-                        // paddingTop: "8%",
-                        borderRadius: 4,
-                      }}
-                    >
-                      <label htmlFor="contained-button-file">
-                        <Inputs
-                          accept="images/*"
-                          id="contained-button-file"
-                          multiple
-                          type="file"
-                          onChange={_ontreat}
-                        />
-
-                        <Button
-                          color="primary"
-                          aria-label="upload picture"
-                          component="label"
-                          variant="contained"
-                          sx={{ marginLeft: "10%" }}
-                        >
-                          <input hidden type="file" onChange={_ontreat} />
-                          Tải ảnh
-                        </Button>
-                        <Box
-                          id="hihi"
-                          sx={{
-                            height: 90,
-                            width: 90,
-                            marginTop: "10%",
-                            objectFit: "cover",
-                          }}
-                        >
-                          <img id="haha" src={inputImage} alt=".." />
-                        </Box>
-                      </label>
-                    </Paper>
-                  </Box>
-                </Grid>
-              </Grid>
+              <Controls.Input
+                label="Tên loại món ăn"
+                name="name"
+                width="90%"
+                marginLeft="13%"
+                marginTop="8%"
+                marginBottom="8%"
+                value={formik.values.name}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                }}
+              />
+              {formik.touched.name && formik.errors.name && (
+                <FormHelperText
+                  error
+                  id="standard-weight-helper-text-username-login"
+                >
+                  {formik.errors.name}
+                </FormHelperText>
+              )}
               <Box>
                 <Box
                   sx={{
                     marginLeft: "38%",
                     paddingBottom: "1rem",
+                    marginTop: "0.15rem",
                   }}
                 >
                   <ButtonCustomize nameButton="Thêm" type="submit" />
