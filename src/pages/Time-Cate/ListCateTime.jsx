@@ -11,7 +11,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import {
   callAPIgetCatePackage,
   callAPIgetListCategory,
@@ -234,7 +236,16 @@ export default function ListCateTime() {
                   {food.map((row) => (
                     <StyledTableRow key={row.name}>
                       <StyledTableCell component="th" scope="row">
-                        {row.name}
+                        <Grid container xs={12}>
+                          <Grid item xs={6}>
+                            {row.name}
+                          </Grid>
+                          <Grid item xs={6}>
+                            <IconButton>
+                              <RemoveCircleOutlineIcon />
+                            </IconButton>
+                          </Grid>
+                        </Grid>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
@@ -280,7 +291,16 @@ export default function ListCateTime() {
                         <Avatar alt={row.name} src={row.image} />
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="row">
-                        {row.name}
+                        <Grid container xs={12}>
+                          <Grid item xs={6}>
+                            {row.name}
+                          </Grid>
+                          <Grid item xs={6}>
+                            <IconButton>
+                              <RemoveCircleOutlineIcon />
+                            </IconButton>
+                          </Grid>
+                        </Grid>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
@@ -321,7 +341,16 @@ export default function ListCateTime() {
                   {slot.map((row) => (
                     <StyledTableRow key={row.name}>
                       <StyledTableCell component="th" scope="row">
-                        {row.name}
+                        <Grid container xs={12}>
+                          <Grid item xs={6}>
+                            {row.name}
+                          </Grid>
+                          <Grid item xs={6}>
+                            <IconButton>
+                              <RemoveCircleOutlineIcon />
+                            </IconButton>
+                          </Grid>
+                        </Grid>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}

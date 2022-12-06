@@ -9,7 +9,7 @@ import * as yup from "yup";
 import Controls from "./../../components/Control/Controls";
 
 import { FormHelperText } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+
 import { useFormik } from "formik";
 import { styled } from "@mui/material/styles";
 import PageHeader from "../../components/PageHeader";
@@ -659,7 +659,7 @@ export default function NewPackage() {
                     }}
                     onBlur={formik.handleBlur}
                     options={getcategoryOptions()}
-                  />  
+                  />
                 </Box>
               </Grid>
               <Grid item xs={6}>

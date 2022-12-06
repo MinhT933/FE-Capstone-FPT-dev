@@ -257,9 +257,7 @@ export default function NewTimeFrame(props) {
 
   const handleCheckboxClick = (e) => {
     const { value, checked } = e.target;
-
     const a = [...checkedList];
-
     a.push(+value);
     const tmp = [...data];
     for (let index = 0; index < tmp.length; index++) {

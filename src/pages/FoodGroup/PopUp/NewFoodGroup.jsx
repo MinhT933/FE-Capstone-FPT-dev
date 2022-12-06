@@ -23,7 +23,6 @@ import FormHelperText from "@mui/material/FormHelperText";
 import API from "../../../Axios/API/API";
 import { URL_API } from "../../../Axios/URL_API/URL";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -74,6 +73,7 @@ export default function NewFoodGroup(props) {
   const handleChange = (event, value) => setSelectedOptions(value);
 
   console.log(OptionValue);
+
   // const handleChange = (e) => {
   //   const {
   //     target: { value },
@@ -107,6 +107,17 @@ export default function NewFoodGroup(props) {
     SetOpenPopUp(false);
   };
 
+  const getid = () => {
+    const arr = [...selectedOptions];
+    for (let index = 0; index < OptionValue.length; index++) {
+      const element = OptionValue[index];
+
+      arr.push(element.id);
+    }
+    return arr;
+  };
+
+  console.log(selectedOptions);
   const formik = useFormik({
     validationSchema: schema,
     validateOnMount: true,
@@ -129,9 +140,9 @@ export default function NewFoodGroup(props) {
       const data = {
         name: formik.values.name,
         description: formik.values.description,
-        totalFood: formik.values.totalFood,
+        // totalFood: formik.values.totalFood,
         // foodIds: a,
-        foodIds: selectedOptions,
+        foodIds: getid(),
       };
       try {
         const res = await API("POST", URL_API + `/food-groups`, data, token);
@@ -198,26 +209,7 @@ export default function NewFoodGroup(props) {
                     </FormHelperText>
                   )}
                 </Grid>
-                <Grid item xs={12}>
-                  <Controls.Input
-                    variant="outlined"
-                    label="Số lượng"
-                    name="totalFood"
-                    value={formik.values.totalFood}
-                    onChange={(e) => {
-                      formik.handleChange(e);
-                    }}
-                    onBlur={formik.handleBlur}
-                  />
-                </Grid>
-                {formik.touched.totalFood && formik.errors.totalFood && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.totalFood}
-                  </FormHelperText>
-                )}
+
                 <Grid item xs={12}>
                   {/* <div>
                     <FormControl sx={{ width: "28.5rem" }}>
@@ -262,15 +254,20 @@ export default function NewFoodGroup(props) {
                     // value={valueTag}
                     getOptionLabel={(option) => option.title}
                     isOptionEqualToValue={(option, value) =>
-                      option.value === value.id
+                      option.id === value.id
                     }
-                    // onChange={(e, value) => {
-                    //   console.log(e);
-                    //   console.log(value.id);
-                    //   const arr = [...OptionValue];
-                    //   arr.push(value.id);
-                    //   setOptionValue(arr);
-                    // }}
+                    onChange={(e, value) => {
+                      setOptionValue(value);
+                      // if (e.target.ariaSelected === true) {
+                      //   for (let index = 0; index < value.length; index++) {
+                      //     console.log(e.target.ariaSelected);
+                      //     const element = value[index];
+                      //     const arr = [...OptionValue];
+                      //     arr.push(element.id);
+                      //     setOptionValue(arr);
+                      //   }
+                      // }
+                    }}
                     renderOption={(props, option, { selected }) => (
                       <li {...props}>
                         <Checkbox
