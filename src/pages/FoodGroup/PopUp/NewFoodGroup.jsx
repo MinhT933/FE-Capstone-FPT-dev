@@ -264,12 +264,13 @@ export default function NewFoodGroup(props) {
                     isOptionEqualToValue={(option, value) =>
                       option.value === value.id
                     }
-                    onChange={(e, value) => {
-                      console.log(value);
-                      const arr = [...OptionValue];
-                      arr.push(value.id);
-                      setOptionValue(arr);
-                    }}
+                    // onChange={(e, value) => {
+                    //   console.log(e);
+                    //   console.log(value.id);
+                    //   const arr = [...OptionValue];
+                    //   arr.push(value.id);
+                    //   setOptionValue(arr);
+                    // }}
                     renderOption={(props, option, { selected }) => (
                       <li {...props}>
                         <Checkbox

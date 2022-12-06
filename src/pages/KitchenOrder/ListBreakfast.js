@@ -87,6 +87,7 @@ function applySortFilter(array, comparator, query) {
 
 export default function ListBreakfast(props) {
   const { kitchenMorning } = props;
+  console.log(kitchenMorning)
   const location = useLocation();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -108,20 +109,25 @@ export default function ListBreakfast(props) {
     return [date.getFullYear(), mnth, day].join("-");
   }
 
-  const [select, setSelect] = useState("");
+  const [select, setSelect] = useState('')
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
 
-  // const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   const callAPI = async () => {
-  //     await dispatch(callAPIKitchenPrepareOrder(token, convert(valueStarTime), select));
-  //   };
-  //   callAPI();
-  // }, [select, convert(valueStarTime.$d)]);
 
-  // const station = useSelector((state) => {
-  //   return state.userReducer.listFoodPrepare;
-  // });
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIKitchenPrepareOrder(token, convert(valueStarTime), select));
+    };
+    callAPI();
+  }, [select, convert(valueStarTime.$d)]);
+
+
+
+  const station = useSelector((state) => {
+    return state.userReducer.listFoodPrepare;
+  });
+
+
 
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
@@ -183,8 +189,8 @@ export default function ListBreakfast(props) {
   const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
-    <Page title="Chuẩn bị món">
-      <Container maxWidth={false} sx={{ minWidth: 370, width: 370 }}>
+    <Page>
+      <Container sx={{ minWidth: 380, width: 380 }}>
         {/* <PageHeader
                     title="SÁNG"
                     // icon={getIcon("line-md:moon-alt-to-sunny-outline-loop-transition")}
@@ -228,6 +234,7 @@ export default function ListBreakfast(props) {
                     marginLeft: "45%",
                   }}
                 >
+
                   {" "}
                   {getIcon("emojione:sun-behind-cloud")}
                 </Card>
@@ -235,7 +242,7 @@ export default function ListBreakfast(props) {
             </Grid>
           </Paper>
 
-          <TableContainer sx={{ minWidth: 370, width: 370 }}>
+          <TableContainer sx={{ minWidth: 390, width: 390 }}>
             <Table>
               <UserListHead
                 order={order}

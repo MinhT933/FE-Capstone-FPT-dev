@@ -554,7 +554,7 @@ export const callAPIGetSlot = (token) => {
   return async (dispatch) => {
     try {
       const res = await API("GET", URL_API + `/time-slots`, null, token);
-
+      console.log(res.data.results);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_SLOT,
@@ -1379,7 +1379,7 @@ export const callAPIKitchenPrepareOrder = (token, date, status) => {
         null,
         token
       );
-      console.log(res);
+      console.log(res.data.result);
       dispatch(
         createAction({
           type: PathAction.GET_LIST_PREPARE_ORDER_BY_DATE,

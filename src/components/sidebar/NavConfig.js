@@ -26,12 +26,17 @@ const navConfigManager = [
     path: "/dashboard/manager/package",
     icon: getIcon("eva:shopping-bag-fill"),
   },
-
+  {
+    title: "Khung thời gian - phân loại",
+    path: "/dashboard/manager/timeframe-category",
+    icon: getIcon("material-symbols:category-outline"),
+  },
   {
     title: "Danh sách chuyến giao hàng",
     path: "/dashboard/manager/ListDelivery",
     icon: getIcon("mdi:language-go"),
   },
+
   // ],
   // },
 ];

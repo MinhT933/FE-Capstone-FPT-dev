@@ -49,21 +49,10 @@ import ListDinner from "./ListDinner";
 import DatePicker from "../../components/Control/DatePicker";
 
 export default function KitchenOrderList() {
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
-  // console.log(decoded);
   const Navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
+
   const token = localStorage.getItem("token");
   if (token === null) {
-    Navigate("/");
-  }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
     Navigate("/");
   }
 
@@ -80,28 +69,17 @@ export default function KitchenOrderList() {
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIKitchenPrepareOrder(token, convert(value.$d)));
+      // if (value.$d !== undefined) {
+      dispatch(await callAPIKitchenPrepareOrder(token, convert(value.$d)));
+      // }
     };
     callAPI();
   }, [value, dispatch, token]);
-  // dispatch(
-  //   createAction({
-  //     type: PathAction.GET_LIST_FOOD,
-  //     payload: [],
-  //   })
-  // );
-  // CustomizedToast({
-  //   message: `Không tìm thấy data`,
-  //   type: "ERROR",
-  // });
 
   const kitchen = useSelector((state) => {
     return state.userReducer.listFoodPrepare;
   });
-  console.log(kitchen);
-  //callAPIKitchenGetListOrder========================================
 
-  // const [spacing, setSpacing] = React.useState(2);
   let kitchenMorning = [];
   let kitchenLunch = [];
   let kitchenDinner = [];

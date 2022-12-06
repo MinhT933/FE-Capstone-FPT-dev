@@ -209,31 +209,20 @@ export default function NewFood() {
                     flexDirection: "row",
                   }}
                 >
-                  <Box>
-                    <Controls.Select
-                      name="foodCategoryId"
-                      label="Loại"
-                      width="15vw"
-                      value={formik.values.foodCategoryId}
-                      onChange={(e) => {
-                        const a = categoriesFood.find(
-                          (c) => c.id === e.target.value
-                        );
-                        formik.setFieldValue("foodCategoryId", a.id);
-                      }}
-                      onBlur={formik.handleBlur}
-                      options={getOptions()}
-                    />
-                  </Box>
-                  <Box sx={{ mt: "3%" }}>
-                    <IconButton
-                      onClick={() => {
-                        SetOpenPopUpCate(true);
-                      }}
-                    >
-                      <AddCircleOutlineIcon />
-                    </IconButton>
-                  </Box>
+                  <Controls.Select
+                    name="foodCategoryId"
+                    label="Loại"
+                    width="21vw"
+                    value={formik.values.foodCategoryId}
+                    onChange={(e) => {
+                      const a = categoriesFood.find(
+                        (c) => c.id === e.target.value
+                      );
+                      formik.setFieldValue("foodCategoryId", a.id);
+                    }}
+                    onBlur={formik.handleBlur}
+                    options={getOptions()}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12}>
