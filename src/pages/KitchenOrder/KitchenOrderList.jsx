@@ -69,9 +69,9 @@ export default function KitchenOrderList() {
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      // if (value.$d !== undefined) {
-      dispatch(await callAPIKitchenPrepareOrder(token, convert(value.$d)));
-      // }
+      if (value.$d !== undefined) {
+        dispatch(await callAPIKitchenPrepareOrder(token, convert(value.$d)));
+    }
     };
     callAPI();
   }, [value, dispatch, token]);
