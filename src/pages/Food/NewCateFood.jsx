@@ -40,14 +40,6 @@ export default function NewCateFood(props) {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
 
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -120,15 +112,15 @@ export default function NewCateFood(props) {
               <PageHeader
                 title="Tạo loại món ăn"
                 subTitle="Điền đầy đủ thông tin"
-                icon={getIcon("uil:schedule")}
+                icon={getIcon("carbon:collapse-categories")}
               />
             </DialogTitle>
             <form onSubmit={formik.handleSubmit}>
               <Controls.Input
                 label="Tên loại món ăn"
                 name="name"
-                width="12rem"
-                marginLeft="16%"
+                width="90%"
+                marginLeft="13%"
                 marginTop="8%"
                 marginBottom="8%"
                 value={formik.values.name}
@@ -149,10 +141,10 @@ export default function NewCateFood(props) {
                   sx={{
                     marginLeft: "38%",
                     paddingBottom: "1rem",
-                    marginTop: "1rem",
+                    marginTop: "0.15rem",
                   }}
                 >
-                  <ButtonCustomize nameButton="Tạo" type="submit" />
+                  <ButtonCustomize nameButton="Thêm" type="submit" />
                 </Box>
               </Box>
             </form>

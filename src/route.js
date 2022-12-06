@@ -51,6 +51,7 @@ import Delivery from "./components/Trip/Delivery";
 import { List } from "@mui/icons-material";
 import ListDeliveryTrip from "./components/Trip/ListDeliveryTrip";
 import KitchenvieworderByWeek from "./pages/Kitchen/KitchenvieworderByWeek";
+import ListCateTime from "./pages/Time-Cate/ListCateTime";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -223,6 +224,7 @@ export default function Router() {
         { path: "updateshipper", element: <UpdateShipper /> },
         { path: "foodGroup/updatefood/:id", element: <UpdateFood /> },
         { path: "package/updatePackageFood/:id", element: <EditPackage /> },
+        { path: "timeframe-category", element: <ListCateTime /> },
       ],
     },
 

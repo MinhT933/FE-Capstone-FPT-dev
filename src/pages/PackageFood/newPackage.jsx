@@ -71,10 +71,6 @@ export default function NewPackage() {
   //formData để lưu data
   const formData = new FormData();
 
-  
-
-
-
   const token = localStorage.getItem("token");
   // console.log(token);
   React.useEffect(() => {
@@ -650,32 +646,20 @@ export default function NewPackage() {
                     flexDirection: "row",
                   }}
                 >
-                  <Box>
-                    <Controls.Select
-                      name="categoryID"
-                      label="Chọn loại package"
-                      id="categoryID"
-                      width="19vw"
-                      value={formik.values.categoryID}
-                      // defaultValue=
-                      onChange={(e) => {
-                        const a = category.find((c) => c.id === e.target.value);
-                        formik.setFieldValue("categoryID", a.id);
-                      }}
-                      onBlur={formik.handleBlur}
-                      options={getcategoryOptions()}
-                    />
-                  </Box>
-
-                  <Box sx={{ height: "15%", width: "15%" }}>
-                    <IconButton
-                      onClick={() => {
-                        SetOpenPopUpCate(true);
-                      }}
-                    >
-                      <AddCircleOutlineIcon />
-                    </IconButton>
-                  </Box>
+                  <Controls.Select
+                    name="categoryID"
+                    label="Chọn loại package"
+                    id="categoryID"
+                    width="26rem"
+                    value={formik.values.categoryID}
+                    // defaultValue=
+                    onChange={(e) => {
+                      const a = category.find((c) => c.id === e.target.value);
+                      formik.setFieldValue("categoryID", a.id);
+                    }}
+                    onBlur={formik.handleBlur}
+                    options={getcategoryOptions()}
+                  />  
                 </Box>
               </Grid>
               <Grid item xs={6}>
@@ -706,55 +690,39 @@ export default function NewPackage() {
                     flexDirection: "row",
                   }}
                 >
-                  <Box>
-                    <Controls.Select
-                      name="timeFrameID"
-                      label="Chọn khung thời gian"
-                      width="19vw"
-                      value={formik.values.timeFrameID}
-                      onChange={(e) => {
-                        const a = timeframe.find(
-                          (c) => c.id === e.target.value
-                        );
-                        formik.setFieldValue(
-                          "totalMeal",
-                          a.dateFilter.split("").filter((i) => i === "1").length
-                        );
-                        formik.setFieldValue(
-                          "totalDate",
-                          a.name.split("-").length
-                        );
-                        formik.setFieldValue(
-                          "totalFood",
-                          a.dateFilter.split("").filter((i) => i === "1").length
-                        );
-                        formik.setFieldValue("timeFrameID", a.id);
-                        handClickTimeFrame(a.id);
-                      }}
-                      onBlur={formik.handleBlur}
-                      options={getTimeFrameOptions()}
-                    />
-                    {formik.touched.timeFrameID &&
-                      formik.errors.timeFrameID && (
-                        <FormHelperText
-                          error
-                          id="standard-weight-helper-text-username-login"
-                        >
-                          {formik.errors.timeFrameID}
-                        </FormHelperText>
-                      )}
-                  </Box>
-                  <Box
-                    sx={{ mr: "20%", height: "15%", width: "12%", mt: "3%" }}
-                  >
-                    <IconButton
-                      onClick={() => {
-                        SetOpenPopUp(true);
-                      }}
+                  <Controls.Select
+                    name="timeFrameID"
+                    label="Chọn khung thời gian"
+                    width="26rem"
+                    value={formik.values.timeFrameID}
+                    onChange={(e) => {
+                      const a = timeframe.find((c) => c.id === e.target.value);
+                      formik.setFieldValue(
+                        "totalMeal",
+                        a.dateFilter.split("").filter((i) => i === "1").length
+                      );
+                      formik.setFieldValue(
+                        "totalDate",
+                        a.name.split("-").length
+                      );
+                      formik.setFieldValue(
+                        "totalFood",
+                        a.dateFilter.split("").filter((i) => i === "1").length
+                      );
+                      formik.setFieldValue("timeFrameID", a.id);
+                      handClickTimeFrame(a.id);
+                    }}
+                    onBlur={formik.handleBlur}
+                    options={getTimeFrameOptions()}
+                  />
+                  {formik.touched.timeFrameID && formik.errors.timeFrameID && (
+                    <FormHelperText
+                      error
+                      id="standard-weight-helper-text-username-login"
                     >
-                      <AddCircleOutlineIcon />
-                    </IconButton>
-                  </Box>
+                      {formik.errors.timeFrameID}
+                    </FormHelperText>
+                  )}
                 </Box>
               </Grid>
               <Box sx={{ marginLeft: "8rem" }}>

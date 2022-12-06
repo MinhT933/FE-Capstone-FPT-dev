@@ -15,6 +15,8 @@ import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import te from "date-fns/esm/locale/te/index.js";
+import { useDispatch } from "react-redux";
+import { callAPIgetTimeFrame } from './../../redux/action/acction';
 
 const shema = yup.object().shape({
   name: yup.string().required(" Vui điền đầy đủ thông tin"),
@@ -187,6 +189,8 @@ export default function NewTimeFrame(props) {
     SetOpenPopUp(false);
   };
 
+  const dispatch = useDispatch();
+
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
 
   const formik = useFormik({
@@ -208,8 +212,8 @@ export default function NewTimeFrame(props) {
           message: `Đã thêm khung thời gian ${formik.values.name}`,
           type: "SUCCESS",
         });
+        dispatch(callAPIgetTimeFrame(token));
         SetOpenPopUp(false);
-        // window.location.reload();
       } catch (error) {
         CustomizedToast({
           message: "Thêm thất bại Vui lòng kiểm tra thông tin",

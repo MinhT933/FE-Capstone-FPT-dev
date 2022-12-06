@@ -129,7 +129,7 @@ export default function NewCate(props) {
                     width="12rem"
                     marginLeft="16%"
                     marginTop="8%"
-                    marginBottom="8%"
+                    // marginBottom="1%"
                     value={formik.values.name}
                     onChange={(e) => {
                       formik.handleChange(e);
@@ -150,7 +150,7 @@ export default function NewCate(props) {
                       sx={{
                         marginBottom: "50%",
                         paddingBottom: "10%",
-                        paddingTop: "8%",
+                        // paddingTop: "8%",
                         borderRadius: 4,
                       }}
                     >
@@ -171,7 +171,7 @@ export default function NewCate(props) {
                           sx={{ marginLeft: "10%" }}
                         >
                           <input hidden type="file" onChange={_ontreat} />
-                          hihi
+                          Tải ảnh
                         </Button>
                         <Box
                           id="hihi"
@@ -179,11 +179,10 @@ export default function NewCate(props) {
                             height: 90,
                             width: 90,
                             marginTop: "10%",
-
                             objectFit: "cover",
                           }}
                         >
-                          <img id="haha" src={inputImage} alt="hihi" />
+                          <img id="haha" src={inputImage} alt=".." />
                         </Box>
                       </label>
                     </Paper>
@@ -195,10 +194,9 @@ export default function NewCate(props) {
                   sx={{
                     marginLeft: "38%",
                     paddingBottom: "1rem",
-                    marginTop: "1rem",
                   }}
                 >
-                  <ButtonCustomize nameButton="tạo" type="submit" />
+                  <ButtonCustomize nameButton="Thêm" type="submit" />
                 </Box>
               </Box>
             </form>

@@ -149,7 +149,7 @@ export default function Food() {
   const handleDelete = async (id) => {
     await API("PUT", URL_API + `/foods/update-status/${id}`, null, token)
       .then((res) => {
-        console.log(res);
+      
 
         dispatch(callAPIgetListFood(token));
 
