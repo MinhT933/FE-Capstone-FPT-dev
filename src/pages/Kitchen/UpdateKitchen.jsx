@@ -12,11 +12,6 @@ import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
 
 //time
-import dayjs from "dayjs";
-import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Paper from "@mui/material/Paper";
 
 //api
@@ -27,7 +22,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { useSelector } from "react-redux";
-import { callAPIgetListStation } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -52,9 +46,6 @@ const schema = yup.object().shape({
 export default function UpdateKitchen() {
   //callAPIforCreateStation========================================
   let { id } = useParams();
-
-  const [input, setInput] = useState(null);
-
   const navigate = useNavigate();
 
   // const token = localStorage.getItem("token");
@@ -63,15 +54,7 @@ export default function UpdateKitchen() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
 
-  const dispatch = useDispatch();
 
   React.useEffect(() => {
     API("GET", URL_API + `/kitchens/${id}`, null, token)
@@ -93,12 +76,6 @@ export default function UpdateKitchen() {
     return state.userReducer.listKitchen;
   });
 
-  const Input = styled("input")({
-    display: "none",
-  });
-
-  //formData để lưu data
-  const formData = new FormData();
 
   const formik = useFormik({
     //gắn schema để so sánh
@@ -138,13 +115,6 @@ export default function UpdateKitchen() {
     },
   });
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    // padding: theme.spacing(2),
-    textAlign: "left",
-    color: theme.palette.text.secondary,
-  }));
 
   return (
     <Paper

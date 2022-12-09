@@ -1,12 +1,12 @@
 import { Grid, Paper } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import Controls from "../../components/Control/Controls";
 import PageHeader from "../../components/PageHeader";
 import Stack from "@mui/material/Stack";
 //validate
 import { useFormik } from "formik";
 import * as yup from "yup";
-import Card from "@mui/material/Card";
+
 
 import Iconify from "../../components/hook-form/Iconify";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
@@ -20,11 +20,10 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import CardHeader from "@mui/material/CardHeader";
+
 import { useDispatch } from "react-redux";
 import {
   callAPIgetFoodbyGroupFoodId,
-  callAPIgetListFood,
   callAPIgetListFoodActive,
 } from "../../redux/action/acction";
 import { useSelector } from "react-redux";
@@ -32,8 +31,6 @@ import Avatar from "@mui/material/Avatar";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import { SET_VALUE_TAG } from "../../redux/PathAction";
 import FormHelperText from "@mui/material/FormHelperText";
-import jwt_decode from "jwt-decode";
-
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
   description: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
@@ -48,13 +45,7 @@ export default function UpdateFood() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
+  
   let { id } = useParams();
   const dispatch = useDispatch();
 
@@ -70,7 +61,7 @@ export default function UpdateFood() {
   };
 
   // const food = [];
-  const [active, setActive] = useState([]);
+
   React.useEffect(() => {
     API("GET", URL_API + `/food-groups/find/${id}`, null, token)
       .then((res) => {
@@ -90,25 +81,12 @@ export default function UpdateFood() {
     getfoodByFoodGroupId();
   }, [dispatch, id, token]);
 
-  const listfood = useSelector((state) => {
-    return state.userReducer.listFoodByGroupFoodID;
-  });
-  // console.log(listfood.foods.id);
+
+
 
   const listFoodSelectbox = useSelector((state) => {
     return state.userReducer.listFoodActive;
   });
-  console.log(listFoodSelectbox);
-  // const handleActive = () => {
-  //   let arr = [];
-  //   for (let index = 0; index < listFoodSelectbox.length; index++) {
-  //     if (listFoodSelectbox.status === "active") {
-  //       console.log("hihi");
-  //     }
-  //   }
-  //   return arr;
-  // };
-  // console.log(active);
 
   const valueTag = useSelector((state) => {
     return state.userReducer.valueTag;
@@ -166,7 +144,7 @@ export default function UpdateFood() {
         });
       } catch (error) {
         CustomizedToast({
-          message: "Vui lòng xem lại thông tin",
+          message: "Cập nhập món ăn không thành công",
           type: "ERROR",
         });
       }

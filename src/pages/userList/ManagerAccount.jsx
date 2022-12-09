@@ -1,16 +1,13 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+
 // material
 import {
   Card,
   Table,
   Stack,
-  // Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -35,7 +32,6 @@ import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import { Avatar } from "@mui/joy";
 import ManagerAccountListToolbar from "../../sections/@dashboard/user/ManagerAccountListToolbar";
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
 // ----------------------------------------------------------------------
@@ -96,7 +92,6 @@ export default function ManagerAccount() {
     { id: "All", title: "Tất cả" },
   ];
 
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [open, setOpen] = React.useState(false);
@@ -121,7 +116,6 @@ export default function ManagerAccount() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   //CALL API====================================================
-  const location = useLocation();
 
   // const token = localStorage.getItem("token");
 
@@ -146,7 +140,7 @@ export default function ManagerAccount() {
       await dispatch(callAPIgetAccountManager(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleDelete = (id, fullName) => {
     API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
@@ -204,23 +198,6 @@ export default function ManagerAccount() {
     setSelected([]);
   };
 
-  const handleClick = (event, fullName) => {
-    const selectedIndex = selected.indexOf(fullName);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, fullName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -243,12 +220,7 @@ export default function ManagerAccount() {
 
   const isStationNotFound = filteredStations.length === 0;
 
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
 
-    // display: "center"
-  }));
 
   return (
     <Page title="Quản lí">
@@ -299,9 +271,9 @@ export default function ManagerAccount() {
                       const {
                         id,
                         profile,
-                        avatar,
+             
                         fullName,
-                        email,
+               
                         phone,
                         status,
                       } = row;

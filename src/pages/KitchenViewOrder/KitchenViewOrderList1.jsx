@@ -1,13 +1,12 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import { Link as useNavigate } from "react-router-dom";
+
 // material
 import {
   Card,
   Table,
   Stack,
-  // Avatar,
   Paper,
   Box,
   TableRow,
@@ -34,7 +33,6 @@ import {
   callAPIGetListOderByDay,
   callAPIKitchenGetListOrder,
 } from "../../redux/action/acction";
-import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -46,7 +44,6 @@ import FormControl from "@mui/material/FormControl";
 // mock
 
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import KitchenListToolbar from "./../../sections/@dashboard/user/KitchenListToolbar";
 import * as moment from "moment";
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
@@ -108,7 +105,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 const getOptions = () => [
-
   { id: "progress", title: "Chờ giao hàng" },
   { id: "delivery", title: "Đang giao" },
   { id: "arrived", title: "Đã đến" },
@@ -128,26 +124,6 @@ export default function KitchenViewOrderList() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-
-  const handleDelete = (id) => {
-    API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
-      (res) => {
-        try {
-          dispatch(callAPIKitchenGetListOrder());
-        } catch (err) {
-          alert("Ban faild " + id);
-        }
-      },
-      []
-    );
-  };
 
   //callAPIKitchenGetListOrder========================================
 
@@ -215,12 +191,6 @@ export default function KitchenViewOrderList() {
   );
 
   const isKitchenNotFound = filteredKitchen.length === 0;
-  const [meal, setMeal] = React.useState("");
-
-  const handleChange = (event) => {
-    setMeal(event.target.value);
-  };
-
   return (
     <Page title="Kitchen">
       <Container>
@@ -278,7 +248,7 @@ export default function KitchenViewOrderList() {
             </LocalizationProvider>
           </FormControl>
         </Stack>
-        
+
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -311,8 +281,7 @@ export default function KitchenViewOrderList() {
                         station,
                         food,
                         timeSlot,
-                        order,
-                        note,
+
                         status,
                       } = row;
 
@@ -328,15 +297,9 @@ export default function KitchenViewOrderList() {
                           <TableCell align="left">
                             {/* {timeSlot.flag} */}
                             <div>
-                              {timeSlot.flag === "0" && (
-                                <Label>Sáng</Label>
-                              )}
-                              {timeSlot.flag === "1" && (
-                                <Label >Trưa</Label>
-                              )}
-                              {timeSlot.flag === "2" && (
-                                <Label>Chiều</Label>
-                              )}
+                              {timeSlot.flag === "0" && <Label>Sáng</Label>}
+                              {timeSlot.flag === "1" && <Label>Trưa</Label>}
+                              {timeSlot.flag === "2" && <Label>Chiều</Label>}
                             </div>
                           </TableCell>
                           <TableCell align="left">
@@ -372,7 +335,6 @@ export default function KitchenViewOrderList() {
                               )}
                             </div>
                           </TableCell>
-
                         </TableRow>
                       );
                     })}

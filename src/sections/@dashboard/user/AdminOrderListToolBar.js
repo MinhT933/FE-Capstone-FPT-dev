@@ -15,7 +15,7 @@ import Iconify from "../../../components/hook-form/Iconify";
 
 import Controls from "./../../../components/Control/Controls";
 
-import { callAPIgetShipperByStatus } from "../../../redux/action/acction";
+import { callAPIgetShipperByStatus, callAPIgetSubcriptionsbyStatus } from "../../../redux/action/acction";
 
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -69,7 +69,7 @@ export default function AdminOrderListToolBar({
 
     //Admin
     dispatch(
-      await callAPIgetShipperByStatus(
+      await callAPIgetSubcriptionsbyStatus(
         token,
         event.target.value === "All" ? "" : event.target.value
       )

@@ -31,6 +31,7 @@ export default function Input(props) {
     >
       <TextField
         variant={variant}
+        required
         maxRows={Infinity}
         placeholder={placeholder}
         multiline

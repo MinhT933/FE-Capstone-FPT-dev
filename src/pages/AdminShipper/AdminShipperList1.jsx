@@ -2,15 +2,12 @@ import * as React from "react";
 import { filter } from "lodash";
 import { useState } from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 // material
 import {
   Card,
   Table,
   Stack,
   Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -29,15 +26,12 @@ import Page from "../../components/setPage/Page";
 import { callAPIgetListShipper } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Iconify from "../../components/hook-form/Iconify";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
+
 
 // mock
 // import ADMINSHIPPERLIST from "./AdminShipperSample";
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-import jwt_decode from "jwt-decode";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
+
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 
 // ----------------------------------------------------------------------
@@ -84,7 +78,9 @@ function applySortFilter(array, comparator, query) {
     return filter(
       array,
       (_kitchen) =>
-        _kitchen.account.profile.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _kitchen.account.profile.fullName
+          .toLowerCase()
+          .indexOf(query.toLowerCase()) !== -1
       // console.log(_kitchen)
     );
   }
@@ -103,41 +99,13 @@ export default function AdminShipperList() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-
-
 
   React.useEffect(() => {
     const callAPI = async () => {
       await dispatch(callAPIgetListShipper(token));
     };
     callAPI();
-  }, [dispatch]);
-
-
-  const handleDelete = (id, fullName) => {
-    API("PUT", URL_API + `/shippers/update-status/${id}`, null, token).then((res) => {
-      try {
-        dispatch(callAPIgetListShipper(token));
-
-        CustomizedToast({
-          message: `Đã cập nhập trạng thái ${fullName}`,
-          type: "SUCCESS",
-        });
-      } catch (err) {
-        CustomizedToast({
-          message: `Cập nhập trạng thái ${fullName} thất bại`,
-          type: "ERROR",
-        });
-      }
-    }, []);
-  };
+  }, [dispatch, token]);
 
   const shipper = useSelector((state) => {
     return state.userReducer.listShipper;
@@ -145,7 +113,7 @@ export default function AdminShipperList() {
   // const token = localStorage.getItem("token");
 
   //CallAPIgetListShipper=====================================
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -173,23 +141,23 @@ export default function AdminShipperList() {
     setSelected([]);
   };
 
-  const handleClick = (event, fullName) => {
-    const selectedIndex = selected.indexOf(fullName);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, fullName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, fullName) => {
+  //   const selectedIndex = selected.indexOf(fullName);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, fullName);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -212,22 +180,7 @@ export default function AdminShipperList() {
     getComparator(order, orderBy),
     filterName
   );
-  //setColor button
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC32"),
-    backgroundColor: "#FFCC33",
-    "&:hover": {
-      backgroundColor: "#ffee32",
-    },
-    display: "center",
-  }));
 
-  // const Button1 = styled(Button)(({ theme }) => ({
-  //   color: theme.palette.getContrastText("#FFCC33"),
-  //   backgroundColor: "#FFCC33",
-
-  //   // display: "center"
-  // }));
 
   const isKitchenNotFound = filteredKitchen.length === 0;
 
@@ -282,16 +235,13 @@ export default function AdminShipperList() {
                     .map((row) => {
                       const {
                         id,
-                        avatar,
+                
                         fullName,
-                        phone,
+                 
                         noPlate,
                         vehicleType,
                         status,
-                        email,
-                        account,
-                        kitchen,
-                        address,
+                      
                       } = row;
                       const isItemSelected = selected.indexOf(fullName) !== -1;
 
@@ -304,7 +254,7 @@ export default function AdminShipperList() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell >  </TableCell>
+                          <TableCell> </TableCell>
 
                           <TableCell component="th" scope="row" padding="none">
                             <Stack
@@ -322,7 +272,6 @@ export default function AdminShipperList() {
                             </Stack>
                           </TableCell>
 
-
                           <TableCell align="left">
                             {row.account?.phone}
                           </TableCell>
@@ -331,7 +280,9 @@ export default function AdminShipperList() {
                           <TableCell align="left">
                             {row.account.profile?.email}
                           </TableCell>
-                          <TableCell align="left">{row.kitchen?.address}</TableCell>
+                          <TableCell align="left">
+                            {row.kitchen?.address}
+                          </TableCell>
 
                           <TableCell align="left">
                             <div>

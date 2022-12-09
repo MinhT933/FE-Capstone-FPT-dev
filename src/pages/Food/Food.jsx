@@ -31,7 +31,6 @@ import {
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Iconify from "../../components/hook-form/Iconify";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
@@ -89,9 +88,6 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 //getICon
-const getIcon = (name) => (
-  <Iconify icon={name} width={15} height={15} color={"red"} />
-);
 
 export default function Food() {
   const [page, setPage] = useState(0);
@@ -106,7 +102,6 @@ export default function Food() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [categoryName, setcategoryName] = useState([]);
 
   // const [open, setOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -149,8 +144,6 @@ export default function Food() {
   const handleDelete = async (id) => {
     await API("PUT", URL_API + `/foods/update-status/${id}`, null, token)
       .then((res) => {
-      
-
         dispatch(callAPIgetListFood(token));
 
         CustomizedToast({
@@ -184,23 +177,6 @@ export default function Food() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

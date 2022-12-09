@@ -14,13 +14,11 @@ import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { callAPIgetListCategory } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
-// import { FormHelperText } from "@material-ui/core";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import FormHelperText from "@mui/material/FormHelperText";
-import { jwt_decode } from "jwt-decode";
 
 //-------------------------------------------------------------------
 
@@ -111,7 +109,10 @@ export default function EditFood() {
         });
         // navigate("/dashboard/admin/food");
       } catch (err) {
-        CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
+        CustomizedToast({
+          message: `Cập nhập ${formik.values.name} không thành công`,
+          type: "ERROR",
+        });
       }
     },
   });
@@ -276,9 +277,9 @@ export default function EditFood() {
               >
                 {/* hiển thị hình lên  */}
                 {input != null ? (
-                  <img src={input} />
+                  <img src={input} alt="" />
                 ) : (
-                  <img src={formik.values.image} />
+                  <img src={formik.values.image} alt="" />
                 )}
               </Box>
             </label>

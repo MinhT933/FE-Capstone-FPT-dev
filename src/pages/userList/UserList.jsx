@@ -9,7 +9,6 @@ import {
   Stack,
   Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -35,7 +34,6 @@ import NewUserPopup from "../../components/PopUp/NewUserPopup";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-
   { id: " ", label: " ", alignRight: false },
   { id: "name", label: "Name", alignRight: false },
   { id: "company", label: "Company", alignRight: false },
@@ -105,24 +103,6 @@ export default function UserList() {
       return;
     }
     setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -236,7 +216,6 @@ export default function UserList() {
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, name)}
                             /> */}
-
                           </TableCell>
 
                           <TableCell component="th" scope="row" padding="none">
@@ -264,9 +243,7 @@ export default function UserList() {
                                 (status === "banned" && "error") || "success"
                               }
                             >
-
                               {status}
-
                             </Label>
                           </TableCell>
 

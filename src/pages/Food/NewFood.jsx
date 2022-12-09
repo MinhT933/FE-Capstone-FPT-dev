@@ -10,7 +10,7 @@ import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 //validate
 import { useFormik } from "formik";
-import IconButton from "@mui/material/IconButton";
+
 import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { callAPIgetListCategory } from "./../../redux/action/acction";
@@ -20,9 +20,8 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+
 import NewCateFood from "./NewCateFood";
-import { width } from "@mui/system";
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
@@ -43,20 +42,13 @@ export default function NewFood() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
 
   React.useEffect(() => {
     const getlistCateFood = async () => {
       await dispatch(callAPIgetListCategory(token));
     };
     getlistCateFood();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const categoriesFood = useSelector((state) => {
     return state.userReducer.listCategory;
@@ -111,8 +103,13 @@ export default function NewFood() {
           message: `Đã thêm món ${formik.values.name}`,
           type: "SUCCESS",
         });
-        window.location.reload(true);
-      } catch (error) {}
+        // window.location.reload(true);
+      } catch (error) {
+        CustomizedToast({
+          message: `Thêm món ăn không thành công`,
+          type: "ERROR",
+        });
+      }
     },
   });
 
@@ -163,6 +160,7 @@ export default function NewFood() {
             <Grid container spacing={1.5}>
               <Grid item xs={12}>
                 <Controls.Input
+                  required
                   variant="outlined"
                   name="name"
                   label="Tên"
@@ -186,6 +184,7 @@ export default function NewFood() {
                 <Controls.Input
                   variant="outlined"
                   name="price"
+                  required
                   label="Giá"
                   value={formik.values.price}
                   onChange={(e) => {
@@ -211,6 +210,7 @@ export default function NewFood() {
                 >
                   <Controls.Select
                     name="foodCategoryId"
+                    required
                     label="Loại"
                     width="21vw"
                     value={formik.values.foodCategoryId}
@@ -233,6 +233,7 @@ export default function NewFood() {
                   maxRows={6}
                   multiline
                   variant="outlined"
+                  required
                   label="Mô tả"
                   name="description"
                   value={formik.values.description}

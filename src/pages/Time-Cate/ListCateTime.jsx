@@ -29,6 +29,9 @@ import { useState } from "react";
 import NewCateFood from "../Food/NewCateFood";
 import NewCate from "../PackageFood/newCate";
 import NewTimeFrame from "../PackageFood/NewTimeFrame";
+import API from "../../Axios/API/API";
+import { URL_API } from "../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -100,6 +103,28 @@ export default function ListCateTime() {
     };
   }
   const [value, setValue] = React.useState(0);
+
+  const handleDelete = async (path, id) => {
+    await API("DELETE", URL_API + `/${path}/${id}`, null, token)
+      .then((res) => {
+        // console.log(res);
+        dispatch(callAPIgetListCategory(token));
+        dispatch(callAPIgetCatePackage(token));
+        dispatch(callAPIgetTimeFrame(token));
+
+        CustomizedToast({
+          message: "Đã xóa thành công",
+          type: "SUCCESS",
+        });
+        // handleClose();
+      })
+      .catch((err) => {
+        CustomizedToast({
+          message: "Không tìm thấy Id hoặc dự liệu đã được sử dụng",
+          type: "ERROR",
+        });
+      });
+  };
 
   const BootstrapButton = styled(Button)({
     // boxShadow: "none",
@@ -241,7 +266,11 @@ export default function ListCateTime() {
                             {row.name}
                           </Grid>
                           <Grid item xs={6}>
-                            <IconButton>
+                            <IconButton
+                              onClick={(e) => {
+                                handleDelete("food-categories", row.id);
+                              }}
+                            >
                               <RemoveCircleOutlineIcon />
                             </IconButton>
                           </Grid>
@@ -296,7 +325,11 @@ export default function ListCateTime() {
                             {row.name}
                           </Grid>
                           <Grid item xs={6}>
-                            <IconButton>
+                            <IconButton
+                              onClick={(e) => {
+                                handleDelete("package-categories", row.id);
+                              }}
+                            >
                               <RemoveCircleOutlineIcon />
                             </IconButton>
                           </Grid>
@@ -346,7 +379,11 @@ export default function ListCateTime() {
                             {row.name}
                           </Grid>
                           <Grid item xs={6}>
-                            <IconButton>
+                            <IconButton
+                              onClick={(e) => {
+                                handleDelete("time-frame", row.id);
+                              }}
+                            >
                               <RemoveCircleOutlineIcon />
                             </IconButton>
                           </Grid>

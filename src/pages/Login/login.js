@@ -1,18 +1,15 @@
 import {
-  Container,
-  Button,
   Grid,
   Paper,
   TextField,
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
-// import Link from "@mui/material/Link";
 import { Link } from "react-router-dom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import React from "react";
@@ -21,12 +18,8 @@ import { useFormik } from "formik";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { LoginAthen, LoginAthenAdmin } from "./../../redux/action/acction";
+import { LoginAthen } from "./../../redux/action/acction";
 
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 /////
 
 const schema = yup.object().shape({
@@ -109,7 +102,7 @@ const Login = () => {
                     <TextField
                       type="phoneNumber"
                       fullWidth
-                      name="phone" 
+                      name="phone"
                       label="Số điện thoại"
                       placeholder="số điện thoại"
                       variant="outlined"
@@ -118,7 +111,7 @@ const Login = () => {
                       onChange={(e) => {
                         formik.handleChange(e);
                       }}
-                    // required
+                      // required
                     />
                     {formik.touched.phone && formik.errors.phone && (
                       <FormHelperText

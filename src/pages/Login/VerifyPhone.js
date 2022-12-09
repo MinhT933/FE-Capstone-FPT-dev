@@ -3,28 +3,18 @@ import {
   Button,
   Grid,
   Paper,
-  TextField,
   Alert,
 } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 // import { firebase } from "firebase/app";
-import * as firebase from "./firebase";
 import { useNavigate } from "react-router-dom";
 
-const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText("#5dc9bc"),
-  backgroundColor: "#ffeb3b",
-  "&:hover": {
-    backgroundColor: "#5dc9bc",
-  },
-  display: "center",
-}));
 
 export default function VerifyPhone() {
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
+  // const navigate = useNavigate();
+  // const [error, setError] = useState("");
 
   return (
     <Box
@@ -49,7 +39,7 @@ export default function VerifyPhone() {
                   Nhập mã OTP được gửi đến số điện thoại để xác thực.
                 </p>
               </div>
-              {error && <Alert variant="danger">{error}</Alert>}
+              {/* {error && <Alert variant="danger">{error}</Alert>} */}
               {/* <form onSubmit={verifyOtp}>
                 <Grid container direction="column" spacing={2}>
                   <Grid item>

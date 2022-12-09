@@ -14,9 +14,8 @@ import FormHelperText from "@mui/material/FormHelperText";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import te from "date-fns/esm/locale/te/index.js";
 import { useDispatch } from "react-redux";
-import { callAPIgetTimeFrame } from './../../redux/action/acction';
+import { callAPIgetTimeFrame } from "./../../redux/action/acction";
 
 const shema = yup.object().shape({
   name: yup.string().required(" Vui điền đầy đủ thông tin"),

@@ -3,11 +3,9 @@ import { useState } from "react";
 import {
   Card,
   Table,
-  Stack,
   // Avatar,
   // Button,
   Paper,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -17,28 +15,23 @@ import {
   // TablePagination,
 } from "@mui/material";
 // components
-import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
-import dayjs from "dayjs";
 import * as React from "react";
 
 import Iconify from "../../components/hook-form/Iconify";
 
 // mock
-import KITCHENORDERLIST from "./KitchenOrderSample";
+
 import {
   UserListHead,
   // UserListToolbar,
 } from "../../sections/@dashboard/user";
-import MealListToolBar from "../../sections/@dashboard/user/MealListToolBar";
-import PageHeader from "../../components/PageHeader";
+
 import { Grid } from "@mui/joy";
 import { callAPIKitchenPrepareOrder } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
 // ko nhát thiết phải thêm table head ở dưới
@@ -87,18 +80,10 @@ function applySortFilter(array, comparator, query) {
 
 export default function ListBreakfast(props) {
   const { kitchenMorning } = props;
-  console.log(kitchenMorning)
-  const location = useLocation();
+
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
   if (token === null) {
-    Navigate("/");
-  }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
     Navigate("/");
   }
 
@@ -109,25 +94,18 @@ export default function ListBreakfast(props) {
     return [date.getFullYear(), mnth, day].join("-");
   }
 
-  const [select, setSelect] = useState('')
+  const [select, setSelect] = useState("");
   const [valueStarTime, setValueStarTime] = React.useState(new Date());
-
 
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
-      await dispatch(callAPIKitchenPrepareOrder(token, convert(valueStarTime), select));
+      await dispatch(
+        callAPIKitchenPrepareOrder(token, convert(valueStarTime), select)
+      );
     };
     callAPI();
-  }, [select, convert(valueStarTime.$d)]);
-
-
-
-  const station = useSelector((state) => {
-    return state.userReducer.listFoodPrepare;
-  });
-
-
+  }, [select, valueStarTime, token, dispatch]);
 
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
@@ -140,8 +118,6 @@ export default function ListBreakfast(props) {
 
   const [orderBy, setOrderBy] = useState("nameFood");
 
-  const [filterName, setFilterName] = useState("");
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -152,52 +128,23 @@ export default function ListBreakfast(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = KITCHENORDERLIST.map((n) => n.nameFood);
+      const newSelecteds = kitchenMorning.map((n) => n.nameFood);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, nameFood) => {
-    const selectedIndex = selected.indexOf(nameFood);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, nameFood);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
 
   const filteredKitchen = applySortFilter(
     kitchenMorning,
-    getComparator(order, orderBy),
-    filterName
+    getComparator(order, orderBy)
   );
-  const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
     <Page>
       <Container sx={{ minWidth: 380, width: 380 }}>
-        {/* <PageHeader
-                    title="SÁNG"
-                    // icon={getIcon("line-md:moon-alt-to-sunny-outline-loop-transition")}
-                    icon={getIcon("emojione:sun-behind-cloud")}
-                // icon={getIcon("emojione:sun")}
-                // icon={getIcon("emojione:crescent-moon")}
-                /> */}
         <Card>
           <Paper
             direction="row"
@@ -206,8 +153,6 @@ export default function ListBreakfast(props) {
             sx={{
               background: "#FFCC33",
               color: "black",
-              // height: "50%",
-              // width: "33%",
             }}
           >
             <Grid container spacing={1}>
@@ -216,7 +161,7 @@ export default function ListBreakfast(props) {
                   variant="h4"
                   gutterBottom
                   sx={{
-                    // display: "flex",
+        
                     marginLeft: "65%",
                     marginTop: "9%",
                   }}
@@ -234,7 +179,6 @@ export default function ListBreakfast(props) {
                     marginLeft: "45%",
                   }}
                 >
-
                   {" "}
                   {getIcon("emojione:sun-behind-cloud")}
                 </Card>
@@ -248,7 +192,7 @@ export default function ListBreakfast(props) {
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={KITCHENORDERLIST.length}
+                rowCount={kitchenMorning.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -257,7 +201,7 @@ export default function ListBreakfast(props) {
                 {filteredKitchen
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const { nameFood, quantity, flag } = row;
+                    const { nameFood, quantity } = row;
                     // console.log(nameFood)
                     const isItemSelected = selected.indexOf(nameFood) !== -1;
 

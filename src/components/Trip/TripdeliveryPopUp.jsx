@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogTitle, Paper } from "@mui/material";
 import React from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import Select from "@mui/material/Select";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -18,25 +17,23 @@ import Iconify from "../hook-form/Iconify";
 import { CustomizedToast } from "../Toast/ToastCustom";
 import ButtonCustomize from "../Button/ButtonCustomize";
 import {
-  callAPIgetOrdertoCreateDeliveryTrip,
+  callAPIgetallOrder,
+
   callAPIGetSlot,
   callAPIGetStationByKitchen,
+
 } from "../../redux/action/acction";
 import { URL_API } from "../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
 import { callAPIgetShipperByActive } from "./../../redux/action/acction";
 
-const schema = yup.object().shape({
-  fullName: yup.string().required("Vui lòng điền đầy đủ thông tin").trim(),
-  // description: yup.string().required("Vui lòng điền đầy đủ thông tin").trim(),
-});
 
-function convert(str) {
-  var date = new Date(str),
-    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-    day = ("0" + date.getDate()).slice(-2);
-  return [date.getFullYear(), mnth, day].join("-");
-}
+// function convert(str) {
+//   var date = new Date(str),
+//     mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+//     day = ("0" + date.getDate()).slice(-2);
+//   return [date.getFullYear(), mnth, day].join("-");
+// }
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
@@ -121,19 +118,13 @@ export default function TripdeliveryPopUp(props) {
 
       try {
         const res = await API("POST", URL_API + `/delivery_trips`, data, token);
+
         CustomizedToast({
           message: `Đã tạo chuyến thành công`,
           type: "SUCCESS",
         });
-        dispatch(
-          await callAPIgetOrdertoCreateDeliveryTrip(
-            token,
-            slot,
-            convert(valueStarTime),
-            stationID,
-            idKitchen
-          )
-        );
+
+        dispatch(callAPIgetallOrder(token));
       } catch (error) {
         if (idKitchen === "") {
           CustomizedToast({

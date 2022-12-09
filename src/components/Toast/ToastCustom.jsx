@@ -1,12 +1,7 @@
 import { toast } from "react-toastify";
-import Iconify from "../hook-form/Iconify";
 
-// interface ICustomizedToast {
-//   message: string;
-//   type: string;
-// }
 
-// const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
 export const CustomizedToast = ({ message, type }) => {
   switch (type) {
     case "SUCCESS":

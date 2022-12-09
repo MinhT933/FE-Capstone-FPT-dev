@@ -26,10 +26,8 @@ import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import NewTimeFrame from "./NewTimeFrame";
 import NewCate from "./newCate";
-import * as moment from "moment";
 import DatePicker from "../../components/Control/DatePicker";
 
 const schema = yup.object().shape({
@@ -172,20 +170,8 @@ export default function NewPackage() {
       totalFood: "",
       GroupFoodID: "",
     },
-    // `${a[2]}-${a[1]}-${a[0]}
-    // `0${b[2]}-${b[1]}-${b[0]}`
+
     onSubmit: async (values) => {
-      // const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      // const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
-      // const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
-      const startSale = moment(valueStarTime).format("YYYY-MM-DD hh:mm:ss");
-      const endSale = moment(valueEndTime).format("YYYY-MM-DD hh:mm:ss");
-      // Log(a)
-      // console.log(startSale);
-      const b = new Date(valueStarTime).toLocaleDateString().split("/");
-      const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      // const startDate = new Date(valueStarTime).toLocaleDateString();
-      // const endDate = new Date(valueEndTime).toLocaleDateString();
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -193,10 +179,8 @@ export default function NewPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      // formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
-      // formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
       formData.append("endSale", handleDate(valueEndTime));
-      formData.append("startSale", handleDate(valueEndTime));
+      formData.append("startSale", handleDate(valueStarTime));
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
@@ -228,13 +212,8 @@ export default function NewPackage() {
           message: `Đã thêm món ${formik.values.name}`,
           type: "SUCCESS",
         });
-
-        // window.location.reload(true);
-        // } else if (endDate < startDate || endDate === startDate) {
-        //   CustomizedToast({ message: "vui lòng xem lại ngày ", type: "ERROR" });
-        // }
       } catch (error) {
-        CustomizedToast({ message: "Thấp bại rồi", type: "ERROR" });
+        CustomizedToast({ message: "Thêm gói ăn thất bại", type: "ERROR" });
       }
     },
   });
@@ -736,17 +715,16 @@ export default function NewPackage() {
                   );
                 })}
               </Box>
-
-              <Box>
-                <Stack width="200px" mt={"50%"} mb={"1rem"}>
-                  <ButtonCustomize
-                    variant="contained"
-                    type="submit"
-                    nameButton="Xác Nhận"
-                  />
-                </Stack>
-              </Box>
             </Grid>
+            <Box>
+              <Stack width="200px" mt={"4%"} mb={"1rem"} marginLeft="70%">
+                <ButtonCustomize
+                  variant="contained"
+                  type="submit"
+                  nameButton="Xác Nhận"
+                />
+              </Stack>
+            </Box>
           </Box>
           <Box sx={{ float: "right", width: "30%", marginLeft: "10%" }}>
             <Paper

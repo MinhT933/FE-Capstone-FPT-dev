@@ -18,20 +18,16 @@ import Iconify from "../hook-form/Iconify";
 import { CustomizedToast } from "../Toast/ToastCustom";
 import ButtonCustomize from "../Button/ButtonCustomize";
 import {
-  callAPIgetAccountShipperByStatus,
-  callAPIgetAccountShipperByStatusActive,
-  callAPIgetOrdertoCreateDeliveryTrip,
   callAPIgetShipperByActive,
   callAPIgetTripall,
-  callAPIgetTripByStatus,
 } from "../../redux/action/acction";
 import { URL_API } from "../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
 
-const schema = yup.object().shape({
-  fullName: yup.string().required("Vui lòng điền đầy đủ thông tin").trim(),
-  // description: yup.string().required("Vui lòng điền đầy đủ thông tin").trim(),
-});
+// const schema = yup.object().shape({
+//   fullName: yup.string().required("Vui lòng điền đầy đủ thông tin").trim(),
+//   // description: yup.string().required("Vui lòng điền đầy đủ thông tin").trim(),
+// });
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -73,7 +69,7 @@ export default function ChangeShipper(props) {
       };
     };
     getfoodByFoodGroupId();
-  }, [token, dispatch]);
+  }, [token, dispatch, status]);
 
   const [valueTag, setValueTag] = React.useState([]);
 

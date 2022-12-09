@@ -1,13 +1,12 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // material
 import {
   Card,
   Table,
   Stack,
-  Avatar,
   TableRow,
   TableBody,
   TableCell,
@@ -26,24 +25,15 @@ import { UserListHead } from "../../sections/@dashboard/user";
 // import food from "../../_mock/foodsample";
 
 import {
-  callAPIgetAccountShipperByStatusActive,
-  callAPIgetListCategory,
-  callAPIgetListFood,
+
   callAPIgetTripall,
-  callAPIgetTripByStatus,
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Iconify from "../../components/hook-form/Iconify";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
+
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
-import Foodlistoolbar from "../../sections/@dashboard/user/Foodlistoolbar";
-import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import ListdeliveryTriptoolBar from "../../sections/@dashboard/user/ListdeliveryTriptoolBar";
-import Profile from "./../Profile/Profile";
 import ChangeShipper from "./ChangeShipper";
 
 // ----------------------------------------------------------------------
@@ -88,7 +78,8 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user?.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) =>
+        _user?.deliveryDate?.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis?.map((el) => el[0]);
@@ -144,7 +135,6 @@ export default function ListDeliveryTrip() {
     return state.userReducer.tripbyStatus;
   });
 
-  console.log(trip);
 
   //========================================================
   const handleRequestSort = (event, property) => {
@@ -161,23 +151,7 @@ export default function ListDeliveryTrip() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -197,7 +171,7 @@ export default function ListDeliveryTrip() {
     getComparator(order, orderBy),
     filterName
   );
-  const [hehe, setHehe] = useState();
+
 
   const isUserNotFound = filterFood?.length === 0;
 

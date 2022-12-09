@@ -47,7 +47,7 @@ function DetailShipper(props) {
       console.log("rỗng");
     }
   };
-  console.log(arrShipper);
+
   return (
     <Paper>
       <Dialog open={OpenDetail} onClose={handleClose}>

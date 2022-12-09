@@ -35,9 +35,7 @@ export default function Tripdelivery() {
   if (token === null) {
     Navigate("/");
   }
-  const profiles = useSelector((state) => {
-    return state.userReducer.profiles;
-  });
+ 
   // const idKitchen = profiles.id;
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
@@ -49,9 +47,9 @@ export default function Tripdelivery() {
     getfoodByFoodGroupId();
   }, [dispatch, token, idkitchen]);
 
-  const shipperofkichen = useSelector((state) => {
-    return state.userReducer.listShipperActive;
-  });
+  // const shipperofkichen = useSelector((state) => {
+  //   return state.userReducer.listShipperActive;
+  // });
 
   const listKichen = useSelector((state) => {
     return state.userReducer.listKitchen;
@@ -65,16 +63,16 @@ export default function Tripdelivery() {
     return state.userReducer.listSlots;
   });
 
-  const getOptions = () => {
-    const item = [];
-    for (var i = 0; i < shipperofkichen.length; i++) {
-      item.push({
-        id: shipperofkichen[i].id,
-        title: shipperofkichen[i].account.profile.fullName,
-      });
-    }
-    return item;
-  };
+  // const getOptions = () => {
+  //   const item = [];
+  //   for (var i = 0; i < shipperofkichen.length; i++) {
+  //     item.push({
+  //       id: shipperofkichen[i].id,
+  //       title: shipperofkichen[i].account.profile.fullName,
+  //     });
+  //   }
+  //   return item;
+  // };
 
   const getOptionsKichen = () => {
     const item = [];
@@ -89,7 +87,7 @@ export default function Tripdelivery() {
 
   const getSlot = () => {
     const item = [];
-    const textTile = "";
+    // const textTile = "";
     for (var i = 0; i < Slot.length; i++) {
       item.push({
         id: Slot[i]?.id,
@@ -273,7 +271,7 @@ export default function Tripdelivery() {
                 label="Thời gian giao"
                 width="90%"
                 onChange={(e) => {
-                  const a = Slot.find((c) => c.id === e.target.value);
+                  // const a = Slot.find((c) => c.id === e.target.value);
                   setSlot(e.target.value);
                 }}
                 options={getSlot()}

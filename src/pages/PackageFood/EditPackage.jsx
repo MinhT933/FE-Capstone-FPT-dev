@@ -17,7 +17,6 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import {
   callAPIgetCatePackage,
   callAPIgetTimeFrame,
-  callAPIgetGroupFood,
   getAPIgetGroupFoodByStatus,
 } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
@@ -28,9 +27,8 @@ import { URL_API } from "../../Axios/URL_API/URL";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { Stack } from "@mui/system";
 import dayjs from "dayjs";
-import DateTime from "./../../components/Control/DateTime";
+
 import DatePicker from "./../../components/Control/DatePicker";
-import { format } from "date-fns";
 
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập tên").trim(),
@@ -161,7 +159,6 @@ export default function EditPackage() {
     return CategoryData;
   };
 
-  const [prices, setPrices] = useState([]);
   const handleDate = (time) => {
     const a = new Date(time).toLocaleDateString().split("/");
     if (a[0] < 10) {
@@ -204,21 +201,6 @@ export default function EditPackage() {
     },
 
     onSubmit: async (values) => {
-      console.log(values);
-
-      // const startSale = valueStarTime.format("YYYY-MM-DD hh:mm:ss");
-      // const endSale = valueEndTime.format("YYYY-MM-DD hh:mm:ss");
-      // console.log(startSale, endSale);
-      // console.log(startSale);
-      const a = new Date(valueEndTime).toLocaleDateString().split("/");
-      const b = new Date(valueStarTime).toLocaleDateString().split("/");
-
-      const startSale = moment(valueStarTime).format("YYYY-MM-DD hh:mm:ss");
-      const endSale = moment(valueEndTime).format("YYYY-MM-DD hh:mm:ss");
-      // const startDate = new Date(valueStarTime).toLocaleDateString();
-      // const endDate = new Date(valueEndTime).toLocaleDateString();
-      // console.log(startSale);
-      // console.log(valueStarTime);
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
@@ -226,8 +208,6 @@ export default function EditPackage() {
       formData.append("totalStation", formik.values.totalStation);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
-      // formData.append("endSale", `${a[2]}-${a[1]}-${a[0]}`);
-      // formData.append("startSale", `${b[2]}-${b[1]}-${b[0]}`);
       formData.append("endSale", handleDate(valueEndTime));
       formData.append("startSale", handleDate(valueStarTime));
       formData.append("timeFrameID", formik.values.timeFrameID);
@@ -263,7 +243,10 @@ export default function EditPackage() {
           type: "SUCCESS",
         });
       } catch (error) {
-        CustomizedToast({ message: "Chỉnh sửa thất bại", type: "ERROR" });
+        CustomizedToast({
+          message: `Chỉnh sửa ${formik.values.name} không thành công`,
+          type: "ERROR",
+        });
       }
     },
   });

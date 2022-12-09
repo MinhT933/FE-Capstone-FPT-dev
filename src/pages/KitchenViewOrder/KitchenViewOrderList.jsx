@@ -1,8 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import { Link as  useNavigate } from "react-router-dom";
 // material
 import {
   Card,
@@ -10,8 +9,6 @@ import {
   Stack,
   Box,
   Paper,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -25,33 +22,20 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-import Iconify from "../../components/hook-form/Iconify";
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
-// mock
-// import STATIONLIST from "./StationSample";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 import FormControl from "@mui/material/FormControl";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   callAPIGetListOderByDay,
-  callAPIgetListStation,
-  callAPIKitchenGetListOrder,
 } from "../../redux/action/acction";
-import ButtonCustomize from "./../../components/Button/ButtonCustomize";
-import jwt_decode from "jwt-decode";
-import API from "../../Axios/API/API";
+
 import * as moment from "moment";
-import { URL_API } from "./../../Axios/URL_API/URL";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
+
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
 import DatePicker from "../../components/Control/DatePicker";
-
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import OrderListToolbar from "../../sections/@dashboard/user/OrderListToolbar";
-import PageHeader from "../../components/PageHeader";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -102,10 +86,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
-
 export default function KitchenViewOrderList() {
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -119,20 +100,12 @@ export default function KitchenViewOrderList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   //CALL API====================================================
-  const location = useLocation();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
+
 
   const [date, setDate] = React.useState(
     moment(new Date()).format("YYYY-MM-DD")
@@ -147,26 +120,7 @@ export default function KitchenViewOrderList() {
     callAPI();
   }, [dispatch, date, token]);
 
-  const handleDelete = (id, name) => {
-    API("PUT", URL_API + `/kitchens/update-status/${id}`, null, token).then(
-      (res) => {
-        try {
-          dispatch(callAPIKitchenGetListOrder(token));
 
-          CustomizedToast({
-            message: `Đã Cập nhập trạng thái ${name}`,
-            type: "SUCCESS",
-          });
-        } catch (err) {
-          CustomizedToast({
-            message: `Cập nhập trạng thái ${name} thất bại`,
-            type: "ERROR",
-          });
-        }
-      },
-      []
-    );
-  };
 
   const station = useSelector((state) => {
     return state.userReducer.listOderByDate;
@@ -200,23 +154,6 @@ export default function KitchenViewOrderList() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -239,12 +176,6 @@ export default function KitchenViewOrderList() {
 
   const isStationNotFound = filteredStations.length === 0;
 
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-
-    // display: "center"
-  }));
 
   return (
     <Page title="Đơn hàng">
@@ -351,13 +282,10 @@ export default function KitchenViewOrderList() {
                           station,
                           food,
                           timeSlot,
-                          order,
-                          name,
-                          note,
-                          startTime,
+            
                           status,
                         } = row;
-                        const isItemSelected = selected.indexOf(name) !== -1;
+               
 
                         return (
                           <TableRow hover key={id} tabIndex={-1}>
@@ -388,37 +316,30 @@ export default function KitchenViewOrderList() {
                                 )}
                               </div>
                             </TableCell>
-                            {/* <TableCell align="left"> */}
-                            {/* {timeSlot.endTime} */}
-                            {/* <div>
-                                                                {moment(timeSlot.endTime, "HH:mm:ss").format("hh:mm")}
-                                                            </div> */}
-                            {/* </TableCell> */}
-
                             <TableCell align="left">
                               <div>
                                 {status === "progress" && (
-                                  // <Alert severity="warning">inActive</Alert>
+                             
                                   <Label color="warning">Chờ giao hàng</Label>
                                 )}
                                 {status === "delivery" && (
-                                  // <Alert severity="info">waiting</Alert>
+                           
                                   <Label color="warning">Đang giao</Label>
                                 )}
                                 {status === "arrived" && (
-                                  // <Alert severity="info">waiting</Alert>
+                     
                                   <Label color="success">Đã đến</Label>
                                 )}
                                 {status === "done" && (
-                                  // <Alert severity="info">waiting</Alert>
+                            
                                   <Label color="success">Hoàn thành</Label>
                                 )}
                                 {status === "pending" && (
-                                  // <Alert severity="info">waiting</Alert>
+                               
                                   <Label color="error">Chưa thanh toán</Label>
                                 )}
                                 {status === "ready" && (
-                                  // <Alert severity="info">waiting</Alert>
+                          
                                   <Label color="success">Đã thanh toán</Label>
                                 )}
                               </div>
@@ -456,7 +377,6 @@ export default function KitchenViewOrderList() {
             />
           </Card>
         </Container>
-        {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
       </Paper>
     </Page>
   );

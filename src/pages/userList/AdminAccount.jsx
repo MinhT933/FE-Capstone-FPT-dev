@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // material
 import {
   Card,
@@ -91,7 +91,6 @@ export default function AdminAccount() {
     { id: "All", title: "Tất cả" },
   ];
 
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -116,7 +115,6 @@ export default function AdminAccount() {
   }, []);
 
   //CALL API====================================================
-  const location = useLocation();
 
   // const token = localStorage.getItem("token");
 
@@ -141,7 +139,7 @@ export default function AdminAccount() {
       await dispatch(callAPIgetAccountAdmin(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleDelete = (id, fullName) => {
     API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
@@ -199,24 +197,6 @@ export default function AdminAccount() {
     setSelected([]);
   };
 
-  const handleClick = (event, fullName) => {
-    const selectedIndex = selected.indexOf(fullName);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, fullName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -238,12 +218,6 @@ export default function AdminAccount() {
 
   const isStationNotFound = filteredStations.length === 0;
 
-  // const Button1 = styled(Button)(({ theme }) => ({
-  //   color: theme.palette.getContrastText("#FFCC33"),
-  //   backgroundColor: "#FFCC33",
-
-  //   // display: "center"
-  // }));
 
   return (
     <Page title="Quản trị viên">
@@ -292,9 +266,9 @@ export default function AdminAccount() {
                       const {
                         id,
                         profile,
-                        avatar,
+
                         fullName,
-                        email,
+
                         phone,
                         status,
                       } = row;
@@ -309,12 +283,7 @@ export default function AdminAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        /> */}
-                          </TableCell>
+                          <TableCell padding="checkbox"></TableCell>
 
                           <TableCell align="left">{profile.fullName}</TableCell>
 

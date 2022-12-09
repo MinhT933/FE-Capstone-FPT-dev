@@ -1,6 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as  useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -36,7 +36,6 @@ import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 
 import RequestShipper from "./RequestShipper";
 import DetailShipper from "./DetailShipper";
-import jwt_decode from "jwt-decode";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -69,11 +68,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-const getOptions = () => [
-  { id: "active", title: "Hoạt động" },
-  { id: "inActive", title: "Tạm nghỉ" },
-  { id: "", title: "Tất cả" },
-];
 
 function applySortFilter(array, comparator, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -95,24 +89,6 @@ function applySortFilter(array, comparator, query) {
 export default function KitchenShipperList() {
   //CallAPIgetListShipper=====================================
   const dispatch = useDispatch();
-  //     React.useEffect(() => {
-  //       const callAPI = async () => {
-  //         await dispatch(callAPIgetListShipper());
-  //       };
-  //       callAPI();
-  //     }, [dispatch]);
-
-  //     const handleDelete = (id) => {
-  //       API("PUT", URL_API + `/shippers/update-status/${id}`).then((res) => {
-  //         try {
-  //           dispatch(callAPIgetListShipper());
-  //         } catch (err) {
-  //           alert("ban faild " + id);
-  //         }
-  //       }, []);
-  //     };
-
-  // const token = localStorage.getItem("token");
 
   const profiles = useSelector((state) => {
     return state.userReducer.profiles;
@@ -124,11 +100,7 @@ export default function KitchenShipperList() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-  } catch (error) {
-    Navigate("/");
-  }
+
 
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
@@ -180,23 +152,7 @@ export default function KitchenShipperList() {
     setSelected([]);
   };
 
-  const handleClick = (event, fullName) => {
-    const selectedIndex = selected.indexOf(fullName);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, fullName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -323,9 +279,6 @@ export default function KitchenShipperList() {
                           <TableCell align="left">{account.phone}</TableCell>
                           <TableCell align="left">{noPlate}</TableCell>
                           <TableCell align="left">{vehicleType}</TableCell>
-                          {/* <TableCell align="left">
-                            {row.profile.email}
-                          </TableCell> */}
                           <TableCell align="left">
                             <div>
                               {status === "inActive" && (

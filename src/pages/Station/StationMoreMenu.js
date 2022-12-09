@@ -12,7 +12,7 @@ export default function StationMoreMenu(props) {
   
   console.log(props);
   const [isOpen, setIsOpen] = useState(false);
-  const {id, path} = props
+  const {id} = props
   const location = useLocation();
   console.log(location.pathname);
   

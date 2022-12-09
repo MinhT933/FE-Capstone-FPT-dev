@@ -1,21 +1,16 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import { Link as useNavigate } from "react-router-dom";
+
 // material
 import {
   Card,
   Table,
-  Stack,
-  // Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
-  Typography,
   TableContainer,
   TablePagination,
 } from "@mui/material";
@@ -25,17 +20,15 @@ import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 // mock
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { callAPIgetAccountShipper } from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
-import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import { Avatar } from "@mui/joy";
 import ShipperAccountListToolbar from "../../sections/@dashboard/user/ShipperAccountListToolbar";
 // ----------------------------------------------------------------------
 
@@ -93,7 +86,6 @@ export default function ShipperAccount() {
     { id: "All", title: "Tất cả" },
   ];
 
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -107,7 +99,6 @@ export default function ShipperAccount() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   //CALL API====================================================
-  const location = useLocation();
 
   // const token = localStorage.getItem("token");
 
@@ -117,14 +108,6 @@ export default function ShipperAccount() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
 
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -132,7 +115,7 @@ export default function ShipperAccount() {
       await dispatch(callAPIgetAccountShipper(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleDelete = (id, fullName) => {
     API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
@@ -190,24 +173,6 @@ export default function ShipperAccount() {
     setSelected([]);
   };
 
-  const handleClick = (event, fullName) => {
-    const selectedIndex = selected.indexOf(fullName);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, fullName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -228,13 +193,6 @@ export default function ShipperAccount() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-
-    // display: "center"
-  }));
 
   return (
     <Page title="Khách hàng">
@@ -284,10 +242,9 @@ export default function ShipperAccount() {
                     .map((row) => {
                       const {
                         id,
-                        profile,
-                        avatar,
+
                         fullName,
-                        email,
+
                         phone,
                         status,
                       } = row;
@@ -302,7 +259,7 @@ export default function ShipperAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell >  </TableCell>
+                          <TableCell> </TableCell>
 
                           {/* <TableCell align="left">{id}</TableCell> */}
                           <TableCell align="left">

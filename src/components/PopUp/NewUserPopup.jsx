@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle, Grid, Paper } from "@mui/material";
 
 import React from "react";
 import { purple } from "@mui/material/colors";
-import UseCreateForm, { TForm } from "./useForm";
+import UseCreateForm from "./useForm";
 import Controls from "./../Control/Controls";
 
 import * as UpdateService from "../../utils/UpdateService/UpdateService";
@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
- 
+
 const initialValue = {
   id: 0,
   fullName: "",
@@ -38,8 +38,6 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-
-
 export default function NewUserPopup(props) {
   const { values, setValue, handleInputChange } = UseCreateForm(initialValue);
   const { OpenPopUp, SetOpenPopUp } = props;
@@ -58,55 +56,55 @@ export default function NewUserPopup(props) {
         </DialogTitle>
 
         <DialogContent>
-            <Grid
-              container
-              rowSpacing={4}
-              columnSpacing={{ xs: 1, sm: 3, md: 2 }}
-            >
-              <Grid item xs={6}>
-                <Controls.Input
-                  variant="outlined"
-                  label="Name"
-                  values={values.fullName}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controls.Input
-                  variant="outlined"
-                  label="Email"
-                  values={values.email}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controls.DatePicker
-                  name="date"
-                  label="Date of Birth"
-                  value={values.DatePicker}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controls.Select
-                  name="department"
-                  label="Department"
-                  values={values.departmentId}
-                  onChange={handleInputChange}
-                  options={UpdateService.getOptions()}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controls.RadioGroup
-                  name="gender"
-                  label="Gender"
-                  values={values.gender}
-                  onChange={handleInputChange}
-                  items={genderItems}
-                />
-              </Grid>
+          <Grid
+            container
+            rowSpacing={4}
+            columnSpacing={{ xs: 1, sm: 3, md: 2 }}
+          >
+            <Grid item xs={6}>
+              <Controls.Input
+                variant="outlined"
+                label="Name"
+                values={values.fullName}
+                onChange={handleInputChange}
+              />
             </Grid>
-          
+            <Grid item xs={6}>
+              <Controls.Input
+                variant="outlined"
+                label="Email"
+                values={values.email}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.DatePicker
+                name="date"
+                label="Date of Birth"
+                value={values.DatePicker}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.Select
+                name="department"
+                label="Department"
+                values={values.departmentId}
+                onChange={handleInputChange}
+                options={UpdateService.getOptions()}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controls.RadioGroup
+                name="gender"
+                label="Gender"
+                values={values.gender}
+                onChange={handleInputChange}
+                items={genderItems}
+              />
+            </Grid>
+          </Grid>
+
           <div style={{ marginLeft: "240px", marginTop: "20px" }}>
             <Stack spacing={2} direction="row" width="200px">
               <ColorButton variant="contained">Create </ColorButton>

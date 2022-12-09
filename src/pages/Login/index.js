@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-// import Tabs from '@material-ui/core/Tabs';
-// import Tab from '@material-ui/core/Tab';
-// import Typography from '@material-ui/core/Typography';
+import React from "react";
+
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import "./format.css";
@@ -11,13 +9,7 @@ import Login from "./login";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+
 
 const WidthLogin = styled("div")(({ theme }) => ({
   width: "40%",
@@ -25,10 +17,7 @@ const WidthLogin = styled("div")(({ theme }) => ({
 }));
 
 const SignInOutContainer = () => {
-  const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+
 
   //  const paperStyle = { width: '20%', float: 'right' }
   // fixed bug

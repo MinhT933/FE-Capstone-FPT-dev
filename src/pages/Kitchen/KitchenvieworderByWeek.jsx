@@ -1,7 +1,7 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // material
 import {
   Card,
@@ -17,7 +17,6 @@ import {
   TablePagination,
 } from "@mui/material";
 // components
-import Label from "./../../components/label/label";
 import Scrollbar from "./../../components/hook-form/Scrollbar";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
@@ -28,7 +27,6 @@ import { UserListHead } from "../../sections/@dashboard/user";
 import { getFoodPrepareByWeek } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Iconify from "../../components/hook-form/Iconify";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import OrderListByWeekToolBar from "../../sections/@dashboard/user/OrderListByWeekToolBar";
@@ -77,10 +75,6 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-//getICon
-const getIcon = (name) => (
-  <Iconify icon={name} width={15} height={15} color={"red"} />
-);
 
 export default function KitchenvieworderByWeek() {
   const [page, setPage] = useState(0);
@@ -95,19 +89,13 @@ export default function KitchenvieworderByWeek() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [categoryName, setcategoryName] = useState([]);
-
   // const [open, setOpen] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(null);
-  const handleClickOpen = React.useCallback((item) => {
-    setOpen(true);
-    setValue(item);
-  }, []);
-
-  const handleClose = React.useCallback(() => {
-    setOpen(false);
-  }, []);
+  // const [open, setOpen] = React.useState(false);
+  // const [value, setValue] = React.useState(null);
+  // const handleClickOpen = React.useCallback((item) => {
+  //   setOpen(true);
+  //   setValue(item);
+  // }, []);
 
   //   console.log(last_date);
 
@@ -122,14 +110,12 @@ export default function KitchenvieworderByWeek() {
   } catch (error) {
     Navigate("/");
   }
-  const location = useLocation();
 
   const getOptions = () => [
     { id: "active", title: "Đang bán" },
     { id: "inActive", title: "Ngưng bán" },
     { id: "All", title: "Tất cả" },
   ];
-
 
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
@@ -144,7 +130,6 @@ export default function KitchenvieworderByWeek() {
   let firstdate = a[2] + "-" + a[1] + "-" + a[0];
   let lastdate = b[2] + "-" + b[1] + "-" + b[0];
   React.useEffect(() => {
-    //   console.log(first_date);
     const callAPI = async () => {
       dispatch(await getFoodPrepareByWeek(token, firstdate, lastdate));
     };
@@ -171,24 +156,6 @@ export default function KitchenvieworderByWeek() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -201,8 +168,6 @@ export default function KitchenvieworderByWeek() {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
-
-  console.log(foodPrepare);
 
   const filterFood = applySortFilter(
     foodPrepare,
@@ -325,15 +290,6 @@ export default function KitchenvieworderByWeek() {
               return "" + from + "-" + to + " của " + count;
             }}
           />
-          {/* {open && (
-            <ConfirmDialog
-              open={open}
-              content={value.name}
-              handleClickOpen={handleClickOpen}
-              handleClose={handleClose}
-              onClick={() => handleDelete(value.id, value.name)}
-            />
-          )} */}
         </Card>
       </Container>
     </Page>

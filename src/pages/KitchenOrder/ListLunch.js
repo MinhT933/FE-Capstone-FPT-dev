@@ -3,11 +3,7 @@ import { useState } from "react";
 import {
   Card,
   Table,
-  Stack,
-  // Avatar,
-  // Button,
   Paper,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -17,22 +13,20 @@ import {
   // TablePagination,
 } from "@mui/material";
 // components
-import SearchNotFound from "../../components/topbar/SearchNotFound";
+
 import Page from "../../components/setPage/Page";
 
-import dayjs from "dayjs";
 import * as React from "react";
 
 import Iconify from "../../components/hook-form/Iconify";
 
 // mock
-import KITCHENORDERLIST from "./KitchenOrderSample";
+
 import {
   UserListHead,
   // UserListToolbar,
 } from "../../sections/@dashboard/user";
-import MealListToolBar from "../../sections/@dashboard/user/MealListToolBar";
-import PageHeader from "../../components/PageHeader";
+
 import { Grid } from "@mui/joy";
 
 // ----------------------------------------------------------------------
@@ -81,7 +75,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function ListLunch(props) {
-  const { kitchenLunch } = props
+  const { kitchenLunch } = props;
   const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
   // const [OpenPopUp, SetOpenPopUp] = useState(false);
@@ -93,7 +87,6 @@ export default function ListLunch(props) {
 
   const [orderBy, setOrderBy] = useState("name");
 
-  const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -105,41 +98,19 @@ export default function ListLunch(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = KITCHENORDERLIST.map((n) => n.name);
+      const newSelecteds = kitchenLunch.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
 
   const filteredKitchen = applySortFilter(
     kitchenLunch,
     getComparator(order, orderBy),
-    filterName
   );
-  const isKitchenNotFound = filteredKitchen.length === 0;
 
   return (
     <Page title="Breakfast">
@@ -198,7 +169,7 @@ export default function ListLunch(props) {
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={KITCHENORDERLIST.length}
+                rowCount={kitchenLunch.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -207,7 +178,7 @@ export default function ListLunch(props) {
                 {filteredKitchen
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const { nameFood, quantity, flag } = row;
+                    const { nameFood, quantity } = row;
                     const isItemSelected = selected.indexOf(nameFood) !== -1;
 
                     return (

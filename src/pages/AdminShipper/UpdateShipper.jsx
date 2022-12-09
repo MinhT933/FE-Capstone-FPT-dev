@@ -2,7 +2,6 @@ import React from "react";
 // import { Paper } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
 
-import { styled } from "@mui/material/styles";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
@@ -13,10 +12,6 @@ import Stack from "@mui/material/Stack";
 
 //time
 import dayjs from "dayjs";
-import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Paper from "@mui/material/Paper";
 
 //api
@@ -25,17 +20,10 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 //validate
 import { useFormik } from "formik";
 import * as yup from "yup";
-
-import { useSelector } from "react-redux";
-import { callAPIgetListStation } from "./../../redux/action/acction";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
 import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate, useParams } from "react-router-dom";
-import jwt_decode from 'jwt-decode';
-import { type } from "@testing-library/user-event/dist/type";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -44,7 +32,6 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
     fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
-
     email: yup.string().required("Điền đầy đủ thông tin").trim(),
     noPlate: yup.string().required("Điền đầy đủ thông tin").trim(),
     vehicleType: yup.string().required("Điền đầy đủ thông tin").trim(),
@@ -55,8 +42,6 @@ export default function UpdateShipper() {
     //callAPIforCreateStation========================================
     let { id } = useParams();
 
-    const [input, setInput] = useState(null);
-
     const navigate = useNavigate();
 
     // const token = localStorage.getItem("token");
@@ -65,15 +50,7 @@ export default function UpdateShipper() {
     if (token === null) {
         Navigate("/");
     }
-    try {
-        var decoded = jwt_decode(token);
-        // valid token format
-    } catch (error) {
-        // return <Navigate to="/" replace />;
-        Navigate("/");
-    }
 
-    const dispatch = useDispatch();
 
     React.useEffect(() => {
         API("GET", URL_API + `/shippers/${id}`, null, token)
@@ -94,16 +71,7 @@ export default function UpdateShipper() {
             });
     }, []);
 
-    const station = useSelector((state) => {
-        return state.userReducer.listShipper;
-    });
-
-    const Input = styled("input")({
-        display: "none",
-    });
-
-    //formData để lưu data
-    const formData = new FormData();
+ 
 
     const formik = useFormik({
         //gắn schema để so sánh
@@ -144,13 +112,7 @@ export default function UpdateShipper() {
         },
     });
 
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        ...theme.typography.body2,
-        // padding: theme.spacing(2),
-        textAlign: "left",
-        color: theme.palette.text.secondary,
-    }));
+
 
     const [valueStarTime, setValueStarTime] = React.useState(
         dayjs("2022-10-23T21:11:5")
