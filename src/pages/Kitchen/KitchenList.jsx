@@ -94,7 +94,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function KitchenList() {
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -140,7 +139,7 @@ export default function KitchenList() {
       await dispatch(callAPIgetListKitchen(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleDelete = (id, name) => {
     API("PUT", URL_API + `/kitchens/status/${id}`, null, token).then((res) => {
@@ -186,24 +185,6 @@ export default function KitchenList() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -224,11 +205,6 @@ export default function KitchenList() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-  }));
 
   return (
     <Page title="Bếp">
@@ -276,8 +252,7 @@ export default function KitchenList() {
                   {filteredStations
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, fullName, address, ability, account } = row;
-                      const isItemSelected = selected.indexOf(fullName) !== -1;
+                      const { id, address, ability } = row;
 
                       return (
                         <TableRow

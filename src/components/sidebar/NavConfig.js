@@ -132,6 +132,11 @@ const navConfigAdmin = [
     path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
+  {
+    title: "Admin xem đánh giá",
+    path: "/dashboard/admin/adminviewfeedback",
+    icon: getIcon("teenyicons:star-circle-outline"),
+  },
   // {
   //   title: "Quản lí bếp",
   //   path: "/dashboard/admin/kitchenAccount",

@@ -35,8 +35,13 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIAdminCreateShipper=================================
 const schema = yup.object().shape({
-  fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
-  phone: yup.string().required("Điền đầy đủ thông tin").trim(),
+  phone: yup
+    .number()
+    .typeError("Số điện thoại phải nhập số")
+    .required("")
+    .min(9, "Quá ngắn")
+    .max(10, "Quá dài"),
+  email: yup.string().email("email Không đúng").trim(),
   noPlate: yup.string().required("Điền đầy đủ thông tin").trim(),
   vehicleType: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
@@ -166,13 +171,14 @@ export default function NewShipper() {
           sx={{ marginLeft: "33%" }}
         >
           <Grid container spacing={4} columns={20}>
-            <Grid item xs={12} >
+            <Grid item xs={12}>
               <Stack spacing={3}>
                 <Controls.Input
                   variant="outlined"
                   name="fullName"
                   label="Họ Tên"
                   width="24rem"
+                  required
                   value={formik.values.fullName || ""}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -221,18 +227,20 @@ export default function NewShipper() {
                   }}
                 />
 
-                <Controls.Input
-                  variant="outlined"
+                <Controls.TextField
+                  type="email"
+                  fullWidth
                   name="email"
-                  width="24rem"
                   label="Email"
-                  value={formik.values.email || ""}
+                  placeholder="Email"
+                  variant="outlined"
+                  required
+                  value={formik.values.email}
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {/* nếu sai thì nó đỏ */}
                 {formik.touched.email && formik.errors.email && (
                   <FormHelperText
                     error
@@ -241,18 +249,22 @@ export default function NewShipper() {
                     {formik.errors.email}
                   </FormHelperText>
                 )}
-                <Controls.Input
-                  variant="outlined"
+
+                <Controls.TextField
+                  // type="number"
+                  // fullWidth
+                  sx={{ width: "85%" }}
                   name="phone"
                   label="Điện thoại"
-                  width="24rem"
-                  value={formik.values.phone || ""}
+                  placeholder="Điện thoại"
+                  variant="outlined"
+                  required
+                  value={formik.values.phone}
                   onChange={(e) => {
                     formik.handleChange(e);
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {/* nếu sai thì nó đỏ */}
                 {formik.touched.phone && formik.errors.phone && (
                   <FormHelperText
                     error
@@ -261,10 +273,10 @@ export default function NewShipper() {
                     {formik.errors.phone}
                   </FormHelperText>
                 )}
-
                 <Controls.DatePicker
                   label="Ngày tháng năm sinh"
                   width="28rem"
+                  required
                   inputFormat="DD-MM-YYYY"
                   value={valueStarTime}
                   onChange={(e) => {
@@ -274,6 +286,7 @@ export default function NewShipper() {
 
                 <Controls.Input
                   variant="outlined"
+                  required
                   name="noPlate"
                   label="Biển số xe"
                   width="24rem"

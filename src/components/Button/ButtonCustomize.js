@@ -42,14 +42,6 @@ export default function ButtonCustomize(props) {
       onClick={onClick}
       component={component}
       to={to}
-      // endIcon={
-      //   <Iconify
-      //     icon={"material-symbols:navigate-next"}
-      //     width={15}
-      //     height={15}
-      //     color={"red"}
-      //   />
-      // }
       endIcon={endIcon}
       sx={{
         width: { width },

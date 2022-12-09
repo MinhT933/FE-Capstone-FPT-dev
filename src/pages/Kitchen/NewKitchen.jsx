@@ -2,7 +2,6 @@ import React from "react";
 // import { Paper } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
 
-import { styled } from "@mui/material/styles";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
@@ -12,11 +11,8 @@ import Controls from "./../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
 
 //time
-import dayjs from "dayjs";
 import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+
 import Paper from "@mui/material/Paper";
 
 //api
@@ -26,25 +22,17 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-import { useSelector } from "react-redux";
-import {
-  callAPIgetListCategory,
-  callAPIgetListKitchen,
-  callAPIgetListStation,
-} from "./../../redux/action/acction";
+import { callAPIgetListKitchen } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
-
 
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -52,10 +40,16 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
-  phone: yup.string().required("Điền đầy đủ thông tin").trim(),
+  phone: yup
+    .number()
+    .typeError("Số điện thoại phải nhập số")
+    .required("")
+    .min(9, "Quá ngắn")
+    .max(10, "Quá dài"),
+  email: yup.string().email("email Không đúng").trim(),
   password: yup.string().required("Điền đầy đủ thông tin").trim(),
   fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
-  email: yup.string().required("Điền đầy đủ thông tin").trim(),
+
   address: yup.string().required("Điền đầy đủ thông tin").trim(),
   ability: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
@@ -84,9 +78,6 @@ export default function NewKitchen() {
     getlistStation();
   }, []);
 
-  const Input = styled("input")({
-    display: "none",
-  });
   //xử lí hình ảnh
 
   // const token = localStorage.getItem("token");
@@ -96,13 +87,7 @@ export default function NewKitchen() {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
+ 
   // const decoded = jwt_decode(token);
 
   //formData để lưu data
@@ -146,18 +131,12 @@ export default function NewKitchen() {
         }
         navigate("/dashboard/admin/kitchen");
       } catch (error) {
-        CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
+        CustomizedToast({ message: "Thêm Không thành công", type: "ERROR" });
       }
     },
   });
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    // padding: theme.spacing(2),
-    textAlign: "left",
-    color: theme.palette.text.secondary,
-  }));
+  
 
   return (
     <Paper
@@ -181,13 +160,14 @@ export default function NewKitchen() {
           display="flex"
           justifyContent="left"
           alignItems="left"
-          sx={{ marginLeft: "33%", marginTop: "2%", }}
+          sx={{ marginLeft: "33%", marginTop: "2%" }}
         >
           <Grid container spacing={4} columns={20}>
             <Grid item xs={12}>
               <Stack spacing={3}>
                 <Controls.Input
                   variant="outlined"
+                  required
                   label="Tên bếp"
                   name="fullName"
                   value={formik.values.fullName}
@@ -205,10 +185,15 @@ export default function NewKitchen() {
                   </FormHelperText>
                 )}
 
-                <Controls.Input
-                  variant="outlined"
-                  label="Điện thoại"
+                <Controls.TextField
+                  // type="number"
+                  // fullWidth
+                  sx={{ width: "85%" }}
                   name="phone"
+                  label="Điện thoại"
+                  placeholder="Điện thoại"
+                  variant="outlined"
+                  required
                   value={formik.values.phone}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -224,10 +209,14 @@ export default function NewKitchen() {
                   </FormHelperText>
                 )}
 
-                <Controls.Input
-                  variant="outlined"
-                  label="Email"
+                <Controls.TextField
+                  type="email"
+                  fullWidth
                   name="email"
+                  label="Email"
+                  placeholder="Email"
+                  variant="outlined"
+                  required
                   value={formik.values.email}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -246,6 +235,7 @@ export default function NewKitchen() {
                 <Controls.Input
                   variant="outlined"
                   label="Địa chỉ"
+                  required
                   name="address"
                   value={formik.values.address}
                   onChange={(e) => {
@@ -265,6 +255,7 @@ export default function NewKitchen() {
                 <Controls.Input
                   variant="outlined"
                   label="Công suất"
+                  required
                   name="ability"
                   value={formik.values.ability}
                   onChange={(e) => {

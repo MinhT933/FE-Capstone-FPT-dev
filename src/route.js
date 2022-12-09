@@ -1,5 +1,5 @@
 import ProductList from "./pages/userList/UserList";
-import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Page404 from "./pages/NotFound/Page404";
 import Food from "./pages/Food/Food";
@@ -43,12 +43,11 @@ import ShipperAccount from "./pages/userList/ShipperAccount";
 import ManagerAccount from "./pages/userList/ManagerAccount";
 import AdminAccount from "./pages/userList/AdminAccount";
 import Home from "./pages/home/home";
-import RequestPage from "./pages/request/RequestPage";
 import NewAdmin from "./pages/userList/NewAdmin";
 import NewManager from "./pages/userList/NewManager";
 import Tripdelivery from "./components/Trip/Tripdelivery";
 import Delivery from "./components/Trip/Delivery";
-import { List } from "@mui/icons-material";
+
 import ListDeliveryTrip from "./components/Trip/ListDeliveryTrip";
 import KitchenvieworderByWeek from "./pages/Kitchen/KitchenvieworderByWeek";
 import ListCateTime from "./pages/Time-Cate/ListCateTime";
@@ -156,7 +155,6 @@ export default function Router() {
 
         { path: "newshipper", element: <NewShipper /> },
         { path: "updateshipper", element: <UpdateShipper /> },
-        { path: "request", element: <RequestPage /> },
 
         //admin xem đánh giá bếp
         {

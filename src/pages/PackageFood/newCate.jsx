@@ -19,7 +19,7 @@ import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { callAPIgetCatePackage } from "./../../redux/action/acction";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+
 
 const shema = yup.object().shape({
   name: yup.string().required(" Vui điền đầy đủ thông tin"),
@@ -37,14 +37,7 @@ export default function NewCate(props) {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
-  // const decoded = jwt_decode(token);
+
 
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -89,7 +82,7 @@ export default function NewCate(props) {
         SetOpenPopUpCate(false);
       } catch (error) {
         CustomizedToast({
-          message: "Thêm thất bại Vui lòng kiểm tra thông tin",
+          message: "Thêm không thành công Vui lòng kiểm tra thông tin",
           type: "ERROR",
         });
       }

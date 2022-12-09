@@ -93,7 +93,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function AdminShipperList() {
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -139,7 +138,7 @@ export default function AdminShipperList() {
       await dispatch(callAPIgetListShipper(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleDelete = (id, name) => {
     API("PUT", URL_API + `/shippers/status/${id}`, null, token).then((res) => {
@@ -224,23 +223,23 @@ export default function AdminShipperList() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, name) => {
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -317,7 +316,6 @@ export default function AdminShipperList() {
                         status,
                         account,
                       } = row;
-                      const isItemSelected = selected.indexOf(fullName) !== -1;
 
                       return (
                         <TableRow

@@ -1,14 +1,13 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as useLocation } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+// import { Link as useLocation } from "react-router-dom";
+
 // material
 import {
   Card,
   Table,
   Stack,
-  Button,
   TableRow,
   TableBody,
   Avatar,
@@ -30,13 +29,7 @@ import { UserListHead } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  callAPIAdminGetListOrder,
-} from "../../redux/action/acction";
-import jwt_decode from "jwt-decode";
-import API from "../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
-import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import { callAPIAdminGetListOrder } from "../../redux/action/acction";
 import AdminOrderListToolBar from "../../sections/@dashboard/user/AdminOrderListToolBar";
 
 // ----------------------------------------------------------------------
@@ -44,15 +37,14 @@ import AdminOrderListToolBar from "../../sections/@dashboard/user/AdminOrderList
 const TABLE_HEAD = [
   { id: "", label: "", alignRight: false },
   { id: "name", label: "Tên gói", alignRight: false },
+  { id: "customerName", label: "Người đặt", alignRight: false },
   { id: "totalPrice", label: "Giá", alignRight: false },
   { id: "totalDate", label: "Tổng ngày", alignRight: false },
   { id: "totalMeal", label: "Tổng bữa ăn", alignRight: false },
   { id: "totalMeal", label: "Tổng món ăn", alignRight: false },
-  { id: "startDelivery", label: "Ngày giao", alignRight: false },
-
+  { id: "address", label: "Địa điểm giao", alignRight: false },
+  { id: "startDelivery", label: "Ngày bắt đầu giao", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
-  // { label: "Thay đổi trạng thái", alignRight: false },
-  // { id: "" },
 ];
 
 // ----------------------------------------------------------------------
@@ -94,14 +86,13 @@ function applySortFilter(array, comparator, query) {
 
 export default function AdminOrderList() {
   const getOptions = () => [
-    { id: "unComfirmed", title: "Hoạt động" },
-    { id: "inProgress", title: "Tạm nghỉ" },
-    { id: "done", title: "Bị cấm" },
-    { id: "cancel", title: "Bị cấm" },
+    { id: "unComfirmed", title: "Chưa Xác nhận" },
+    { id: "inProgress", title: "Đang giao" },
+    { id: "done", title: "Hoàn thành" },
+    { id: "cancel", title: "Hủy" },
     { id: "All", title: "Tất cả" },
   ];
 
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -118,40 +109,19 @@ export default function AdminOrderList() {
 
   const token = localStorage.getItem("token");
 
-
-
   const dispatch = useDispatch();
   React.useEffect(() => {
     const callAPI = async () => {
       await dispatch(callAPIAdminGetListOrder(token));
     };
     callAPI();
-  }, [dispatch]);
-
-  const handleDelete = (id, name) => {
-    API("PUT", URL_API + `/subscriptions/confirm/${id}`, null, token).then(
-      (res) => {
-        try {
-          dispatch(callAPIAdminGetListOrder(token));
-
-          CustomizedToast({
-            message: `Đã cập nhập trạng thái ${name}`,
-            type: "SUCCESS",
-          });
-        } catch (err) {
-          CustomizedToast({
-            message: `Cập nhập trạng thái ${name} thất bại`,
-            type: "ERROR",
-          });
-        }
-      },
-      []
-    );
-  };
+  }, [dispatch, token]);
 
   const station = useSelector((state) => {
     return state.userReducer.listOrder;
   });
+
+  console.log(station);
   //CALL API=====================================================
 
   const handleRequestSort = (event, property) => {
@@ -167,24 +137,6 @@ export default function AdminOrderList() {
       return;
     }
     setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -207,13 +159,6 @@ export default function AdminOrderList() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-
-    // display: "center"
-  }));
 
   return (
     <Page title="Đơn hàng">
@@ -245,8 +190,11 @@ export default function AdminOrderList() {
                       const {
                         id,
                         name,
+                        customer,
                         totalPrice,
                         packages,
+
+                        status,
                         startDelivery,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
@@ -270,12 +218,17 @@ export default function AdminOrderList() {
                             >
                               <Avatar alt={name} src={row.packages?.image} />
                               <Typography variant="subtitle2" noWrap>
+                                {customer.name}
+                              </Typography>
+                              <Typography variant="subtitle2" noWrap>
                                 {row.packages?.name}
                               </Typography>
                             </Stack>
                           </TableCell>
 
-                          {/* <TableCell align="left">{packages?.name}</TableCell> */}
+                          <TableCell align="left">
+                            {customer.account.profile?.fullName}
+                          </TableCell>
                           <TableCell align="left">{totalPrice}</TableCell>
                           {/* <TableCell align="left">{phone}</TableCell> */}
                           <TableCell align="left">
@@ -287,6 +240,7 @@ export default function AdminOrderList() {
                           <TableCell align="left">
                             {packages?.totalFood}
                           </TableCell>
+                          <TableCell align="left">{customer.address}</TableCell>
                           <TableCell align="left">{startDelivery}</TableCell>
 
                           {/* <TableCell align="left">
@@ -302,36 +256,24 @@ export default function AdminOrderList() {
 
                           <TableCell align="left">
                             <div>
-                              {row.packages.status === "inActive" && (
+                              {status === "unConfirmed" && (
                                 // <Alert severity="warning">inActive</Alert>
-                                <Label color="error">Đã giao</Label>
+                                <Label color="warning">Chưa xác nhận</Label>
                               )}
-                              {row.packages.status === "active" && (
+                              {status === "done" && (
                                 // <Alert severity="info">waiting</Alert>
-                                <Label color="success">Đang giao</Label>
+                                <Label color="success">Hoàng thành</Label>
+                              )}
+                              {status === "inProgress" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="primary">Đang giao</Label>
+                              )}
+                              {status === "cancel" && (
+                                // <Alert severity="info">waiting</Alert>
+                                <Label color="error">Hủy</Label>
                               )}
                             </div>
                           </TableCell>
-
-                          {/* <TableCell align="center">
-                            {status === "active" ? (
-                              <Button1
-                                variant="outlined"
-                                onClick={() => { handleDelete(id, name) }}
-                              >
-                                Đang chuẩn bị
-                              </Button1>
-                            ) : (
-                              <Button1
-                                variant="outlined"
-                                onClick={() => { handleDelete(id, name) }}
-                              >
-                                Đang chuẩn bị
-                              </Button1>
-                            )
-
-                            }
-                          </TableCell> */}
                         </TableRow>
                       );
                     })}

@@ -15,7 +15,7 @@ import {
   TableContainer,
   TablePagination,
   Avatar,
-  Alert,
+
 } from "@mui/material";
 // components
 import Label from "./../../components/label/label";
@@ -36,13 +36,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import PackageListToolbar from "../../sections/@dashboard/user/PackageListToolbar";
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
-import { width } from "@mui/system";
 
-//Link routers
-
-// ----------------------------------------------------------------------
-// ở đây fix được tên table
-// ko nhát thiết phải thêm table head ở dưới
 
 const TABLE_HEAD = [
   { id: "image", label: "", alignRight: false },
@@ -179,23 +173,7 @@ export default function PackageFood() {
       });
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

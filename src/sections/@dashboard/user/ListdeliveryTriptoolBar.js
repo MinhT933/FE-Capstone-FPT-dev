@@ -87,7 +87,7 @@ export default function ListdeliveryTriptoolBar({
         <SearchStyle
           value={filterName}
           onChange={onFilterName}
-          placeholder="Tìm kiếm..."
+          placeholder="VD: 2022-12-31"
           startAdornment={
             <InputAdornment position="start">
               <Iconify

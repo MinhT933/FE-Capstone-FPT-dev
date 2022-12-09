@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Grid, Paper } from "@mui/material";
+import React from "react";
+import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -14,26 +14,21 @@ import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
+
 import { useDispatch } from "react-redux";
 import {
-  callAPIgetCatePackage,
   callAPIgetListCategory,
 } from "./../../redux/action/acction";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
 
 const shema = yup.object().shape({
   name: yup.string().required(" Vui điền đầy đủ thông tin"),
 });
 
-const Inputs = styled("input")({
-  display: "none",
-});
+
 export default function NewCateFood(props) {
   const { OpenPopUpCate, SetOpenPopUpCate } = props;
-  const [inputImage, setInputImage] = useState();
+
   // const token = localStorage.getItem("token");
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -46,15 +41,9 @@ export default function NewCateFood(props) {
     SetOpenPopUpCate(false);
   };
 
-  function _ontreat(e) {
-    console.log(e.target.files);
-    formik.setFieldValue("img", e.target.files[0]);
 
-    setInputImage(URL.createObjectURL(e.target.files[0]));
-  }
 
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
-  const formData = new FormData();
   const formik = useFormik({
     validationSchema: shema,
     validateOnMount: true,
@@ -78,13 +67,13 @@ export default function NewCateFood(props) {
           dispatch(callAPIgetListCategory(token));
         });
         CustomizedToast({
-          message: `Đã thêm loại thức ${formik.values.name}`,
+          message: `Đã thêm loại ${formik.values.name}`,
           type: "SUCCESS",
         });
         SetOpenPopUpCate(false);
       } catch (error) {
         CustomizedToast({
-          message: "Thêm thất bại vui lòng kiểm tra thông tin",
+          message: "Thêm không thành công vui lòng kiểm tra thông tin",
           type: "ERROR",
         });
       }

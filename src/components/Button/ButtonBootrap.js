@@ -2,16 +2,12 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import {
-  callAPIgetAPIcount,
-  callAPIgetTripByStatus,
-} from "./../../redux/action/acction";
+
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { URL_API } from "../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 export default function ButtonBootrap(props) {
   const token = localStorage.getItem("token");
@@ -37,24 +33,20 @@ export default function ButtonBootrap(props) {
     callAPI();
   }, [dispatch, token, props.status]);
 
-  const getCount = useSelector((state) => {
-    return state.userReducer.count;
-  });
-
   function hehe() {
     switch (props.nameButton) {
       case "Đang chờ":
         return "#FFCC00";
-        break;
+
       case "Từ chối":
         return "red";
-        break;
+
       case "Đã giao":
         return "green";
-        break;
+
       case "Đang giao":
         return "blue";
-        break;
+
       default:
         break;
     }

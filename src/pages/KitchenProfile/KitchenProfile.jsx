@@ -1,20 +1,13 @@
 import React from "react";
-import { Typography, Grid, ListItemText } from "@mui/material";
-import { List } from "@mui/icons-material";
-import { ListItem } from "@mui/material";
+import { Typography, Grid } from "@mui/material";
+
 import Box from "@mui/material/Box";
-import PageHeader from "../../components/PageHeader";
+
 import Iconify from "../../components/hook-form/Iconify";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-// import { Paper } from "@material-ui/core";
-import Page from "../../components/setPage/Page";
-// import Container from "@material-ui/core";
 
-import {
-    Paper,
-    Container,
-} from "@mui/material";
+
 
 const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#FFCC32"),
@@ -24,12 +17,9 @@ const ColorButton = styled(Button)(({ theme }) => ({
     },
     display: "center",
 }));
-const getIcon = (name) => <Iconify icon={name} width={30} height={30} />;
+
 export default function KitchenProfile(props) {
-    // const { classes } = props;
     return (
-
-
         <React.Fragment>
             <Box
                 sx={{

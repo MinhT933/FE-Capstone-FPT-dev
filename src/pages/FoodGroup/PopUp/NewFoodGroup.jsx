@@ -46,16 +46,7 @@ export default function NewFoodGroup(props) {
     Navigate("/");
   }
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
+  
   ///
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
@@ -70,22 +61,8 @@ export default function NewFoodGroup(props) {
 
   const [selectedOptions, setSelectedOptions] = React.useState([]);
 
-  const handleChange = (event, value) => setSelectedOptions(value);
 
-  console.log(OptionValue);
 
-  // const handleChange = (e) => {
-  //   const {
-  //     target: { value },
-  //   } = e;
-
-  //   const a = listFoodSelectbox.find((c) => c.id === value);
-  //   console.log(a);
-  //   setValueTag(
-  //     // On autofill we get a stringified value.
-  //     typeof value === "string" ? value.split(",") : value
-  //   );
-  // };
 
   const listFoodSelectbox = useSelector((state) => {
     return state.userReducer.listFoodActive;
@@ -162,7 +139,7 @@ export default function NewFoodGroup(props) {
                 type: "ERROR",
               })
             : CustomizedToast({
-                message: "Vui lòng xem lại thông tin",
+                message: "Cập nhập nhóm thức ăn không thành công",
                 type: "ERROR",
               });
         }

@@ -6,7 +6,6 @@ import Card from "./../Card/Card";
 import CardHeader from "./../Card/CardHeader";
 import CardBody from "./../Card/CardBody";
 import CardFooter from "./../Card/CardFooter";
-import Button from "@mui/material/Button";
 import CardAvatar from "./../Card/CardAvatar";
 import { makeStyles } from "@mui/styles";
 
@@ -40,15 +39,7 @@ const styles = {
     marginTop: "0",
     marginBottom: "0",
   },
-  //   cardTitleWhite: {
-  //     color: "#FFFFFF",
-  //     marginTop: "0px",
-  //     minHeight: "auto",
-  //     fontWeight: "300",
-  //     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-  //     marginBottom: "3px",
-  //     textDecoration: "none",
-  //   },
+
 };
 
 const schema = yup.object().shape({

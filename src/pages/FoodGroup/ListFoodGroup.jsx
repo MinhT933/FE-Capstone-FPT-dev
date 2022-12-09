@@ -90,7 +90,6 @@ function applySortFilter(array, comparator, query) {
 
 export default function ListFoodGroup() {
   const [OpenPopUp, SetOpenPopUp] = useState(false);
-  const [OpenPopUpCate, SetOpenPopUpCate] = useState(false);
   const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -119,7 +118,7 @@ export default function ListFoodGroup() {
       await dispatch(callAPIgetGroupFood(token));
     };
     getGroupfood();
-  }, []);
+  }, [dispatch]);
 
   const handleClickOpen = React.useCallback((item) => {
     setOpen(true);
@@ -168,24 +167,6 @@ export default function ListFoodGroup() {
     Navigate("/");
   }
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -198,13 +179,6 @@ export default function ListFoodGroup() {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
-  //handlePopUpdetail
-  // const handleOpenPopUp = (id) => {
-  //   SetOpenPopUpDetail(true);
-  //   setValueId(id);
-  // };
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - GroupFood.length) : 0;
 
   const filteredUsers = applySortFilter(
     GroupFood,

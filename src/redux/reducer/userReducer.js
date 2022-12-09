@@ -65,10 +65,12 @@ const initialState = {
   listShipperActive: [],
 
   shipPerOfKitchen: [],
+  feedback: [],
   orderByWeek: [],
   listSlots: [],
   listStatiobyidkitchen: [],
   listShipperActiveAccount: [],
+  listSub: [],
   // stationOfkichen: [],
 
   listDelivery: [],
@@ -93,6 +95,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_COUNT:
       state.count = payload;
+      break;
+    case PathAction.GET_LIST_FEEDBACK:
+      state.feedback = payload;
       break;
     case PathAction.GET_LIST_FOODCATEGORY:
       state.listCategory = payload;
@@ -198,6 +203,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_LIST_GROUPFOOD_BY_STATUS:
       state.listGroupFoodByStatus = payload;
+      break;
+    case PathAction.GET_LIST_SUB:
+      state.listSub = payload;
       break;
     case PathAction.GET_LIST_TIME_FRAME:
       state.listTimeFrame = payload;

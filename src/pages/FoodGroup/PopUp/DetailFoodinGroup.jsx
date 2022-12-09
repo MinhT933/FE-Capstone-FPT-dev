@@ -5,14 +5,14 @@ import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../../../components/PageHeader";
 import Iconify from "../../../components/hook-form/Iconify";
 import Box from "@mui/material/Box";
-import { Dialog, DialogContent, DialogTitle, Grid, Paper } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Paper } from "@mui/material";
 import { callAPIgetFoodbyGroupFoodId } from "../../../redux/action/acction";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import ButtonCustomize from "./../../../components/Button/ButtonCustomize";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
-import  jwt_decode  from 'jwt-decode';
+
 
 export default function DetailFoodinGroup(props) {
   const { OpenPopUpDetail, SetOpenPopUpDetail, id } = props;
@@ -28,13 +28,7 @@ export default function DetailFoodinGroup(props) {
   if (token === null) {
     Navigate("/");
   }
-  try {
-    var decoded = jwt_decode(token);
-    // valid token format
-  } catch (error) {
-    // return <Navigate to="/" replace />;
-    Navigate("/");
-  }
+  
 
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {

@@ -1,21 +1,15 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import { Link as useNavigate } from "react-router-dom";
 // material
 import {
   Card,
   Table,
-  Stack,
-  // Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
-  Typography,
   TableContainer,
   TablePagination,
 } from "@mui/material";
@@ -31,7 +25,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { callAPIgetAccountCustomer } from "../../redux/action/acction";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
-import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
@@ -95,7 +88,6 @@ export default function UserAccount() {
     { id: "All", title: "Tất cả" },
   ];
 
-  const [OpenPopUp, SetOpenPopUp] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -120,7 +112,6 @@ export default function UserAccount() {
   }, []);
 
   //CALL API====================================================
-  const location = useLocation();
 
   // const token = localStorage.getItem("token");
 
@@ -139,7 +130,7 @@ export default function UserAccount() {
       await dispatch(callAPIgetAccountCustomer(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleDelete = (id, fullName) => {
     API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
@@ -197,24 +188,6 @@ export default function UserAccount() {
     setSelected([]);
   };
 
-  const handleClick = (event, fullName) => {
-    const selectedIndex = selected.indexOf(fullName);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, fullName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -235,13 +208,6 @@ export default function UserAccount() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-
-    // display: "center"
-  }));
 
   return (
     <Page title="Khách hàng">
@@ -273,9 +239,9 @@ export default function UserAccount() {
                       const {
                         id,
                         profile,
-                        avatar,
+
                         fullName,
-                        email,
+
                         phone,
                         status,
                       } = row;
