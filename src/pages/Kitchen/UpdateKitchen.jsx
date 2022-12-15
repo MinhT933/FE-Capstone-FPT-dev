@@ -2,7 +2,6 @@ import React from "react";
 // import { Paper } from "@mui/material";
 import PageHeader from "./../../components/PageHeader";
 
-import { styled } from "@mui/material/styles";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
@@ -22,13 +21,11 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+
 import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate, useParams } from "react-router-dom";
-import jwt_decode from 'jwt-decode';
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -55,7 +52,6 @@ export default function UpdateKitchen() {
     Navigate("/");
   }
 
-
   React.useEffect(() => {
     API("GET", URL_API + `/kitchens/${id}`, null, token)
       .then((res) => {
@@ -75,7 +71,6 @@ export default function UpdateKitchen() {
   const station = useSelector((state) => {
     return state.userReducer.listKitchen;
   });
-
 
   const formik = useFormik({
     //gắn schema để so sánh
@@ -115,7 +110,6 @@ export default function UpdateKitchen() {
     },
   });
 
-
   return (
     <Paper
       title="Cập nhập bếp"
@@ -143,7 +137,7 @@ export default function UpdateKitchen() {
           sx={{ marginLeft: "33%" }}
         >
           <Grid container spacing={4} columns={20}>
-            <Grid item xs={12} >
+            <Grid item xs={12}>
               <Stack spacing={3}>
                 <Controls.Input
                   variant="outlined"

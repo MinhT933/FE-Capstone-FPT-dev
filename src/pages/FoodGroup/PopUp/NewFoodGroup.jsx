@@ -46,7 +46,6 @@ export default function NewFoodGroup(props) {
     Navigate("/");
   }
 
-  
   ///
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
@@ -60,9 +59,6 @@ export default function NewFoodGroup(props) {
   const [OptionValue, setOptionValue] = React.useState([]);
 
   const [selectedOptions, setSelectedOptions] = React.useState([]);
-
-
-
 
   const listFoodSelectbox = useSelector((state) => {
     return state.userReducer.listFoodActive;
@@ -153,7 +149,7 @@ export default function NewFoodGroup(props) {
         <DialogTitle>
           <PageHeader
             title="Thêm nhóm thức ăn"
-            subTitle="vui lòng điền đầy đủ thông tin "
+            subTitle="Vui lòng điền đầy đủ thông tin "
             icon={getIcon("emojione-monotone:pot-of-food")}
           />
         </DialogTitle>
@@ -188,41 +184,6 @@ export default function NewFoodGroup(props) {
                 </Grid>
 
                 <Grid item xs={12}>
-                  {/* <div>
-                    <FormControl sx={{ width: "28.5rem" }}>
-                      <InputLabel id="demo-multiple-checkbox-label">
-                        Món ăn
-                      </InputLabel>
-                      <Select
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
-                        multiple={true}
-                        value={valueTag}
-                        onChange={(e) => handleChange(e)}
-                        // input={<OutlinedInput label="Món ăn" />}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Checkboxes"
-                            placeholder="Favorites"
-                          />
-                        )}
-                        renderValue={(selected) => selected.join(", ")}
-                        MenuProps={MenuProps}
-                      >
-                        {listFoodSelectbox.map((item) => (
-                          <MenuItem key={item.id} value={item.name}>
-                            <Avatar src={item.image} alt="food" />
-                            <Checkbox
-                              checked={valueTag.indexOf(item.name) > -1}
-                            />
-                            <ListItemText primary={item.name} />
-                            <ListItemText primary={`${item.price}đ`} />
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </div> */}
                   <Autocomplete
                     multiple
                     id="checkboxes-tags-demo"
@@ -235,15 +196,6 @@ export default function NewFoodGroup(props) {
                     }
                     onChange={(e, value) => {
                       setOptionValue(value);
-                      // if (e.target.ariaSelected === true) {
-                      //   for (let index = 0; index < value.length; index++) {
-                      //     console.log(e.target.ariaSelected);
-                      //     const element = value[index];
-                      //     const arr = [...OptionValue];
-                      //     arr.push(element.id);
-                      //     setOptionValue(arr);
-                      //   }
-                      // }
                     }}
                     renderOption={(props, option, { selected }) => (
                       <li {...props}>
@@ -260,6 +212,7 @@ export default function NewFoodGroup(props) {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        // required
                         label="Món ăn"
                         placeholder="Tìm kiếm..."
                       />
@@ -273,7 +226,7 @@ export default function NewFoodGroup(props) {
                     placeholder="Mô tả"
                     name="description"
                     value={formik.values.description}
-                    width="28.5rem"
+                    width="85%"
                     onChange={(e) => {
                       formik.handleChange(e);
                     }}

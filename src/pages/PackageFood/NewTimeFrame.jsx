@@ -434,7 +434,7 @@ export default function NewTimeFrame(props) {
                     marginTop: "1rem",
                   }}
                 >
-                  <ButtonCustomize nameButton="tạo" type="submit" />
+                  <ButtonCustomize nameButton="Thêm" type="submit" />
                 </Box>
               </Box>
             </form>

@@ -896,7 +896,7 @@ export const LoginAthen = (user, navigate) => {
 export const checkphone = (phone) => {
   return async (dispatch) => {
     try {
-      const res = await API("POST", URL_API + `/auths/login`, phone);
+      const res = await API("POST", URL_API + `/auths/checkPhone`, phone, null);
       localStorage.setItem("token", res.data.result.access_token);
 
       dispatch(

@@ -47,10 +47,10 @@ const schema = yup.object().shape({
   fullName: yup.string().required("").trim(),
   phone: yup
     .number()
+    .min(100000000, "Quá ngắn")
+    .max(9999999999, "Quá dài")
     .typeError("Số điện thoại phải nhập số")
-    .required("")
-    .min(9, "Quá ngắn")
-    .max(10, "Quá dài"),
+    .required("Số điện thoại phải nhập số"),
   email: yup.string().email("email Không đúng").trim(),
   password: yup.string().required("").trim(),
 });
@@ -118,7 +118,19 @@ export default function NewManager() {
           type: "SUCCESS",
         });
       } catch (error) {
-        CustomizedToast({ message: "Thêm thất bại", type: "ERROR" });
+        // error.response.data.message === "Account already exists"
+        //   ? CustomizedToast({ message: "Tài khoản đã tồn tại", type: "ERROR" })
+        //   : CustomizedToast({
+        //       message: "Thêm không thành công",
+        //       type: "ERROR",
+        //     });
+        if (error.response.data.message === "Account already exists") {
+          CustomizedToast({ message: "Tài khoản đã tồn tại", type: "ERROR" });
+        } else if (error.response.data.message === "Email already exists") {
+          CustomizedToast({ message: "Email đã tồn tại", type: "ERROR" });
+        } else {
+          CustomizedToast({ message: "Thêm không thành công", type: "ERROR" });
+        }
       }
     },
   });

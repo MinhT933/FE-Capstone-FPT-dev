@@ -61,9 +61,6 @@ export default function NewShipper() {
   };
   //callAPIAdminCreateShipper=================================
   const dispatch = useDispatch();
-  //khởi tạo lần đầu gọi thằng getlist cate để nó hiện thị lên selectbox ô select của tao á
-  // ctr+ click chuột vào callAPIgetListCategory để xem nó cách callAPI getlistCateFood no giống y chan
-  //call Food list vậy thay vị đổ vào bảng thì mình đỗ vào selectbox
   React.useEffect(() => {
     const createShipper = async () => {
       await dispatch(callAPIAdminCreateShipper());
@@ -99,9 +96,6 @@ export default function NewShipper() {
 
     //onSubmit ngay từ cái tên đầu nó dùng đẩy data xuống BE
     onSubmit: async (values) => {
-      //formdata.append gg.com => nôm na à đẩy giá trị vào formdata có key là 1 chuỗi
-      //value là formik.values.(something you want ) nó giống như muốn vào nhà ai đó thì phải biết tên m trước
-      //sau đó mới biết về bản thân m sau nôm na vậy đó hi vọng m hiểu
       const data = {
         fullName: formik.values.fullName,
         phone: formik.values.phone,
@@ -111,12 +105,6 @@ export default function NewShipper() {
         vehicleType: formik.values.vehicleType,
         DOB: setValueStarTime(formik.values.DOB),
       };
-      // formData.append("image", formik.values.image);
-      // formData.append("fullName", formik.values.fullName);
-      // formData.append("phone", formik.values.phone);
-      // formData.append("noPlate", formik.values.noPlate);
-      // formData.append("vehicleType", formik.values.vehicleType);
-      //gọi API để đẩy data xuống
       try {
         const res = await API(
           "POST",
@@ -229,8 +217,8 @@ export default function NewShipper() {
 
                 <Controls.TextField
                   type="email"
-                  fullWidth
                   name="email"
+                  sx={{ width: "88%" }}
                   label="Email"
                   placeholder="Email"
                   variant="outlined"
@@ -253,7 +241,7 @@ export default function NewShipper() {
                 <Controls.TextField
                   // type="number"
                   // fullWidth
-                  sx={{ width: "85%" }}
+                  sx={{ width: "88%" }}
                   name="phone"
                   label="Điện thoại"
                   placeholder="Điện thoại"

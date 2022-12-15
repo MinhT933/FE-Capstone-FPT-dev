@@ -121,7 +121,6 @@ export default function AdminOrderList() {
     return state.userReducer.listOrder;
   });
 
-  console.log(station);
   //CALL API=====================================================
 
   const handleRequestSort = (event, property) => {

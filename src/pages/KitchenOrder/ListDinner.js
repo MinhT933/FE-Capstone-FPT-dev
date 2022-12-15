@@ -153,13 +153,6 @@ export default function ListDinner(props) {
               </Grid>
             </Grid>
           </Paper>
-
-          {/* <MealListToolBar
-                        numSelected={selected.length}
-                        filterName={filterName}
-                        onFilterName={handleFilterByName}
-                    /> */}
-
           <TableContainer sx={{ minWidth: 390, width: 390 }}>
             <Table>
               <UserListHead

@@ -27,6 +27,7 @@ export default function TextArea(props) {
         placeholder={placeholder}
         label={label}
         multiline
+        required
         rows={2}
         maxRows={4}
         value={value}

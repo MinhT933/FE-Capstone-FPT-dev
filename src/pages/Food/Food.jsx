@@ -96,12 +96,11 @@ export default function Food() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("createdAt");
+  const [orderBy, setOrderBy] = useState("name");
 
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
 
   // const [open, setOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -176,7 +175,6 @@ export default function Food() {
     }
     setSelected([]);
   };
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -277,7 +275,12 @@ export default function Food() {
                             </Typography>
                           </TableCell>
 
-                          <TableCell align="left">{price}</TableCell>
+                          <TableCell align="left">
+                            {new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(price)}
+                          </TableCell>
                           <TableCell align="left">
                             {foodCategory.name}
                           </TableCell>
@@ -306,6 +309,7 @@ export default function Food() {
                           <TableCell align="left">
                             <ButtonCustomize
                               variant="outlined"
+                              width="6rem"
                               onClick={() => handleClickOpen(row)}
                               nameButton={
                                 status === "active" ? "Ngưng bán" : "Bán"

@@ -44,7 +44,13 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 const schema = yup.object().shape({
   name: yup.string().required("Điền đầy đủ thông tin").trim(),
   address: yup.string().required("Điền đầy đủ thông tin").trim(),
-  phone: yup.string().required("Điền đầy đủ thông tin").trim(),
+  phone: yup
+    .number()
+    .min(100000000, "Quá ngắn")
+    .max(9999999999, "Quá dài")
+    .typeError("Số điện thoại phải nhập số")
+    .required("Số điện thoại phải nhập số"),
+
   kitchenId: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 
@@ -93,10 +99,6 @@ export default function NewStation() {
 
   const [opentime, setOpentime] = useState([dayjs("2022-10-18T21:11:5")]);
   const [closetime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
-  // const token = localStorage.getItem("token");
-
-  //formData để lưu data
-
   const formik = useFormik({
     //gắn schema để so sánh
     validationSchema: schema,
@@ -222,11 +224,15 @@ export default function NewStation() {
                   </FormHelperText>
                 )}
 
-                <Controls.Input
-                  fullWidth
-                  variant="outlined"
-                  label="Điện thoại"
+                <Controls.TextField
+                  // type="number"
+                  // fullWidth
+                  sx={{ width: "89%" }}
                   name="phone"
+                  label="Điện thoại"
+                  placeholder="Điện thoại"
+                  variant="outlined"
+                  required
                   value={formik.values.phone}
                   onChange={(e) => {
                     formik.handleChange(e);

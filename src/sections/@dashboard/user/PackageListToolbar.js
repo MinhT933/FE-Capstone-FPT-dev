@@ -67,13 +67,7 @@ export default function PackageListToolbar({
     dispatch(
       await callAPIGetListPack(
         token,
-        event.target.value === "All"
-          ? ""
-          : event.target.value === "All"
-          ? ""
-          : event.target.value === "All"
-          ? ""
-          : event.target.value
+        event.target.value === "All" ? "" : event.target.value
       )
     );
   };

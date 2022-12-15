@@ -13,7 +13,6 @@ import ButtonCustomize from "./../../../components/Button/ButtonCustomize";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 
-
 export default function DetailFoodinGroup(props) {
   const { OpenPopUpDetail, SetOpenPopUpDetail, id } = props;
   const dispatch = useDispatch();
@@ -28,7 +27,6 @@ export default function DetailFoodinGroup(props) {
   if (token === null) {
     Navigate("/");
   }
-  
 
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
@@ -48,7 +46,7 @@ export default function DetailFoodinGroup(props) {
         <DialogTitle>
           <PageHeader
             title="Xem chi tiết món ăn trong nhóm"
-            subTitle={`Món có trong gói ${listfood.name}`}
+            subTitle={`Món ăn có trong: ${listfood.name}`}
             icon={getIcon("fluent:apps-list-detail-20-filled")}
           />
         </DialogTitle>
@@ -73,7 +71,10 @@ export default function DetailFoodinGroup(props) {
                     />
                   }
                   title={items.name}
-                  subheader={`Giá: ${items.price}đ`}
+                  subheader={`Giá: ${new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(items.price)}`}
                   sx={{ mb: 2 }}
                 />
               </Card>

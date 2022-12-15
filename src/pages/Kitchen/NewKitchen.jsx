@@ -42,10 +42,10 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 const schema = yup.object().shape({
   phone: yup
     .number()
+    .min(100000000, "Quá ngắn")
+    .max(9999999999, "Quá dài")
     .typeError("Số điện thoại phải nhập số")
-    .required("")
-    .min(9, "Quá ngắn")
-    .max(10, "Quá dài"),
+    .required("Số điện thoại phải nhập số"),
   email: yup.string().email("email Không đúng").trim(),
   password: yup.string().required("Điền đầy đủ thông tin").trim(),
   fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
@@ -87,10 +87,6 @@ export default function NewKitchen() {
   if (token === null) {
     Navigate("/");
   }
- 
-  // const decoded = jwt_decode(token);
-
-  //formData để lưu data
 
   const formik = useFormik({
     //gắn schema để so sánh
@@ -135,8 +131,6 @@ export default function NewKitchen() {
       }
     },
   });
-
-  
 
   return (
     <Paper

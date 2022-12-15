@@ -5,12 +5,12 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { Link as useNavigate } from "react-router-dom";
+
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import React from "react";
 import * as yup from "yup";
@@ -41,7 +41,6 @@ const Login = () => {
     },
 
     onSubmit: async (values) => {
-      console.log(values);
       const adminData = {
         phone: formik.values.phone,
         password: formik.values.password,
@@ -104,7 +103,7 @@ const Login = () => {
                       fullWidth
                       name="phone"
                       label="Số điện thoại"
-                      placeholder="số điện thoại"
+                      placeholder="Số điện thoại"
                       variant="outlined"
                       required
                       value={formik.values.phone}

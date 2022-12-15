@@ -13,7 +13,6 @@ import {
 // component
 import Iconify from "../../../components/hook-form/Iconify";
 import Box from "@mui/material/Box";
-import Controls from "./../../../components/Control/Controls";
 
 import {
   callAPIgetListCategory,
@@ -69,39 +68,28 @@ export default function OrderListByWeekToolBar({
   onFilterName,
   options,
 }) {
-  const [id, setID] = useState("");
   const dispatch = useDispatch();
-  const [status, setStatus] = useState("All");
+  // const [id, setID] = useState("");
 
-  const handleChange = async (event) => {
-    setStatus(event.target.value === "All" ? "" : event.target.value);
+  // const [status, setStatus] = useState("All");
 
-    await dispatch(
-      callAPIgetListFoodfilterCate(
-        token,
-        id,
-        event.target.value === "All" ? "" : event.target.value
-      )
-    );
-  };
-  React.useEffect(() => {
-    const callAPI = async () => {
-      dispatch(await callAPIgetListCategory(token));
-    };
-    callAPI();
-  }, [dispatch]);
+  // const handleChange = async (event) => {
+  //   setStatus(event.target.value === "All" ? "" : event.target.value);
 
-  const category = useSelector((state) => {
-    return state.userReducer.listCategory;
-  });
-
-  const OptionCate = () => {
-    const item = [];
-    for (var i = 0; i < category.length; i++) {
-      item.push({ id: category[i].id, title: category[i].name });
-    }
-    return item;
-  };
+  //   await dispatch(
+  //     callAPIgetListFoodfilterCate(
+  //       token,
+  //       id,
+  //       event.target.value === "All" ? "" : event.target.value
+  //     )
+  //   );
+  // };
+  // React.useEffect(() => {
+  //   const callAPI = async () => {
+  //     dispatch(await callAPIgetListCategory(token));
+  //   };
+  //   callAPI();
+  // }, [dispatch]);
 
   return (
     <RootStyle
@@ -156,14 +144,17 @@ export default function OrderListByWeekToolBar({
                     curr.setDate(first + 1)
                   ).toUTCString();
                   var lastday = new Date(curr.setDate(last)).toUTCString();
+                  const monthA = new Date(firstday).getMonth() + 1;
+                  const dateA = new Date(firstday).getDate().toString();
+                  const yearA = new Date(firstday).getFullYear().toString();
 
-                  const a = new Date(firstday).toLocaleDateString().split("/");
-                  const b = new Date(lastday).toLocaleDateString().split("/");
+                  const monthB = new Date(lastday).getMonth() + 1;
+                  const dateB = new Date(lastday).getDate().toString();
+                  const yearB = new Date(lastday).getFullYear().toString();
 
-                  let firstdate = a[2] + "-" + a[1] + "-" + a[0];
-                  console.log(firstdate);
-                  let lastdate = b[2] + "-" + b[1] + "-" + b[0];
-                  console.log(lastdate);
+                  let firstdate = yearA + "-" + monthA + "-" + dateA;
+                  let lastdate = yearB + "-" + monthB + "-" + dateB;
+
                   dispatch(
                     await getFoodPrepareByWeek(token, firstdate, lastdate)
                   );
@@ -183,12 +174,16 @@ export default function OrderListByWeekToolBar({
                     curr.setDate(first + 8)
                   ).toUTCString();
                   var lastday = new Date(curr.setDate(last)).toUTCString();
+                  const monthA = new Date(firstday).getMonth() + 1;
+                  const dateA = new Date(firstday).getDate().toString();
+                  const yearA = new Date(firstday).getFullYear().toString();
 
-                  const a = new Date(firstday).toLocaleDateString().split("/");
-                  const b = new Date(lastday).toLocaleDateString().split("/");
+                  const monthB = new Date(lastday).getMonth() + 1;
+                  const dateB = new Date(lastday).getDate().toString();
+                  const yearB = new Date(lastday).getFullYear().toString();
 
-                  let firstdate = a[2] + "-" + a[1] + "-" + a[0];
-                  let lastdate = b[2] + "-" + b[1] + "-" + b[0];
+                  let firstdate = yearA + "-" + monthA + "-" + dateA;
+                  let lastdate = yearB + "-" + monthB + "-" + dateB;
                   dispatch(
                     await getFoodPrepareByWeek(token, firstdate, lastdate)
                   );

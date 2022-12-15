@@ -1,6 +1,3 @@
-//example: export const GET_LIST_USER = "GET_LIST_USER";
-//dùng để lưu các actions bắn các action này vào userReducer
-//bước 1 tạo path để 2 đứa actions và userReducer giao tiếp với nhau
 export const GET_LIST_FOOD = "GET_LIST_FOOD";
 export const GET_FOOD = "GET_FOOD";
 export const GET_LIST_FOODCATEGORY = "GET_LIST_FOODCATEGORY";
@@ -19,6 +16,7 @@ export const GET_LIST_SLOT = "GET_LIST_SLOT";
 export const GET_TRIP_BY_STATUS = "GET_TRIP_BY_STATUS";
 export const GET_LIST_FEEDBACK = "GET_LIST_FEEDBACK";
 export const GET_LIST_SUB = "GET_LIST_SUB";
+export const FILLTER_RATE = "FILLTER_RATE";
 
 export const KITCHEN_GET_LIST_ORDER = "KITCHEN_GET_LIST_ORDER";
 export const ADMIN_GET_LIST_ORDER = "ADMIN_GET_LIST_ORDER";

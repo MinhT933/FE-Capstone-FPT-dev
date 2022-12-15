@@ -1,6 +1,3 @@
-
-import { Link as  useNavigate } from "react-router-dom";
-
 // material
 import {
   Stack,
@@ -23,10 +20,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-import {
-
-  callAPIKitchenPrepareOrder,
-} from "../../redux/action/acction";
+import { callAPIKitchenPrepareOrder } from "../../redux/action/acction";
 
 // import NewStationPopup from "src/pages/Station/NewStationPopup";
 // import KitchenMoreMenu from "./KitchenMoreMenu";
@@ -39,6 +33,7 @@ import ListLunch from "./ListLunch";
 import ListDinner from "./ListDinner";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import DatePicker from "../../components/Control/DatePicker";
+import { useNavigate } from "react-router-dom";
 
 export default function KitchenOrderList() {
   const Navigate = useNavigate();
@@ -63,7 +58,7 @@ export default function KitchenOrderList() {
     const callAPI = async () => {
       if (value.$d !== undefined) {
         dispatch(await callAPIKitchenPrepareOrder(token, convert(value.$d)));
-    }
+      }
     };
     callAPI();
   }, [value, dispatch, token]);
@@ -109,7 +104,7 @@ export default function KitchenOrderList() {
                 // marginLeft: "47%",
               }}
             >
-              <Typography
+              {/* <Typography
                 variant="h3"
                 gutterBottom
                 sx={{
@@ -120,7 +115,7 @@ export default function KitchenOrderList() {
                 }}
               >
                 Số lượng món cần nấu
-              </Typography>
+              </Typography> */}
             </Paper>
           </Stack>
           <Stack

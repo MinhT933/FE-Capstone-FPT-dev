@@ -132,11 +132,11 @@ const navConfigAdmin = [
     path: "/dashboard/admin/kitchen",
     icon: getIcon("fa6-solid:kitchen-set"),
   },
-  {
-    title: "Admin xem đánh giá",
-    path: "/dashboard/admin/adminviewfeedback",
-    icon: getIcon("teenyicons:star-circle-outline"),
-  },
+  // {
+  //   title: "Admin xem đánh giá",
+  //   path: "/dashboard/admin/adminviewfeedback",
+  //   icon: getIcon("teenyicons:star-circle-outline"),
+  // },
   // {
   //   title: "Quản lí bếp",
   //   path: "/dashboard/admin/kitchenAccount",
@@ -151,13 +151,13 @@ const navConfigKichen = [
   //   icon: getIcon("mdi:card-account-details-star-outline"),
   // },
   {
-    title: "Chuẩn bị món ăn",
+    title: "Chuẩn bị món ăn theo ngày",
     path: "/dashboard/kitchen/kitchenorder",
     icon: getIcon("ic:outline-restaurant-menu"),
   },
 
   {
-    title: "Đơn hàng",
+    title: "Đơn hàng theo ngày",
     path: "/dashboard/kitchen/kitcheviewnorder",
     icon: getIcon("eos-icons:subscription-management"),
   },

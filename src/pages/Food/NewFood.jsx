@@ -15,21 +15,19 @@ import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { callAPIgetListCategory } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
-// import { FormHelperText } from "@mui/material";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
 
 import NewCateFood from "./NewCateFood";
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 const schema = yup.object().shape({
-  name: yup.string().required().trim(),
-  price: yup.string().required().trim(),
-  description: yup.string().required().trim(),
-  foodCategoryId: yup.string().required().trim(),
+  name: yup.string().required("Vui lòng điền vào trường này").trim(),
+  price: yup.string().required("Vui lòng điền vào trường này").trim(),
+  description: yup.string().required("Vui lòng điền vào trường này").trim(),
+  foodCategoryId: yup.string().required("Vui lòng điền vào trường này").trim(),
 });
 
 export default function NewFood() {
@@ -194,7 +192,7 @@ export default function NewFood() {
                 />
                 {formik.touched.price && formik.errors.price && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.price}
@@ -212,7 +210,7 @@ export default function NewFood() {
                     name="foodCategoryId"
                     required
                     label="Loại"
-                    width="21vw"
+                    width="85%"
                     value={formik.values.foodCategoryId}
                     onChange={(e) => {
                       const a = categoriesFood.find(
@@ -244,7 +242,7 @@ export default function NewFood() {
                 />
                 {formik.touched.description && formik.errors.description && (
                   <FormHelperText
-                    error={false}
+                    error
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.description}
@@ -289,7 +287,7 @@ export default function NewFood() {
                   maxHeight: { xs: 233, md: 167 },
                   maxWidth: { xs: 350, md: 250 },
                   marginTop: "10%",
-                  boxShadow: 8,
+                  // boxShadow: 8,
                   marginLeft: "11%",
                 }}
               >

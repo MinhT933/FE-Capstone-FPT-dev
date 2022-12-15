@@ -5,6 +5,7 @@ import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import * as yup from "yup";
+import * as moment from "moment";
 
 import Controls from "./../../components/Control/Controls";
 
@@ -184,8 +185,6 @@ export default function NewPackage() {
       formData.append("timeFrameID", formik.values.timeFrameID);
       formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
-
-      // console.log(endDate > startDate);
 
       try {
         // if (endDate > startDate) {
@@ -629,9 +628,9 @@ export default function NewPackage() {
                     name="categoryID"
                     label="Chọn loại package"
                     id="categoryID"
-                    width="26rem"
+                    width="87%"
                     value={formik.values.categoryID}
-                    // defaultValue=
+                    cd
                     onChange={(e) => {
                       const a = category.find((c) => c.id === e.target.value);
                       formik.setFieldValue("categoryID", a.id);
@@ -644,6 +643,7 @@ export default function NewPackage() {
               <Grid item xs={6}>
                 <Controls.TextArea
                   variant="outlined"
+                  label="Mô tả"
                   placeholder="Mô tả"
                   name="description"
                   width="85%"
@@ -672,7 +672,10 @@ export default function NewPackage() {
                   <Controls.Select
                     name="timeFrameID"
                     label="Chọn khung thời gian"
-                    width="26rem"
+                    m={1}
+                    width="87%"
+                    // // minWidth="85%"
+                    maxWidth="85%"
                     value={formik.values.timeFrameID}
                     onChange={(e) => {
                       const a = timeframe.find((c) => c.id === e.target.value);
@@ -704,7 +707,7 @@ export default function NewPackage() {
                   )}
                 </Box>
               </Grid>
-              <Box sx={{ marginLeft: "8rem" }}>
+              <Box sx={{ marginLeft: "12rem" }}>
                 {binding().map((item) => {
                   return (
                     <>

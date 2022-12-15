@@ -1,7 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
-import { Link as  useNavigate } from "react-router-dom";
 // material
 import {
   Card,
@@ -26,9 +25,7 @@ import { UserListHead } from "../../sections/@dashboard/user";
 import FormControl from "@mui/material/FormControl";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  callAPIGetListOderByDay,
-} from "../../redux/action/acction";
+import { callAPIGetListOderByDay } from "../../redux/action/acction";
 
 import * as moment from "moment";
 
@@ -36,6 +33,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import DatePicker from "../../components/Control/DatePicker";
 import OrderListToolbar from "../../sections/@dashboard/user/OrderListToolbar";
+import { useNavigate } from "react-router-dom";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -49,7 +47,6 @@ const TABLE_HEAD = [
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
-
 
 // ----------------------------------------------------------------------
 function descendingComparator(a, b, orderBy) {
@@ -106,26 +103,12 @@ export default function KitchenViewOrderList() {
     Navigate("/");
   }
 
-
-  const [date, setDate] = React.useState(
-    moment(new Date()).format("YYYY-MM-DD")
-  );
-
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    const callAPI = async () => {
-      dispatch(await callAPIGetListOderByDay(token, date, null));
-    };
-    callAPI();
-  }, [dispatch, date, token]);
-
-
 
   const station = useSelector((state) => {
     return state.userReducer.listOderByDate;
   });
-  console.log();
+
   //CALL API=====================================================
   //Thay đổi trạng thái
 
@@ -154,7 +137,6 @@ export default function KitchenViewOrderList() {
     setSelected([]);
   };
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -175,7 +157,6 @@ export default function KitchenViewOrderList() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
 
   return (
     <Page title="Đơn hàng">
@@ -204,7 +185,7 @@ export default function KitchenViewOrderList() {
                 marginLeft: "30%",
               }}
             >
-              <Typography
+              {/* <Typography
                 variant="h3"
                 gutterBottom
                 sx={{
@@ -215,37 +196,8 @@ export default function KitchenViewOrderList() {
                 }}
               >
                 Đơn hàng trong ngày
-              </Typography>
+              </Typography> */}
             </Paper>
-          </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={3}
-          >
-            <FormControl sx={{ width: "25%" }}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Chọn ngày giao"
-                  value={date}
-                  onChange={(newValue) => {
-                    const b = new Date(newValue)
-                      .toLocaleDateString()
-                      .split("/");
-                    setDate(`${b[2]}-${b[1]}-${b[0]}`);
-                  }}
-                  inputFormat="DD-MM-YYYY"
-                  renderInput={({ inputRef, inputProps, InputProps }) => (
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <input ref={inputRef} {...inputProps} />
-                      {InputProps?.endAdornment}
-                    </Box>
-                  )}
-                />
-              </LocalizationProvider>
-            </FormControl>
           </Stack>
 
           <Card>
@@ -254,7 +206,7 @@ export default function KitchenViewOrderList() {
               filterName={filterName}
               onFilterName={handleFilterByName}
               options={getOptions()}
-              date={date}
+              // date={date}
             />
 
             <Scrollbar>
@@ -282,10 +234,9 @@ export default function KitchenViewOrderList() {
                           station,
                           food,
                           timeSlot,
-            
+
                           status,
                         } = row;
-               
 
                         return (
                           <TableRow hover key={id} tabIndex={-1}>
@@ -319,27 +270,21 @@ export default function KitchenViewOrderList() {
                             <TableCell align="left">
                               <div>
                                 {status === "progress" && (
-                             
                                   <Label color="warning">Chờ giao hàng</Label>
                                 )}
                                 {status === "delivery" && (
-                           
                                   <Label color="warning">Đang giao</Label>
                                 )}
                                 {status === "arrived" && (
-                     
                                   <Label color="success">Đã đến</Label>
                                 )}
                                 {status === "done" && (
-                            
                                   <Label color="success">Hoàn thành</Label>
                                 )}
                                 {status === "pending" && (
-                               
                                   <Label color="error">Chưa thanh toán</Label>
                                 )}
                                 {status === "ready" && (
-                          
                                   <Label color="success">Đã thanh toán</Label>
                                 )}
                               </div>
