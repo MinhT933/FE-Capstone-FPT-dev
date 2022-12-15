@@ -132,26 +132,30 @@ export default function Foodlistoolbar({
             spacing={2}
             sx={{ marginLeft: "2%", marginTop: "0.1rem" }}
           >
-            <Controls.Select
-              label="Trạng thái"
-              width="10rem"
-              options={options}
-              onChange={handleChange}
-              value={status}
-            />
-            <Controls.Select
-              label="Loại thức ăn"
-              width="10rem"
-              options={OptionCate()}
-              value={id}
-              onChange={async (e) => {
-                const a = category.find((c) => c.id === e.target.value);
-                setID(a.id);
-                dispatch(
-                  await callAPIgetListFoodfilterCate(token, a.id, status)
-                );
-              }}
-            />
+            <Grid xs={2.5}>
+              <Controls.Select
+                label="Trạng thái"
+                width="10rem"
+                options={options}
+                onChange={handleChange}
+                value={status}
+              />
+            </Grid>
+            <Grid xs={0.5}>
+              <Controls.Select
+                label="Loại thức ăn"
+                width="10rem"
+                options={OptionCate()}
+                value={id}
+                onChange={async (e) => {
+                  const a = category.find((c) => c.id === e.target.value);
+                  setID(a.id);
+                  dispatch(
+                    await callAPIgetListFoodfilterCate(token, a.id, status)
+                  );
+                }}
+              />
+            </Grid>
           </Grid>
         </>
       )}
@@ -163,12 +167,6 @@ export default function Foodlistoolbar({
           </IconButton>
         </Tooltip>
       ) : (
-        // <Tooltip title="Filter list">
-        //   <IconButton>
-        //     <Iconify icon="ic:round-filter-list" />
-        //   </IconButton>
-        // </Tooltip>
-
         <></>
       )}
     </RootStyle>

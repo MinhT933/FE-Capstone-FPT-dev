@@ -3,8 +3,6 @@ import { useState } from "react";
 import {
   Card,
   Table,
-  // Avatar,
-  // Button,
   Paper,
   TableRow,
   TableBody,
@@ -12,7 +10,6 @@ import {
   Container,
   Typography,
   TableContainer,
-  // TablePagination,
 } from "@mui/material";
 // components
 import Page from "../../components/setPage/Page";
@@ -210,8 +207,7 @@ export default function ListBreakfast(props) {
                         hover
                         key={nameFood}
                         tabIndex={-1}
-                        // role="checkbox"
-                        // selected={isItemSelected}
+                
                         aria-checked={isItemSelected}
                       >
                         <TableCell align="left">{nameFood}</TableCell>

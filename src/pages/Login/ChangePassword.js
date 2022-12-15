@@ -34,9 +34,7 @@ export default function ChangePassword() {
   };
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
-  if (token === null) {
-    Navigate("/");
-  }
+
 
   const formik = useFormik({
     //gắn schema để so sánh

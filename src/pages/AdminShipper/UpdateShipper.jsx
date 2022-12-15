@@ -31,234 +31,234 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 //callAPIforCreateStation========================================
 const schema = yup.object().shape({
-    fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
-    email: yup.string().required("Điền đầy đủ thông tin").trim(),
-    noPlate: yup.string().required("Điền đầy đủ thông tin").trim(),
-    vehicleType: yup.string().required("Điền đầy đủ thông tin").trim(),
+  fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
+  email: yup.string().email("email Không đúng").trim(),
+  noPlate: yup.string().required("Điền đầy đủ thông tin").trim(),
+  vehicleType: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 
 //callAPIforCreateStation========================================
 export default function UpdateShipper() {
-    //callAPIforCreateStation========================================
-    let { id } = useParams();
+  //callAPIforCreateStation========================================
+  let { id } = useParams();
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    // const token = localStorage.getItem("token");
-    const Navigate = useNavigate();
-    const token = localStorage.getItem("token");
-    if (token === null) {
-        Navigate("/");
-    }
+  // const token = localStorage.getItem("token");
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
 
+  React.useEffect(() => {
+    API("GET", URL_API + `/shippers/${id}`, null, token)
+      .then((res) => {
+        formik.setFieldValue(
+          "fullName",
+          res.data.result.account.profile.fullName
+        );
+        formik.setFieldValue(
+          "DOB",
+          setValueStarTime(res.data.result.account.profile.DOB)
+        );
+        formik.setFieldValue("email", res.data.result.account.profile.email);
+        formik.setFieldValue("noPlate", res.data.result.noPlate);
+        formik.setFieldValue("vehicleType", res.data.result.vehicleType);
+      })
+      .catch((error) => {
+        CustomizedToast({
+          message: `${error.response.data.message}`,
+          type: "ERROR",
+        });
+      });
+  }, []);
 
-    React.useEffect(() => {
-        API("GET", URL_API + `/shippers/${id}`, null, token)
-            .then((res) => {
-                formik.setFieldValue("fullName", res.data.result.account.profile.fullName);
-                formik.setFieldValue("DOB", setValueStarTime(res.data.result.account.profile.DOB));
-                formik.setFieldValue("email", res.data.result.account.profile.email);
-                formik.setFieldValue("noPlate", res.data.result.noPlate);
-                formik.setFieldValue("vehicleType", res.data.result.vehicleType);
+  const formik = useFormik({
+    //gắn schema để so sánh
+    validationSchema: schema,
+    validateOnMount: true,
+    validateOnBlur: true,
+    //khởi tạo kho để bỏ data vào
+    initialValues: {
+      fullName: "",
+      DOB: "",
+      email: "",
+      noPlate: "",
+      vehicleType: "",
+    },
 
-            })
-            .catch((error) => {
-                CustomizedToast({
-                    message: `${error.response.data.message}`,
-                    type: "ERROR",
+    onSubmit: async (values) => {
+      const data = {
+        fullName: formik.values.fullName,
+        DOB: setValueStarTime(formik.values.DOB),
+        email: formik.values.email,
+        noPlate: formik.values.noPlate,
+        vehicleType: formik.values.vehicleType,
+      };
+      try {
+        const res = await API("PUT", URL_API + `/shippers/${id}`, data, token);
 
-                });
-            });
-    }, []);
+        if (res) {
+          CustomizedToast({
+            message: `Cập nhập ${formik.values.fullName} thành công`,
+            type: "SUCCESS",
+          });
+        }
+        navigate("/dashboard/admin/adminshipper");
+      } catch (error) {
+        console.log(error);
+        CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
+      }
+    },
+  });
 
- 
+  const [valueStarTime, setValueStarTime] = React.useState(
+    dayjs("2022-10-23T21:11:5")
+  );
 
-    const formik = useFormik({
-        //gắn schema để so sánh
-        validationSchema: schema,
-        validateOnMount: true,
-        validateOnBlur: true,
-        //khởi tạo kho để bỏ data vào
-        initialValues: {
-            fullName: "",
-            DOB: "",
-            email: "",
-            noPlate: "",
-            vehicleType: "",
-        },
-
-        onSubmit: async (values) => {
-            const data = {
-                fullName: formik.values.fullName,
-                DOB: setValueStarTime(formik.values.DOB),
-                email: formik.values.email,
-                noPlate: formik.values.noPlate,
-                vehicleType: formik.values.vehicleType,
-            };
-            try {
-                const res = await API("PUT", URL_API + `/shippers/${id}`, data, token);
-
-                if (res) {
-                    CustomizedToast({
-                        message: `Cập nhập ${formik.values.fullName} thành công`,
-                        type: "SUCCESS",
-                    });
-                }
-                navigate("/dashboard/admin/adminshipper");
-            } catch (error) {
-                console.log(error);
-                CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
-            }
-        },
-    });
-
-
-
-    const [valueStarTime, setValueStarTime] = React.useState(
-        dayjs("2022-10-23T21:11:5")
-    );
-
-    return (
-        <Paper
-            title="Cập nhập bếp"
-            elevation={3}
-            sx={{
-                padding: "2%",
-                marginBottom: "10%",
-                margin: "2%",
-                marginTop: "2%",
-            }}
+  return (
+    <Paper
+      title="Cập nhập bếp"
+      elevation={3}
+      sx={{
+        padding: "2%",
+        marginBottom: "10%",
+        margin: "2%",
+        marginTop: "2%",
+      }}
+    >
+      <PageHeader
+        display="left"
+        title="Cập nhập tài xế"
+        subTitle="Vui lòng điền đầy đủ thông tin"
+        icon={getIcon("carbon:delivery")}
+      />
+      <form onSubmit={formik.handleSubmit}>
+        <Box
+          //   space-around="space-around"
+          // sx={{ float: "right", width: "60%", flexGrow: 1 }}
+          display="flex"
+          justifyContent="left"
+          alignItems="left"
+          sx={{ marginLeft: "33%" }}
         >
-            <PageHeader
-                display="left"
-                title="Cập nhập tài xế"
-                subTitle="Vui lòng điền đầy đủ thông tin"
-                icon={getIcon("carbon:delivery")}
-            />
-            <form onSubmit={formik.handleSubmit}>
-                <Box
-                    //   space-around="space-around"
-                    // sx={{ float: "right", width: "60%", flexGrow: 1 }}
-                    display="flex"
-                    justifyContent="left"
-                    alignItems="left"
-                    sx={{ marginLeft: "33%" }}
-                >
-                    <Grid container spacing={4} columns={20}>
-                        <Grid item xs={12}>
-                            <Stack spacing={3}>
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Họ tên"
-                                    name="fullName"
-                                    value={formik.values.fullName}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.fullName && formik.errors.fullName && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.fullName}
-                                    </FormHelperText>
-                                )}
+          <Grid container spacing={4} columns={20}>
+            <Grid item xs={12}>
+              <Stack spacing={3}>
+                <Controls.Input
+                  variant="outlined"
+                  label="Họ tên"
+                  name="fullName"
+                  value={formik.values.fullName}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.fullName && formik.errors.fullName && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.fullName}
+                  </FormHelperText>
+                )}
 
+                <Controls.DatePicker
+                  label="Ngày sinh"
+                  // width="26.5rem"
+                  inputFormat="DD-MM-YYYY"
+                  value={valueStarTime}
+                  onChange={(e) => {
+                    setValueStarTime(e);
+                  }}
+                />
+                {formik.touched.DOB && formik.errors.DOB && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.DOB}
+                  </FormHelperText>
+                )}
 
-                                <Controls.DatePicker
-                                    label="Ngày sinh"
-                                    // width="26.5rem"
-                                    inputFormat="DD-MM-YYYY"
-                                    value={valueStarTime}
-                                    onChange={(e) => {
-                                        setValueStarTime(e);
-                                    }}
-                                />
-                                {formik.touched.DOB && formik.errors.DOB && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.DOB}
-                                    </FormHelperText>
-                                )}
+                <Controls.TextField
+                  type="email"
+                  sx={{ width: "85%" }}
+                  name="email"
+                  label="Email"
+                  placeholder="Email"
+                  variant="outlined"
+                  required
+                  value={formik.values.email}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.email && formik.errors.email && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.email}
+                  </FormHelperText>
+                )}
 
+                <Controls.Input
+                  variant="outlined"
+                  label="Biển số xe"
+                  name="noPlate"
+                  value={formik.values.noPlate}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.noPlate && formik.errors.noPlate && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.noPlate}
+                  </FormHelperText>
+                )}
 
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Email"
-                                    disable
-                                    name="email"
-                                    value={formik.values.email}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.email && formik.errors.email && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.email}
-                                    </FormHelperText>
-                                )}
+                <Controls.Input
+                  variant="outlined"
+                  label="Loại xe"
+                  name="vehicleType"
+                  value={formik.values.vehicleType}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.vehicleType && formik.errors.vehicleType && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.vehicleType}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Grid>
+          </Grid>
+        </Box>
 
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Biển số xe"
-                                    name="noPlate"
-                                    value={formik.values.noPlate}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.noPlate && formik.errors.noPlate && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.noPlate}
-                                    </FormHelperText>
-                                )}
-
-                                <Controls.Input
-                                    variant="outlined"
-                                    label="Loại xe"
-                                    name="vehicleType"
-                                    value={formik.values.vehicleType}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.vehicleType && formik.errors.vehicleType && (
-                                    <FormHelperText
-                                        error
-                                        id="standard-weight-helper-text-username-login"
-                                    >
-                                        {formik.errors.vehicleType}
-                                    </FormHelperText>
-                                )}
-                            </Stack>
-                        </Grid>
-                    </Grid>
-                </Box>
-
-                <Box>
-                    <Stack
-                        width="20%"
-                        justifyContent="center"
-                        marginLeft={"40%"}
-                        marginTop={"2%"}
-                    >
-                        <ButtonCustomize nameButton="Cập nhập" type="submit" />
-                    </Stack>
-                </Box>
-            </form>
-        </Paper>
-    );
+        <Box>
+          <Stack
+            width="20%"
+            justifyContent="center"
+            marginLeft={"40%"}
+            marginTop={"2%"}
+          >
+            <ButtonCustomize nameButton="Cập nhập" type="submit" />
+          </Stack>
+        </Box>
+      </form>
+    </Paper>
+  );
 }

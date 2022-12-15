@@ -99,6 +99,11 @@ export default function KitchenvieworderByWeek() {
 
   //   console.log(last_date);
 
+  const handleDate = (date) => {
+    date = new Date(date).toLocaleDateString().split("/");
+    return date[2] + "-" + date[1] + "-" + date[0];
+  };
+
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -122,13 +127,19 @@ export default function KitchenvieworderByWeek() {
   var last = first + 7; // last day is the first day + 6
 
   var firstday = new Date(curr.setDate(first + 1)).toUTCString();
+  console.log(firstday);
   var lastday = new Date(curr.setDate(last)).toUTCString();
 
-  const a = new Date(firstday).toLocaleDateString().split("/");
-  const b = new Date(lastday).toLocaleDateString().split("/");
+  const monthA = new Date(firstday).getMonth() + 1;
+  const dateA = new Date(firstday).getDate().toString();
+  const yearA = new Date(firstday).getFullYear().toString();
 
-  let firstdate = a[2] + "-" + a[1] + "-" + a[0];
-  let lastdate = b[2] + "-" + b[1] + "-" + b[0];
+  const monthB = new Date(lastday).getMonth() + 1;
+  const dateB = new Date(lastday).getDate().toString();
+  const yearB = new Date(lastday).getFullYear().toString();
+
+  let firstdate = yearA + "-" + monthA + "-" + dateA;
+  let lastdate = yearB + "-" + monthB + "-" + dateB;
   React.useEffect(() => {
     const callAPI = async () => {
       dispatch(await getFoodPrepareByWeek(token, firstdate, lastdate));
@@ -256,7 +267,7 @@ export default function KitchenvieworderByWeek() {
                           <TableCell align="left">{quantity}</TableCell>
 
                           <TableCell align="left">
-                            {new Date(deliveryDate).toLocaleDateString()}
+                            {handleDate(deliveryDate)}
                           </TableCell>
 
                           <TableCell align="left">{description}</TableCell>

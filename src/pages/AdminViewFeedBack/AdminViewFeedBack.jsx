@@ -1,6 +1,5 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as useNavigate } from "react-router-dom";
 
 // material
 import {
@@ -20,7 +19,6 @@ import {
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -33,6 +31,8 @@ import { callAPIgetListFeedback } from "../../redux/action/acction";
 import { UserListHead } from "../../sections/@dashboard/user";
 
 import Feedbacktoolbar from "../../sections/@dashboard/user/Feedbacktoolbar";
+import { useNavigate } from "react-router-dom";
+import Iconify from "../../components/hook-form/Iconify";
 
 // ----------------------------------------------------------------------
 // ở đây fix được tên tên table
@@ -145,6 +145,11 @@ export default function AdminViewFeedBackList() {
     setFilterName(event.target.value);
   };
 
+  const handlefilterRate = (e) => {
+    const fillter = feedback.filter((c) => c.packageRate === e.target.value);
+    return fillter;
+  };
+
   // const emptyRows =
   //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - station.length) : 0;
 
@@ -157,34 +162,28 @@ export default function AdminViewFeedBackList() {
   const isStationNotFound = filteredStations.length === 0;
 
   return (
-    <Page title="Feedback">
+    <Page title="Home">
       <Container>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           mb={1}
-        ></Stack>
-        <Typography
-          variant="subtitle2"
-          sx={{
-            display: "flex",
-            marginLeft: "7%",
-            marginTop: "2%",
-          }}
         >
-          {/* Tính theo tổng đánh giá cho từng bếp */}
-        </Typography>
-
+          <Typography variant="h4" gutterBottom>
+            Phản hồi khách hàng
+          </Typography>
+        </Stack>
         <Card Card>
           <Feedbacktoolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            // onChange={handlefilterRate(e)}
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1000 }}>
+            <TableContainer sx={{ minWidth: 1400 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -229,9 +228,301 @@ export default function AdminViewFeedBackList() {
                             {customer.account.phone}
                           </TableCell>
                           <TableCell align="left">{packages.name}</TableCell>
-                          <TableCell align="left">{packageRate}</TableCell>
-                          <TableCell align="left">{foodRate}</TableCell>
-                          <TableCell align="left">{deliveryRate}</TableCell>
+                          {/* <TableCell align="left">{`${packageRate}/5`}</TableCell> */}
+                          <TableCell align="left">
+                            {packageRate === 0 && <></>}
+                            {packageRate === 5 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {packageRate === 4 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {packageRate === 3 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {packageRate === 2 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {packageRate === 1 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {foodRate === 0 && <>0/5</>}
+                            {foodRate === 5 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {foodRate === 4 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {foodRate === 3 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {foodRate === 2 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {foodRate === 1 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {deliveryRate === 0 && <>0/5</>}
+                            {deliveryRate === 5 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {deliveryRate === 4 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {deliveryRate === 3 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {deliveryRate === 2 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                            {deliveryRate === 1 && (
+                              <>
+                                <Iconify
+                                  icon="fluent-emoji-flat:star"
+                                  width={22}
+                                  height={22}
+                                />
+                              </>
+                            )}
+                          </TableCell>
                           <TableCell align="left">{comment}</TableCell>
 
                           <TableCell align="left"></TableCell>

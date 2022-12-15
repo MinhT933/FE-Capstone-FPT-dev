@@ -60,6 +60,7 @@ export default function UserListHead({
           <TableCell
             key={headCell.id}
             // align={headCell.alignRight ? "right" : "left"}
+            // sx={{ width: "13rem" }}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel

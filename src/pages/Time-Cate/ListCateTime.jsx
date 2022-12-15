@@ -32,6 +32,9 @@ import NewTimeFrame from "../PackageFood/NewTimeFrame";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
+import { Scrollbars } from "react-custom-scrollbars";
+import { Helmet } from "react-helmet-async";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -104,14 +107,26 @@ export default function ListCateTime() {
   }
   const [value, setValue] = React.useState(0);
 
-  const handleDelete = async (path, id) => {
+  const [open, setOpen] = React.useState(false);
+  const [path, setPath] = React.useState("food-categories");
+  const [valuerow, setValuerow] = React.useState(null);
+  const handleClickOpen = React.useCallback((item) => {
+    setOpen(true);
+    setValuerow(item);
+  }, []);
+
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const handleDelete = async (id) => {
     await API("DELETE", URL_API + `/${path}/${id}`, null, token)
       .then((res) => {
         // console.log(res);
         dispatch(callAPIgetListCategory(token));
         dispatch(callAPIgetCatePackage(token));
         dispatch(callAPIgetTimeFrame(token));
-
+        handleClose();
         CustomizedToast({
           message: "Đã xóa thành công",
           type: "SUCCESS",
@@ -123,6 +138,30 @@ export default function ListCateTime() {
           message: "Không tìm thấy Id hoặc dự liệu đã được sử dụng",
           type: "ERROR",
         });
+        handleClose();
+      });
+  };
+
+  const handleDeletePac = async (path, id) => {
+    await API("DELETE", URL_API + `/${path}/${id}`, null, token)
+      .then((res) => {
+        // console.log(res);
+        dispatch(callAPIgetListCategory(token));
+        dispatch(callAPIgetCatePackage(token));
+        dispatch(callAPIgetTimeFrame(token));
+        handleClose();
+        CustomizedToast({
+          message: "Đã xóa thành công",
+          type: "SUCCESS",
+        });
+        // handleClose();
+      })
+      .catch((err) => {
+        CustomizedToast({
+          message: "Không tìm thấy Id hoặc dự liệu đã được sử dụng",
+          type: "ERROR",
+        });
+        handleClose();
       });
   };
 
@@ -192,6 +231,15 @@ export default function ListCateTime() {
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if (newValue === 0) {
+      setPath("food-categories");
+    }
+    if (newValue === 1) {
+      setPath("package-categories");
+    }
+    if (newValue === 2) {
+      setPath("time-frame");
+    }
   };
   return (
     <Paper
@@ -200,6 +248,9 @@ export default function ListCateTime() {
         marginLeft: "25%",
       }}
     >
+      <Helmet>
+        <title>{`Khung thời gian- Phân loại | MiSu-Admin`}</title>
+      </Helmet>
       <Box
         sx={{
           borderBottom: 1,
@@ -258,26 +309,38 @@ export default function ListCateTime() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {food.map((row) => (
-                    <StyledTableRow key={row.name}>
-                      <StyledTableCell component="th" scope="row">
-                        <Grid container xs={12}>
-                          <Grid item xs={6}>
-                            {row.name}
+                  <Scrollbars
+                    autoHide
+                    autoHideTimeout={1000}
+                    autoHideDuration={200}
+                    autoHeight
+                    autoHeightMin={0}
+                    autoHeightMax={300}
+                    thumbMinSize={60}
+                    universal={true}
+                    style={{ height: "100%", width: "100%" }}
+                  >
+                    {food.map((row) => (
+                      <StyledTableRow key={row.name}>
+                        <StyledTableCell>
+                          <Grid container xs={12} sx={{ width: "45rem" }}>
+                            <Grid item xs={6}>
+                              {row.name}
+                            </Grid>
+                            <Grid item xs={6}>
+                              <IconButton
+                                onClick={(e) => {
+                                  handleClickOpen(row);
+                                }}
+                              >
+                                <RemoveCircleOutlineIcon />
+                              </IconButton>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={6}>
-                            <IconButton
-                              onClick={(e) => {
-                                handleDelete("food-categories", row.id);
-                              }}
-                            >
-                              <RemoveCircleOutlineIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </Scrollbars>
                 </TableBody>
               </Table>
             </TableContainer>
@@ -289,9 +352,8 @@ export default function ListCateTime() {
               <Table sx={{ minWidth: 200 }}>
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell></StyledTableCell>
+                    {/* <StyledTableCell></StyledTableCell> */}
                     <StyledTableCell>
-                      {" "}
                       <Grid container xs={12}>
                         <Grid item xs={6}>
                           Tên loại gói ăn
@@ -314,29 +376,49 @@ export default function ListCateTime() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {packagecate.map((row) => (
-                    <StyledTableRow key={row.name}>
-                      <StyledTableCell component="th" scope="row">
-                        <Avatar alt={row.name} src={row.image} />
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        <Grid container xs={12}>
-                          <Grid item xs={6}>
-                            {row.name}
+                  <Scrollbars
+                    autoHide
+                    autoHideTimeout={1000}
+                    autoHideDuration={200}
+                    autoHeight
+                    autoHeightMin={0}
+                    autoHeightMax={300}
+                    thumbMinSize={30}
+                    universal={true}
+                    style={{ height: "100%", width: "100%" }}
+                  >
+                    {packagecate.map((row) => (
+                      <StyledTableRow key={row.name}>
+                        <StyledTableCell>
+                          {/* <StyledTableCell></StyledTableCell> */}
+                          <Grid container xs={12} sx={{ width: "45rem" }}>
+                            <Grid item xs={6}>
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={2}
+                              >
+                                <Avatar alt={row.name} src={row.image} />
+                                <Typography variant="subtitle2" noWrap>
+                                  {row.name}
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <IconButton
+                                onClick={(e) => {
+                                  // handleDelete("package-categories", row);
+                                  handleClickOpen(row);
+                                }}
+                              >
+                                <RemoveCircleOutlineIcon />
+                              </IconButton>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={6}>
-                            <IconButton
-                              onClick={(e) => {
-                                handleDelete("package-categories", row.id);
-                              }}
-                            >
-                              <RemoveCircleOutlineIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </Scrollbars>
                 </TableBody>
               </Table>
             </TableContainer>
@@ -371,26 +453,38 @@ export default function ListCateTime() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {slot.map((row) => (
-                    <StyledTableRow key={row.name}>
-                      <StyledTableCell component="th" scope="row">
-                        <Grid container xs={12}>
-                          <Grid item xs={6}>
-                            {row.name}
+                  <Scrollbars
+                    autoHide
+                    autoHideTimeout={1000}
+                    autoHideDuration={200}
+                    autoHeight
+                    autoHeightMin={0}
+                    autoHeightMax={300}
+                    thumbMinSize={25}
+                    universal={true}
+                    style={{ height: "100%", width: "100%" }}
+                  >
+                    {slot.map((row) => (
+                      <StyledTableRow key={row.name}>
+                        <StyledTableCell component="th" scope="row">
+                          <Grid container xs={12}>
+                            <Grid item xs={6} sx={{ width: "45rem" }}>
+                              {row.name}
+                            </Grid>
+                            <Grid item xs={6}>
+                              <IconButton
+                                onClick={(e) => {
+                                  handleClickOpen(row);
+                                }}
+                              >
+                                <RemoveCircleOutlineIcon />
+                              </IconButton>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={6}>
-                            <IconButton
-                              onClick={(e) => {
-                                handleDelete("time-frame", row.id);
-                              }}
-                            >
-                              <RemoveCircleOutlineIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </Scrollbars>
                 </TableBody>
               </Table>
             </TableContainer>
@@ -406,6 +500,15 @@ export default function ListCateTime() {
         SetOpenPopUpCate={SetOpenPopUpCatePac}
       />
       <NewTimeFrame OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp} />
+      {open && (
+        <ConfirmDialog
+          open={open}
+          content={valuerow.name}
+          handleClickOpen={handleClickOpen}
+          handleClose={handleClose}
+          onClick={() => handleDelete(valuerow.id)}
+        />
+      )}
     </Paper>
   );
 }

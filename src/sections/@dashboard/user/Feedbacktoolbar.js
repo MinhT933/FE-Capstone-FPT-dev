@@ -9,6 +9,7 @@ import {
   Typography,
   OutlinedInput,
   InputAdornment,
+  Grid,
 } from "@mui/material";
 // component
 
@@ -17,14 +18,17 @@ import Iconify from "../../../components/hook-form/Iconify";
 import Controls from "./../../../components/Control/Controls";
 
 import {
+  callAPIgetListFeedback,
   callAPIgetListFeedbackByIDPac,
   callAPIGetListPackage,
+  createAction,
 } from "../../../redux/action/acction";
 
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import StarIcon from "@mui/icons-material/Star";
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +52,8 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   },
 }));
 
+const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
 // ----------------------------------------------------------------------
 
 Feedbacktoolbar.propTypes = {
@@ -60,8 +66,6 @@ export default function Feedbacktoolbar({
   numSelected,
   filterName,
   onFilterName,
-  options,
-  date,
 }) {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -70,9 +74,60 @@ export default function Feedbacktoolbar({
   if (token === "null") {
   }
 
+  const getOptionsRate = () => [
+    // { id: "0", title: "0" },
+    {
+      id: "1",
+      title: <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />,
+    },
+    {
+      id: "2",
+      title: (
+        <>
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+        </>
+      ),
+    },
+    {
+      id: "3",
+      title: (
+        <>
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+        </>
+      ),
+    },
+    {
+      id: "4",
+      title: (
+        <>
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+        </>
+      ),
+    },
+    {
+      id: "5",
+      title: (
+        <>
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+          <Iconify icon="fluent-emoji-flat:star" width={18} height={18} />
+        </>
+      ),
+    },
+  ];
+  const getIcon = (name) => <Iconify icon={name} width={18} height={18} />;
   React.useEffect(() => {
     const getlistCateFood = async () => {
       await dispatch(callAPIGetListPackage(token));
+      await dispatch(callAPIgetListFeedback(token));
     };
     getlistCateFood();
   }, [dispatch]);
@@ -90,6 +145,23 @@ export default function Feedbacktoolbar({
     //trả về item đã có data muốn biết thì console.log ra mà xem
   };
 
+  const feedback = useSelector((state) => {
+    return state.userReducer.feedback;
+  });
+
+  const handlefilterRate = (e) => {
+    // const data = [...feedback];
+    // const fillter = feedback.filter((c) => c.packageRate === +e.target.value);
+    // console.log(fillter);
+    dispatch(
+      createAction({
+        type: "FILLTER_RATE",
+        payload: e.target.value,
+      })
+    );
+  };
+  // const fillter = feedback.filter((c) => c.packageRate === 4);
+  // console.log(fillter);
   const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
     setHaha(event.target.value === "All" ? "" : event.target.value);
@@ -109,30 +181,51 @@ export default function Feedbacktoolbar({
         </Typography>
       ) : (
         <>
-          <SearchStyle
-            value={filterName}
-            onChange={onFilterName}
-            placeholder="Tìm kiếm..."
-            startAdornment={
-              <InputAdornment position="start">
-                <Iconify
-                  icon="eva:search-fill"
-                  sx={{ color: "text.disabled", width: 20, height: 20 }}
-                />
-              </InputAdornment>
-            }
-          />
-          <Controls.Select
-            label="Trạng thái"
-            width="10rem"
-            marginRight="50%  "
-            options={getOptions()}
-            onChange={async (e) => {
-              const a = PackageFood.find((c) => c.id === e.target.value);
-              await dispatch(callAPIgetListFeedbackByIDPac(token, a.id));
-            }}
-            value={haha}
-          />
+          <Grid
+            container
+            spacing={1}
+            sx={{ marginLeft: "2%", marginTop: "0.1rem" }}
+          >
+            <Grid xs={3}>
+              <SearchStyle
+                value={filterName}
+                onChange={onFilterName}
+                placeholder="Tìm kiếm..."
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Iconify
+                      icon="eva:search-fill"
+                      sx={{ color: "text.disabled", width: 20, height: 20 }}
+                    />
+                  </InputAdornment>
+                }
+              />
+            </Grid>
+            <Grid xs={2}>
+              <Controls.Select
+                label="Trạng thái"
+                width="10rem"
+                marginRight="50%  "
+                options={getOptions()}
+                onChange={async (e) => {
+                  const a = PackageFood.find((c) => c.id === e.target.value);
+                  await dispatch(callAPIgetListFeedbackByIDPac(token, a.id));
+                }}
+                value={haha}
+              />
+            </Grid>
+            <Grid xs={1}>
+              <Controls.Select
+                label="Đánh giá"
+                width="10rem"
+                marginRight="50%  "
+                options={getOptionsRate()}
+                onChange={(e) => {
+                  handlefilterRate(e);
+                }}
+              />
+            </Grid>
+          </Grid>
         </>
       )}
 

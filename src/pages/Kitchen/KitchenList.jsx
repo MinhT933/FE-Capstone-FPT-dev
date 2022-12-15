@@ -52,7 +52,7 @@ const TABLE_HEAD = [
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
   // { id: "createdAt", label: "Ngày tạo", alignRight: false },
-  // { id: "updatedAt", label: "Cập nhật", alignRight: false },
+  { id: "updatedAt", label: "Chi tiết", alignRight: false },
   { id: "" },
 ];
 
@@ -293,28 +293,7 @@ export default function KitchenList() {
                             </div>
                           </TableCell>
 
-                          <TableCell align="center">
-                            {/* {row.account.status === "active" ? (
-                                                            <ButtonCustomize
-                                                                variant="outlined"
-                                                                onClick={() => {
-                                                                    handleDelete(id, account.profile?.fullName);
-                                                                }}
-                                                                nameButton="Đóng"
-                                                            >
-                                                                Đóng
-                                                            </ButtonCustomize>
-                                                        ) : (
-                                                            <ButtonCustomize
-                                                                variant="outlined"
-                                                                onClick={() => {
-                                                                    handleDelete(id, account.profile?.fullName);
-                                                                }}
-                                                                nameButton="Mở"
-                                                            >
-                                                                Mở
-                                                            </ButtonCustomize>
-                                                        )} */}
+                          <TableCell align="left">
                             <ButtonCustomize
                               variant="outlined"
                               onClick={() => handleClickOpen(row)}
@@ -337,7 +316,6 @@ export default function KitchenList() {
                       );
                     })}
                 </TableBody>
-
                 {isStationNotFound && (
                   <TableBody>
                     <TableRow>

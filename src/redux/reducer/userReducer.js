@@ -1,28 +1,4 @@
-//reduce dùng để làm gì
-// Use the initialState as a default value
-//initialState là 1 trạng thái ban đầu với chứa các chuổi rỗng
-// ---------------------------------------------------------------- ------
-// const initialState = {
-//   user: {},
-//   listUser: []
-// }
-
-// lưu trạng thái hiện tại và thực hiện một hành động để trả về một trạng thái mới
-// for example:
-//--------------------------------------------------------------------
-// export default function userReducer(state = initialState, action) {
-//   console.log(action);
-//   switch (action.type) {
-//     case Action.GET_LIST_USER:
-//       state.listUser = action.payload; === > state bang đầu là rỗng  sau khi người dùng (coder) gọi api ACTION: GET_LIST_USER
-// thay thế một trạng mới bằng payload
-//       return {...state}
 import * as PathAction from "../PathAction";
-//B3
-//nhận 2 tham số State và action
-//dây là store
-// đây tạo giá trị khởi tạo cho nó
-
 const initialState = {
   food: [],
   listFood: [],
@@ -71,15 +47,14 @@ const initialState = {
   listStatiobyidkitchen: [],
   listShipperActiveAccount: [],
   listSub: [],
-  // stationOfkichen: [],
 
   listDelivery: [],
   listFoodPrepare: [],
 
   listShipperByStatus: [],
-
   listIdKitchen: [],
   listKitchenActive: [],
+  rate: [],
 };
 
 export default function userReducer(state = initialState, { type, payload }) {
@@ -98,6 +73,7 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_LIST_FEEDBACK:
       state.feedback = payload;
+      state.rate = payload;
       break;
     case PathAction.GET_LIST_FOODCATEGORY:
       state.listCategory = payload;
@@ -105,10 +81,13 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_LIST_CATE_PACKAGE:
       state.listCategoryPackage = payload;
       break;
+    case PathAction.FILLTER_RATE:
+      const fillter = state.rate.filter((c) => c.packageRate === +payload);
+      state.feedback = fillter;
+      break;
     //=====================================================
     case PathAction.GET_LIST_STATIONS:
       state.listStation = payload;
-      // console.log(payload);
       break;
 
     //=====================================================
@@ -173,6 +152,7 @@ export default function userReducer(state = initialState, { type, payload }) {
     //=====================================================
     case PathAction.ADMIN_GET_LIST_ORDER:
       state.listOrder = payload;
+
       break;
     //=====================================================
     case PathAction.KITCHEN_GET_PROFILE:

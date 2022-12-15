@@ -17,8 +17,8 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useUserAuth } from "./UserAuthContextProvider";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
-import { checkphone } from "../../redux/action/acction";
 import VerifyPhone from "./VerifyPhone";
+import { useDispatch } from "react-redux";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#5dc9bc"),
@@ -28,18 +28,6 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
   display: "center",
 }));
-
-// const configureCaptcha = () => {
-//   window.recaptchaVerifier = new auth.RecaptchaVerifier("sign-in-button", {
-//     size: "invisible",
-//     callback: (response) => {
-//       // reCAPTCHA solved, allow signInWithPhoneNumber.
-//       this.onSignInSubmit();
-//       console.log("Recaptca varified");
-//     },
-//     defaultCountry: "IN",
-//   });
-// };
 
 export default function FindAccount() {
   // const [values, setValues] = useState({
@@ -53,26 +41,39 @@ export default function FindAccount() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const { setUpRecaptha } = useUserAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   console.log("sdt" + phoneNumber);
+
+  const checkphone = async () => {
+    try {
+      const res = await API(
+        "POST",
+        URL_API + `/auths/checkPhone`,
+        number,
+        null
+      );
+      localStorage.setItem("hihi", res.data.result.access_token);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const getOtp = async (e) => {
     e.preventDefault();
     const numberArr = [...number];
     let temp = numberArr.shift();
     let a = numberArr.join("");
-    console.log(a);
+
     const phoneNumber = "+84" + a;
     setPhoneNumber(phoneNumber);
+    console.log(phoneNumber);
     setError("");
     if (phoneNumber === "" || phoneNumber === undefined)
       return setError("Please enter a valid phone number!");
     try {
       const response = await setUpRecaptha(phoneNumber);
-      const res = API("POST", URL_API + "/auths/checkPhone");
-      console.log(response);
       if (response) {
         setResult(response);
         setFlag(true);
-        // navigate("/verifyphone");
       }
     } catch (err) {
       setError(err.message);
@@ -85,8 +86,9 @@ export default function FindAccount() {
     if (otp === "" || otp === null) return;
     try {
       const res = await result.confirm(otp);
-      // console.log(res);
       navigate("/changepassword");
+
+      // console.log(res);
     } catch (err) {
       setError(err.message);
     }
@@ -108,12 +110,12 @@ export default function FindAccount() {
             style={{ minHeight: "100vh" }}
           >
             <Paper elevation={3} sx={{ padding: 10, marginBottom: 0.5 }}>
-              <div style={{ marginBottom: "4%" }}>
+              {/* <div style={{ marginBottom: "4%" }}>
                 <h1> Tìm tài khoản của bạn </h1>
                 <p sx={{ paddingLeft: "1%", paddingBottom: "2%" }}>
                   Nhập số điện thoại để tìm kiếm tài khoản của bạn.
                 </p>
-              </div>
+              </div> */}
               {error && <Alert variant="danger">{error}</Alert>}
               {flag ? (
                 <Box
@@ -176,6 +178,12 @@ export default function FindAccount() {
                 </Box>
               ) : (
                 <Grid>
+                  <div style={{ marginBottom: "4%" }}>
+                    <h1> Tìm tài khoản của bạn </h1>
+                    <p sx={{ paddingLeft: "1%", paddingBottom: "2%" }}>
+                      Nhập số điện thoại để tìm kiếm tài khoản của bạn.
+                    </p>
+                  </div>
                   <form onSubmit={getOtp}>
                     <Grid container direction="column" spacing={2}>
                       <Grid item>
@@ -202,7 +210,7 @@ export default function FindAccount() {
                           fullWidth
                           variant="contained"
                           sx={{ padding: "5%" }}
-                          onClick={() => checkphone(phoneNumber)}
+                          onClick={() => checkphone()}
                         >
                           Xác nhận
                         </ColorButton>

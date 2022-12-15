@@ -2,13 +2,11 @@ import { filter } from "lodash";
 import { useState } from "react";
 import * as React from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 // material
 import {
   Card,
   Table,
   Stack,
-  Button,
   TableRow,
   TableBody,
   TableCell,
@@ -40,14 +38,13 @@ import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
 
 const TABLE_HEAD = [
   { id: "id", label: "", alignRight: false },
-  // { id: "id", label: "Mã trạm", alignRight: false },
-
   { id: "name", label: "Tên trạm", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Số điện thoại", alignRight: false },
   { id: "time", label: "Thời gian hoạt động", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
+  { id: "detail", label: "Chi tiếc", alignRight: false },
   { id: "" },
 ];
 
@@ -118,12 +115,9 @@ export default function StationList() {
   }
   try {
     var decoded = jwt_decode(token);
-    // valid token format
   } catch (error) {
-    // return <Navigate to="/" replace />;
     Navigate("/");
   }
-  // const decoded = jwt_decode(token);
 
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -131,7 +125,7 @@ export default function StationList() {
       await dispatch(callAPIgetListStation(token));
     };
     callAPI();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleDelete = (id, name) => {
     API("PUT", URL_API + `/stations/update-status/${id}`, null, token).then(
@@ -180,24 +174,6 @@ export default function StationList() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -218,13 +194,6 @@ export default function StationList() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
-  const Button1 = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#FFCC33"),
-    backgroundColor: "#FFCC33",
-
-    // display: "center"
-  }));
 
   return (
     <Page title="Trạm">
@@ -281,27 +250,18 @@ export default function StationList() {
                         closeTime,
                         status,
                       } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          // role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
-                        >
+                        <TableRow hover key={id} tabIndex={-1}>
                           <TableCell align="left">{""}</TableCell>
 
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{phone}</TableCell>
-                          {/* <TableCell align="left">{openTime}</TableCell> */}
-                          {/* <TableCell align="left">{closeTime}</TableCell> */}
+
                           <TableCell align="left">
                             <div>
-                              {moment(openTime, "HH:mm:ss").format("hh:mm")} -{" "}
+                              {moment(openTime, "HH:mm:ss").format("hh:mm")} -
                               {moment(closeTime, "HH:mm:ss").format("hh:mm")}
                             </div>
                           </TableCell>

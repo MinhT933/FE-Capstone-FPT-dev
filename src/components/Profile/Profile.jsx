@@ -28,7 +28,6 @@ import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "./../Toast/ToastCustom";
 import { useNavigate } from "react-router-dom";
-// import { useNavigate } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 
 const styles = {
@@ -39,14 +38,12 @@ const styles = {
     marginTop: "0",
     marginBottom: "0",
   },
-
 };
 
 const schema = yup.object().shape({
   fullName: yup.string().required().trim(),
   phone: yup.string().required().trim(),
   email: yup.string().required().trim(),
-  // foodCategoryId: yup.string().required().trim(),
 });
 
 const useStyles = makeStyles(styles);
@@ -58,11 +55,7 @@ export default function Profile() {
   const [input, setInput] = useState([]);
 
   const dispatch = useDispatch();
-  // const token = localStorage.getItem("token");
-  // const decoded = jwt_decode(token);
   const Navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
   if (token === null) {
     Navigate("/");
@@ -111,6 +104,7 @@ export default function Profile() {
     return state.userReducer.profiles;
   });
 
+  console.log(profiles);
   const formData = new FormData();
 
   React.useEffect(() => {
@@ -162,29 +156,13 @@ export default function Profile() {
         });
       } catch (error) {
         CustomizedToast({
-          message: `Thất bại`,
+          message: `Chỉnh sửa trang cá nhân không thành công`,
           type: "ERROR",
         });
       }
     },
   });
 
-  // const handleSaveImage = () => {
-  //   try {
-  //     // const
-
-  //     CustomizedToast({
-  //       message: `chỉnh sửa thành công`,
-  //       type: "SUCCESS",
-  //     });
-  //     dispatch(callAPIProfile(token));
-  //   } catch (error) {
-  //     CustomizedToast({
-  //       message: `Thất bại`,
-  //       type: "ERROR",
-  //     });
-  //   }
-  // };
   const classes = useStyles();
   return (
     <Paper>
@@ -283,9 +261,6 @@ export default function Profile() {
                           label="Số điện thoại"
                           width="24rem"
                           disabled
-                          // bỏ giá trị value vào đây để nó get giá trị đó xuống
-                          // nói chung là m nhập cái gì
-                          // thì nó bỏ xuống cái cái kho có tên mà m khởi tạo rồi đảy xuống BE
                           value={formik.values.phone || ""}
                           /// để nó ghi nhận sự thay đổi
                           onChange={(e) => {

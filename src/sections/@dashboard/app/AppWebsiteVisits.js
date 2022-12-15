@@ -26,7 +26,7 @@ export default function AppWebsiteVisits({
     plotOptions: { bar: { columnWidth: "16%" } },
     fill: { type: chartData.map((i) => i.fill) },
     labels: chartLabels,
-    xaxis: { type: "datetime" },
+    xaxis: { type: "date" },
     tooltip: {
       shared: true,
       intersect: false,
@@ -44,7 +44,6 @@ export default function AppWebsiteVisits({
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
         <ReactApexChart
           type="line"

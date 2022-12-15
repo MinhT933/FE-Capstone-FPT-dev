@@ -5,7 +5,7 @@ import { Card, Typography } from "@mui/material";
 // utils
 import { fShortenNumber } from "../../../utils/formatNumber";
 // components
-import Iconify from "../../../components/Iconify";
+
 import { Avatar } from "@mui/material";
 
 // ----------------------------------------------------------------------
@@ -23,7 +23,7 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-AppWidgetSummary.propTypes = {
+AppWidgetSummaryPacka.propTypes = {
   color: PropTypes.string,
   icon: PropTypes.string,
   title: PropTypes.string.isRequired,
@@ -31,18 +31,20 @@ AppWidgetSummary.propTypes = {
   sx: PropTypes.object,
 };
 
-export default function AppWidgetSummary({
+export default function AppWidgetSummaryPacka({
   title,
   total,
   icon,
+  url,
   color = "primary",
   sx,
+  name,
   ...other
 }) {
   return (
     <Card
       sx={{
-        py: 5,
+        py: 3.25,
         boxShadow: 0,
         textAlign: "center",
         color: (theme) => theme.palette[color].darker,
@@ -61,12 +63,12 @@ export default function AppWidgetSummary({
             )} 0%, ${alpha(theme.palette[color].dark, 0.24)} 100%)`,
         }}
       >
-        <Iconify icon={icon} width={24} height={24} />
-        {/* <Avatar url="" alt="" /> */}
+        {/* <Iconify icon={icon} width={24} height={24} /> */}
+        <Avatar src={url} alt="hehe" />
       </IconWrapperStyle>
 
       <Typography variant="h3">{fShortenNumber(total)}</Typography>
-
+      <Typography variant="h6">{name}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {title}
       </Typography>

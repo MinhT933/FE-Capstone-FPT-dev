@@ -24,10 +24,7 @@ import { UserListHead } from "../../sections/@dashboard/user";
 // mock
 // import food from "../../_mock/foodsample";
 
-import {
-
-  callAPIgetTripall,
-} from "../../redux/action/acction";
+import { callAPIgetTripall } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -135,7 +132,6 @@ export default function ListDeliveryTrip() {
     return state.userReducer.tripbyStatus;
   });
 
-
   //========================================================
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -150,8 +146,6 @@ export default function ListDeliveryTrip() {
     }
     setSelected([]);
   };
-
-  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -172,11 +166,10 @@ export default function ListDeliveryTrip() {
     filterName
   );
 
-
   const isUserNotFound = filterFood?.length === 0;
 
   return (
-    <Page title="Thức ăn">
+    <Page title="Danh sách chuyến giao hàng">
       <Container maxWidth={false}>
         <Stack
           direction="row"

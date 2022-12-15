@@ -35,7 +35,7 @@ export default function Tripdelivery() {
   if (token === null) {
     Navigate("/");
   }
- 
+
   // const idKitchen = profiles.id;
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
@@ -92,7 +92,7 @@ export default function Tripdelivery() {
       item.push({
         id: Slot[i]?.id,
 
-        title: Slot[i]?.startTime,
+        title: `${Slot[i]?.startTime}-${Slot[i]?.endTime}`,
       });
     }
     return item;
@@ -144,6 +144,15 @@ export default function Tripdelivery() {
       flex: 1,
       renderCell: (param) => {
         return param.row.station.phone;
+      },
+    },
+    {
+      field: "Slot",
+      headerName: "Thời gian giao ",
+      flex: 1,
+      renderCell: (param) => {
+        // return param.row.station.phone;
+        return `${param.row.timeSlot.startTime}-${param.row.timeSlot.endTime}`;
       },
     },
     {

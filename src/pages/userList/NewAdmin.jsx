@@ -49,10 +49,10 @@ const schema = yup.object().shape({
   //   phone: yup.string().phone().required("số điện thoại không đúng"),
   phone: yup
     .number()
+    .min(100000000, "Quá ngắn")
+    .max(9999999999, "Quá dài")
     .typeError("Số điện thoại phải nhập số")
-    .required("")
-    .min(9, "Quá ngắn")
-    .max(10, "Quá dài"),
+    .required("Số điện thoại phải nhập số"),
   email: yup.string().email("email Không đúng").trim(),
   password: yup.string().required("").trim(),
 });

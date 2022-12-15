@@ -21,22 +21,27 @@ export default function Select(props) {
     disabled,
     ids,
     marginRight,
+    maxWidth,
+    minWidth,
+    m,
   } = props;
 
   return (
     <FormControl
-      sx={{
-        display: "grid",
-        gridTemplateColumns: { sm: "6fr 1fr" },
+      style={{
+        // display: "grid",
+        // gridTemplateColumns: { sm: "6fr 1fr" },
         marginRight: marginRight,
         width: width,
+        m: m,
+        maxWidth: { maxWidth },
+        minWidth: { maxWidth },
       }}
+      SelectProps={{ autoWidth: true }}
     >
-      <InputLabel id={id}>{label}</InputLabel>
+      <InputLabel id="demo-simple-select-autowidth-label">{label}</InputLabel>
       <MuiSelect
-        // labelId="demo-simple-select-label"
         lableId={lableid}
-        // id="demo-simple-select"
         id={ids}
         label={label}
         name={name}
@@ -44,7 +49,7 @@ export default function Select(props) {
         disabled={disabled}
         onChange={onChange}
         onClick={onClick}
-        defaultValue={"hiuhi"}
+        // width="26rem"
         multiline
         sx={{ marginTop: marginTop }}
       >

@@ -27,10 +27,10 @@ import FormHelperText from "@mui/material/FormHelperText";
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 const schema = yup.object().shape({
-  name: yup.string().required().trim(),
-  price: yup.string().required().trim(),
-  description: yup.string().required().trim(),
-  foodCategoryId: yup.string().required().trim(),
+  name: yup.string().required("Vui lòng điền vào trường này").trim(),
+  price: yup.string().required("Vui lòng điền vào trường này").trim(),
+  description: yup.string().required("Vui lòng điền vào trường này").trim(),
+  foodCategoryId: yup.string().required("Vui lòng điền vào trường này").trim(),
 });
 
 export default function EditFood() {
