@@ -127,7 +127,13 @@ export default function NewKitchen() {
         }
         navigate("/dashboard/admin/kitchen");
       } catch (error) {
-        CustomizedToast({ message: "Thêm Không thành công", type: "ERROR" });
+        if (error.response.data.message === "Account already exists") {
+          CustomizedToast({ message: "Tài khoản đã tồn tại", type: "ERROR" });
+        } else if (error.response.data.message === "Email already exists") {
+          CustomizedToast({ message: "Email đã tồn tại", type: "ERROR" });
+        } else {
+          CustomizedToast({ message: "Thêm không thành công", type: "ERROR" });
+        }
       }
     },
   });
@@ -149,8 +155,6 @@ export default function NewKitchen() {
       />
       <form onSubmit={formik.handleSubmit}>
         <Box
-          //   space-around="space-around"
-          // sx={{ float: "right", width: "60%", flexGrow: 1 }}
           display="flex"
           justifyContent="left"
           alignItems="left"
@@ -205,7 +209,7 @@ export default function NewKitchen() {
 
                 <Controls.TextField
                   type="email"
-                  fullWidth
+                  sx={{ width: "85%" }}
                   name="email"
                   label="Email"
                   placeholder="Email"

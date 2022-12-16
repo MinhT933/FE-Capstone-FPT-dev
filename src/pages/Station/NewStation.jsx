@@ -172,8 +172,11 @@ export default function NewStation() {
       <form onSubmit={formik.handleSubmit}>
         <Box
           display="flex"
+          justifyContent="left"
+          alignItems="left"
           sx={{
             marginTop: "2%",
+            marginLeft: "9%",
           }}
         >
           <Grid
@@ -227,7 +230,7 @@ export default function NewStation() {
                 <Controls.TextField
                   // type="number"
                   // fullWidth
-                  sx={{ width: "89%" }}
+                  sx={{ width: "86%" }}
                   name="phone"
                   label="Điện thoại"
                   placeholder="Điện thoại"
@@ -250,7 +253,7 @@ export default function NewStation() {
 
                 <Controls.Select
                   label="Bếp"
-                  width="100%"
+                  width="86%"
                   name="kitchenId"
                   options={getOptionsKichen()}
                   value={formik.values.kitchenId}

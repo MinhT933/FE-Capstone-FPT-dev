@@ -52,6 +52,7 @@ const TABLE_HEAD = [
   { id: "inWord", label: "Nhận đơn", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
+  { label: "Chi tiết", alignRight: false },
   { id: "" },
 ];
 
@@ -150,6 +151,7 @@ export default function AdminShipperList() {
           type: "SUCCESS",
         });
       } catch (err) {
+        handleClose();
         CustomizedToast({
           message: `Cập nhập trạng thái ${name} thất bại`,
           type: "ERROR",
@@ -157,42 +159,6 @@ export default function AdminShipperList() {
       }
     }, []);
   };
-
-  // const handleDelete = (id, fullName) => {
-  //     API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
-  //         try {
-  //             dispatch(callAPIgetAccountShipper(token));
-
-  //             CustomizedToast({
-  //                 message: `Đã cập nhập trạng thái ${fullName}`,
-  //                 type: "SUCCESS",
-  //             });
-  //         } catch (err) {
-  //             CustomizedToast({
-  //                 message: `Cập nhập trạng thái ${fullName} thất bại`,
-  //                 type: "ERROR",
-  //             });
-  //         }
-  //     }, []);
-  // };
-
-  // const handleActive = (id, fullName) => {
-  //     API("PUT", URL_API + `/accounts/unBan/${id}`, null, token).then((res) => {
-  //         try {
-  //             dispatch(callAPIgetAccountShipper(token));
-
-  //             CustomizedToast({
-  //                 message: `Đã cập nhập trạng thái người giao hàng ${fullName}`,
-  //                 type: "SUCCESS",
-  //             });
-  //         } catch (err) {
-  //             CustomizedToast({
-  //                 message: `Cập nhập trạng thái người giao hàng ${fullName} thất bại`,
-  //                 type: "ERROR",
-  //             });
-  //         }
-  //     }, []);
-  // };
 
   const station = useSelector((state) => {
     return state.userReducer.listShipper;

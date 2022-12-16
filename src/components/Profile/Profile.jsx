@@ -327,7 +327,7 @@ export default function Profile() {
                           name="DOB"
                           width="28rem"
                           inputFormat="DD-MM-YYYY"
-                          // value={valueStarTime}
+                          value={valueStarTime}
                           onChange={(e) => {
                             setValueStarTime(e);
                           }}

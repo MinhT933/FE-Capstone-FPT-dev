@@ -34,6 +34,7 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import ManagerAccountListToolbar from "../../sections/@dashboard/user/ManagerAccountListToolbar";
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
+import Avatar from "@mui/material/Avatar";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -87,7 +88,7 @@ function applySortFilter(array, comparator, query) {
 export default function ManagerAccount() {
   const getOptions = () => [
     { id: "active", title: "Hoạt động" },
-    { id: "inActive", title: "Tạm nghỉ" },
+    // { id: "inActive", title: "Tạm nghỉ" },
     { id: "ban", title: "Bị cấm" },
     { id: "All", title: "Tất cả" },
   ];
@@ -146,12 +147,13 @@ export default function ManagerAccount() {
     API("PUT", URL_API + `/accounts/ban/${id}`, null, token).then((res) => {
       try {
         dispatch(callAPIgetAccountManager(token));
-
+        handleClose();
         CustomizedToast({
           message: `Đã cập nhập trạng thái ${fullName}`,
           type: "SUCCESS",
         });
       } catch (err) {
+        handleClose();
         CustomizedToast({
           message: `Cập nhập trạng thái ${fullName} thất bại`,
           type: "ERROR",
@@ -198,7 +200,6 @@ export default function ManagerAccount() {
     setSelected([]);
   };
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -219,8 +220,6 @@ export default function ManagerAccount() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
-
 
   return (
     <Page title="Quản lí">
@@ -271,9 +270,9 @@ export default function ManagerAccount() {
                       const {
                         id,
                         profile,
-             
+
                         fullName,
-               
+
                         phone,
                         status,
                       } = row;
@@ -288,15 +287,20 @@ export default function ManagerAccount() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox
-                                                            checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, fullName)}
-                                                        /> */}
+                          <TableCell padding="checkbox"></TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={2}
+                            >
+                              <Avatar alt={fullName} src={profile?.avatar} />
+                              <Typography variant="subtitle2" noWrap>
+                                {profile.fullName}
+                              </Typography>
+                            </Stack>
                           </TableCell>
-
-                          {/* <TableCell align="left">{id}</TableCell> */}
-                          <TableCell align="left">{profile.fullName}</TableCell>
+                          {/* <TableCell align="left">{profile.fullName}</TableCell> */}
                           <TableCell align="left">
                             {row.profile.email}
                           </TableCell>

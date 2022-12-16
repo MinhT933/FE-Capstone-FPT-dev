@@ -163,7 +163,7 @@ export default function AdminViewFeedBackList() {
 
   return (
     <Page title="Home">
-      <Container>
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
@@ -183,7 +183,7 @@ export default function AdminViewFeedBackList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 1400 }}>
+            <TableContainer>
               <Table>
                 <UserListHead
                   order={order}

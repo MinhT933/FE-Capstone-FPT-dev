@@ -44,8 +44,7 @@ import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
 const TABLE_HEAD = [
   { id: "id", label: "", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
-  { id: "quanlity", label: "Số lượng", alignRight: false },
-  // { id: "sumaryfood", label: "Số thức ăn", alignRigh: false },
+  { id: "quanlity", label: "Số món", alignRight: false },
   { id: "createday", label: "Ngày tạo", alignRight: false },
   { id: "updateday", label: "Ngày sửa", alignRight: false },
   { id: "des", label: "Mô tả", alignRight: false },
@@ -150,11 +149,8 @@ export default function ListFoodGroup() {
     { id: "inActive", title: "Ngưng bán" },
     { id: "All", title: "Tất cả" },
   ];
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
+
   const Navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // var decoded = jwt_decode(token);
   const token = localStorage.getItem("token");
   if (token === null) {
     Navigate("/");
@@ -299,7 +295,7 @@ export default function ListFoodGroup() {
                         updatedAt,
                         status,
                         description,
-                        totalFood,
+                        foods,
                       } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
@@ -317,7 +313,7 @@ export default function ListFoodGroup() {
                           <TableCell onClick={() => handleSelect(id)}>
                             <Typography>{name}</Typography>
                           </TableCell>
-                          <TableCell align="left">{totalFood}</TableCell>
+                          <TableCell align="left">{foods.length}</TableCell>
                           <TableCell align="left">
                             {new Date(createdAt).toLocaleDateString()}
                           </TableCell>

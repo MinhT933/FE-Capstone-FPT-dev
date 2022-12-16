@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Paper } from "@mui/material";
 import * as moment from "moment";
 import { Grid } from "@mui/material";
@@ -616,7 +616,7 @@ export default function EditPackage() {
                   return <>{item}</>;
                 })}
               <Box>
-                <Stack width="200px" mt={"2rem"} ml={"280%"} mb={"1rem"}>
+                <Stack width="200px" mt={"2rem"} ml={"240%"} mb={"1rem"}>
                   <ButtonCustomize
                     variant="contained"
                     type="submit"

@@ -37,9 +37,9 @@ const TABLE_HEAD = [
   { id: "fullName", label: "Họ tên", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
-
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
+  { label: "Chi tiết", alignRight: false },
   { id: "" },
 ];
 
@@ -265,19 +265,6 @@ export default function ShipperAccount() {
                           <TableCell align="left">
                             {row.profile.fullName}
                           </TableCell>
-
-                          {/* <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar alt={fullName} src={avatar} />
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {fullName}
-                                                            </Typography>
-                                                        </Stack>
-                                                    </TableCell> */}
 
                           <TableCell align="left">
                             {row.profile.email}

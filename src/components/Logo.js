@@ -3,6 +3,7 @@ import { Link as RouterLink } from "react-router-dom";
 // @mui
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/material";
+import jwt_decode from "jwt-decode";
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,19 @@ export default function Logo({ disabledLink = false, sx }) {
   //   height="100%"
   //   viewBox="0 0 512 512"
   // >
+  const token = localStorage.getItem("token");
+  var decoded = jwt_decode(token);
+  const handleRoute = () => {
+    if (decoded.role === "admin") {
+      return "/dashboard/admin/app";
+    }
+    if (decoded.role === "manager") {
+      return "/dashboard/manager/food";
+    }
+    if (decoded.role === "kitchen") {
+      return "/dashboard/kitchen/kitchenorder";
+    }
+  };
   const logo = (
     <Box sx={{ width: 100, height: 40, ...sx }}>
       <Box
@@ -71,5 +85,5 @@ export default function Logo({ disabledLink = false, sx }) {
     return <>{logo}</>;
   }
 
-  return <RouterLink to="/">{logo}</RouterLink>;
+  return <RouterLink to={handleRoute()}>{logo}</RouterLink>;
 }

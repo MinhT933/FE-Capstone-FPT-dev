@@ -44,7 +44,7 @@ const TABLE_HEAD = [
   { id: "time", label: "Thời gian hoạt động", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
-  { id: "detail", label: "Chi tiếc", alignRight: false },
+  { id: "detail", label: "Chi tiết", alignRight: false },
   { id: "" },
 ];
 
@@ -280,34 +280,10 @@ export default function StationList() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {/* {status === "active" ? (
-                              <ButtonCustomize
-                                variant="outlined"
-                                onClick={() => {
-                                  handleDelete(id, name);
-                                }}
-                                nameButton="Đóng"
-                              >
-                                Đóng
-                              </ButtonCustomize>
-                            ) : (
-                              <ButtonCustomize
-                                variant="outlined" 
-                                onClick={() => {
-                                  handleDelete(id, name);
-                                }}
-                                nameButton="Mở"
-                              >
-                                Mở
-                              </ButtonCustomize>
-                            )} */}
-
                             <ButtonCustomize
                               variant="outlined"
                               onClick={() => handleClickOpen(row)}
-                              nameButton={
-                                status === "active" ? "Chặn" : "Mở chặn"
-                              }
+                              nameButton={status === "active" ? "Đóng" : "Mở "}
                             />
                           </TableCell>
 

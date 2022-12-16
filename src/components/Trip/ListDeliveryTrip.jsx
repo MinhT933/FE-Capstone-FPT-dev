@@ -38,6 +38,7 @@ import ChangeShipper from "./ChangeShipper";
 const TABLE_HEAD = [
   { id: "id", label: "Mã code", alignRight: false },
   { id: "kitchen", label: "Bếp", alignRight: false },
+  { id: "shipper", label: "Shipper", alignRight: false },
   { id: "station", label: "Điểm giao ", alignRight: false },
   { id: "deliveryTime", label: "Bắt đâu giao ", alignRight: false },
   { id: "arrivedTime", label: "Kêt thúc giao ", alignRight: false },
@@ -166,6 +167,8 @@ export default function ListDeliveryTrip() {
     filterName
   );
 
+  console.log(trip);
+
   const isUserNotFound = filterFood?.length === 0;
 
   return (
@@ -228,6 +231,7 @@ export default function ListDeliveryTrip() {
                         time_slot,
                         deliveryDate,
                         order,
+                        shipper,
                       } = row;
 
                       const isItemSelected =
@@ -248,6 +252,9 @@ export default function ListDeliveryTrip() {
                             <Typography variant="subtitle2" noWrap>
                               {kitchen.account.profile.fullName}
                             </Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            {shipper.account.profile.fullName}
                           </TableCell>
                           <TableCell align="left">{station.address}</TableCell>
                           {status === "arrived" || status === "delivery" ? (

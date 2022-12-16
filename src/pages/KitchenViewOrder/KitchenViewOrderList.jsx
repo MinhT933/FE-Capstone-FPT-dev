@@ -42,6 +42,7 @@ const TABLE_HEAD = [
   { id: "name", label: "Món ăn", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
   { id: "station", label: "Điểm giao", alignRight: false },
+  { id: "date", label: "Ngày giao", alignRight: false },
   { id: "slot", label: "Buổi", alignRight: false },
   { id: "startTime", label: "Thời gian giao", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
@@ -155,6 +156,7 @@ export default function KitchenViewOrderList() {
     getComparator(order, orderBy),
     filterName
   );
+  console.log(station);
 
   const isStationNotFound = filteredStations.length === 0;
 
@@ -234,7 +236,7 @@ export default function KitchenViewOrderList() {
                           station,
                           food,
                           timeSlot,
-
+                          deliveryDate,
                           status,
                         } = row;
 
@@ -247,6 +249,7 @@ export default function KitchenViewOrderList() {
                               {subscription.customer.account.phone}
                             </TableCell>
                             <TableCell align="left">{station.name}</TableCell>
+                            <TableCell align="left">{deliveryDate}</TableCell>
                             <TableCell align="left">
                               {/* {timeSlot.flag} */}
                               <div>
