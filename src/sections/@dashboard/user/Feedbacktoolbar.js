@@ -150,9 +150,6 @@ export default function Feedbacktoolbar({
   });
 
   const handlefilterRate = (e) => {
-    // const data = [...feedback];
-    // const fillter = feedback.filter((c) => c.packageRate === +e.target.value);
-    // console.log(fillter);
     dispatch(
       createAction({
         type: "FILLTER_RATE",
@@ -160,12 +157,8 @@ export default function Feedbacktoolbar({
       })
     );
   };
-  // const fillter = feedback.filter((c) => c.packageRate === 4);
-  // console.log(fillter);
-  const [haha, setHaha] = useState("All");
-  const handleChange = async (event) => {
-    setHaha(event.target.value === "All" ? "" : event.target.value);
-  };
+  const [value, setValue] = useState("All");
+
   return (
     <RootStyle
       sx={{
@@ -203,20 +196,21 @@ export default function Feedbacktoolbar({
             </Grid>
             <Grid xs={2}>
               <Controls.Select
-                label="Trạng thái"
+                label="Gói ăn"
                 width="10rem"
                 marginRight="50%  "
                 options={getOptions()}
                 onChange={async (e) => {
                   const a = PackageFood.find((c) => c.id === e.target.value);
                   await dispatch(callAPIgetListFeedbackByIDPac(token, a.id));
+                  setValue(a.id);
                 }}
-                value={haha}
+                value={value}
               />
             </Grid>
             <Grid xs={1}>
               <Controls.Select
-                label="Đánh giá"
+                label="Đánh giá gói ăn"
                 width="10rem"
                 marginRight="50%  "
                 options={getOptionsRate()}

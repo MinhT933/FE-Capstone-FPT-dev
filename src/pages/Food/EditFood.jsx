@@ -198,6 +198,7 @@ export default function EditFood() {
                 <Controls.Select
                   name="foodCategoryId"
                   label="loại"
+                  width="85%"
                   value={formik.values.foodCategoryId}
                   onChange={(e) => {
                     const a = categoriesFood.find(

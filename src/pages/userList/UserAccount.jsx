@@ -84,7 +84,7 @@ function applySortFilter(array, comparator, query) {
 export default function UserAccount() {
   const getOptions = () => [
     { id: "active", title: "Hoạt động" },
-    { id: "inActive", title: "Tạm nghỉ" },
+    // { id: "inActive", title: "Tạm nghỉ" },
     { id: "ban", title: "Bị cấm" },
     { id: "All", title: "Tất cả" },
   ];
@@ -267,10 +267,10 @@ export default function UserAccount() {
 
                           <TableCell align="left">
                             <div>
-                              {status === "inActive" && (
+                              {/* {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
                                 <Label color="warning">Tạm nghỉ</Label>
-                              )}
+                              )} */}
                               {status === "active" && (
                                 // <Alert severity="info">waiting</Alert>
                                 <Label color="success">Hoạt động</Label>

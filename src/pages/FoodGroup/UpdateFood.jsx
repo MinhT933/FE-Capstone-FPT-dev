@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@mui/material";
+import { Autocomplete, Grid, Paper } from "@mui/material";
 import React from "react";
 import Controls from "../../components/Control/Controls";
 import PageHeader from "../../components/PageHeader";
@@ -7,19 +7,21 @@ import Stack from "@mui/material/Stack";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-
 import Iconify from "../../components/hook-form/Iconify";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../../Axios/API/API";
+import TextField from "@mui/material/TextField";
 import { URL_API } from "./../../Axios/URL_API/URL";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
+// import OutlinedInput from "@mui/material/OutlinedInput";
+// import InputLabel from "@mui/material/InputLabel";
+// import MenuItem from "@mui/material/MenuItem";
+// import FormControl from "@mui/material/FormControl";
+// import ListItemText from "@mui/material/ListItemText";
+// import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import { useDispatch } from "react-redux";
 import {
@@ -27,7 +29,7 @@ import {
   callAPIgetListFoodActive,
 } from "../../redux/action/acction";
 import { useSelector } from "react-redux";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import { SET_VALUE_TAG } from "../../redux/PathAction";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -45,9 +47,12 @@ export default function UpdateFood() {
   if (token === null) {
     Navigate("/");
   }
-  
+
   let { id } = useParams();
   const dispatch = useDispatch();
+  const [OptionValue, setOptionValue] = React.useState([]);
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -81,12 +86,21 @@ export default function UpdateFood() {
     getfoodByFoodGroupId();
   }, [dispatch, id, token]);
 
-
-
-
   const listFoodSelectbox = useSelector((state) => {
     return state.userReducer.listFoodActive;
   });
+  const getOptions = () => {
+    const item = [];
+    for (var i = 0; i < listFoodSelectbox.length; i++) {
+      item.push({
+        id: listFoodSelectbox[i].id,
+        title: listFoodSelectbox[i].name,
+      });
+    }
+
+    return item;
+    //trả về item đã có data muốn biết thì console.log ra mà xem
+  };
 
   const valueTag = useSelector((state) => {
     return state.userReducer.valueTag;
@@ -154,8 +168,8 @@ export default function UpdateFood() {
   return (
     <Paper>
       <PageHeader
-        title="Thêm thức ăn vào nhóm thực phầm"
-        subTitle="Thêm và điều chỉnh thông tin"
+        title="Điều chỉnh món ăn có trong nhóm "
+        subTitle="Điều chỉnh thông tin"
         icon={getIcon("emojione-monotone:pot-of-food")}
       />
       <form onSubmit={formik.handleSubmit}>
@@ -181,29 +195,9 @@ export default function UpdateFood() {
               </FormHelperText>
             )}
           </Grid>
+
           <Grid item xs={12}>
-            <Controls.Input
-              variant="outlined"
-              label="Số lượng"
-              name="totalFood"
-              width="27.5rem"
-              value={formik.values.totalFood}
-              onChange={(e) => {
-                formik.handleChange(e);
-              }}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.totalFood && formik.errors.totalFood && (
-              <FormHelperText
-                error
-                id="standard-weight-helper-text-username-login"
-              >
-                {formik.errors.totalFood}
-              </FormHelperText>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            <div>
+            {/* <div>
               <FormControl sx={{ width: "27.5rem" }}>
                 <InputLabel id="demo-multiple-checkbox-label">
                   Món ăn
@@ -229,7 +223,40 @@ export default function UpdateFood() {
                   ))}
                 </Select>
               </FormControl>
-            </div>
+            </div> */}
+
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              options={getOptions()}
+              disableCloseOnSelect
+              // value={valueTag}
+              getOptionLabel={(option) => option.title}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(e, value) => {
+                setOptionValue(value);
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.title}
+                </li>
+              )}
+              style={{ width: "37%" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  // required
+                  label="Món ăn"
+                  placeholder="Tìm kiếm..."
+                />
+              )}
+            />
           </Grid>
           <Grid item xs={12}>
             <Controls.TextArea
@@ -256,9 +283,9 @@ export default function UpdateFood() {
         <Stack
           spacing={2}
           direction="row"
-          sx={{ marginLeft: "25rem", marginTop: "2rem", paddingBottom: "2rem" }}
+          sx={{ marginLeft: "28rem", marginTop: "2rem", paddingBottom: "2rem" }}
         >
-          <ButtonCustomize nameButton="Thêm" type="submit" width="16rem" />
+          <ButtonCustomize nameButton="Xác nhận" type="submit" width="16rem" />
         </Stack>
       </form>
     </Paper>

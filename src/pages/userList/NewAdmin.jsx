@@ -118,7 +118,13 @@ export default function NewAdmin() {
           type: "SUCCESS",
         });
       } catch (error) {
-        CustomizedToast({ message: "Tài khoản tồn tại", type: "ERROR" });
+        if (error.response.data.message === "Account already exists") {
+          CustomizedToast({ message: "Tài khoản đã tồn tại", type: "ERROR" });
+        } else if (error.response.data.message === "Email already exists") {
+          CustomizedToast({ message: "Email đã tồn tại", type: "ERROR" });
+        } else {
+          CustomizedToast({ message: "Thêm không thành công", type: "ERROR" });
+        }
       }
     },
   });

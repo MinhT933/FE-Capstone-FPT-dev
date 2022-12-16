@@ -120,11 +120,13 @@ export default function NewFoodGroup(props) {
       try {
         const res = await API("POST", URL_API + `/food-groups`, data, token);
         await dispatch(callAPIgetGroupFood(token));
+        handleClose();
         CustomizedToast({
-          message: `Đã Thêm ${formik.values.name}`,
+          message: `Đã thêm ${formik.values.name}`,
           type: "SUCCESS",
         });
       } catch (error) {
+        handleClose();
         // eslint-disable-next-line no-lone-blocks
         {
           error.response.data.message ===

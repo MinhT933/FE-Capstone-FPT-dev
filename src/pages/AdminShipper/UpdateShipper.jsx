@@ -39,6 +39,9 @@ const schema = yup.object().shape({
 
 //callAPIforCreateStation========================================
 export default function UpdateShipper() {
+  const [valueStarTime, setValueStarTime] = React.useState(
+    dayjs("2022-10-23T21:11:5")
+  );
   //callAPIforCreateStation========================================
   let { id } = useParams();
 
@@ -54,6 +57,7 @@ export default function UpdateShipper() {
   React.useEffect(() => {
     API("GET", URL_API + `/shippers/${id}`, null, token)
       .then((res) => {
+        console.log(res);
         formik.setFieldValue(
           "fullName",
           res.data.result.account.profile.fullName
@@ -74,6 +78,12 @@ export default function UpdateShipper() {
       });
   }, []);
 
+  const handleDate = (time) => {
+    const a = new Date(time).toLocaleDateString().split("/");
+    if (a[0] < 10) {
+      return `${a[2]}-${a[1]}-0${a[0]}`;
+    } else return `${a[2]}-${a[1]}-${a[0]}`;
+  };
   const formik = useFormik({
     //gắn schema để so sánh
     validationSchema: schema,
@@ -89,16 +99,16 @@ export default function UpdateShipper() {
     },
 
     onSubmit: async (values) => {
+      console.log(values);
       const data = {
         fullName: formik.values.fullName,
-        DOB: setValueStarTime(formik.values.DOB),
+        DOB: handleDate(valueStarTime),
         email: formik.values.email,
         noPlate: formik.values.noPlate,
         vehicleType: formik.values.vehicleType,
       };
       try {
         const res = await API("PUT", URL_API + `/shippers/${id}`, data, token);
-
         if (res) {
           CustomizedToast({
             message: `Cập nhập ${formik.values.fullName} thành công`,
@@ -107,16 +117,12 @@ export default function UpdateShipper() {
         }
         navigate("/dashboard/admin/adminshipper");
       } catch (error) {
-        console.log(error);
         CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
       }
     },
   });
-
-  const [valueStarTime, setValueStarTime] = React.useState(
-    dayjs("2022-10-23T21:11:5")
-  );
-
+  const b = new Date(valueStarTime).toLocaleDateString().split("/");
+  console.log(b);
   return (
     <Paper
       title="Cập nhập bếp"
@@ -167,10 +173,10 @@ export default function UpdateShipper() {
 
                 <Controls.DatePicker
                   label="Ngày sinh"
-                  // width="26.5rem"
                   inputFormat="DD-MM-YYYY"
                   value={valueStarTime}
                   onChange={(e) => {
+                    console.log(e);
                     setValueStarTime(e);
                   }}
                 />

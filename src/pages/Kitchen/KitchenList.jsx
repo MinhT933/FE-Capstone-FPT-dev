@@ -45,7 +45,7 @@ const TABLE_HEAD = [
   { id: "fullName", label: "Tên bếp", alignRight: false },
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
-  { id: "ability", label: "Công suất", alignRight: false },
+  // { id: "ability", label: "Công suất", alignRight: false },
   // { id: "openTime", label: "Mở cửa", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
 
@@ -151,6 +151,7 @@ export default function KitchenList() {
           type: "SUCCESS",
         });
       } catch (err) {
+        handleClose();
         CustomizedToast({
           message: `Cập nhập trạng thái ${name} thất bại`,
           type: "ERROR",
@@ -275,7 +276,7 @@ export default function KitchenList() {
                           <TableCell align="left">
                             {row.account?.phone}
                           </TableCell>
-                          <TableCell align="left">{ability}</TableCell>
+                          {/* <TableCell align="left">{ability}</TableCell> */}
                           <TableCell align="left">
                             {row.account.profile?.email}
                           </TableCell>

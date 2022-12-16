@@ -1,15 +1,13 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // material
-import { alpha, styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
+import { alpha, styled } from "@mui/material/styles";
+import { Box, Stack, AppBar, Toolbar, IconButton } from "@mui/material";
 // components
-import Iconify from '../components/hook-form/Iconify';
+import Iconify from "../components/hook-form/Iconify";
 //
 
-
-
-import AccountPopover from './../components/topbar/AccountPopover';
-import NotificationsPopover from './../components/topbar/NotificationsPopover';
+import AccountPopover from "./../components/topbar/AccountPopover";
+import NotificationsPopover from "./../components/topbar/NotificationsPopover";
 
 // ----------------------------------------------------------------------
 
@@ -18,18 +16,18 @@ const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 80;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
-  boxShadow: 'none',
-  backdropFilter: 'blur(6px)',
-  WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
+  boxShadow: "none",
+  backdropFilter: "blur(6px)",
+  WebkitBackdropFilter: "blur(6px)", // Fix on Mobile
   backgroundColor: alpha(theme.palette.background.default, 0.72),
-  [theme.breakpoints.up('lg')]: {
+  [theme.breakpoints.up("lg")]: {
     width: `calc(100% - ${DRAWER_WIDTH + 1}px)`,
   },
 }));
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   minHeight: APPBAR_MOBILE,
-  [theme.breakpoints.up('lg')]: {
+  [theme.breakpoints.up("lg")]: {
     minHeight: APPBAR_DESKTOP,
     padding: theme.spacing(0, 5),
   },
@@ -45,16 +43,23 @@ export default function DashboardNavbar({ onOpenSidebar }) {
   return (
     <RootStyle>
       <ToolbarStyle>
-        <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary', display: { lg: 'none' } }}>
+        <IconButton
+          onClick={onOpenSidebar}
+          sx={{ mr: 1, color: "text.primary", display: { lg: "none" } }}
+        >
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
 
         {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />
 
-        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={{ xs: 0.5, sm: 1.5 }}
+        >
           {/* <LanguagePopover /> */}
-          <NotificationsPopover />
+          {/* <NotificationsPopover /> */}
           <AccountPopover />
         </Stack>
       </ToolbarStyle>

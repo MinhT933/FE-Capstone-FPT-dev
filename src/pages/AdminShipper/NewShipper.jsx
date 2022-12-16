@@ -37,10 +37,10 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 const schema = yup.object().shape({
   phone: yup
     .number()
+    .min(100000000, "Quá ngắn")
+    .max(9999999999, "Quá dài")
     .typeError("Số điện thoại phải nhập số")
-    .required("")
-    .min(9, "Quá ngắn")
-    .max(10, "Quá dài"),
+    .required("Số điện thoại phải nhập số"),
   email: yup.string().email("email Không đúng").trim(),
   noPlate: yup.string().required("Điền đầy đủ thông tin").trim(),
   vehicleType: yup.string().required("Điền đầy đủ thông tin").trim(),
@@ -118,10 +118,15 @@ export default function NewShipper() {
         });
         // window.location.reload(true);
       } catch (error) {
-        CustomizedToast({
-          message: `${error.response.data.message}`,
-          type: "ERROR",
-        });
+        if (error.response.data.message === "Account already exists") {
+          CustomizedToast({ message: "Tài khoản đã tồn tại", type: "ERROR" });
+        } else if (error.response.data.message === "Email already exists") {
+          CustomizedToast({ message: "Email đã tồn tại", type: "ERROR" });
+        } else if (error.response.data.message === "noPlate already exists") {
+          CustomizedToast({ message: "Biển số xe đã tồn tại", type: "ERROR" });
+        } else {
+          CustomizedToast({ message: "Thêm không thành công", type: "ERROR" });
+        }
       }
     },
   });
@@ -165,7 +170,7 @@ export default function NewShipper() {
                   variant="outlined"
                   name="fullName"
                   label="Họ Tên"
-                  width="24rem"
+                  width="102%"
                   required
                   value={formik.values.fullName || ""}
                   onChange={(e) => {
@@ -187,7 +192,7 @@ export default function NewShipper() {
                   type={values.showPass ? "text" : "password"}
                   name="password"
                   // sx={{'.css-r0m7rw-MuiInputBase-root-MuiOutlinedInput-root: 20rem'}}
-                  sx={{ width: "24rem" }}
+                  sx={{ width: "88%" }}
                   label="Mật khẩu"
                   placeholder="Mật khẩu"
                   variant="outlined"
@@ -263,7 +268,7 @@ export default function NewShipper() {
                 )}
                 <Controls.DatePicker
                   label="Ngày tháng năm sinh"
-                  width="28rem"
+                  width="102%"
                   required
                   inputFormat="DD-MM-YYYY"
                   value={valueStarTime}
@@ -277,7 +282,7 @@ export default function NewShipper() {
                   required
                   name="noPlate"
                   label="Biển số xe"
-                  width="24rem"
+                  width="102%"
                   value={formik.values.noPlate || ""}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -296,7 +301,7 @@ export default function NewShipper() {
                 <Controls.Input
                   variant="outlined"
                   name="vehicleType"
-                  width="24rem"
+                  width="102%"
                   label="Loại xe"
                   value={formik.values.vehicleType}
                   onChange={(e) => {

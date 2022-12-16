@@ -171,8 +171,6 @@ export default function KitchenAccount() {
     setSelected([]);
   };
 
- 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -193,8 +191,6 @@ export default function KitchenAccount() {
   );
 
   const isStationNotFound = filteredStations.length === 0;
-
-
 
   return (
     <Page title="Bếp">
@@ -243,9 +239,9 @@ export default function KitchenAccount() {
                       const {
                         id,
                         profile,
-                
+
                         fullName,
-         
+
                         phone,
                         status,
                       } = row;

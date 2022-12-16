@@ -46,7 +46,7 @@ const TABLE_HEAD = [
   { id: "startSale", label: "Ngày bán", alignRight: false },
   { id: "endSale", label: "Ngày nghỉ bán", alignRight: false },
   { id: "totalMeal", label: "Buổi", alignRight: false },
-  { id: "totalfood", label: "số món", alignRight: false },
+  { id: "totalfood", label: "Số món", alignRight: false },
   { id: "areaSale", label: "Số địa điểm", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
@@ -293,46 +293,33 @@ export default function PackageFood() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell
-                            width="1%"
-                            onClick={() => handleSelect(id)}
-                          >
+                          <TableCell onClick={() => handleSelect(id)}>
                             <Avatar alt={name} src={image} />
                           </TableCell>
-                          <TableCell width="8%" align="left">
-                            {name}
-                          </TableCell>
-                          <TableCell width="2%" align="left">
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">
                             {new Intl.NumberFormat("vi-VN", {
                               style: "currency",
                               currency: "VND",
                             }).format(price)}
                           </TableCell>
-                          <TableCell width="17%" align="left">
-                            {timeFrame.name}
-                          </TableCell>
+                          <TableCell align="left">{timeFrame.name}</TableCell>
                           <TableCell width="8%" align="left">
                             {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
-                          <TableCell width="8%" align="left">
+                          <TableCell align="left">
                             {new Date(updatedAt).toLocaleDateString()}
                           </TableCell>
-                          <TableCell width="8%" align="left">
+                          <TableCell align="left">
                             {new Date(startSale).toLocaleDateString()}
                           </TableCell>
-                          <TableCell width="13%" align="left">
+                          <TableCell width="8%" align="left">
                             {new Date(endSale).toLocaleDateString()}
                           </TableCell>
-                          <TableCell width="1%" align="left">
-                            {totalMeal}
-                          </TableCell>
-                          <TableCell width="8%" align="left">
-                            {totalFood}
-                          </TableCell>
-                          <TableCell width="16%" align="left">
-                            {totalStation}
-                          </TableCell>
-                          <TableCell width="8%" align="left">
+                          <TableCell align="left">{totalMeal}</TableCell>
+                          <TableCell align="left">{totalFood}</TableCell>
+                          <TableCell align="left">{totalStation}</TableCell>
+                          <TableCell align="left">
                             <div>
                               {status === "inActive" && (
                                 // <Alert severity="warning">inActive</Alert>
@@ -347,21 +334,25 @@ export default function PackageFood() {
                               )}
                             </div>
                           </TableCell>
-
-                          <TableCell width="12%" align="left">
-                            {description}
-                          </TableCell>
-                          {decoded.role === "manager" && (
-                            <TableCell>
+                          <TableCell align="left">{description}</TableCell>
+                          <TableCell>
+                            {status === "inActive" && (
                               <ButtonCustomize
                                 nameButton="Cập nhập"
                                 width="6rem"
                                 component={RouterLink}
                                 to={`${location.pathname}/updatePackageFood/${id}`}
                               />
-                            </TableCell>
-                          )}
-
+                            )}
+                            {status === "waiting" && (
+                              <ButtonCustomize
+                                nameButton="Cập nhập"
+                                width="6rem"
+                                component={RouterLink}
+                                to={`${location.pathname}/updatePackageFood/${id}`}
+                              />
+                            )}
+                          </TableCell>
                           <TableCell align="right">
                             <ButtonCustomize
                               variant="outlined"
