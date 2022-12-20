@@ -127,6 +127,7 @@ export default function KitchenvieworderByWeek() {
   var last = first + 7; // last day is the first day + 6
 
   var firstday = new Date(curr.setDate(first + 1)).toUTCString();
+  // var firstday = new Date(curr.setDate(first + 1)).toUTCString();
   console.log(firstday);
   var lastday = new Date(curr.setDate(last)).toUTCString();
 

@@ -21,14 +21,7 @@ export default function Logo({ disabledLink = false, sx }) {
 
   const PRIMARY_DARK = theme.palette.primary.dark;
 
-  // OR
-  // const logo = <Box component="img" src="/static/logo.svg" sx={{ width: 40, height: 40, ...sx }} />
-  //   <svg
-  //   // xmlns="/public/logo7.png"
-  //   width="100%"
-  //   height="100%"
-  //   viewBox="0 0 512 512"
-  // >
+
   const token = localStorage.getItem("token");
   var decoded = jwt_decode(token);
   const handleRoute = () => {

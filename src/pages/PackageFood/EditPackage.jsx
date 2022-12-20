@@ -36,7 +36,7 @@ const schema = yup.object().shape({
     .number()
     .moreThan(0, "Giá phải lớn hơn ko")
     .required("Vui lòng nhập lại giá"),
-  totalStation: yup.string().required("nhập tổng số đỉa điểm giao").trim(),
+  // totalStation: yup.string().required("nhập tổng số đỉa điểm giao").trim(),
   totalMeal: yup.string().required("Vui lòng nhập bữa ăn").trim(),
   description: yup.string().required("Vui lòng nhập mô tả").trim(),
   totalDate: yup.string().required("Vui lòng nhập tổng ngày").trim(),
@@ -74,7 +74,6 @@ export default function EditPackage() {
   const [valueEndTime, setValueEndtime] = React.useState(
     dayjs("2022-10-26T21:11:5")
   );
-  console.log(valueEndTime);
 
   const Input = styled("input")({
     display: "none",
@@ -190,7 +189,7 @@ export default function EditPackage() {
     initialValues: {
       name: "",
       price: "",
-      totalStation: "",
+      // totalStation: "",
       totalMeal: "",
       totalDate: "",
       description: "",
@@ -205,7 +204,7 @@ export default function EditPackage() {
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
       formData.append("price", formik.values.price);
-      formData.append("totalStation", formik.values.totalStation);
+      formData.append("totalStation", 3);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
       formData.append("endSale", handleDate(valueEndTime));
@@ -438,7 +437,7 @@ export default function EditPackage() {
                 )}
               </Grid>
 
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
                   label="Số địa điểm giao hàng"
@@ -457,7 +456,7 @@ export default function EditPackage() {
                     {formik.errors.totalStation}
                   </FormHelperText>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
@@ -532,6 +531,7 @@ export default function EditPackage() {
               <Grid item xs={6}>
                 <Controls.Select
                   name="categoryID"
+                  width="86%"
                   label="Chọn loại gói ăn"
                   value={formik.values.categoryID}
                   onChange={(e) => {
@@ -570,45 +570,41 @@ export default function EditPackage() {
                     flexDirection: "row",
                   }}
                 >
-                  <Box>
-                    <Controls.Select
-                      name="timeFrameID"
-                      label="Chọn khung thời gian"
-                      width="23.5vw"
-                      disabled
-                      value={formik.values.timeFrameID}
-                      onChange={(e) => {
-                        const a = timeframe.find(
-                          (c) => c.id === e.target.value
-                        );
-                        formik.setFieldValue(
-                          "totalMeal",
-                          a.dateFilter.split("").filter((i) => i === "1").length
-                        );
-                        formik.setFieldValue(
-                          "totalDate",
-                          a.name.split("-").length
-                        );
-                        formik.setFieldValue(
-                          "totalFood",
-                          a.dateFilter.split("").filter((i) => i === "1").length
-                        );
-                        formik.setFieldValue("timeFrameID", a.id);
-                        handClickTimeFrame(a.id);
-                      }}
-                      onBlur={formik.handleBlur}
-                      options={getTimeFrameOptions()}
-                    />
-                    {formik.touched.timeFrameID &&
-                      formik.errors.timeFrameID && (
-                        <FormHelperText
-                          error
-                          id="standard-weight-helper-text-username-login"
-                        >
-                          {formik.errors.timeFrameID}
-                        </FormHelperText>
-                      )}
-                  </Box>
+                  <Controls.Select
+                    name="timeFrameID"
+                    label="Chọn khung thời gian"
+                    width="86%"
+                    maxWidth="85%"
+                    disabled
+                    value={formik.values.timeFrameID}
+                    onChange={(e) => {
+                      const a = timeframe.find((c) => c.id === e.target.value);
+                      formik.setFieldValue(
+                        "totalMeal",
+                        a.dateFilter.split("").filter((i) => i === "1").length
+                      );
+                      formik.setFieldValue(
+                        "totalDate",
+                        a.name.split("-").length
+                      );
+                      formik.setFieldValue(
+                        "totalFood",
+                        a.dateFilter.split("").filter((i) => i === "1").length
+                      );
+                      formik.setFieldValue("timeFrameID", a.id);
+                      handClickTimeFrame(a.id);
+                    }}
+                    onBlur={formik.handleBlur}
+                    options={getTimeFrameOptions()}
+                  />
+                  {formik.touched.timeFrameID && formik.errors.timeFrameID && (
+                    <FormHelperText
+                      error
+                      id="standard-weight-helper-text-username-login"
+                    >
+                      {formik.errors.timeFrameID}
+                    </FormHelperText>
+                  )}
                 </Box>
               </Grid>
               {handleItem().length > 0 &&
@@ -659,7 +655,7 @@ export default function EditPackage() {
                     maxWidth: { xs: 350, md: 250 },
                     marginTop: "10%",
                     // boxShadow: 8,
-                    marginLeft: "11%",
+                    marginLeft: "1%",
 
                     // objectFit: "cover",
                   }}

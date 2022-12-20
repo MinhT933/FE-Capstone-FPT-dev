@@ -13,20 +13,14 @@ import {
   Grid,
 } from "@mui/material";
 // component
-
 import Iconify from "../../../components/hook-form/Iconify";
-
 import Controls from "./../../../components/Control/Controls";
-
 import * as moment from "moment";
 import FormControl from "@mui/material/FormControl";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
 import Stack from "@mui/material/Stack";
-
 import { callAPIGetListOderByDay } from "../../../redux/action/acction";
-
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import DatePicker from "../../../components/Control/DatePicker";
@@ -87,7 +81,6 @@ export default function OrderListToolbar({
   }, [dispatch, date, token]);
 
   const handleChange = async (event) => {
-    console.log(event.target.value);
     setHaha(event.target.value === "All" ? "" : event.target.value);
 
     if (date) {
@@ -115,30 +108,29 @@ export default function OrderListToolbar({
         </Typography>
       ) : (
         <>
+          <SearchStyle
+            value={filterName}
+            onChange={onFilterName}
+            placeholder="Tìm kiếm..."
+            startAdornment={
+              <InputAdornment position="start">
+                <Iconify
+                  icon="eva:search-fill"
+                  sx={{ color: "text.disabled", width: 20, height: 20 }}
+                />
+              </InputAdornment>
+            }
+          />
+
           <Grid container>
-            <Grid xs={4}>
-              <SearchStyle
-                value={filterName}
-                onChange={onFilterName}
-                placeholder="Tìm kiếm..."
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Iconify
-                      icon="eva:search-fill"
-                      sx={{ color: "text.disabled", width: 20, height: 20 }}
-                    />
-                  </InputAdornment>
-                }
-              />
-            </Grid>
-            <Grid xs={4}>
+            <Grid xs={3.5}>
               <Stack
                 direction="row"
                 alignItems="center"
                 justifyContent="space-between"
-                mb={3}
+                ml={6}
               >
-                <FormControl sx={{ width: "80%" }}>
+                <FormControl sx={{ width: "90%" }}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="Chọn ngày giao"
@@ -161,7 +153,7 @@ export default function OrderListToolbar({
                 </FormControl>
               </Stack>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={0.5}>
               <Controls.Select
                 label="Trạng thái"
                 width="10rem"

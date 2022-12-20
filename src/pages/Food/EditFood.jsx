@@ -272,8 +272,8 @@ export default function EditFood() {
                   maxHeight: { xs: 233, md: 167 },
                   maxWidth: { xs: 350, md: 250 },
                   marginTop: "10%",
-                  boxShadow: 8,
-                  marginLeft: "11%",
+                  // boxShadow: 8,
+                  marginLeft: "8%",
                 }}
               >
                 {/* hiển thị hình lên  */}

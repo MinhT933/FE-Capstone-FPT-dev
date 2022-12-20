@@ -23,6 +23,7 @@ function getStepContent(step) {
     // return <NewPackageItem />;
     case 2:
       return <ConfirmInfo />;
+      break;
     default:
       return "Unknown step";
   }
@@ -70,8 +71,8 @@ export default function StepDesignPacketFood() {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
-        // find the first step that has been completed
-        getSteps.findIndex((step, i) => !(i in completed))
+          // find the first step that has been completed
+          getSteps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };

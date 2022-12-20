@@ -187,18 +187,6 @@ export default function KitchenViewOrderList() {
                 marginLeft: "30%",
               }}
             >
-              {/* <Typography
-                variant="h3"
-                gutterBottom
-                sx={{
-                  display: "flex",
-                  // marginLeft: "7%",
-                  marginTop: "2%",
-                  justifyContent: "center",
-                }}
-              >
-                Đơn hàng trong ngày
-              </Typography> */}
             </Paper>
           </Stack>
 

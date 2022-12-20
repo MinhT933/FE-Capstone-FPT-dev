@@ -50,7 +50,7 @@ const TABLE_HEAD = [
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
-  { id: "setStatus", label: "Thay đổi trạng thái", alignRight: false },
+  { id: "", label: "Bán/Ngưng bán", alignRight: false },
   { id: "detail", label: "Chi tiết món ăn", alignRight: false },
 ];
 

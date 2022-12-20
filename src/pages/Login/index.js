@@ -2,14 +2,12 @@ import React from "react";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import "./format.css";
+// import "./format.css";
 
 import Login from "./login";
 
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-
-
 
 const WidthLogin = styled("div")(({ theme }) => ({
   width: "40%",
@@ -17,8 +15,6 @@ const WidthLogin = styled("div")(({ theme }) => ({
 }));
 
 const SignInOutContainer = () => {
-
-
   //  const paperStyle = { width: '20%', float: 'right' }
   // fixed bug
   return (

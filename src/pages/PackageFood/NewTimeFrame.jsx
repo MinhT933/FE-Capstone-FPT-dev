@@ -315,7 +315,7 @@ export default function NewTimeFrame(props) {
           >
             <DialogTitle>
               <PageHeader
-                title="Tạo Khung thời gian"
+                title="Tạo khung thời gian"
                 subTitle="Chọn ngày và buổi cho gói ăn"
                 icon={getIcon("uil:schedule")}
               />
