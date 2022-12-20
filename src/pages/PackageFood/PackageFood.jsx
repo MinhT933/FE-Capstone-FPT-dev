@@ -154,22 +154,29 @@ export default function PackageFood() {
     setSelected([]);
   };
 
-  const handleDelete = async (id) => {
-    await API("PUT", URL_API + `/packages/confirm/${id}`, null, token)
-      .then((res) => {
-        console.log(res);
+  const handleDelete = async (id, date) => {
+    const nowdate = new Date().toLocaleDateString();
+    if (nowdate >= date) {
+      await API("PUT", URL_API + `/packages/confirm/${id}`, null, token)
+        .then((res) => {
+          dispatch(callAPIGetListPackage(token));
 
-        dispatch(callAPIGetListPackage(token));
+          CustomizedToast({
+            message: "Cập nhập trạng thái thành công",
+            type: "SUCCESS",
+          });
 
-        CustomizedToast({
-          message: "Cập nhập trạng thái thành công",
-          type: "SUCCESS",
+          handleClose();
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        handleClose();
-      })
-      .catch((err) => {
-        console.log(err);
+    } else {
+      CustomizedToast({
+        message: "Chưa tới ngày mở bán",
+        type: "ERROR",
       });
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -193,6 +200,8 @@ export default function PackageFood() {
     getComparator(order, orderBy),
     filterName
   );
+
+  console.log(packagefood);
 
   // const isUserNotFound = filterFood.length === 0;
   const handleSelect = (id) => {
@@ -279,7 +288,7 @@ export default function PackageFood() {
                         endSale,
                         totalMeal,
                         totalFood,
-                        totalStation,
+                        // totalStation,
                         status,
                         timeFrame,
                         image,
@@ -400,7 +409,12 @@ export default function PackageFood() {
               content={value.name}
               handleClickOpen={handleClickOpen}
               handleClose={handleClose}
-              onClick={() => handleDelete(value.id, value.name)}
+              onClick={() =>
+                handleDelete(
+                  value.id,
+                  new Date(value.startSale).toLocaleDateString()
+                )
+              }
             />
           )}
         </Card>

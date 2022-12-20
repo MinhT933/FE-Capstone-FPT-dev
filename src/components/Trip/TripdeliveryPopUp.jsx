@@ -18,15 +18,12 @@ import { CustomizedToast } from "../Toast/ToastCustom";
 import ButtonCustomize from "../Button/ButtonCustomize";
 import {
   callAPIgetallOrder,
-
   callAPIGetSlot,
   callAPIGetStationByKitchen,
-
 } from "../../redux/action/acction";
 import { URL_API } from "../../Axios/URL_API/URL";
 import API from "../../Axios/API/API";
 import { callAPIgetShipperByActive } from "./../../redux/action/acction";
-
 
 // function convert(str) {
 //   var date = new Date(str),
@@ -128,7 +125,7 @@ export default function TripdeliveryPopUp(props) {
       } catch (error) {
         if (idKitchen === "") {
           CustomizedToast({
-            message: "Vui lòng thêm bếp",
+            message: "Vui lòng chọn  bếp",
             type: "ERROR",
           });
         } else if (stationID === "") {

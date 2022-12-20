@@ -97,8 +97,8 @@ export default function NewStation() {
 
   //xử lí hình ảnh
 
-  const [opentime, setOpentime] = useState([dayjs("2022-10-18T21:11:5")]);
-  const [closetime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
+  const [opentime, setOpentime] = useState(null);
+  const [closetime, setClosetime] = useState(null);
   const formik = useFormik({
     //gắn schema để so sánh
     validationSchema: schema,

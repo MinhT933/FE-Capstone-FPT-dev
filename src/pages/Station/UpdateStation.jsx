@@ -61,8 +61,8 @@ export default function UpdateStation() {
 
   const dispatch = useDispatch();
 
-  const [openTime, setOpentime] = useState([dayjs("2022-10-18T21:11:5")]);
-  const [closeTime, setClosetime] = useState([dayjs("2022-10-18T21:11:5")]);
+  const [openTime, setOpentime] = useState([dayjs("2022-10-18T6:00:5")]);
+  const [closeTime, setClosetime] = useState([dayjs("2022-10-18T19:30:5")]);
 
   React.useEffect(() => {
     // const getlistStation = async () => {
@@ -72,11 +72,10 @@ export default function UpdateStation() {
 
     API("GET", URL_API + `/stations/${id}`, null, token)
       .then((res) => {
-        console.log(res);
         formik.setFieldValue("name", res.data.result.name);
         formik.setFieldValue("address", res.data.result.address);
         formik.setFieldValue("phone", res.data.result.phone);
-        formik.setFieldValue("kitchenId", res.data.result.kitchenId);
+        formik.setFieldValue("kitchenId", res.data.result.kitchen.id);
         formik.setOpentime("openTime", res.data.result.openTime);
         formik.setClosetime("closeTime", res.data.result.closeTime);
       })
@@ -146,7 +145,6 @@ export default function UpdateStation() {
         }
         navigate("/dashboard/admin/station");
       } catch (error) {
-        console.log(error);
         CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
       }
     },
@@ -238,7 +236,7 @@ export default function UpdateStation() {
                 )}
                 <Controls.Select
                   label="Bếp"
-                  width="100%"
+                  width="86%"
                   name="kitchenId"
                   options={getOptionsKichen()}
                   value={formik.values.kitchenId}

@@ -123,7 +123,7 @@ export default function Tripdelivery() {
       headerName: "Bếp",
       flex: 1,
       renderCell: (param) => {
-        setIdkitchen(param.row.kitchen.id);
+        // setIdkitchen(param.row.kitchen.id);
         return param.row.kitchen.account?.profile.fullName;
       },
     },
@@ -132,8 +132,8 @@ export default function Tripdelivery() {
       headerName: "Điểm giao",
       flex: 1,
       renderCell: (param) => {
-        setSlot(param.row.timeSlot.id);
-        setStationID(param.row.station.id);
+        // setSlot(param.row.timeSlot.id);
+        // setStationID(param.row.station.id);
         return param.row.station.name;
       },
     },
@@ -180,7 +180,7 @@ export default function Tripdelivery() {
     return state.userReducer.orderToCreate;
   });
 
-  console.log(resultList);
+  // console.log(resultList);
   // console.log(resultList?.station?.id);
 
   const handleClickFind = async () => {

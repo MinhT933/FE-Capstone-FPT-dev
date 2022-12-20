@@ -84,11 +84,11 @@ export default function AccountPopover() {
       icon: "eva:person-fill",
       linkTo: `/dashboard/${decoded.role}/account/my`,
     },
-    // {
-    //   label: "",
-    //   icon: "eva:settings-2-fill",
-    //   linkTo: "#",
-    // },
+    {
+      label: "Đổi mật khẩu",
+      icon: "eva:settings-2-fill",
+      linkTo: "/changepassword",
+    },
   ];
   const handleLogout = () => {
     const token = localStorage.getItem("token");

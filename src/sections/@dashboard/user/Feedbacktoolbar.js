@@ -28,7 +28,6 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import StarIcon from "@mui/icons-material/Star";
 
 // ----------------------------------------------------------------------
 
@@ -137,12 +136,12 @@ export default function Feedbacktoolbar({
   });
   const getOptions = () => {
     const item = [];
+    item.push({ id: "all", title: "Tất cả" });
     for (var i = 0; i < PackageFood.length; i++) {
       item.push({ id: PackageFood[i].id, title: PackageFood[i].name });
     }
 
     return item;
-    //trả về item đã có data muốn biết thì console.log ra mà xem
   };
 
   const feedback = useSelector((state) => {
@@ -157,7 +156,7 @@ export default function Feedbacktoolbar({
       })
     );
   };
-  const [value, setValue] = useState("All");
+  const [value, setValue] = useState("");
 
   return (
     <RootStyle
@@ -202,8 +201,15 @@ export default function Feedbacktoolbar({
                 options={getOptions()}
                 onChange={async (e) => {
                   const a = PackageFood.find((c) => c.id === e.target.value);
-                  await dispatch(callAPIgetListFeedbackByIDPac(token, a.id));
-                  setValue(a.id);
+
+                  if (a.id === "all") {
+                    await dispatch(callAPIgetListFeedback(token));
+                    setValue(a.id);
+                  } else {
+                    await dispatch(callAPIgetListFeedbackByIDPac(token, a.id));
+                    setValue(a.id);
+                  }
+                  console.log(a.id);
                 }}
                 value={value}
               />
