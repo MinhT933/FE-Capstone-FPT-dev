@@ -23,8 +23,8 @@ import { LoginAthen } from "./../../redux/action/acction";
 /////
 
 const schema = yup.object().shape({
-  phone: yup.string().required().trim(),
-  password: yup.string().required().trim(),
+  // phone: yup.string().required().trim(),
+  // password: yup.string().required().trim(),
 });
 const Login = () => {
   const dispatch = useDispatch();

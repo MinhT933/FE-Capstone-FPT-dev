@@ -5,7 +5,6 @@ import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import * as yup from "yup";
-import * as moment from "moment";
 
 import Controls from "./../../components/Control/Controls";
 
@@ -37,7 +36,7 @@ const schema = yup.object().shape({
     .number()
     .moreThan(0, "giá phải lớn hơn ko")
     .required("Vui lòng nhập lại giá"),
-  totalStation: yup.string().required("nhập tổng số đỉa điểm giao").trim(),
+  // totalStation: yup.string().required("nhập tổng số đỉa điểm giao").trim(),
   totalMeal: yup.string().required("Vui lòng nhập bữa ăn").trim(),
   description: yup.string().required("Vui lòng nhập mô tả").trim(),
   totalDate: yup.string().required("Vui lòng nhập tổng ngày").trim(),
@@ -71,7 +70,7 @@ export default function NewPackage() {
   const formData = new FormData();
 
   const token = localStorage.getItem("token");
-  // console.log(token);
+
   React.useEffect(() => {
     const getTimeFrame = async () => {
       await dispatch(callAPIgetTimeFrame(token));
@@ -160,7 +159,7 @@ export default function NewPackage() {
     initialValues: {
       name: "",
       price: "",
-      totalStation: "",
+      // totalStation: "",
       totalMeal: "",
       totalDate: "",
       startSale: "",
@@ -173,11 +172,13 @@ export default function NewPackage() {
     },
 
     onSubmit: async (values) => {
+      console.log(values);
       formData.append("image", formik.values.image);
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
       formData.append("price", formik.values.price);
-      formData.append("totalStation", formik.values.totalStation);
+      // formData.append("totalStation", formik.values.totalStation);
+      formData.append("totalStation", 3);
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
       formData.append("endSale", handleDate(valueEndTime));
@@ -212,7 +213,10 @@ export default function NewPackage() {
           type: "SUCCESS",
         });
       } catch (error) {
-        CustomizedToast({ message: "Thêm gói ăn thất bại", type: "ERROR" });
+        CustomizedToast({
+          message: "Thêm gói ăn không thành công",
+          type: "ERROR",
+        });
       }
     },
   });
@@ -443,7 +447,7 @@ export default function NewPackage() {
     <Paper>
       <PageHeader
         title="Thiết kế gói ăn"
-        subTitle="Điền các thông tin  "
+        subTitle="Vui lòng điền đầy đủ thông tin"
         icon={getIcon("ant-design:setting-filled")}
       />
 
@@ -527,7 +531,7 @@ export default function NewPackage() {
                 )}
               </Grid>
 
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
                   label="Số địa điểm giao hàng"
@@ -546,7 +550,7 @@ export default function NewPackage() {
                     {formik.errors.totalStation}
                   </FormHelperText>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
@@ -626,9 +630,9 @@ export default function NewPackage() {
                 >
                   <Controls.Select
                     name="categoryID"
-                    label="Chọn loại package"
+                    label="Chọn loại gói ăn"
                     id="categoryID"
-                    width="87%"
+                    width="86%"
                     value={formik.values.categoryID}
                     cd
                     onChange={(e) => {
@@ -672,9 +676,8 @@ export default function NewPackage() {
                   <Controls.Select
                     name="timeFrameID"
                     label="Chọn khung thời gian"
-                    m={1}
-                    width="87%"
-                    // // minWidth="85%"
+                    // m={1}
+                    width="86%"
                     maxWidth="85%"
                     value={formik.values.timeFrameID}
                     onChange={(e) => {

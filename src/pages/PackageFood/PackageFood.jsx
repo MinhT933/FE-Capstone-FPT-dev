@@ -47,9 +47,10 @@ const TABLE_HEAD = [
   { id: "endSale", label: "Ngày nghỉ bán", alignRight: false },
   { id: "totalMeal", label: "Buổi", alignRight: false },
   { id: "totalfood", label: "Số món", alignRight: false },
-  { id: "areaSale", label: "Số địa điểm", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
+  { id: "", label: "Cập nhập", alignRight: false },
+  { id: "", label: "Bán/Ngưng bán", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -318,7 +319,7 @@ export default function PackageFood() {
                           </TableCell>
                           <TableCell align="left">{totalMeal}</TableCell>
                           <TableCell align="left">{totalFood}</TableCell>
-                          <TableCell align="left">{totalStation}</TableCell>
+                          {/* <TableCell align="left">{totalStation}</TableCell> */}
                           <TableCell align="left">
                             <div>
                               {status === "inActive" && (
