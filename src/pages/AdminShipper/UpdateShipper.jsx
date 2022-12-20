@@ -54,10 +54,12 @@ export default function UpdateShipper() {
     Navigate("/");
   }
 
+  console.log(valueStarTime);
+
   React.useEffect(() => {
     API("GET", URL_API + `/shippers/${id}`, null, token)
       .then((res) => {
-        console.log(res);
+        console.log(res.data.result.account.profile.DOB);
         formik.setFieldValue(
           "fullName",
           res.data.result.account.profile.fullName
@@ -99,7 +101,6 @@ export default function UpdateShipper() {
     },
 
     onSubmit: async (values) => {
-      console.log(values);
       const data = {
         fullName: formik.values.fullName,
         DOB: handleDate(valueStarTime),
@@ -122,7 +123,7 @@ export default function UpdateShipper() {
     },
   });
   const b = new Date(valueStarTime).toLocaleDateString().split("/");
-  console.log(b);
+
   return (
     <Paper
       title="Cập nhập bếp"
@@ -173,6 +174,7 @@ export default function UpdateShipper() {
 
                 <Controls.DatePicker
                   label="Ngày sinh"
+                  name="DOB"
                   inputFormat="DD-MM-YYYY"
                   value={valueStarTime}
                   onChange={(e) => {

@@ -13,12 +13,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import API from "../../Axios/API/API";
 import TextField from "@mui/material/TextField";
 import { URL_API } from "./../../Axios/URL_API/URL";
-// import OutlinedInput from "@mui/material/OutlinedInput";
-// import InputLabel from "@mui/material/InputLabel";
-// import MenuItem from "@mui/material/MenuItem";
-// import FormControl from "@mui/material/FormControl";
-// import ListItemText from "@mui/material/ListItemText";
-// import Select from "@mui/material/Select";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -29,10 +29,17 @@ import {
   callAPIgetListFoodActive,
 } from "../../redux/action/acction";
 import { useSelector } from "react-redux";
-// import Avatar from "@mui/material/Avatar";
+import Avatar from "@mui/material/Avatar";
 import { CustomizedToast } from "./../../components/Toast/ToastCustom";
 import { SET_VALUE_TAG } from "../../redux/PathAction";
+
 import FormHelperText from "@mui/material/FormHelperText";
+
+
+
+
+
+
 const schema = yup.object().shape({
   name: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
   description: yup.string().required("Vui lòng điền đày đủ thông tin").trim(),
@@ -197,7 +204,7 @@ export default function UpdateFood() {
           </Grid>
 
           <Grid item xs={12}>
-            {/* <div>
+            <div>
               <FormControl sx={{ width: "27.5rem" }}>
                 <InputLabel id="demo-multiple-checkbox-label">
                   Món ăn
@@ -223,9 +230,9 @@ export default function UpdateFood() {
                   ))}
                 </Select>
               </FormControl>
-            </div> */}
+            </div>
 
-            <Autocomplete
+            {/* <Autocomplete
               multiple
               id="checkboxes-tags-demo"
               options={getOptions()}
@@ -256,7 +263,7 @@ export default function UpdateFood() {
                   placeholder="Tìm kiếm..."
                 />
               )}
-            />
+            /> */}
           </Grid>
           <Grid item xs={12}>
             <Controls.TextArea

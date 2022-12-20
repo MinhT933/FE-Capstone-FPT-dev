@@ -18,41 +18,54 @@ import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import API from "../../Axios/API/API";
 import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 
+const schema = yup.object().shape({
+  // name: yup.string().required("Điền đầy đủ thông tin").trim(),
+  // address: yup.string().required("Điền đầy đủ thông tin").trim(),
+  // phone: yup
+  //   .number()
+  //   .min(100000000, "Quá ngắn")
+  //   .max(9999999999, "Quá dài")
+  //   .typeError("Số điện thoại phải nhập số")
+  //   .required("Số điện thoại phải nhập số"),
+  // kitchenId: yup.string().required("Điền đầy đủ thông tin").trim(),
+});
 export default function ChangePassword() {
-  const [pass, setPass] = useState({
-    newPass: "",
-    confirmPass: "",
+  const [newpass, setPassnewpass] = useState({
+    newPassword: "",
     showPass: false,
   });
 
-  const handlePassVisibilty = () => {
-    setPass({
-      ...pass,
-      showPass: !pass.showPass,
-    });
-  };
+  const [oldpass, setPassOld] = useState({
+    oldPassword: "",
+    showPass: false,
+  });
+
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-
   const formik = useFormik({
     //gắn schema để so sánh
-    // validationSchema: schema,
+    validationSchema: schema,
     validateOnMount: true,
     validateOnBlur: true,
-    // initialValues: {
-    //   pass,
-    // },
+    initialValues: {
+      oldPassword: "",
+      newPassword: "",
+    },
 
     //onSubmit ngay từ cái tên đầu nó dùng đẩy data xuống BE
     onSubmit: async (values) => {
-      console.log(values);
+      const data = {
+        oldPassword: formik.values.oldPassword,
+        newPassword: formik.values.newPassword,
+      };
       try {
         const res = await API(
           "PUT",
-          URL_API + "/accounts/forgotPassword",
-          pass.newPass,
+          URL_API + "/accounts/changePassword",
+          data,
           token
         );
 
@@ -63,12 +76,26 @@ export default function ChangePassword() {
         Navigate("/");
       } catch (error) {
         CustomizedToast({
-          message: `đã đổi mật khẩu không thành công`,
+          message: `Đổi mật khẩu không thành công`,
           type: "ERROR",
         });
       }
     },
   });
+
+  const handlePassVisibilty = () => {
+    setPassnewpass({
+      ...newpass,
+      showPass: !newpass.showPass,
+    });
+  };
+
+  const handlePass = () => {
+    setPassOld({
+      ...oldpass,
+      showPass: !oldpass.showPass,
+    });
+  };
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -98,32 +125,32 @@ export default function ChangePassword() {
           >
             <Paper elevation={3} sx={{ padding: 10, marginBottom: 0.5 }}>
               <div style={{ marginBottom: "4%" }}>
-                <h1> Tạo mật khẩu mới </h1>
-                <p sx={{ paddingLeft: "1%", paddingBottom: "2%" }}>
-                  Tạo mật khẩu mới có tối thiểu 6 ký tự. Mật khẩu mạnh là mật
-                  khẩu được kết hợp từ các ký tự, số và dấu câu.
-                </p>
+                <h1>Đổi mật khẩu </h1>
               </div>
               <form onSubmit={formik.handleSubmit}>
                 <Grid container direction="column" spacing={2}>
                   <Grid item>
                     <TextField
-                      type={pass.showPass ? "text" : "newPass"}
+                      type={oldpass.showPass ? "text" : "password"}
                       fullWidth
-                      label="Nhập mật khẩu mới"
+                      name="oldPassword"
+                      label="Nhập mật khẩu cũ"
                       placeholder="Mật khẩu"
                       variant="outlined"
-                      value={pass.newPass}
+                      value={formik.values.oldPassword}
                       required
+                      onChange={(e) => {
+                        formik.handleChange(e);
+                      }}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton
-                              onClick={handlePassVisibilty}
+                              onClick={handlePass}
                               aria-label="toggle password"
                               edge="end"
                             >
-                              {pass.showPass ? (
+                              {oldpass.showPass ? (
                                 <VisibilityOffIcon />
                               ) : (
                                 <VisibilityIcon />
@@ -137,13 +164,17 @@ export default function ChangePassword() {
 
                   <Grid item>
                     <TextField
-                      type={pass.showPass ? "text" : "confirmPass"}
+                      type={newpass.showPass ? "text" : "password"}
                       fullWidth
-                      label="Nhập lại mật khẩu"
+                      name="newPassword"
+                      label="Nhập mật khẩu mới"
                       placeholder="Mật khẩu"
                       variant="outlined"
-                      // value={pass.confirmPass}
+                      value={formik.values.newPassword}
                       required
+                      onChange={(e) => {
+                        formik.handleChange(e);
+                      }}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
@@ -152,7 +183,7 @@ export default function ChangePassword() {
                               aria-label="toggle password"
                               edge="end"
                             >
-                              {pass.showPass ? (
+                              {newpass.showPass ? (
                                 <VisibilityOffIcon />
                               ) : (
                                 <VisibilityIcon />
@@ -163,14 +194,7 @@ export default function ChangePassword() {
                       }}
                     />
                   </Grid>
-                  <Grid container columnSpacing={2}>
-                    <Grid item sx={2}>
-                      <div>
-                        <Checkbox {...label} />
-                        <label>Nhớ mật khẩu</label>
-                      </div>
-                    </Grid>
-                  </Grid>
+
                   <Grid item>
                     <ColorButton
                       type="submit"

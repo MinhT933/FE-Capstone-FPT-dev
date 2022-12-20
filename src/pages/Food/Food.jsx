@@ -22,6 +22,7 @@ import Scrollbar from "./../../components/hook-form/Scrollbar";
 import SearchNotFound from "./../../components/topbar/SearchNotFound";
 import Page from "./../../components/setPage/Page";
 import { UserListHead } from "../../sections/@dashboard/user";
+import moment from "moment";
 // mock
 // import food from "../../_mock/foodsample";
 
@@ -195,6 +196,13 @@ export default function Food() {
     filterName
   );
 
+  const handleDate = (time) => {
+    const a = new Date(time).toLocaleDateString().split("/");
+    if (a[0] < 10) {
+      return `${a[2]}-${a[1]}-0${a[0]}`;
+    } else return `${a[2]}-${a[1]}-${a[0]}`;
+  };
+
   const isUserNotFound = filterFood.length === 0;
   return (
     <Page title="Thức ăn">
@@ -286,9 +294,12 @@ export default function Food() {
                           </TableCell>
                           <TableCell align="left">
                             {new Date(createdAt).toLocaleDateString()}
+                            {/* {createdAt} */}
+                            {/* {handleDate(createdAt)} */}
                           </TableCell>
                           <TableCell align="left">
                             {new Date(updatedAt).toLocaleDateString()}
+                            {/* {handleDate(updatedAt)} */}
                           </TableCell>
                           <TableCell align="left">
                             <div>

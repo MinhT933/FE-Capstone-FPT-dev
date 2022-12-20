@@ -31,7 +31,7 @@ export default function Home() {
       const format = newDate.toLocaleDateString().split("/");
       dataDate.push(`${format[1]}/${format[0]}/${format[2]}`);
     }
-    console.log(dataDate);
+
     return dataDate;
   };
 
@@ -45,6 +45,7 @@ export default function Home() {
     };
     callAPI();
   }, [dispatch, token]);
+  console.log(subcription);
 
   ///hàm tìm gói ăn được mua nhiều nhất
   const findMostPakackagebuy = () => {
@@ -52,7 +53,7 @@ export default function Home() {
     if (subcription.length > 0) {
       var map = new Map();
       const packageBuy = subcription
-        .filter((c) => c.status === "inProgress")
+        .filter((c) => c.status === "done")
         .map((c) => c.packages.id)
         .reduce(function (prev, cur) {
           prev[cur] = (prev[cur] || 0) + 1;
@@ -64,7 +65,7 @@ export default function Home() {
         return packageBuy[a] > packageBuy[b] ? a : b;
       });
       const packageBuyhihi = subcription
-        .filter((c) => c.status === "inProgress")
+        .filter((c) => c.status === "done")
         .find((c) => c.packages.id === key);
 
       const data = {
@@ -79,7 +80,7 @@ export default function Home() {
 
   const findSubCription = () => {
     if (subcription.length > 0) {
-      const packageBuy = subcription.filter((c) => c.status === "inProgress");
+      const packageBuy = subcription.filter((c) => c.status === "done");
     }
   };
   findSubCription();
