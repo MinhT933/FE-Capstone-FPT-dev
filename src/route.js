@@ -51,6 +51,12 @@ import Delivery from "./components/Trip/Delivery";
 import ListDeliveryTrip from "./components/Trip/ListDeliveryTrip";
 import KitchenvieworderByWeek from "./pages/Kitchen/KitchenvieworderByWeek";
 import ListCateTime from "./pages/Time-Cate/ListCateTime";
+import NewSchedule from "./pages/PackageFood/NewSchedule";
+import CreateTrip from "./components/Seesion/CreateTrip";
+import Session from "./pages/Session/Session";
+import SessionDetailTime from "./pages/Session/SessionDetailTime";
+import Trip from "./pages/Session/Trip";
+import FullWidthTabs from "./pages/Session/FullWidthTabs";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -237,6 +243,14 @@ export default function Router() {
 
       children: [
         {
+          path: "NewSchedule",
+          element: (
+            // <ProtectedRouteAuthen>
+            <NewSchedule />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
           path: "Listkitchen",
           element: (
             // <ProtectedRouteAuthen>
@@ -294,12 +308,41 @@ export default function Router() {
           ),
         },
         {
+          path: "createTrip",
+          element: (
+            // <ProtectedRouteAuthen role="admin">
+            <CreateTrip />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
           path: "requestshipper",
           element: (
             // <ProtectedRouteAuthen role="kitchen">
             <RequestShipper />
             // </ProtectedRouteAuthen>
           ),
+        },
+        {
+          path: "listTrip/:id",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <Trip />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "session",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <Session />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "session/updateSession/:id",
+          // element: <SessionDetailTime />,
+          element: <FullWidthTabs />,
         },
         { path: "account/my", element: <Profile /> },
 
