@@ -171,11 +171,11 @@ const navConfigKichen = [
   //   path: "/dashboard/kitchen/kitcheviewnorder",
   //   icon: getIcon("eos-icons:subscription-management"),
   // },
-  // {
-  //   title: "Món ăn chuẩn bị theo tuần",
-  //   path: "/dashboard/kitchen/kitcheViewOrderByWeek",
-  //   icon: getIcon("healthicons:i-schedule-school-date-time"),
-  // },
+  {
+    title: "Món ăn chuẩn bị theo tuần",
+    path: "/dashboard/kitchen/kitcheViewOrderByWeek",
+    icon: getIcon("healthicons:i-schedule-school-date-time"),
+  },
   {
     title: "Phiên làm việc",
     path: "/dashboard/kitchen/session",
