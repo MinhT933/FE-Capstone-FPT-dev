@@ -1,15 +1,20 @@
 import { filter } from "lodash";
 import { useState } from "react";
-// import { Link as  useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import * as React from "react";
+import {
+  Link as RouterLink,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 // material
 import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
+  Avatar,
   TableRow,
   TableBody,
   TableCell,
@@ -18,36 +23,44 @@ import {
   TableContainer,
   TablePagination,
 } from "@mui/material";
-
-//callAPI
-import * as React from "react";
-import { callAPIgetShipperOfKitchen } from "../../redux/action/acction";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-
 // components
 import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
 
+// import NewStationPopup from "src/pages/Station/NewStationPopup";
 // mock
-// import KITCHENSHIPPERLIST from "./KitchenShipperSample";
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+// import STATIONLIST from "./StationSample";
+import { UserListHead } from "../../sections/@dashboard/user";
 
-import RequestShipper from "./RequestShipper";
-import DetailShipper from "./DetailShipper";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { callAPIgetListShipper } from "../../redux/action/acction";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import jwt_decode from "jwt-decode";
+import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
+
+import AdminShipperListToolBar from "../../sections/@dashboard/user/AdminShipperListToolBar";
+import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
+import FreeShipper from "../Kitchen/FreeShipper.jsx";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "image", label: "", alignRight: false },
+  { id: "id", label: "", alignRight: false },
   { id: "fullName", label: "Họ Tên", alignRight: false },
-  //   { id: "id", label: "Mã tài xế", alignRight: false },
+  // { id: "id", label: "Mã tài xế", alignRight: false },
   { id: "phone", label: "Điện thoại", alignRight: false },
   { id: "noPlate", label: "Biển số xe", alignRight: false },
   { id: "vehicleType", label: "Loại xe", alignRight: false },
-  //   { id: "email", label: "Tên tài khoản", alignRight: false },
+  { id: "email", label: "Email", alignRight: false },
+  // { id: "kitchenID", label: "Bếp", alignRight: false },
+  { id: "inWord", label: "Nhận đơn", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
+  // { label: "Thay đổi trạng thái", alignRight: false },
+  // { label: "Chi tiết", alignRight: false },
   { id: "" },
 ];
 
@@ -79,61 +92,99 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_kitchen) =>
-        _kitchen.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_stations) =>
+        _stations.account.profile.fullName
+          .toLowerCase()
+          .indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function KitchenShipperList() {
-  //CallAPIgetListShipper=====================================
-  const dispatch = useDispatch();
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
+  let { id } = useParams();
+  const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
 
-  const profiles = useSelector((state) => {
-    return state.userReducer.profiles;
-  });
-
-  const idKitchen = profiles.id;
-  const Navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  if (token === null) {
-    Navigate("/");
-  }
-
-  React.useEffect(() => {
-    const getfoodByFoodGroupId = async () => {
-      dispatch(await callAPIgetShipperOfKitchen(token, idKitchen));
-    };
-    getfoodByFoodGroupId();
-  }, [dispatch, idKitchen, token]);
-
-  const shipperofkichen = useSelector((state) => {
-    return state.userReducer.shipPerOfKitchen;
-  });
-
-  const getOptions = () => [
-    { id: "active", title: "Hoạt động" },
-    { id: "inActive", title: "Tạm nghỉ" },
-    { id: "All", title: "Tất cả" },
-  ];
-
-  //CallAPIgetListShipper=====================================
-
-  const [Open, setOpen] = useState(false);
-  const [OpenDetail, setOpenDetail] = useState(false);
-  const [valueId, setValueId] = useState();
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("fullName");
+  const [orderBy, setOrderBy] = useState("name");
 
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+  const handleClickOpen = React.useCallback((item) => {
+    setOpen(true);
+    setValue(item);
+  }, []);
+
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  //CALL API====================================================
+  const location = useLocation();
+  const Navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    Navigate("/");
+  }
+  try {
+    var decoded = jwt_decode(token);
+    // valid token format
+  } catch (error) {
+    // return <Navigate to="/" replace />;
+    Navigate("/");
+  }
+  // const decoded = jwt_decode(token);
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const callAPI = async () => {
+      await dispatch(callAPIgetListShipper(token));
+    };
+    callAPI();
+  }, [dispatch, token]);
+
+  const handleDelete = (id, name) => {
+    API("PUT", URL_API + `/shippers/status/${id}`, null, token).then((res) => {
+      try {
+        dispatch(callAPIgetListShipper(token));
+        handleClose();
+        CustomizedToast({
+          message: `Đã cập nhập trạng thái ${name}`,
+          type: "SUCCESS",
+        });
+      } catch (err) {
+        handleClose();
+        CustomizedToast({
+          message: `Cập nhập trạng thái ${name} thất bại`,
+          type: "ERROR",
+        });
+      }
+    }, []);
+  };
+
+  const station = useSelector((state) => {
+    return state.userReducer.listShipper;
+  });
+  //CALL API=====================================================
+  //Thay đổi trạng thái
+  const getOptions = () => [
+    { id: "active", title: "Hoạt động" },
+    // { id: "inActive", title: "Tạm nghỉ" },
+    // { id: "delete", title: "Ngưng hoạt động" },
+    { id: "ban", title: "Bị cấm" },
+
+    { id: "All", title: "Tất cả" },
+  ];
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -143,12 +194,30 @@ export default function KitchenShipperList() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = shipperofkichen.map((n) => n.fullName);
+      const newSelecteds = station.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
+
+  // const handleClick = (event, name) => {
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -163,17 +232,16 @@ export default function KitchenShipperList() {
     setFilterName(event.target.value);
   };
 
-  // const emptyRows =
-  //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - shipper.length) : 0;
-
-  const filteredKitchen = applySortFilter(
-    shipperofkichen,
+  const filteredStations = applySortFilter(
+    station,
     getComparator(order, orderBy),
     filterName
   );
 
-  //setColor button
+  const isStationNotFound = filteredStations.length === 0;
+
   const ColorButton = styled(Button)(({ theme }) => ({
+    textTransform: "none",
     color: theme.palette.getContrastText("#FFCC32"),
     backgroundColor: "#FFCC33",
     "&:hover": {
@@ -182,16 +250,9 @@ export default function KitchenShipperList() {
     display: "center",
   }));
 
-  const handleDetails = (id) => {
-    setOpenDetail(true);
-    setValueId(id);
-  };
-
-  const isKitchenNotFound = filteredKitchen.length === 0;
-
   return (
-    <Page title="User">
-      <Container>
+    <Page title="Người giao hàng">
+      <Container maxWidth={false} fullWitdh maxwidth="md">
         <Stack
           direction="row"
           alignItems="center"
@@ -201,14 +262,22 @@ export default function KitchenShipperList() {
           <Typography variant="h4" gutterBottom>
             {/* User */}
           </Typography>
-
-          <ColorButton variant="contained" onClick={() => setOpen(true)}>
-            Yêu cầu thêm tài xế
-          </ColorButton>
+          {decoded.role === "admin" && (
+            <ColorButton
+              variant="contained"
+              component={RouterLink}
+              to="#"
+              onClick={() => {
+                SetOpenPopUp(true);
+              }}
+            >
+              Thêm tài xế cho bếp
+            </ColorButton>
+          )}
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <AdminShipperListToolBar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -222,76 +291,135 @@ export default function KitchenShipperList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={shipperofkichen.length}
+                  rowCount={station.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
-                  options={getOptions()}
                 />
                 <TableBody>
-                  {filteredKitchen
+                  {filteredStations
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
                         id,
-                        // avatarUrl,
-                        account,
-                        // phone,
+                        fullName,
                         noPlate,
                         vehicleType,
                         status,
-                        // email,
-                        // kitchenID,
+                        account,
                       } = row;
-
-                      const isItemSelected =
-                        selected.indexOf(account.profile.fullName) !== -1;
 
                       return (
                         <TableRow
                           hover
                           key={id}
                           tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                          onClick={() => {
-                            handleDetails(id);
-                          }}
+                          // role="checkbox"
+                          // selected={isItemSelected}
+                          // aria-checked={isItemSelected}
                         >
-                          <TableCell>
-                            <Avatar
-                              sx={{ marginLeft: "50%" }}
-                              alt={account.profile.fullName}
-                              src={account.profile.avatar}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle2" noWrap>
-                              {account.profile.fullName}
-                            </Typography>
+                          <TableCell align="left">{""}</TableCell>
+
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={2}
+                            >
+                              <Avatar
+                                alt={fullName}
+                                src={row.account.profile?.avatar}
+                              />
+                              <Typography variant="subtitle2" noWrap>
+                                {row.account.profile?.fullName}
+                              </Typography>
+                            </Stack>
                           </TableCell>
 
-                          <TableCell align="left">{account.phone}</TableCell>
+                          <TableCell align="left">
+                            {row.account?.phone}
+                          </TableCell>
+
                           <TableCell align="left">{noPlate}</TableCell>
                           <TableCell align="left">{vehicleType}</TableCell>
+
+                          <TableCell align="left">
+                            {" "}
+                            {row.account.profile?.email}{" "}
+                          </TableCell>
+                          {/* <TableCell align="left">{row.kitchen?.address}</TableCell> */}
+
                           <TableCell align="left">
                             <div>
+                              {/* {status === "inActive" && (
+                                                                <Label color="warning">Tạm nghỉ</Label>
+                                                            )} */}
+                              {status === "active" && (
+                                <Label color="success">Sẵn sàng</Label>
+                              )}
+                              {/* {status === "delete" && (
+                                                                <Label color="error">Ngưng hoạt động</Label>
+                                                            )} */}
                               {status === "inActive" && (
-                                // <Alert severity="warning">inActive</Alert>
                                 <Label color="error">Tạm nghỉ</Label>
                               )}
-                              {status === "active" && (
-                                // <Alert severity="info">waiting</Alert>
+                            </div>
+                          </TableCell>
+
+                          <TableCell align="left">
+                            <div>
+                              {/* {status === "inActive" && (
+                                                                <Label color="warning">Tạm nghỉ</Label>
+                                                            )} */}
+                              {account.status === "active" && (
                                 <Label color="success">Hoạt động</Label>
                               )}
+                              {/* {status === "delete" && (
+                                                                <Label color="error">Ngưng hoạt động</Label>
+                                                            )} */}
+                              {account.status === "ban" && (
+                                <Label color="error">Bị cấm</Label>
+                              )}
                             </div>
+                          </TableCell>
+
+                          <TableCell align="left">
+                            {/* {status === "active" ? (
+                                                            <ButtonCustomize
+                                                                variant="outlined"
+                                                                onClick={() => {
+                                                                    handleDelete(id, account.profile?.fullName);
+                                                                }}
+                                                                nameButton="Chặn"
+                                                            >
+                                                                Chặn
+                                                            </ButtonCustomize>
+                                                        ) : (
+                                                            <ButtonCustomize
+                                                                variant="outlined"
+                                                                onClick={() => {
+                                                                    handleDelete(id, account.profile?.fullName);
+                                                                }}
+                                                                nameButton="Mở chặn"
+                                                            >
+                                                                Mở chặn
+                                                            </ButtonCustomize>
+                                                        )} */}
+
+                            {/* <ButtonCustomize
+                              variant="outlined"
+                              onClick={() => handleClickOpen(row)}
+                              nameButton={
+                                status === "active" ? "Chặn" : "Mở chặn"
+                              }
+                            /> */}
                           </TableCell>
                         </TableRow>
                       );
                     })}
                 </TableBody>
-                {isKitchenNotFound && (
+
+                {isStationNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -307,7 +435,7 @@ export default function KitchenShipperList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={shipperofkichen.length}
+            count={station.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -318,14 +446,25 @@ export default function KitchenShipperList() {
               return "" + from + "-" + to + " của " + count;
             }}
           />
+          {open && (
+            <ConfirmDialog
+              open={open}
+              content={value.account.profile?.fullName}
+              handleClickOpen={handleClickOpen}
+              handleClose={handleClose}
+              onClick={() =>
+                handleDelete(value.id, value.account.profile?.fullName)
+              }
+            />
+          )}
         </Card>
       </Container>
-      <RequestShipper Open={Open} setOpen={setOpen} />
-      <DetailShipper
-        OpenDetail={OpenDetail}
-        setOpenDetail={setOpenDetail}
-        id={valueId}
-      />
+      {/* <NewStationPopup OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp}></NewStationPopup> */}
+
+      <FreeShipper
+        OpenPopUp={OpenPopUp}
+        SetOpenPopUp={SetOpenPopUp}
+      ></FreeShipper>
     </Page>
   );
 }
