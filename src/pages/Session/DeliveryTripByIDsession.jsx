@@ -19,6 +19,7 @@ import {
   TableContainer,
   TablePagination,
   Table,
+  TableHead,
 } from "@mui/material";
 // components
 
@@ -42,7 +43,7 @@ import Iconify from "../../components/hook-form/Iconify";
 import Avatar from "@mui/material/Avatar";
 import TripBySessionIDtoolbar from "./../../sections/@dashboard/user/TripBySessionIDtoolbar";
 import Label from "../../components/label/label";
-import { TableHead } from "@mui/material/TableHead";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD_TOTAL = [

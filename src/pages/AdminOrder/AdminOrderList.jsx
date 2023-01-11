@@ -22,9 +22,7 @@ import Label from "../../components/label/label";
 import Scrollbar from "../../components/hook-form/Scrollbar";
 import SearchNotFound from "../../components/topbar/SearchNotFound";
 import Page from "../../components/setPage/Page";
-// import NewStationPopup from "src/pages/Station/NewStationPopup";
-// mock
-// import STATIONLIST from "./StationSample";
+
 import { UserListHead } from "../../sections/@dashboard/user";
 
 import { useDispatch } from "react-redux";
@@ -217,7 +215,7 @@ export default function AdminOrderList() {
                             >
                               <Avatar alt={name} src={row.packages?.image} />
                               <Typography variant="subtitle2" noWrap>
-                                {customer.name}
+                                {/* {customer.name} */}
                               </Typography>
                               <Typography variant="subtitle2" noWrap>
                                 {row.packages?.name}
@@ -226,7 +224,7 @@ export default function AdminOrderList() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {customer.account.profile?.fullName}
+                            {/* {customer.account.profile?.fullName} */}
                           </TableCell>
                           <TableCell align="left">{totalPrice}</TableCell>
                           {/* <TableCell align="left">{phone}</TableCell> */}
@@ -239,7 +237,7 @@ export default function AdminOrderList() {
                           <TableCell align="left">
                             {packages?.totalFood}
                           </TableCell>
-                          <TableCell align="left">{customer.address}</TableCell>
+                          {/* <TableCell align="left">{customer.address}</TableCell> */}
                           <TableCell align="left">{startDelivery}</TableCell>
 
                           {/* <TableCell align="left">
