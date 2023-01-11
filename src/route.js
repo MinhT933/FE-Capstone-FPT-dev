@@ -51,6 +51,9 @@ import Delivery from "./components/Trip/Delivery";
 import ListDeliveryTrip from "./components/Trip/ListDeliveryTrip";
 import KitchenvieworderByWeek from "./pages/Kitchen/KitchenvieworderByWeek";
 import ListCateTime from "./pages/Time-Cate/ListCateTime";
+import Trip from './pages/Session/Trip';
+import Session from './pages/Session/Session';
+import FullWidthTabs from "./pages/Session/FullWidthTabs";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
   const token = localStorage.getItem("token");
@@ -300,6 +303,27 @@ export default function Router() {
             <RequestShipper />
             // </ProtectedRouteAuthen>
           ),
+        },
+        {
+          path: "listTrip/:id",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <Trip />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "session",
+          element: (
+            // <ProtectedRouteAuthen role="kitchen">
+            <Session />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "session/updateSession/:id",
+          // element: <SessionDetailTime />,
+          element: <FullWidthTabs />,
         },
         { path: "account/my", element: <Profile /> },
 
