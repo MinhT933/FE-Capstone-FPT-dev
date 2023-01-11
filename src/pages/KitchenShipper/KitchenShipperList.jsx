@@ -45,7 +45,7 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 import AdminShipperListToolBar from "../../sections/@dashboard/user/AdminShipperListToolBar";
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
-import FreeShipper from "../Kitchen/FreeShipper.jsx";
+import FreeShipper from "../Kitchen/FreeShipper";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [

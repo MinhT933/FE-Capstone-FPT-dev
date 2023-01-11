@@ -145,31 +145,15 @@ const navConfigAdmin = [
 ];
 
 const navConfigKichen = [
-  // {
-  //   title: "Bếp xem bếp",
-  //   path: "/dashboard/kitchen/Listkitchen",
-  //   icon: getIcon("mdi:card-account-details-star-outline"),
-  // },
-  {
-    title: "Chuẩn bị món ăn theo ngày",
-    path: "/dashboard/kitchen/kitchenorder",
-    icon: getIcon("ic:outline-restaurant-menu"),
-  },
-
-  {
-    title: "Đơn hàng theo ngày",
-    path: "/dashboard/kitchen/kitcheviewnorder",
-    icon: getIcon("eos-icons:subscription-management"),
-  },
-  {
-    title: "Món ăn chuẩn bị theo tuần",
-    path: "/dashboard/kitchen/kitcheViewOrderByWeek",
-    icon: getIcon("healthicons:i-schedule-school-date-time"),
-  },
   {
     title: "Người giao hàng",
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
+  },
+  {
+    title: "Phiên làm việc",
+    path: "/dashboard/kitchen/session",
+    icon: getIcon("healthicons:i-schedule-school-date-time"),
   },
 ];
 const navConfig = [
