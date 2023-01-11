@@ -1579,3 +1579,23 @@ export const callAPIgetListFeedbackByIDPac = (token, id) => {
     }
   };
 };
+
+export const callAPIgetListFreeShipper = (token) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + "/shippers/free_shipper",
+        null,
+        token
+      );
+
+      dispatch(
+        createAction({
+          type: PathAction.GET_LIST_FREE_SHIPPER,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {}
+  };
+};

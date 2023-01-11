@@ -50,6 +50,7 @@ const initialState = {
 
   listDelivery: [],
   listFoodPrepare: [],
+  listFreeShipper: [],
 
   listShipperByStatus: [],
   listIdKitchen: [],
@@ -231,6 +232,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       state.listOderByDate = payload;
       break;
     default:
+    case PathAction.GET_LIST_FREE_SHIPPER:
+      state.listFreeShipper = payload;
+      break;
   }
   return { ...state };
 }
