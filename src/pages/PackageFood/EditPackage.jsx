@@ -36,12 +36,9 @@ const schema = yup.object().shape({
     .number()
     .moreThan(0, "Giá phải lớn hơn ko")
     .required("Vui lòng nhập lại giá"),
-  // totalStation: yup.string().required("nhập tổng số đỉa điểm giao").trim(),
   totalMeal: yup.string().required("Vui lòng nhập bữa ăn").trim(),
   description: yup.string().required("Vui lòng nhập mô tả").trim(),
   totalDate: yup.string().required("Vui lòng nhập tổng ngày").trim(),
-  timeFrameID: yup.string().required().trim(),
-  totalFood: yup.string().required("Vui lòng nhập tổng số thức ăn").trim(),
 });
 
 //styles paper
@@ -91,35 +88,20 @@ export default function EditPackage() {
         setPackageItem(res.data.result.packageItem);
         formik.setFieldValue("image", res.data.result.image);
         formik.setFieldValue("price", res.data.result.price);
-        formik.setFieldValue("totalStation", res.data.result.totalStation);
         formik.setFieldValue("totalMeal", res.data.result.totalMeal);
         setValueStarTime(res.data.result.startSale);
         formik.setFieldValue("name", res.data.result.name);
         setValueEndtime(res.data.result.endSale);
         formik.setFieldValue("totalDate", res.data.result.totalDate);
-        formik.setFieldValue("totalFood", res.data.result.totalFood);
+
         formik.setFieldValue("description", res.data.result.description);
-        formik.setFieldValue("timeFrameID", res.data.result.timeFrame.id);
-        handClickTimeFrame(res.data.result.timeFrame.id);
+
         formik.setFieldValue("categoryID", res.data.result.packageCategory.id);
       });
     };
     getTimeFrame();
   }, [dispatch, token, id]);
-  /// làm sao chó nó chạy cùng 1 lúc
-  const [bit, setBit] = useState([]);
-  const handClickTimeFrame = (id) => {
-    API("GET", URL_API + `/time-frame/${id}`, null, token)
-      .then((res) => {
-        let filter = res.data.result.dateFilter;
-        let data = [];
-        data = [...filter];
-        setBit(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
 
   const getGroupfood = useSelector((state) => {
     return state.userReducer.listGroupFoodByStatus;
@@ -131,13 +113,6 @@ export default function EditPackage() {
     return state.userReducer.listCategoryPackage;
   });
 
-  const getTimeFrameOptions = () => {
-    const TimeFrameData = [];
-    for (var i = 0; i < timeframe.length; i++) {
-      TimeFrameData.push({ id: timeframe[i].id, title: timeframe[i].name });
-    }
-    return TimeFrameData;
-  };
   const getGroupFoodOptions = () => {
     const groupFoodData = [];
     for (var i = 0; i < getGroupfood.length; i++) {
@@ -161,7 +136,7 @@ export default function EditPackage() {
   const handleDate = (time) => {
     const a = new Date(time).toLocaleDateString().split("/");
     if (a[0] < 10) {
-      return `${a[2]}-${a[1]}-0${a[0]}`;
+      return `${a[2]}-0${a[1]}-${a[0]}`;
     } else return `${a[2]}-${a[1]}-${a[0]}`;
   };
 
@@ -171,8 +146,6 @@ export default function EditPackage() {
     const packageItemUpdate = [...packageItem];
     packageItemUpdate[indexUpdate].foodGroup.id = e.target.value;
     setPackageItem(packageItemUpdate);
-    // const index = data.findIndex((item) => item.itemCode === count);
-    // data[index].foodGroup.id = a.id;
     const itemGroupFood = getGroupfood.find((c) => c.id === e.target.value);
     var priceMost = Math.max.apply(
       Math,
@@ -189,13 +162,11 @@ export default function EditPackage() {
     initialValues: {
       name: "",
       price: "",
-      // totalStation: "",
       totalMeal: "",
       totalDate: "",
       description: "",
       timeFrameID: "",
       image: null,
-      totalFood: "",
       categoryID: "",
     },
 
@@ -204,18 +175,14 @@ export default function EditPackage() {
       formData.append("name", formik.values.name);
       formData.append("description", formik.values.description);
       formData.append("price", formik.values.price);
-      formData.append("totalStation", 3);
+
       formData.append("totalMeal", formik.values.totalMeal);
       formData.append("totalDate", formik.values.totalDate);
       formData.append("endSale", handleDate(valueEndTime));
       formData.append("startSale", handleDate(valueStarTime));
-      formData.append("timeFrameID", formik.values.timeFrameID);
-      formData.append("totalFood", formik.values.totalFood);
       formData.append("categoryID", formik.values.categoryID);
 
-      // console.log(endDate > startDate);
       try {
-        // if (endDate > startDate) {
         const res = await API(
           "PUT",
           URL_API + `/packages/update/${id}`,
@@ -397,21 +364,21 @@ export default function EditPackage() {
               <Grid item xs={6}>
                 <Controls.Input
                   variant="outlined"
-                  name="totalFood"
-                  label="Tổng số thức ăn"
+                  name="totalMeal"
+                  label="Tổng buổi ăn"
                   disabled
-                  value={formik.values.totalFood}
+                  value={formik.values.totalMeal}
                   onChange={(event) => {
                     formik.handleChange(event);
                   }}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.totalFood && formik.errors.totalFood && (
+                {formik.touched.totalMeal && formik.errors.totalMeal && (
                   <FormHelperText
                     error
                     id="standard-weight-helper-text-username-login"
                   >
-                    {formik.errors.totalFood}
+                    {formik.errors.totalMeal}
                   </FormHelperText>
                 )}
               </Grid>
@@ -437,47 +404,6 @@ export default function EditPackage() {
                 )}
               </Grid>
 
-              {/* <Grid item xs={6}>
-                <Controls.Input
-                  variant="outlined"
-                  label="Số địa điểm giao hàng"
-                  name="totalStation"
-                  value={formik.values.totalStation}
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                  }}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.totalStation && formik.errors.totalStation && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.totalStation}
-                  </FormHelperText>
-                )}
-              </Grid> */}
-              <Grid item xs={6}>
-                <Controls.Input
-                  variant="outlined"
-                  name="totalMeal"
-                  label="Tổng buổi ăn"
-                  disabled
-                  value={formik.values.totalMeal}
-                  onChange={(event) => {
-                    formik.handleChange(event);
-                  }}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.totalMeal && formik.errors.totalMeal && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.totalMeal}
-                  </FormHelperText>
-                )}
-              </Grid>
               <Grid item xs={6}>
                 <DatePicker
                   variant="outlined"
@@ -562,50 +488,6 @@ export default function EditPackage() {
                     {formik.errors.description}
                   </FormHelperText>
                 )}
-              </Grid>
-              <Grid item xs={6}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Controls.Select
-                    name="timeFrameID"
-                    label="Chọn khung thời gian"
-                    width="86%"
-                    maxWidth="85%"
-                    disabled
-                    value={formik.values.timeFrameID}
-                    onChange={(e) => {
-                      const a = timeframe.find((c) => c.id === e.target.value);
-                      formik.setFieldValue(
-                        "totalMeal",
-                        a.dateFilter.split("").filter((i) => i === "1").length
-                      );
-                      formik.setFieldValue(
-                        "totalDate",
-                        a.name.split("-").length
-                      );
-                      formik.setFieldValue(
-                        "totalFood",
-                        a.dateFilter.split("").filter((i) => i === "1").length
-                      );
-                      formik.setFieldValue("timeFrameID", a.id);
-                      handClickTimeFrame(a.id);
-                    }}
-                    onBlur={formik.handleBlur}
-                    options={getTimeFrameOptions()}
-                  />
-                  {formik.touched.timeFrameID && formik.errors.timeFrameID && (
-                    <FormHelperText
-                      error
-                      id="standard-weight-helper-text-username-login"
-                    >
-                      {formik.errors.timeFrameID}
-                    </FormHelperText>
-                  )}
-                </Box>
               </Grid>
               {handleItem().length > 0 &&
                 handleItem().map((item) => {

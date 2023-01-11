@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import * as React from "react";
 // material
 import { styled } from "@mui/material/styles";
 import {
@@ -10,19 +9,16 @@ import {
   OutlinedInput,
   InputAdornment,
 } from "@mui/material";
-
 // component
+import { Grid } from "@mui/material";
 import Iconify from "../../../components/hook-form/Iconify";
+
 import Controls from "./../../../components/Control/Controls";
-import {
-  callAPIgetListCategory,
-  callAPIgetListFoodfilterCate,
-} from "../../../redux/action/acction";
+
+import { callAPIgetListStationByStatus } from "../../../redux/action/acction";
+
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { Grid } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
@@ -48,58 +44,37 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-Foodlistoolbar.propTypes = {
+DetailBatchtoolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
 };
 
-export default function Foodlistoolbar({
+const token = localStorage.getItem("token");
+if (token === "null") {
+}
+
+export default function DetailBatchtoolbar({
   numSelected,
   filterName,
   onFilterName,
   options,
+  date,
 }) {
-  const [id, setID] = useState("");
   const dispatch = useDispatch();
-  const [status, setStatus] = useState("All");
-
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  if (token === null) {
-    navigate("/");
-  }
-
+  const [haha, setHaha] = useState("All");
   const handleChange = async (event) => {
-    setStatus(event.target.value === "All" ? "" : event.target.value);
+    console.log(event.target.value);
+    setHaha(event.target.value === "All" ? "" : event.target.value);
 
-    await dispatch(
-      callAPIgetListFoodfilterCate(
+    //Admin
+    dispatch(
+      await callAPIgetListStationByStatus(
         token,
-        id,
         event.target.value === "All" ? "" : event.target.value
       )
     );
   };
-  React.useEffect(() => {
-    const callAPI = async () => {
-      dispatch(await callAPIgetListCategory(token));
-    };
-    callAPI();
-  }, [dispatch]);
-
-  const category = useSelector((state) => {
-    return state.userReducer.listCategory;
-  });
-
-  const OptionCate = () => {
-    const item = [];
-    for (var i = 0; i < category.length; i++) {
-      item.push({ id: category[i].id, title: category[i].name });
-    }
-    return item;
-  };
-
   return (
     <RootStyle
       sx={{
@@ -128,36 +103,19 @@ export default function Foodlistoolbar({
               </InputAdornment>
             }
           />
-
           <Grid
             container
             spacing={2}
             sx={{ marginLeft: "2%", marginTop: "0.1rem" }}
           >
-            <Grid xs={2.5}>
-              <Controls.Select
-                label="Trạng thái"
-                width="10rem"
-                options={options}
-                onChange={handleChange}
-                value={status}
-              />
-            </Grid>
-            <Grid xs={0.5}>
-              <Controls.Select
-                label="Loại thức ăn"
-                width="10rem"
-                options={OptionCate()}
-                value={id}
-                onChange={async (e) => {
-                  const a = category.find((c) => c.id === e.target.value);
-                  setID(a.id);
-                  dispatch(
-                    await callAPIgetListFoodfilterCate(token, a.id, status)
-                  );
-                }}
-              />
-            </Grid>
+            <Controls.Select
+              label="Trạng thái"
+              width="10rem"
+              marginRight="50%  "
+              options={options}
+              onChange={handleChange}
+              value={haha}
+            />
           </Grid>
         </>
       )}
@@ -169,6 +127,12 @@ export default function Foodlistoolbar({
           </IconButton>
         </Tooltip>
       ) : (
+        // <Tooltip title="Filter list">
+        //   <IconButton>
+        //     <Iconify icon="ic:round-filter-list" />
+        //   </IconButton>
+        // </Tooltip>
+
         <></>
       )}
     </RootStyle>

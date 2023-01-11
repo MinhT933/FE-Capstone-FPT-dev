@@ -1,7 +1,8 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as  useNavigate } from "react-router-dom";
+// import { Link as  useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 // material
 import {
   Card,
@@ -68,7 +69,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-
 function applySortFilter(array, comparator, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -101,7 +101,6 @@ export default function KitchenShipperList() {
     Navigate("/");
   }
 
-
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
       dispatch(await callAPIgetShipperOfKitchen(token, idKitchen));
@@ -118,7 +117,6 @@ export default function KitchenShipperList() {
     { id: "inActive", title: "Tạm nghỉ" },
     { id: "All", title: "Tất cả" },
   ];
-
 
   //CallAPIgetListShipper=====================================
 
@@ -151,8 +149,6 @@ export default function KitchenShipperList() {
     }
     setSelected([]);
   };
-
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -263,18 +259,18 @@ export default function KitchenShipperList() {
                             handleDetails(id);
                           }}
                         >
-                          <TableCell >
-                            <Avatar sx={{ marginLeft: "50%" }}
+                          <TableCell>
+                            <Avatar
+                              sx={{ marginLeft: "50%" }}
                               alt={account.profile.fullName}
                               src={account.profile.avatar}
                             />
                           </TableCell>
-                          <TableCell >
+                          <TableCell>
                             <Typography variant="subtitle2" noWrap>
                               {account.profile.fullName}
                             </Typography>
                           </TableCell>
-
 
                           <TableCell align="left">{account.phone}</TableCell>
                           <TableCell align="left">{noPlate}</TableCell>
@@ -291,7 +287,6 @@ export default function KitchenShipperList() {
                               )}
                             </div>
                           </TableCell>
-
                         </TableRow>
                       );
                     })}
