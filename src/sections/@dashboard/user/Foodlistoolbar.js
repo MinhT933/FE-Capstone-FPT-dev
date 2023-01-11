@@ -10,7 +10,6 @@ import {
   OutlinedInput,
   InputAdornment,
 } from "@mui/material";
-
 // component
 import Iconify from "../../../components/hook-form/Iconify";
 import Controls from "./../../../components/Control/Controls";
@@ -22,7 +21,6 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +52,10 @@ Foodlistoolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
+const token = localStorage.getItem("token");
+if (token === "null") {
+}
+
 export default function Foodlistoolbar({
   numSelected,
   filterName,
@@ -63,12 +65,6 @@ export default function Foodlistoolbar({
   const [id, setID] = useState("");
   const dispatch = useDispatch();
   const [status, setStatus] = useState("All");
-
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  if (token === null) {
-    navigate("/");
-  }
 
   const handleChange = async (event) => {
     setStatus(event.target.value === "All" ? "" : event.target.value);

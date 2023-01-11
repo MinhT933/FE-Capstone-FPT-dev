@@ -84,7 +84,7 @@ export default function KitchenOrderList() {
           marginBottom: "10%",
         }}
       >
-        <Container maxWidth={false}>
+        <Container maxWidth={false} fullWitdh maxwidth="md">
           <Stack
             direction="row"
             alignItems="center"

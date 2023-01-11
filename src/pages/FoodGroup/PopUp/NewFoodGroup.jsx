@@ -63,7 +63,7 @@ export default function NewFoodGroup(props) {
   const listFoodSelectbox = useSelector((state) => {
     return state.userReducer.listFoodActive;
   });
-
+ 
   const getOptions = () => {
     const item = [];
     for (var i = 0; i < listFoodSelectbox.length; i++) {

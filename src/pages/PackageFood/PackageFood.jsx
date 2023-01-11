@@ -40,13 +40,13 @@ const TABLE_HEAD = [
   { id: "image", label: "", alignRight: false },
   { id: "name", label: "Tên", alignRight: false },
   { id: "price", label: "Giá", alignRight: false },
-  // { id: "type", label: "Khung thời gian", alignRight: false, width: "5rem" },
+  { id: "type", label: "Khung thời gian", alignRight: false, width: "5rem" },
   { id: "createdAt", label: "Ngày thêm", alignRight: false },
   { id: "updatedate", label: "Ngày sửa", alignRight: false },
   { id: "startSale", label: "Ngày bán", alignRight: false },
   { id: "endSale", label: "Ngày nghỉ bán", alignRight: false },
   { id: "totalMeal", label: "Buổi", alignRight: false },
-  // { id: "totalfood", label: "Số món", alignRight: false },
+  { id: "totalfood", label: "Số món", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "description", label: "Mô tả", alignRight: false },
   { id: "", label: "Cập nhập", alignRight: false },
@@ -287,7 +287,7 @@ export default function PackageFood() {
                         startSale,
                         endSale,
                         totalMeal,
-                        // totalFood,
+                        totalFood,
                         // totalStation,
                         status,
                         timeFrame,
@@ -313,7 +313,7 @@ export default function PackageFood() {
                               currency: "VND",
                             }).format(price)}
                           </TableCell>
-                          {/* <TableCell align="left">{timeFrame.name}</TableCell> */}
+                          <TableCell align="left">{timeFrame.name}</TableCell>
                           <TableCell width="8%" align="left">
                             {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
@@ -327,7 +327,7 @@ export default function PackageFood() {
                             {new Date(endSale).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">{totalMeal}</TableCell>
-                          {/* <TableCell align="left">{totalFood}</TableCell> */}
+                          <TableCell align="left">{totalFood}</TableCell>
                           {/* <TableCell align="left">{totalStation}</TableCell> */}
                           <TableCell align="left">
                             <div>

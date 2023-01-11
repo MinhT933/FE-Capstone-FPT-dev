@@ -151,7 +151,7 @@ export default function Feedbacktoolbar({
   const handlefilterRate = (e) => {
     dispatch(
       createAction({
-        type: "FILLTER_FLAG",
+        type: "FILLTER_RATE",
         payload: e.target.value,
       })
     );
@@ -209,6 +209,7 @@ export default function Feedbacktoolbar({
                     await dispatch(callAPIgetListFeedbackByIDPac(token, a.id));
                     setValue(a.id);
                   }
+                  console.log(a.id);
                 }}
                 value={value}
               />

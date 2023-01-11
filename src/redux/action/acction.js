@@ -10,7 +10,6 @@ import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 
 // hàm này được gọi callAPIgetFoodbyGroupFoodId hàm khởi tạo để dùng chung nè
 
@@ -19,20 +18,28 @@ import { useNavigate } from "react-router-dom";
 export const createAction = ({ type, payload }) => {
   return { type, payload };
 };
-
 //B2: ở đây tao tạo một hàm gọi ( around function) để call API
 
 export const callAPIgetListFood = (token) => {
   return async (dispatch) => {
     try {
+      //res (resonse) ở đây theo tao biết là nhận vào data mà api đã gọi
+      //khi call nó sẽ trả về môt res chứa các thông
+      // muốn biết thì xuống dưới consle.log(res) ra xem nó trả về cái gì
+      /// API là path của API dùng để gọi nó lên 'GET' là phương thức
+      // hay trong anh văn gọi là 'mê thót (methods)' đó
       const res = await API("GET", URL_API + "/foods", null, token);
+      // hàm dispatch hiểu nôm na là lưu store type và các value gắn cùng
+      // gg search đi
       dispatch(
+        //dây quay lại nhìn ở trên đó tao có type với payload kìa
+        //lưu tham số và data truyền vào để bắn lên store(userReducer)
         createAction({
           type: PathAction.GET_LIST_FOOD,
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -52,7 +59,7 @@ export const callAPIgetListFoodByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -65,14 +72,14 @@ export const callAPIgetAPIcount = (token, status) => {
         null,
         token
       );
-
+      console.log(res.data.result.length);
       dispatch(
         createAction({
           type: PathAction.GET_COUNT,
           payload: res.data.result.length,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -110,7 +117,7 @@ export const callAPIgetListFoodfilterCate = (token, id, status) => {
         const res = await API(
           "GET",
           URL_API +
-            `/foods/byCatefory_filter?categoryId=${id}&status=${status}`,
+          `/foods/byCatefory_filter?categoryId=${id}&status=${status}`,
           null,
           token
         );
@@ -153,7 +160,7 @@ export const callAPIgetListFoodActive = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -170,7 +177,7 @@ export const callAPIGetListPackage = (token) => {
         })
       );
       // console.log(res.data.result);
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -252,7 +259,7 @@ export const getFoodPrepareByWeek = async (token, startDate, endDate) => {
       const res = await API(
         "GET",
         URL_API +
-          `/orders/food-prepare/byWeek?startDate=${startDate}&endDate=${endDate}`,
+        `/orders/food-prepare/byWeek?startDate=${startDate}&endDate=${endDate}`,
         null,
         token
       );
@@ -290,7 +297,7 @@ export const callAPIgetListCategory = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -304,7 +311,7 @@ export const callAPIgetListStation = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -442,7 +449,7 @@ export const callAPIgetShipperByID = (token, id) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -457,7 +464,7 @@ export const callAPIgetGroupFood = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -531,7 +538,7 @@ export const callAPIProfile = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -550,7 +557,7 @@ export const callAPIgetFoodbyGroupFoodId = (id, token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 //---------------------------------------------------------------
@@ -564,7 +571,7 @@ export const callAPIgetTimeFrame = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 export const callAPIgetShipperOfKitchen = (token, id) => {
@@ -572,9 +579,10 @@ export const callAPIgetShipperOfKitchen = (token, id) => {
     try {
       const res = await API(
         "GET",
-        URL_API + `/kitchens/shipper/${id}`,
+        URL_API + "/shippers/byKitchen",
         null,
-        token
+        token,
+        id
       );
       dispatch(
         createAction({
@@ -582,26 +590,7 @@ export const callAPIgetShipperOfKitchen = (token, id) => {
           payload: res.data.result.shippers,
         })
       );
-    } catch (err) {}
-  };
-};
-
-export const callAPIgetShipperByKitchenID = (token, id) => {
-  return async (dispatch) => {
-    try {
-      const res = await API(
-        "GET",
-        URL_API + `/shippers/byKitchen?kitchenId=${id}&status=active`,
-        null,
-        token
-      );
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_SHIPPER_BY_IDKITCHEN,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -620,7 +609,7 @@ export const callAPIGetStationByKitchen = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -635,7 +624,7 @@ export const callAPIGetSlot = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -647,10 +636,10 @@ export const callAPIGetListDelivery = (token, status, valueStarTime) => {
       const res = await API(
         "GET",
         URL_API +
-          "/delivery_trips/byKitchen?status=" +
-          status +
-          "&deliveryDate=" +
-          valueStarTime,
+        "/delivery_trips/byKitchen?status=" +
+        status +
+        "&deliveryDate=" +
+        valueStarTime,
         null,
         token
       );
@@ -660,7 +649,7 @@ export const callAPIGetListDelivery = (token, status, valueStarTime) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 export const callAPIgetAccountShipperByStatusActive = (token) => {
@@ -678,7 +667,7 @@ export const callAPIgetAccountShipperByStatusActive = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -699,7 +688,7 @@ export const callAPIgetShipperByActive = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -762,7 +751,7 @@ export const callAPIgetOrdertoCreateDeliveryTrip = (
       const res = await API(
         "GET",
         URL_API +
-          `/orders/byKitchen?stationId=${stationID}&kitchenId=${kitchenID}&time_slotId=${slot}&deliveryDate=${valueStarTime}`,
+        `/orders/byKitchen?stationId=${stationID}&kitchenId=${kitchenID}&time_slotId=${slot}&deliveryDate=${valueStarTime}`,
         null,
         token
       );
@@ -832,7 +821,7 @@ export const callAPIgetCatePackage = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -847,7 +836,7 @@ export const callAPIgetTimeFramebyID = (id) => {
           payload: res.data.result.dateFilter,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -980,7 +969,7 @@ export const callAPIgetListShipper = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1060,7 +1049,7 @@ export const callAPIAdminCreateShipper = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 //=============================================================
@@ -1074,7 +1063,7 @@ export const callAPIgetListKitchen = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1173,7 +1162,7 @@ export const callAPIKitchenGetListOrder = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 //----------------------------------------------------------------
@@ -1214,7 +1203,7 @@ export const callAPIgetShipperActive = (token) => {
         })
       );
       console.log(res.data.result);
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1228,7 +1217,7 @@ export const callAPIgetProfileKitchen = () => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1247,7 +1236,7 @@ export const callAPIgetAccountCustomer = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1358,7 +1347,7 @@ export const callAPIgetAccountManager = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1408,7 +1397,7 @@ export const callAPIgetAccountShipper = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1430,7 +1419,7 @@ export const callAPIgetAccountShipperByStatus = (token, status) => {
         })
       );
       console.log(res.data.result);
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1449,7 +1438,7 @@ export const callAPIgetAccountKitchen = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1468,7 +1457,7 @@ export const callAPIgetAccountKitchenByStatus = (token, status) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1546,7 +1535,7 @@ export const callAPIgetListKitchenActive = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 export const callAPIgetListFeedback = (token) => {
@@ -1560,7 +1549,7 @@ export const callAPIgetListFeedback = (token) => {
           payload: res.data.result,
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 };
 
@@ -1591,167 +1580,25 @@ export const callAPIgetListFeedbackByIDPac = (token, id) => {
     }
   };
 };
-
-// session
-export const callAPIGetListSession = (token, date) => {
+//=================================================================
+export const callAPIgetListFreeShipper = (token) => {
   return async (dispatch) => {
     try {
       const res = await API(
         "GET",
-        URL_API + `/sessions/byKitchen?workDate=${date}`,
-        null,
-        token
-      );
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_SESSION,
-          payload: res.data.result,
-        })
-      );
-      // console.log(res.data.result);
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_SESSION,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: `Không tìm thấy dữ liệu`,
-        type: "ERROR",
-      });
-    }
-  };
-};
-export const callAPIGetListSessionDetail = (token, id) => {
-  return async (dispatch) => {
-    try {
-      const res = await API(
-        "GET",
-        URL_API + `/sessions/detail/${id}`,
+        URL_API + "/shippers/free_shipper",
         null,
         token
       );
 
       dispatch(
         createAction({
-          type: PathAction.GET_LIST_SESSION_DETAIL,
+          type: PathAction.GET_LIST_FREE_SHIPPER,
           payload: res.data.result,
         })
       );
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_SESSION,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: `Không tìm thấy dữ liệu`,
-        type: "ERROR",
-      });
-    }
+    } catch (err) { }
   };
 };
 
-export const sendIdSessions = (token, id, Navigate) => {
-  const data = {
-    sessionId: id,
-  };
 
-  return async (dispatch) => {
-    try {
-      const res = await API("POST", URL_API + `/delivery_trips`, data, token);
-      // const Navigate = useNavigate();
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_TRIP,
-          payload: res.data.result,
-        })
-      );
-      if (res) {
-        CustomizedToast({
-          message: `Tạo phiên làm việc thành công`,
-          type: "SUCCESS",
-        });
-        Navigate(`/dashboard/kitchen/listTrip/${id}`);
-      }
-
-      //
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_TRIP,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: `Tạo phiên làm việc không thành công`,
-        type: "ERROR",
-      });
-    }
-  };
-};
-
-// callAPIGetListTottalFood
-export const callAPIGetListTottalFood = (token, id) => {
-  return async (dispatch) => {
-    try {
-      const res = await API(
-        "GET",
-        URL_API + `/foods/session-food/${id}`,
-        null,
-        token
-      );
-
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_TOTALFOOD,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_TOTALFOOD,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: `Không tìm thấy dữ liệu`,
-        type: "ERROR",
-      });
-    }
-  };
-};
-
-export const callAPIGetListTripByID = (token, id) => {
-  return async (dispatch) => {
-    try {
-      const res = await API(
-        "GET",
-        URL_API + `/delivery_trips/bySession?sessionId=${id}`,
-        null,
-        token
-      );
-
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_TRIP_BY_ID,
-          payload: res.data.result,
-        })
-      );
-    } catch (err) {
-      dispatch(
-        createAction({
-          type: PathAction.GET_LIST_TRIP_BY_ID,
-          payload: [],
-        })
-      );
-      CustomizedToast({
-        message: `Không tìm thấy dữ liệu`,
-        type: "ERROR",
-      });
-    }
-  };
-};

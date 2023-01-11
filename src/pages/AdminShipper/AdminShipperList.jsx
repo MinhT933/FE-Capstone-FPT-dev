@@ -48,7 +48,7 @@ const TABLE_HEAD = [
   { id: "noPlate", label: "Biển số xe", alignRight: false },
   { id: "vehicleType", label: "Loại xe", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
-  // { id: "kitchenID", label: "Bếp", alignRight: false },
+  { id: "kitchenID", label: "Làm tại bếp", alignRight: false },
   { id: "inWord", label: "Nhận đơn", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
@@ -288,9 +288,9 @@ export default function AdminShipperList() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          // role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
+                        // role="checkbox"
+                        // selected={isItemSelected}
+                        // aria-checked={isItemSelected}
                         >
                           <TableCell align="left">{""}</TableCell>
 
@@ -321,7 +321,7 @@ export default function AdminShipperList() {
                             {" "}
                             {row.account.profile?.email}{" "}
                           </TableCell>
-                          {/* <TableCell align="left">{row.kitchen?.address}</TableCell> */}
+                          <TableCell align="left">{row.kitchen?.account.profile.fullName}</TableCell>
 
                           <TableCell align="left">
                             <div>

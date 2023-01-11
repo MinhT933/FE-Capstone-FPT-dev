@@ -150,20 +150,9 @@ const navConfigKichen = [
   //   path: "/dashboard/kitchen/Listkitchen",
   //   icon: getIcon("mdi:card-account-details-star-outline"),
   // },
-
-  {
-    title: "Bếp quản lí Người giao hàng",
-    path: "/dashboard/kitchen/kitchenshipper",
-    icon: getIcon("carbon:delivery"),
-  },
   {
     title: "Chuẩn bị món ăn theo ngày",
     path: "/dashboard/kitchen/kitchenorder",
-    icon: getIcon("ic:outline-restaurant-menu"),
-  },
-  {
-    title: "Chuyến giao hàng",
-    path: "/dashboard/kitchen/createTrip",
     icon: getIcon("ic:outline-restaurant-menu"),
   },
 
@@ -178,9 +167,9 @@ const navConfigKichen = [
     icon: getIcon("healthicons:i-schedule-school-date-time"),
   },
   {
-    title: "Phiên làm việc",
-    path: "/dashboard/kitchen/session",
-    icon: getIcon("healthicons:i-schedule-school-date-time"),
+    title: "Người giao hàng",
+    path: "/dashboard/kitchen/kitchenshipper",
+    icon: getIcon("carbon:delivery"),
   },
 ];
 const navConfig = [

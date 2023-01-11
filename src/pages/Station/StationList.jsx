@@ -5,6 +5,7 @@ import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 // material
 import {
   Card,
+  Table,
   Stack,
   TableRow,
   TableBody,
@@ -13,7 +14,6 @@ import {
   Typography,
   TableContainer,
   TablePagination,
-  Table,
 } from "@mui/material";
 // components
 import Label from "../../components/label/label";

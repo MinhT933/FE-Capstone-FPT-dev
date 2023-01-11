@@ -71,9 +71,6 @@ export default function NewStation() {
 
   const [idkitchen, setIdkitchen] = useState("");
 
-  const profiles = useSelector((state) => {
-    return state.userReducer.profiles;
-  });
   React.useEffect(() => {
     const getlistStation = async () => {
       dispatch(await callAPIgetListStation(token));
@@ -118,6 +115,7 @@ export default function NewStation() {
     },
 
     onSubmit: async (values) => {
+      console.log(values);
       const closeTimeSplit = new Date(closetime).toTimeString().split(":");
       const openTimeSplit = new Date(opentime).toTimeString().split(":");
       const data = {

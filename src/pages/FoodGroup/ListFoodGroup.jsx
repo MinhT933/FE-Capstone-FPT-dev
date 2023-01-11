@@ -427,7 +427,7 @@ export default function ListFoodGroup() {
         </Card>
       </Container>
       <NewFoodGroup
-        OpenPopUp={OpenPopUp}
+        OpenPopUp={OpenPopUp} 
         SetOpenPopUp={SetOpenPopUp}
       ></NewFoodGroup>
       <DetailFoodinGroup

@@ -104,7 +104,7 @@ export default function Profile() {
     return state.userReducer.profiles;
   });
 
-
+  console.log(profiles);
   const formData = new FormData();
 
   React.useEffect(() => {
