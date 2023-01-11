@@ -166,6 +166,11 @@ const navConfigKichen = [
     path: "/dashboard/kitchen/kitcheViewOrderByWeek",
     icon: getIcon("healthicons:i-schedule-school-date-time"),
   },
+  {
+    title: "Người giao hàng",
+    path: "/dashboard/kitchen/kitchenshipper",
+    icon: getIcon("carbon:delivery"),
+  },
 ];
 const navConfig = [
   {
