@@ -3,7 +3,7 @@ import { useState } from "react";
 import * as React from "react";
 import { Dialog, DialogContent, DialogTitle, Grid, Paper } from "@mui/material";
 
-import { Link as RouterLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 // material
 import {
@@ -44,7 +44,6 @@ import KitchenListToolbar from "../../sections/@dashboard/user/KitchenListToolba
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
 import PageHeader from "../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
-import { DataGrid } from "@mui/x-data-grid";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -63,61 +62,7 @@ const TABLE_HEAD = [
     { id: "" },
 ];
 
-const columns = [
-    // { field: "id", headerName: "ID", flex: 1 },
-    {
-        field: "fullName", headerName: "Họ tên", flex: 1,
-        renderCell: (param) => {
-            // console.log(param.row.account.profile.email)
-            // console.log(1)
-            // setIdkitchen(param.row.kitchen.id);
-            return param.row.account.profile.fullName;
-        },
-    },
-    // {
-    //     field: "email",
-    //     headerName: "Email",
-    //     flex: 1,
-    //     renderCell: (param) => {
-    //         console.log(param.row)
-    //         // console.log(1)
-    //         // setIdkitchen(param.row.kitchen.id);
-    //         return param.row.account.profile.email;
-    //     },
-    // },
-    {
-        field: "phone",
-        headerName: "Điện thoại",
-        flex: 1,
-        renderCell: (param) => {
-            console.log(param.row)
-            // console.log(1)
-            // setIdkitchen(param.row.kitchen.id);
-            return param.row.account.phone;
-        },
-    },
-    {
-        field: "noPlate",
-        headerName: "Biển số xe",
-        flex: 1,
-        renderCell: (param) => {
-            // setIdkitchen(param.row.kitchen.id);
-            // return param.row.kitchen.account?.profile.fullName;
-        },
-    },
-    {
-        field: "vehicleType",
-        headerName: "Loại xe",
-        flex: 1,
-        renderCell: (param) => {
-            // setIdkitchen(param.row.kitchen.id);
-            // return param.row.kitchen.account?.profile.fullName;
-        },
-    },
-]
-
 // ----------------------------------------------------------------------
-
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -161,10 +106,9 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
 export default function FreeShipper(props) {
     const { OpenPopUp, SetOpenPopUp } = props;
-    const [pageSize, setPageSize] = React.useState(5);
+
     const [page, setPage] = useState(0);
-    let { id } = useParams();
-    console.log(id)
+
     const [order, setOrder] = useState("asc");
 
     const [selected, setSelected] = useState([]);
@@ -207,7 +151,6 @@ export default function FreeShipper(props) {
         setSelected(newSelected);
     };
 
-    const [selectionModel, setSelectionModel] = React.useState([]);
 
     //CALL API====================================================
     const location = useLocation();
@@ -234,28 +177,22 @@ export default function FreeShipper(props) {
         callAPI();
     }, [dispatch, token]);
 
-    const handleAdd = () => {
+    const handleDelete = (id, name) => {
         // API("PUT", URL_API + `/kitchens/status/${id}`, null, token).then((res) => {
-        console.log(1)
-        const data = {
-            kitchenId: id,
-            shippers: selectionModel
-        }
-        console.log(data)
-        API("PUT", URL_API + "/shippers/addKitchen", data, token).then((res) => {
-            console.log(res)
+
+        API("PUT", URL_API + " /shippers/addKitchen", null, token).then((res) => {
             try {
 
-                // dispatch(callAPIgetListFreeShipper(token));
+                dispatch(callAPIgetListFreeShipper(token));
                 handleClose();
                 CustomizedToast({
-                    message: `Đã thêm tài xế cho bếp`,
+                    message: `Đã thêm tài xế ${name} cho bếp`,
                     type: "SUCCESS",
                 });
             } catch (err) {
                 handleClose();
                 CustomizedToast({
-                    message: `Thêm tài xế cho bếp thất bại`,
+                    message: `Thêm tài xế ${name} cho bếp thất bại`,
                     type: "ERROR",
                 });
             }
@@ -265,12 +202,11 @@ export default function FreeShipper(props) {
     const freeShipper = useSelector((state) => {
         return state.userReducer.listFreeShipper;
     });
-    console.log(freeShipper)
     //CALL API=====================================================
     //Thay đổi trạng thái
     const getOptions = () => [
         { id: "active", title: "Hoạt động" },
-        { id: "inActive", title: "Bị cấm" },
+        { id: "inActive", title: "Đóng cửa" },
         { id: "All", title: "Tất cả" },
     ];
 
@@ -355,56 +291,10 @@ export default function FreeShipper(props) {
                                 options={getOptions()}
                             />
 
-                            <Box>
-                                <div style={{ height: "25rem", width: "100%", marginTop: "2%" }}>
-                                    {freeShipper ? (
-                                        <DataGrid
-                                            rows={freeShipper}
-                                            columns={columns}
-                                            pageSize={pageSize}
-                                            rowsPerPageOptions={[5, 10, 20]}
-                                            getRowId={(row) => row.id}
-                                            checkboxSelection
-                                            onPageSizeChange={(newPage) => setPageSize(newPage)}
-                                            onSelectionModelChange={(newSelectionModel) => {
-                                                setSelectionModel(newSelectionModel);
-                                                console.log(newSelectionModel)
-                                            }}
-                                            pagination
-                                            localeText={{
-                                                MuiTablePagination: {
-                                                    labelRowsPerPage: "Số hàng trên một trang",
-                                                    labelDisplayedRows: ({ from, to, count }) =>
-                                                        `${from} - ${to} của ${count}`,
-                                                },
-                                            }}
-                                        />
-                                    ) : (
-                                        <DataGrid
-                                            rows={freeShipper}
-                                            columns={columns}
-                                            pageSize={pageSize}
-                                            rowsPerPageOptions={[5]}
-                                            onPageSizeChange={(newPage) => setPageSize(newPage)}
-                                            getRowId={(row) => row.id}
-                                            checkboxSelection
-                                            pagination
-                                            localeText={{
-                                                MuiTablePagination: {
-                                                    labelRowsPerPage: "Số hàng trên một trang",
-                                                    labelDisplayedRows: ({ from, to, count }) =>
-                                                        `${from} - ${to} của ${count}`,
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </Box>
-
-                            {/* <Scrollbar>
+                            <Scrollbar>
                                 <TableContainer sx={{ minWidth: 500, width: 500 }}>
                                     <Table>
-                                        {/* <UserListHead
+                                        <UserListHead
                                             order={order}
                                             orderBy={orderBy}
                                             headLabel={TABLE_HEAD}
@@ -412,7 +302,7 @@ export default function FreeShipper(props) {
                                             numSelected={selected.length}
                                             onRequestSort={handleRequestSort}
                                             onSelectAllClick={handleSelectAllClick}
-                                        /> 
+                                        />
                                         <TableBody>
                                             {filteredStations
                                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -490,9 +380,9 @@ export default function FreeShipper(props) {
                                         )}
                                     </Table>
                                 </TableContainer>
-                            </Scrollbar> */}
+                            </Scrollbar>
 
-                            {/* <TablePagination
+                            <TablePagination
                                 rowsPerPageOptions={[5, 10, 20]}
                                 component="div"
                                 count={freeShipper.length}
@@ -505,7 +395,7 @@ export default function FreeShipper(props) {
                                 labelDisplayedRows={({ from, to, count }) => {
                                     return "" + from + "-" + to + " của " + count;
                                 }}
-                            /> */}
+                            />
                             {/* {open && (
                         <ConfirmDialog
                             open={open}
@@ -529,9 +419,8 @@ export default function FreeShipper(props) {
                                 <ButtonCustomize
                                     variant="contained"
                                     nameButton="Thêm"
-                                    // component={RouterLink}
-                                    onClick={handleAdd}
-                                    // to="/dashboard/admin/kitchenshipper"
+                                    component={RouterLink}
+                                    to="/dashboard/admin/kitchenshipper"
                                     type="submit" />
                             </Stack>
                         </Box>
