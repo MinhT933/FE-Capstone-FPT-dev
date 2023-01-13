@@ -38,7 +38,6 @@ import {
   callAPIGetListTottalFood,
 } from "../../redux/action/acction";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
-import PageHeader from "../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 import Avatar from "@mui/material/Avatar";
 // ----------------------------------------------------------------------
@@ -195,12 +194,7 @@ export default function TotalFood(props) {
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Page title="Phiên làm việc">
-      <Box sx={{ marginTop: "5%" }}>
-        <PageHeader
-          title="Món ăn cần phải chuẩn bị trong phiên"
-          subTitle={`Tổng số món ăn `}
-          icon={getIcon("fluent:apps-list-detail-20-filled")}
-        />
+      <Box>
         <Container maxWidth={false}>
           <Stack
             direction="row"

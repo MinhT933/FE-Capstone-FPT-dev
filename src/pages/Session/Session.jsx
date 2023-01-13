@@ -201,6 +201,31 @@ export default function Session() {
     filterName
   );
 
+  const handleCompareDate = (date) => {
+    const toDate = new Date();
+    const workDate = date.split("-");
+
+    const a = toDate.toLocaleDateString().split("/");
+    console.log(toDate.toLocaleDateString());
+    console.log(workDate[2]);
+    console.log(a[0]);
+    console.log(workDate[1]);
+    console.log(a[1]);
+
+    if (a[0] > workDate[2] && a[1] > workDate[1]) {
+      return true;
+    }
+    if (a[0] < workDate[2] && a[1] > workDate[1]) {
+      return true;
+    }
+    if (a[0] > workDate[2] && a[1] < workDate[1]) {
+      return false;
+    }
+    if (a[0] < workDate[2] && a[1] < workDate[1]) {
+      return false;
+    }
+  };
+  // handleCompareDate("2023-01-2");
   const isUserNotFound = filterSession.length === 0;
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
@@ -328,14 +353,19 @@ export default function Session() {
                             />
                           </TableCell>
                           <TableCell align="left">
-                            <ButtonCustomize
-                              variant="outlined"
-                              width="6rem"
-                              nameButton="Hoàn thành"
-                              onClick={async () => {
-                                doneSession(id);
-                              }}
-                            />
+                            {handleCompareDate(workDate) === true &&
+                            status === "processing" ? (
+                              <ButtonCustomize
+                                variant="outlined"
+                                width="6rem"
+                                nameButton="Hoàn thành"
+                                onClick={async () => {
+                                  doneSession(id);
+                                }}
+                              />
+                            ) : (
+                              <TableCell></TableCell>
+                            )}
                           </TableCell>
                         </TableRow>
                       );

@@ -38,8 +38,6 @@ import {
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
-import PageHeader from "../../components/PageHeader";
-import Iconify from "../../components/hook-form/Iconify";
 import AddShipper from "./AddShipper";
 import Avatar from "@mui/material/Avatar";
 import Collapse from "@mui/material/Collapse";
@@ -134,7 +132,6 @@ export default function SessionDetailTime(props) {
 
   const dispatch = useDispatch();
 
-  // let { id } = useParams();
 
   React.useEffect(() => {
     const getDetailSession = async () => {
@@ -148,10 +145,6 @@ export default function SessionDetailTime(props) {
     return state.userReducer.detailSession.batchs;
   });
 
-  const totalFood = useSelector((state) => {
-    return state.userReducer.totalfood;
-  });
-  // console.log(detailSession);
 
   React.useEffect(() => {
     if (detailSession) {
@@ -217,21 +210,10 @@ export default function SessionDetailTime(props) {
     filterName
   );
 
-  const filterTotalFood = applySortFilter(
-    totalFood,
-    getComparator(order, orderBy),
-    filterName
-  );
   const isStationNotFound = filter?.length === 0;
 
-  const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Page title="Phiên làm việc">
-      <PageHeader
-        title="Xem chi tiết phiên làm việc"
-        subTitle={`Chi tiếc phiên làm việc `}
-        icon={getIcon("fluent:apps-list-detail-20-filled")}
-      />
       <Container maxWidth={false}>
         <Stack
           direction="row"
@@ -321,10 +303,13 @@ export default function SessionDetailTime(props) {
 
                             <TableCell align="left">
                               <div>
-                                {status === "waiting" && (
+                                {detail.status === "waiting" && (
                                   <Label color="warning">Đang chờ</Label>
                                 )}
-                                {status === "active" && (
+                                {detail.status === "done" && (
+                                  <Label color="success">Hoàn thành</Label>
+                                )}
+                                {detail.status === "active" && (
                                   <Label color="success">Hoạt động</Label>
                                 )}
                               </div>
@@ -362,7 +347,6 @@ export default function SessionDetailTime(props) {
                                         <TableCell align="center">
                                           Tên món
                                         </TableCell>
-
                                         <TableCell align="center">
                                           Trạng thái
                                         </TableCell>
@@ -408,7 +392,6 @@ export default function SessionDetailTime(props) {
                                             <TableCell align="center">
                                               <div>
                                                 {i.status === "pending" && (
-                                                  // <Alert severity="warning">inActive</Alert>
                                                   <Label color="primary">
                                                     Đang chờ
                                                   </Label>
@@ -419,9 +402,9 @@ export default function SessionDetailTime(props) {
                                                     Đang tiến hành
                                                   </Label>
                                                 )}
-                                                {i.status === "active" && (
+                                                {i.status === "ready" && (
                                                   <Label color="success">
-                                                    Đang bán
+                                                    Sẵn sàng
                                                   </Label>
                                                 )}
                                               </div>
@@ -484,116 +467,6 @@ export default function SessionDetailTime(props) {
         setOpenSetShipper={setOpenSetShipper}
         OpenSetShipper={OpenSetShipper}
       />
-      <Box sx={{ marginTop: "5%" }}>
-        <PageHeader
-          title="Món ăn cần phải chuẩn bị trong phiên"
-          subTitle={`Tổng số món ăn `}
-          icon={getIcon("fluent:apps-list-detail-20-filled")}
-        />
-        <Container maxWidth={false}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={5}
-          >
-            <Typography variant="h4" gutterBottom>
-              {/* User */}
-            </Typography>
-          </Stack>
-
-          <Card>
-            <StationListtoolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-              options={getOptions()}
-            />
-
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <UserListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD_TOTAL}
-                    rowCount={totalFood?.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filterTotalFood
-                      ?.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row, index) => {
-                        const { id, image, name, count, description } = row;
-                        return (
-                          <>
-                            <TableRow hover key={id} tabIndex={-1}>
-                              <TableCell>
-                                <Avatar alt={name} src={image} />
-                              </TableCell>
-                              <TableCell>
-                                <Typography variant="subtitle2" noWrap>
-                                  {name}
-                                </Typography>
-                              </TableCell>
-
-                              <TableCell align="left">{count}</TableCell>
-
-                              <TableCell align="left">{description}</TableCell>
-                            </TableRow>
-                          </>
-                        );
-                      })}
-                  </TableBody>
-
-                  {isStationNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
-              component="div"
-              count={totalFood?.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              // fix languge in footer tables
-              labelRowsPerPage={"Số hàng trên một trang"}
-              labelDisplayedRows={({ from, to, count }) => {
-                return "" + from + "-" + to + " của " + count;
-              }}
-            />
-          </Card>
-        </Container>
-      </Box>
     </Page>
   );
 }
-
-// const data = {
-//   {
-//     kitchenId: "string",
-//     shippers: [
-//       {
-//         idShipper: "string",
-//         idShipper: "string",
-//         idShipper: "string"
-//       }
-//     ]
-//   }
-// }

@@ -38,7 +38,6 @@ import { useSelector } from "react-redux";
 import Collapse from "@mui/material/Collapse";
 
 import { callAPIGetListTripByID } from "../../redux/action/acction";
-import PageHeader from "../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 import Avatar from "@mui/material/Avatar";
 import TripBySessionIDtoolbar from "./../../sections/@dashboard/user/TripBySessionIDtoolbar";
@@ -47,10 +46,12 @@ import Label from "../../components/label/label";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD_TOTAL = [
-  { id: "images", name: "Hình", alignRight: false },
-  { id: "name", label: "Tên", alignRight: false },
-  { id: "total", label: "Tống số", alignRight: false },
-  { id: "description", label: "Mô tả", alignRight: false },
+  { id: "images", name: "", alignRight: false },
+  { id: "images", name: "Hình" },
+  { id: "name", label: "Tên shipper", alignRight: false },
+  { id: "deliveryDate", label: "Ngày giao" },
+  { id: "deliveryTime", label: "Thời gian giao" },
+  { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
 
@@ -130,6 +131,8 @@ export default function DeliveryTripByIDsession(props) {
     return state.userReducer.listripByID;
   });
 
+  console.log(trip);
+
   React.useEffect(() => {
     if (trip) {
       const tempArr = [];
@@ -196,12 +199,7 @@ export default function DeliveryTripByIDsession(props) {
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Page title="Phiên làm việc">
-      <Box sx={{ marginTop: "5%" }}>
-        <PageHeader
-          title="Món ăn cần phải chuẩn bị trong phiên"
-          subTitle={`Tổng số món ăn `}
-          icon={getIcon("fluent:apps-list-detail-20-filled")}
-        />
+      <Box>
         <Container maxWidth={false}>
           <Stack
             direction="row"
@@ -241,7 +239,14 @@ export default function DeliveryTripByIDsession(props) {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((row, index) => {
-                        const { id, image, name, count, description } = row;
+                        const {
+                          id,
+                          batchs,
+                          shipper,
+                          deliveryDate,
+                          deliveryTime,
+                          status,
+                        } = row;
                         return (
                           <>
                             <TableRow hover key={id} tabIndex={-1}>
@@ -271,17 +276,33 @@ export default function DeliveryTripByIDsession(props) {
                                 </IconButton>
                               </TableCell>
                               <TableCell>
-                                <Avatar alt={name} src={image} />
+                                <Avatar
+                                  alt={shipper?.account.profile.fullName}
+                                  src={shipper?.account.profile.avatar}
+                                />
                               </TableCell>
                               <TableCell>
                                 <Typography variant="subtitle2" noWrap>
-                                  {name}
+                                  {shipper?.account.profile.fullName}
                                 </Typography>
                               </TableCell>
 
-                              <TableCell align="left">{count}</TableCell>
+                              <TableCell>{deliveryDate}</TableCell>
+                              <TableCell>{deliveryTime}</TableCell>
 
-                              <TableCell align="left">{description}</TableCell>
+                              <TableCell align="left">
+                                <div>
+                                  {status === "ready" && (
+                                    <Label color="primary">Sẵn sàng</Label>
+                                  )}
+                                  {status === "waiting" && (
+                                    <Label color="warning">Đang chờ</Label>
+                                  )}
+                                  {status === "arrived" && (
+                                    <Label color="success">Hoàn thành</Label>
+                                  )}
+                                </div>
+                              </TableCell>
                             </TableRow>
                             <TableRow>
                               <TableCell
@@ -303,16 +324,16 @@ export default function DeliveryTripByIDsession(props) {
                                       gutterBottom
                                       component="div"
                                     >
-                                      Đơn hàng
+                                      Thông tin chuyến
                                     </Typography>
                                     <Table size="small" aria-label="purchases">
                                       <TableHead>
                                         <TableRow>
-                                          <TableCell>Tên nhóm</TableCell>
-                                          <TableCell>Tên khách hàng</TableCell>
+                                          <TableCell>Tên Trạm</TableCell>
+                                          <TableCell>Địa chỉ</TableCell>
                                           <TableCell>Số điện thoại</TableCell>
-                                          <TableCell align="center">
-                                            Tên món
+                                          <TableCell>
+                                            Thời gian hoạt động
                                           </TableCell>
 
                                           <TableCell align="center">
@@ -320,7 +341,27 @@ export default function DeliveryTripByIDsession(props) {
                                           </TableCell>
                                         </TableRow>
                                       </TableHead>
-                                      <TableBody></TableBody>
+                                      <TableBody>
+                                        {batchs.map((item, idex) => {
+                                          return (
+                                            <TableRow>
+                                              <TableCell>
+                                                {item.station.name}
+                                              </TableCell>
+                                              <TableCell>
+                                                {item.station.address}
+                                              </TableCell>
+                                              <TableCell>
+                                                {item.station.phone}
+                                              </TableCell>
+                                              <TableCell>
+                                                {item.station.openTime}-{" "}
+                                                {item.station.closeTime}
+                                              </TableCell>
+                                            </TableRow>
+                                          );
+                                        })}
+                                      </TableBody>
                                     </Table>
                                   </Box>
                                 </Collapse>

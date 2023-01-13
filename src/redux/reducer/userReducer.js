@@ -65,6 +65,7 @@ const initialState = {
   listTrip: [],
   totalfood: [],
   listripByID: [],
+  listFreeShipper: [],
 };
 
 export default function userReducer(state = initialState, { type, payload }) {
@@ -204,9 +205,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       // console.log(payload);
       break;
 
-    case PathAction.GET_LIST_PREPARE_ORDER_BY_WEEK:
-      state.listFoodPrepare = payload;
-      break;
+    // case PathAction.GET_LIST_PREPARE_ORDER_BY_WEEK:
+    //   state.listFoodPrepare = payload;
+    //   break;
 
     case PathAction.GET_FOOD:
       state.food = payload;
@@ -268,6 +269,9 @@ export default function userReducer(state = initialState, { type, payload }) {
       break;
     case PathAction.GET_LIST_ORDER_BY_DATE:
       state.listOderByDate = payload;
+      break;
+    case PathAction.GET_LIST_FREE_SHIPPER:
+      state.listFreeShipper = payload;
       break;
     default:
   }
