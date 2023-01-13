@@ -250,7 +250,7 @@ export default function NewKitchen() {
                   </FormHelperText>
                 )}
 
-                <Controls.Input
+                {/* <Controls.Input
                   variant="outlined"
                   label="Công suất"
                   required
@@ -268,7 +268,7 @@ export default function NewKitchen() {
                   >
                     {formik.errors.ability}
                   </FormHelperText>
-                )}
+                )} */}
 
                 <TextField
                   type={values.showPass ? "text" : "password"}

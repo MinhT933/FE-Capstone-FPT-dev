@@ -243,7 +243,7 @@ export default function KitchenShipperList() {
   const ColorButton = styled(Button)(({ theme }) => ({
     textTransform: "none",
     color: theme.palette.getContrastText("#FFCC32"),
-    backgroundColor: "#FFCC33",
+    backgroundColor: "#FFCC32",
     "&:hover": {
       backgroundColor: "#ffee32",
     },
@@ -252,27 +252,27 @@ export default function KitchenShipperList() {
 
   return (
     <Page title="Người giao hàng">
-      <Container maxWidth={false} fullWitdh maxwidth="md">
+      <Container maxWidth={false}>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          mb={5}
+          mb={3}
+          marginTop={"2%"}
         >
           <Typography variant="h4" gutterBottom>
             {/* User */}
           </Typography>
           {decoded.role === "admin" && (
-            <ColorButton
+            <ButtonCustomize
               variant="contained"
               component={RouterLink}
               to="#"
               onClick={() => {
                 SetOpenPopUp(true);
               }}
-            >
-              Thêm tài xế cho bếp
-            </ColorButton>
+              nameButton=" Thêm tài xế cho bếp"
+            />
           )}
         </Stack>
 
@@ -285,7 +285,7 @@ export default function KitchenShipperList() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 900 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -314,9 +314,9 @@ export default function KitchenShipperList() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          // role="checkbox"
-                          // selected={isItemSelected}
-                          // aria-checked={isItemSelected}
+                        // role="checkbox"
+                        // selected={isItemSelected}
+                        // aria-checked={isItemSelected}
                         >
                           <TableCell align="left">{""}</TableCell>
 
@@ -384,35 +384,7 @@ export default function KitchenShipperList() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {/* {status === "active" ? (
-                                                            <ButtonCustomize
-                                                                variant="outlined"
-                                                                onClick={() => {
-                                                                    handleDelete(id, account.profile?.fullName);
-                                                                }}
-                                                                nameButton="Chặn"
-                                                            >
-                                                                Chặn
-                                                            </ButtonCustomize>
-                                                        ) : (
-                                                            <ButtonCustomize
-                                                                variant="outlined"
-                                                                onClick={() => {
-                                                                    handleDelete(id, account.profile?.fullName);
-                                                                }}
-                                                                nameButton="Mở chặn"
-                                                            >
-                                                                Mở chặn
-                                                            </ButtonCustomize>
-                                                        )} */}
 
-                            {/* <ButtonCustomize
-                              variant="outlined"
-                              onClick={() => handleClickOpen(row)}
-                              nameButton={
-                                status === "active" ? "Chặn" : "Mở chặn"
-                              }
-                            /> */}
                           </TableCell>
                         </TableRow>
                       );

@@ -1,6 +1,6 @@
 import React from "react";
 // import { Paper } from "@mui/material";
-import PageHeader from "./../../components/PageHeader";
+import PageHeader from "../../components/PageHeader";
 
 import {
   Grid,
@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import Page from "../../components/setPage/Page";
 import Iconify from "../../components/hook-form/Iconify";
 import Checkbox from "@mui/material/Checkbox";
-import Controls from "./../../components/Control/Controls";
+import Controls from "../../components/Control/Controls";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
@@ -21,8 +21,8 @@ import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 
 //api
-import API from "./../../Axios/API/API";
-import { URL_API } from "./../../Axios/URL_API/URL";
+import API from "../../Axios/API/API";
+import { URL_API } from "../../Axios/URL_API/URL";
 //validate
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -51,7 +51,7 @@ const schema = yup.object().shape({
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function UpdateKitchen1() {
+export default function UpdateKitchenInfor() {
   //callAPIforCreateStation========================================
   let { id } = useParams();
   const navigate = useNavigate();
@@ -66,10 +66,8 @@ export default function UpdateKitchen1() {
   React.useEffect(() => {
     API("GET", URL_API + `/kitchens/${id}`, null, token)
       .then((res) => {
-        formik.setFieldValue(
-          "fullName",
-          res.data.result.account.profile.fullName
-        );
+        formik.setFieldValue("fullName", res.data.result.account.profile.fullName);
+        formik.setFieldValue("phone", res.data.result.account.phone);
         formik.setFieldValue("email", res.data.result.account.profile.email);
         formik.setFieldValue("address", res.data.result.address);
         formik.setFieldValue("ability", res.data.result.ability);
@@ -117,6 +115,7 @@ export default function UpdateKitchen1() {
     //khởi tạo kho để bỏ data vào
     initialValues: {
       fullName: "",
+      phone: "",
       email: "",
       address: "",
       // ability: "",
@@ -126,6 +125,7 @@ export default function UpdateKitchen1() {
       // console.log(values);
       const data = {
         fullName: formik.values.fullName,
+        phone: formik.values.phone,
         email: formik.values.email,
         address: formik.values.address,
         // ability: formik.values.ability,
@@ -149,21 +149,14 @@ export default function UpdateKitchen1() {
 
   return (
     <Page>
-      <Container sx={{ minWidth: 380, width: 380 }}>
+      <Container >
         <form onSubmit={formik.handleSubmit}>
           <Box
-            //   space-around="space-around"
-            // sx={{ float: "right", width: "60%", flexGrow: 1 }}
-            // display="flex"
-            // justifyContent="left"
-            // alignItems="left"
-            // sx={{ marginLeft: "33%" }}
             marginTop={"5%"}
-            sx={{ maxWidth: "100%", maxHeight: "100%" }}
+            sx={{
+              width: "20rem",
+            }}
 
-          // direction="row"
-          // alignItems="center"
-          // justifyContent="space-between"
           >
             <Grid container spacing={1}>
               <Grid item xs={12}>
@@ -175,6 +168,7 @@ export default function UpdateKitchen1() {
                     variant="outlined"
                     label="Tên bếp"
                     name="fullName"
+                    width="20rem"
                     value={formik.values.fullName}
                     onChange={(e) => {
                       formik.handleChange(e);
@@ -192,8 +186,30 @@ export default function UpdateKitchen1() {
 
                   <Controls.Input
                     variant="outlined"
+                    name="phone"
+                    label="Số điện thoại"
+                    width="20rem"
+                    disabled
+                    value={formik.values.phone}
+                    onChange={(e) => {
+                      formik.handleChange(e);
+                    }}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.phone && formik.errors.phone && (
+                    <FormHelperText
+                      error
+                      id="standard-weight-helper-text-username-login"
+                    >
+                      {formik.errors.phone}
+                    </FormHelperText>
+                  )}
+
+                  <Controls.Input
+                    variant="outlined"
                     label="Địa chỉ"
                     name="address"
+                    width="20rem"
                     value={formik.values.address}
                     onChange={(e) => {
                       formik.handleChange(e);
@@ -213,6 +229,7 @@ export default function UpdateKitchen1() {
                     variant="outlined"
                     label="Email"
                     name="email"
+                    width="20rem"
                     value={formik.values.email}
                     onChange={(e) => {
                       formik.handleChange(e);
@@ -236,7 +253,7 @@ export default function UpdateKitchen1() {
             <Stack
               width="40%"
               justifyContent="center"
-              marginLeft={"25%"}
+              marginLeft={"30%"}
               marginTop={"4%"}
             >
               <ButtonCustomize nameButton="Cập nhập" type="submit" />
