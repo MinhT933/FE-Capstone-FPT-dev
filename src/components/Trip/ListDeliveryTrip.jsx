@@ -167,8 +167,6 @@ export default function ListDeliveryTrip() {
     filterName
   );
 
-  console.log(trip);
-
   const isUserNotFound = filterFood?.length === 0;
 
   return (
@@ -235,7 +233,7 @@ export default function ListDeliveryTrip() {
                       } = row;
 
                       const isItemSelected =
-                        selected.indexOf(kitchen.account.profile.fullName) !==
+                        selected.indexOf(kitchen?.account.profile.fullName) !==
                         -1;
 
                       return (
@@ -250,13 +248,13 @@ export default function ListDeliveryTrip() {
                           <TableCell align="left">{id}</TableCell>
                           <TableCell>
                             <Typography variant="subtitle2" noWrap>
-                              {kitchen.account.profile.fullName}
+                              {kitchen?.account.profile.fullName}
                             </Typography>
                           </TableCell>
                           <TableCell align="left">
-                            {shipper.account.profile.fullName}
+                            {shipper?.account.profile.fullName}
                           </TableCell>
-                          <TableCell align="left">{station.address}</TableCell>
+                          <TableCell align="left">{station?.address}</TableCell>
                           {status === "arrived" || status === "delivery" ? (
                             <TableCell align="left">{deliveryTime}</TableCell>
                           ) : (
@@ -268,10 +266,10 @@ export default function ListDeliveryTrip() {
                             <TableCell align="left"></TableCell>
                           )}
                           <TableCell align="left">
-                            {time_slot.startTime}-{time_slot.endTime}
+                            {time_slot?.startTime}-{time_slot?.endTime}
                           </TableCell>
                           <TableCell align="left">{deliveryDate}</TableCell>
-                          <TableCell align="left">{order.length}</TableCell>
+                          <TableCell align="left">{order?.length}</TableCell>
                           <TableCell align="left">
                             <div>
                               {status === "reject" && (

@@ -145,6 +145,8 @@ export default function ViewOrderInSession(props) {
     return state.userReducer.detailSession;
   });
 
+  console.log(detail);
+
   React.useEffect(() => {
     if (detailSession) {
       const tempArr = [];
@@ -156,8 +158,6 @@ export default function ViewOrderInSession(props) {
       setOpenCell(tempArr);
     }
   }, [detailSession]);
-
-  console.log(openCell);
 
   //CALL API=====================================================
   //Thay đổi trạng thái
@@ -308,9 +308,7 @@ export default function ViewOrderInSession(props) {
                                   <TableCell>
                                     {i?.subscription?.packages.name}
                                   </TableCell>
-                                  <TableCell>
-                                    {i?.packageItem.itemCode}
-                                  </TableCell>
+                                  <TableCell>{i?.packageItem.flag}</TableCell>
                                   <TableCell>{i?.station.name}</TableCell>
                                   <TableCell>
                                     {i?.subscription?.subscriptionDate}
@@ -323,12 +321,12 @@ export default function ViewOrderInSession(props) {
                                       )}
                                       {i.status === "progress" && (
                                         // <Alert severity="info">waiting</Alert>
-                                        <Label color="warning">
+                                        <Label color="primary">
                                           Đang tiến hành
                                         </Label>
                                       )}
                                       {i.status === "ready" && (
-                                        <Label color="success">Sẵn sàng</Label>
+                                        <Label color="primary">Sẵn sàng</Label>
                                       )}
                                     </div>
                                   </TableCell>

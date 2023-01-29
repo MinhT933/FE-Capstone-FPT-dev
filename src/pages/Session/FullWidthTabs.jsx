@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 import SessionDetailTime from "./SessionDetailTime";
 import TotalFood from "./TotalFood";
+import { useState } from "react";
 import DeliveryTripByIDsession from "./DeliveryTripByIDsession";
 import Iconify from "../../components/hook-form/Iconify";
 import PageDetailSession from "../../components/PageDetailSession";
@@ -18,6 +19,8 @@ import { callAPIGetListSessionDetail } from "../../redux/action/acction";
 import { jwt_decode } from "jwt-decode";
 import { useSelector } from "react-redux";
 import ViewOrderInSession from "./ViewOrderInSession";
+import Label from "./../../components/label/label";
+import ButtonCustomize from "../../components/Button/ButtonCustomize";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,6 +69,29 @@ export default function FullWidthTabs() {
 
   let { id } = useParams();
 
+  // const classes = useStyles();
+
+  const useStyles = useTheme({
+    tabs: {
+      "& .MuiTabs-indicator": {
+        backgroundColor: "orange",
+        height: 3,
+      },
+      "& .MuiTab-root.Mui-selected": {
+        color: "red",
+      },
+    },
+  });
+
+  const handleCompareDate = (date1, date2) => {
+    // return (
+    //   date1.getFullYear() >= date2.getFullYear() ||
+    //   date1.getDate() >= date2.getDate() ||
+    //   date1.getMonth() >= date2.getMonth()
+    // );
+    return date1.getTime() >= date2.getTime();
+  };
+
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -83,17 +109,29 @@ export default function FullWidthTabs() {
   const detailSession = useSelector((state) => {
     return state.userReducer.detailSession;
   });
+  console.log(typeof detailSession.workDate);
+
   const profile = useSelector((state) => {
     return state.userReducer.profiles;
   });
+  const [Button, setButton] = useState(false);
+
+  React.useEffect(() => {
+    if (handleCompareDate(new Date(), new Date(detailSession.workDate))) {
+      setButton(true);
+    }
+  }, [detailSession.workDate]);
 
   const handleStatus = (status) => {
     if (status === "waiting") {
-      return "Chưa phân công";
+      return <Label color="error">Chưa phân công</Label>;
+      // return "Chưa phân công";
     } else if (status === "processing") {
-      return "Đang phân công";
+      return <Label color="warning">Đang phân công</Label>;
     } else if (status === "done") {
-      return "Hoàn thành";
+      return <Label color="warning">Hoàn thành </Label>;
+    } else if (status === "ready") {
+      return <Label color="warning">Chuẩn bị giao </Label>;
     }
   };
 
@@ -101,14 +139,43 @@ export default function FullWidthTabs() {
   return (
     <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
       <PageDetailSession
-        title={`Chi tiết phiên làm việc của ${profile.profile?.fullName}`}
-        subTitle={`Phiên làm việc ngày ${detailSession.workDate} `}
-        subTitle1={`Khung giờ: ${detailSession.timeSlot?.startTime}-${detailSession.timeSlot?.endTime} `}
-        subTitle2={`Trạng thái: ${handleStatus(detailSession.status)} `}
+        title={` ${"Chi tiết phiên làm việc của"}  ${
+          profile.profile?.fullName
+        }`}
+        subTitle={`${"Phiên làm việc ngày: ".toUpperCase()} ${
+          detailSession.workDate
+        } `}
+        subTitle1={`${"Khung giờ:".toUpperCase()} ${
+          detailSession.timeSlot?.startTime
+        }-${detailSession.timeSlot?.endTime} `}
+        subTitle2={`${"Tổng đơn:".toUpperCase()} 12 `}
+        subTitle3={handleStatus(detailSession.status)}
+        subTitle4={Button && <ButtonCustomize nameButton="Hoàn thành" />}
         icon={getIcon("fluent:apps-list-detail-20-filled")}
       />
       <AppBar position="static">
         <Tabs
+          // TabIndicatorProps={{
+          //   style: {
+          //     tabs: {
+          //       "& .MuiTabs-indicator": {
+          //         backgroundColor: "orange",
+          //         height: 3,
+          //       },
+          //       "& .MuiTab-root.Mui-selected": {
+          //         color: "red",
+          //       },
+          //     },
+          //   },
+          // }}
+          sx={{
+            "& .MuiTabs-indicator": { backgroundColor: "#FFCC32" },
+            "& .MuiTab-root": { color: "white" },
+
+            "& .MuiTab-root.Mui-selected": {
+              backgroundColor: "#FFCC32",
+            },
+          }}
           value={value}
           onChange={handleChange}
           indicatorColor="secondary"
@@ -118,8 +185,8 @@ export default function FullWidthTabs() {
         >
           <Tab label="Đơn hàng" {...a11yProps(0)} />
           <Tab label="Túi hàng" {...a11yProps(1)} />
-          <Tab label="Tổng đơn" {...a11yProps(2)} />
-          <Tab label="Giao hàng" {...a11yProps(3)} />
+          {/* <Tab label="Tổng Món" {...a11yProps(2)} /> */}
+          <Tab label="Đợt giao" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -133,10 +200,10 @@ export default function FullWidthTabs() {
         <TabPanel value={value} index={1} dir={theme.direction}>
           <SessionDetailTime id={id} />
         </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
+        {/* <TabPanel value={value} index={2} dir={theme.direction}>
           <TotalFood id={id} />
-        </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
+        </TabPanel> */}
+        <TabPanel value={value} index={2} dir={theme.direction}>
           <DeliveryTripByIDsession id={id} />
         </TabPanel>
       </SwipeableViews>

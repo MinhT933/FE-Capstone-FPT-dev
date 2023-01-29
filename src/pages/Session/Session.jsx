@@ -50,7 +50,7 @@ const TABLE_HEAD = [
   { id: "timeSlot", label: "Buổi", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "", label: "Tạo chuyến", alignRight: false },
-  { id: "", label: "Xác nhận", alignRight: false },
+  // { id: "", label: "Xác nhận", alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -339,6 +339,9 @@ export default function Session() {
                               )}
                               {status === "done" && (
                                 <Label color="success">Hoàn thành</Label>
+                              )}
+                              {status === "ready" && (
+                                <Label color="warning">Sẵn Sàng</Label>
                               )}
                             </div>
                           </TableCell>

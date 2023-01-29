@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import React from "react";
 // import { Paper, Card, Typography, makeStyles } from '@material-ui/core'
 
-export default function PageDetailSession(props) {
+export default function PageHeaderFoodDetail(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#fdfdff",
@@ -28,17 +28,7 @@ export default function PageDetailSession(props) {
     },
   }));
   const classes = useStyles();
-  const {
-    title,
-    subTitle,
-    icon,
-    width,
-    marginLeft,
-    subTitle1,
-    subTitle2,
-    subTitle3,
-    subTitle4,
-  } = props;
+  const { title, subTitle, icon, width, marginLeft, subTitle1 } = props;
   return (
     <Paper
       elevation={0}
@@ -48,7 +38,7 @@ export default function PageDetailSession(props) {
     >
       <div className={classes.pageHeader}>
         <div className={classes.pageTitle}>
-          <Typography variant="h6" component="div" sx={{ paddingTop: "2rem" }}>
+          <Typography variant="h6" component="div">
             {title}
           </Typography>
           <Typography variant="subtitle2" component="div">
@@ -57,17 +47,8 @@ export default function PageDetailSession(props) {
           <Typography variant="subtitle2" component="div">
             {subTitle1}
           </Typography>
-          <Typography variant="subtitle2" component="div">
-            {subTitle2}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            TRẠNG THÁI: {subTitle3}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            {subTitle4}
-          </Typography>
         </div>
-        {/* <Card className={classes.pageIcon}>{icon}</Card> */}
+        <Card className={classes.pageIcon}>{icon}</Card>
       </div>
     </Paper>
   );

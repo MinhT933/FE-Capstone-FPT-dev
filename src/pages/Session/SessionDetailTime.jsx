@@ -47,7 +47,7 @@ const TABLE_HEAD = [
   { id: "id", label: "", alignRight: false },
   { id: "batch", label: "Túi", alignRight: false },
   { id: "name", label: "Tên Trạm", alignRight: false },
-
+  { id: "batch", label: "Tổng đơn", alignRight: false },
   { id: "workDate", label: "Ngày giao hàng", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
 
@@ -132,7 +132,6 @@ export default function SessionDetailTime(props) {
 
   const dispatch = useDispatch();
 
-
   React.useEffect(() => {
     const getDetailSession = async () => {
       await dispatch(callAPIGetListSessionDetail(token, id));
@@ -144,7 +143,6 @@ export default function SessionDetailTime(props) {
   const detailSession = useSelector((state) => {
     return state.userReducer.detailSession.batchs;
   });
-
 
   React.useEffect(() => {
     if (detailSession) {
@@ -297,6 +295,7 @@ export default function SessionDetailTime(props) {
                             {/* <TableCell align="left">
                               {station.address}
                             </TableCell> */}
+                            <TableCell align="left">{orders.length}</TableCell>
                             <TableCell align="left">
                               {detail.workDate}
                             </TableCell>
@@ -306,11 +305,15 @@ export default function SessionDetailTime(props) {
                                 {detail.status === "waiting" && (
                                   <Label color="warning">Đang chờ</Label>
                                 )}
-                                {detail.status === "done" && (
-                                  <Label color="success">Hoàn thành</Label>
+
+                                {detail.status === "ready" && (
+                                  <Label color="primary">Sẵn sàng</Label>
                                 )}
-                                {detail.status === "active" && (
-                                  <Label color="success">Hoạt động</Label>
+                                {detail.status === "delivery" && (
+                                  <Label color="primary">Đang tiến hành</Label>
+                                )}
+                                {detail.status === "arrived" && (
+                                  <Label color="primary">Hoàng thành</Label>
                                 )}
                               </div>
                             </TableCell>
@@ -391,20 +394,25 @@ export default function SessionDetailTime(props) {
 
                                             <TableCell align="center">
                                               <div>
-                                                {i.status === "pending" && (
+                                                {i.status === "waiting" && (
                                                   <Label color="primary">
                                                     Đang chờ
                                                   </Label>
                                                 )}
-                                                {i.status === "progress" && (
-                                                  // <Alert severity="info">waiting</Alert>
-                                                  <Label color="warning">
-                                                    Đang tiến hành
-                                                  </Label>
-                                                )}
+
                                                 {i.status === "ready" && (
                                                   <Label color="success">
                                                     Sẵn sàng
+                                                  </Label>
+                                                )}
+                                                {i.status === "delivery" && (
+                                                  <Label color="primary">
+                                                    Đang tiến hành
+                                                  </Label>
+                                                )}
+                                                {i.status === "arrived" && (
+                                                  <Label color="primary">
+                                                    Hoàng thành
                                                   </Label>
                                                 )}
                                               </div>

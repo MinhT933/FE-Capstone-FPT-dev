@@ -42,6 +42,8 @@ import Iconify from "../../components/hook-form/Iconify";
 import Avatar from "@mui/material/Avatar";
 import TripBySessionIDtoolbar from "./../../sections/@dashboard/user/TripBySessionIDtoolbar";
 import Label from "../../components/label/label";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import SessionDetail from "./SessionDetail";
 
 // ----------------------------------------------------------------------
 
@@ -49,8 +51,9 @@ const TABLE_HEAD_TOTAL = [
   { id: "images", name: "", alignRight: false },
   { id: "images", name: "Hình" },
   { id: "name", label: "Tên shipper", alignRight: false },
-  { id: "deliveryDate", label: "Ngày giao" },
-  { id: "deliveryTime", label: "Thời gian giao" },
+  { id: "deliveryDate", label: "Ngày lấy đơn" },
+  { id: "deliveryTime", label: "Thời gian lấy đơn" },
+  { id: "arrivedTime", label: "Thời gian kết thúc đơn" },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
@@ -107,6 +110,10 @@ export default function DeliveryTripByIDsession(props) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [openCell, setOpenCell] = useState([]);
+
+  const [orderFood, setOderFood] = useState([]);
+
+  const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
 
   //CALL API====================================================
   const location = useLocation();
@@ -243,8 +250,10 @@ export default function DeliveryTripByIDsession(props) {
                           id,
                           batchs,
                           shipper,
+                          session,
                           deliveryDate,
                           deliveryTime,
+                          arrivedTime,
                           status,
                         } = row;
                         return (
@@ -289,6 +298,7 @@ export default function DeliveryTripByIDsession(props) {
 
                               <TableCell>{deliveryDate}</TableCell>
                               <TableCell>{deliveryTime}</TableCell>
+                              <TableCell>{arrivedTime}</TableCell>
 
                               <TableCell align="left">
                                 <div>
@@ -318,7 +328,7 @@ export default function DeliveryTripByIDsession(props) {
                                   timeout="auto"
                                   unmountOnExit
                                 >
-                                  <Box sx={{ margin: 2 }}>
+                                  <Box sx={{ margin: 2, width: "900px" }}>
                                     <Typography
                                       variant="h6"
                                       gutterBottom
@@ -329,12 +339,11 @@ export default function DeliveryTripByIDsession(props) {
                                     <Table size="small" aria-label="purchases">
                                       <TableHead>
                                         <TableRow>
-                                          <TableCell>Tên Trạm</TableCell>
-                                          <TableCell>Địa chỉ</TableCell>
-                                          <TableCell>Số điện thoại</TableCell>
-                                          <TableCell>
-                                            Thời gian hoạt động
-                                          </TableCell>
+                                          <TableCell>Túi</TableCell>
+                                          <TableCell>Khách hàng</TableCell>
+                                          <TableCell>Điểm giao</TableCell>
+                                          <TableCell>Tổng đơn</TableCell>
+                                          <TableCell>Thời gian giao</TableCell>
 
                                           <TableCell align="center">
                                             Trạng thái
@@ -343,20 +352,72 @@ export default function DeliveryTripByIDsession(props) {
                                       </TableHead>
                                       <TableBody>
                                         {batchs.map((item, idex) => {
+                                          console.log(item);
                                           return (
                                             <TableRow>
+                                              <TableCell>
+                                                Túi {idex + 1}
+                                              </TableCell>
+                                              {/* <TableCell>
+                                                {item.orders.map((i, index) => {
+                                                  console.log(i);
+                                                  return (
+                                                    <TableCell>
+                                                      {
+                                                        i.subscription.account
+                                                          .profile.fullName
+                                                      }
+                                                    </TableCell>
+                                                  );
+                                                })}
+                                              </TableCell> */}
                                               <TableCell>
                                                 {item.station.name}
                                               </TableCell>
                                               <TableCell>
-                                                {item.station.address}
+                                                {item.orders.length}
                                               </TableCell>
                                               <TableCell>
-                                                {item.station.phone}
+                                                {session.workDate}
                                               </TableCell>
                                               <TableCell>
-                                                {item.station.openTime}-{" "}
-                                                {item.station.closeTime}
+                                                <div>
+                                                  {item.status ===
+                                                    "waiting" && (
+                                                    <Label color="warning">
+                                                      Đang chờ
+                                                    </Label>
+                                                  )}
+
+                                                  {item.status === "ready" && (
+                                                    <Label color="primary">
+                                                      Sẵn sàng
+                                                    </Label>
+                                                  )}
+                                                  {item.status ===
+                                                    "delivery" && (
+                                                    <Label color="primary">
+                                                      Đang tiến hành
+                                                    </Label>
+                                                  )}
+                                                  {item.status ===
+                                                    "arrived" && (
+                                                    <Label color="primary">
+                                                      Hoàng thành
+                                                    </Label>
+                                                  )}
+                                                </div>
+                                              </TableCell>
+                                              <TableCell>
+                                                <ButtonCustomize
+                                                  nameButton="Xem chi tiết"
+                                                  onClick={() => {
+                                                    SetOpenPopUpDetail(true);
+                                                    // let food = [];
+
+                                                    setOderFood(item.orders);
+                                                  }}
+                                                />
                                               </TableCell>
                                             </TableRow>
                                           );
@@ -401,6 +462,11 @@ export default function DeliveryTripByIDsession(props) {
           </Card>
         </Container>
       </Box>
+      <SessionDetail
+        orderFood={orderFood}
+        SetOpenPopUpDetail={SetOpenPopUpDetail}
+        OpenPopUpDetail={OpenPopUpDetail}
+      />
     </Page>
   );
 }
