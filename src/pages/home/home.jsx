@@ -45,7 +45,7 @@ export default function Home() {
     };
     callAPI();
   }, [dispatch, token]);
-  console.log(subcription);
+ 
 
   ///hàm tìm gói ăn được mua nhiều nhất
   const findMostPakackagebuy = () => {
@@ -53,34 +53,37 @@ export default function Home() {
     if (subcription.length > 0) {
       var map = new Map();
       const packageBuy = subcription
-        .filter((c) => c.status === "done")
+        ?.filter((c) => c.status === "done")
         .map((c) => c.packages.id)
         .reduce(function (prev, cur) {
           prev[cur] = (prev[cur] || 0) + 1;
           return prev;
         }, {});
 
-      //hàm trả key
-      const key = Object.keys(packageBuy).reduce(function (a, b) {
-        return packageBuy[a] > packageBuy[b] ? a : b;
-      });
-      const packageBuyhihi = subcription
-        .filter((c) => c.status === "done")
-        .find((c) => c.packages.id === key);
+      //hàm trả
+      if (packageBuy.length > 0) {
+        const key = Object.keys(packageBuy).reduce(function (a, b) {
+          return packageBuy[a] > packageBuy[b] ? a : b;
+        });
 
-      const data = {
-        name: packageBuyhihi.packages.name,
-        image: packageBuyhihi.packages.image,
-        count: packageBuy[key],
-      };
-      return data;
+        const packageBuyhihi = subcription
+          ?.filter((c) => c.status === "done")
+          .find((c) => c.packages.id === key);
+
+        const data = {
+          name: packageBuyhihi.packages.name,
+          image: packageBuyhihi.packages.image,
+          count: packageBuy[key],
+        };
+        return data;
+      }
     }
   };
   //----------------------------------------------------------------
 
   const findSubCription = () => {
     if (subcription.length > 0) {
-      const packageBuy = subcription.filter((c) => c.status === "done");
+      const packageBuy = subcription?.filter((c) => c.status === "done");
     }
   };
   findSubCription();

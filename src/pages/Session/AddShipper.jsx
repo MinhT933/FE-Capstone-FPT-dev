@@ -6,17 +6,11 @@ import {
   DialogTitle,
   Paper,
   Box,
-  Grid,
-  Avatar,
-  Typography,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import Iconify from "../../components/hook-form/Iconify";
 import { useFormik } from "formik";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
-import * as yup from "yup";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
-import Controls from "./../../components/Control/Controls";
 import API from "./../../Axios/API/API";
 import { URL_API } from "./../../Axios/URL_API/URL";
 import Checkbox from "@mui/material/Checkbox";
@@ -50,7 +44,6 @@ export default function AddShipper(props) {
   if (token === null) {
     Navigate("/");
   }
-  console.log(id);
   const handleClose = () => {
     setOpenSetShipper(false);
   };
@@ -138,29 +131,11 @@ export default function AddShipper(props) {
         maxWidth="md"
       >
         <DialogTitle>
-          {/* <PageHeader
-            title="Xem chi tiết món có trong phiên làm việc"
-            subTitle={`Thông tin chi tiết`}
-            icon={getIcon("fluent-mdl2:work-item")}
-          /> */}
         </DialogTitle>
         <DialogContent>
           <form onSubmit={formik.handleSubmit}>
             <Box>
-              {/* <Controls.Select
-                name="shipperIds"
-                required
-                label="Loại"
-                width="85%"
-                value={formik.values.shipperIds}
-                onChange={(e) => {
-                  const a = shipper.find((c) => c.id === e.target.value);
-
-                  formik.setFieldValue("shipperIds", a.id);
-                }}
-                onBlur={formik.handleBlur}
-                options={getOptions()}
-              /> */}
+            
               <Autocomplete
                 multiple
                 id="checkboxes-tags-demo"

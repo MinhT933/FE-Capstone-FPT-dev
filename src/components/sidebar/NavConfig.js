@@ -145,11 +145,13 @@ const navConfigAdmin = [
 ];
 
 const navConfigKichen = [
+
   {
     title: "Người giao hàng",
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
   },
+
   {
     title: "Phiên làm việc",
     path: "/dashboard/kitchen/session",

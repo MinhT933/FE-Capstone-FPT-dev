@@ -38,19 +38,23 @@ import { useSelector } from "react-redux";
 import Collapse from "@mui/material/Collapse";
 
 import { callAPIGetListTripByID } from "../../redux/action/acction";
-import PageHeader from "../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 import Avatar from "@mui/material/Avatar";
 import TripBySessionIDtoolbar from "./../../sections/@dashboard/user/TripBySessionIDtoolbar";
 import Label from "../../components/label/label";
+import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import SessionDetail from "./SessionDetail";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD_TOTAL = [
-  { id: "images", name: "Hình", alignRight: false },
-  { id: "name", label: "Tên", alignRight: false },
-  { id: "total", label: "Tống số", alignRight: false },
-  { id: "description", label: "Mô tả", alignRight: false },
+  { id: "images", name: "", alignRight: false },
+  { id: "images", name: "Hình" },
+  { id: "name", label: "Tên shipper", alignRight: false },
+  { id: "deliveryDate", label: "Ngày lấy đơn" },
+  { id: "deliveryTime", label: "Thời gian lấy đơn" },
+  { id: "arrivedTime", label: "Thời gian kết thúc đơn" },
+  { id: "status", label: "Trạng thái", alignRight: false },
   { id: "" },
 ];
 
@@ -107,6 +111,10 @@ export default function DeliveryTripByIDsession(props) {
 
   const [openCell, setOpenCell] = useState([]);
 
+  const [orderFood, setOderFood] = useState([]);
+
+  const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
+
   //CALL API====================================================
   const location = useLocation();
   const Navigate = useNavigate();
@@ -129,6 +137,8 @@ export default function DeliveryTripByIDsession(props) {
   const trip = useSelector((state) => {
     return state.userReducer.listripByID;
   });
+
+  console.log(trip);
 
   React.useEffect(() => {
     if (trip) {
@@ -196,12 +206,7 @@ export default function DeliveryTripByIDsession(props) {
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Page title="Phiên làm việc">
-      <Box sx={{ marginTop: "5%" }}>
-        <PageHeader
-          title="Món ăn cần phải chuẩn bị trong phiên"
-          subTitle={`Tổng số món ăn `}
-          icon={getIcon("fluent:apps-list-detail-20-filled")}
-        />
+      <Box>
         <Container maxWidth={false}>
           <Stack
             direction="row"
@@ -241,7 +246,16 @@ export default function DeliveryTripByIDsession(props) {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((row, index) => {
-                        const { id, image, name, count, description } = row;
+                        const {
+                          id,
+                          batchs,
+                          shipper,
+                          session,
+                          deliveryDate,
+                          deliveryTime,
+                          arrivedTime,
+                          status,
+                        } = row;
                         return (
                           <>
                             <TableRow hover key={id} tabIndex={-1}>
@@ -271,17 +285,34 @@ export default function DeliveryTripByIDsession(props) {
                                 </IconButton>
                               </TableCell>
                               <TableCell>
-                                <Avatar alt={name} src={image} />
+                                <Avatar
+                                  alt={shipper?.account.profile.fullName}
+                                  src={shipper?.account.profile.avatar}
+                                />
                               </TableCell>
                               <TableCell>
                                 <Typography variant="subtitle2" noWrap>
-                                  {name}
+                                  {shipper?.account.profile.fullName}
                                 </Typography>
                               </TableCell>
 
-                              <TableCell align="left">{count}</TableCell>
+                              <TableCell>{deliveryDate}</TableCell>
+                              <TableCell>{deliveryTime}</TableCell>
+                              <TableCell>{arrivedTime}</TableCell>
 
-                              <TableCell align="left">{description}</TableCell>
+                              <TableCell align="left">
+                                <div>
+                                  {status === "ready" && (
+                                    <Label color="primary">Sẵn sàng</Label>
+                                  )}
+                                  {status === "waiting" && (
+                                    <Label color="warning">Đang chờ</Label>
+                                  )}
+                                  {status === "arrived" && (
+                                    <Label color="success">Hoàn thành</Label>
+                                  )}
+                                </div>
+                              </TableCell>
                             </TableRow>
                             <TableRow>
                               <TableCell
@@ -297,30 +328,101 @@ export default function DeliveryTripByIDsession(props) {
                                   timeout="auto"
                                   unmountOnExit
                                 >
-                                  <Box sx={{ margin: 2 }}>
+                                  <Box sx={{ margin: 2, width: "900px" }}>
                                     <Typography
                                       variant="h6"
                                       gutterBottom
                                       component="div"
                                     >
-                                      Đơn hàng
+                                      Thông tin chuyến
                                     </Typography>
                                     <Table size="small" aria-label="purchases">
                                       <TableHead>
                                         <TableRow>
-                                          <TableCell>Tên nhóm</TableCell>
-                                          <TableCell>Tên khách hàng</TableCell>
-                                          <TableCell>Số điện thoại</TableCell>
-                                          <TableCell align="center">
-                                            Tên món
-                                          </TableCell>
+                                          <TableCell>Túi</TableCell>
+                                          <TableCell>Khách hàng</TableCell>
+                                          <TableCell>Điểm giao</TableCell>
+                                          <TableCell>Tổng đơn</TableCell>
+                                          <TableCell>Thời gian giao</TableCell>
 
                                           <TableCell align="center">
                                             Trạng thái
                                           </TableCell>
                                         </TableRow>
                                       </TableHead>
-                                      <TableBody></TableBody>
+                                      <TableBody>
+                                        {batchs.map((item, idex) => {
+                                          console.log(item);
+                                          return (
+                                            <TableRow>
+                                              <TableCell>
+                                                Túi {idex + 1}
+                                              </TableCell>
+                                              {/* <TableCell>
+                                                {item.orders.map((i, index) => {
+                                                  console.log(i);
+                                                  return (
+                                                    <TableCell>
+                                                      {
+                                                        i.subscription.account
+                                                          .profile.fullName
+                                                      }
+                                                    </TableCell>
+                                                  );
+                                                })}
+                                              </TableCell> */}
+                                              <TableCell>
+                                                {item.station.name}
+                                              </TableCell>
+                                              <TableCell>
+                                                {item.orders.length}
+                                              </TableCell>
+                                              <TableCell>
+                                                {session.workDate}
+                                              </TableCell>
+                                              <TableCell>
+                                                <div>
+                                                  {item.status ===
+                                                    "waiting" && (
+                                                    <Label color="warning">
+                                                      Đang chờ
+                                                    </Label>
+                                                  )}
+
+                                                  {item.status === "ready" && (
+                                                    <Label color="primary">
+                                                      Sẵn sàng
+                                                    </Label>
+                                                  )}
+                                                  {item.status ===
+                                                    "delivery" && (
+                                                    <Label color="primary">
+                                                      Đang tiến hành
+                                                    </Label>
+                                                  )}
+                                                  {item.status ===
+                                                    "arrived" && (
+                                                    <Label color="primary">
+                                                      Hoàng thành
+                                                    </Label>
+                                                  )}
+                                                </div>
+                                              </TableCell>
+                                              <TableCell>
+                                                <ButtonCustomize
+                                                  nameButton="Xem chi tiết"
+                                                  onClick={() => {
+                                                    SetOpenPopUpDetail(true);
+                                                    // let food = [];
+
+                                                    setOderFood(item.orders);
+                                                  }}
+                                                />
+                                              </TableCell>
+                                            </TableRow>
+                                          );
+                                        })}
+                                      </TableBody>
                                     </Table>
                                   </Box>
                                 </Collapse>
@@ -360,6 +462,11 @@ export default function DeliveryTripByIDsession(props) {
           </Card>
         </Container>
       </Box>
+      <SessionDetail
+        orderFood={orderFood}
+        SetOpenPopUpDetail={SetOpenPopUpDetail}
+        OpenPopUpDetail={OpenPopUpDetail}
+      />
     </Page>
   );
 }

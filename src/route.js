@@ -51,8 +51,13 @@ import Delivery from "./components/Trip/Delivery";
 import ListDeliveryTrip from "./components/Trip/ListDeliveryTrip";
 import KitchenvieworderByWeek from "./pages/Kitchen/KitchenvieworderByWeek";
 import ListCateTime from "./pages/Time-Cate/ListCateTime";
-import Trip from './pages/Session/Trip';
-import Session from './pages/Session/Session';
+
+import NewSchedule from "./pages/PackageFood/NewSchedule";
+import CreateTrip from "./components/Seesion/CreateTrip";
+import Session from "./pages/Session/Session";
+import SessionDetailTime from "./pages/Session/SessionDetailTime";
+import Trip from "./pages/Session/Trip";
+
 import FullWidthTabs from "./pages/Session/FullWidthTabs";
 
 const ProtectedRouteAuthen = ({ redirectPath = "/", roles, children }) => {
@@ -240,6 +245,14 @@ export default function Router() {
 
       children: [
         {
+          path: "NewSchedule",
+          element: (
+            // <ProtectedRouteAuthen>
+            <NewSchedule />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
           path: "Listkitchen",
           element: (
             // <ProtectedRouteAuthen>
@@ -293,6 +306,14 @@ export default function Router() {
           element: (
             // <ProtectedRouteAuthen role="admin">
             <KitchenShipperList />
+            // </ProtectedRouteAuthen>
+          ),
+        },
+        {
+          path: "createTrip",
+          element: (
+            // <ProtectedRouteAuthen role="admin">
+            <CreateTrip />
             // </ProtectedRouteAuthen>
           ),
         },

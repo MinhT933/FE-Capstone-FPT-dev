@@ -38,8 +38,6 @@ import {
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
-import PageHeader from "../../components/PageHeader";
-import Iconify from "../../components/hook-form/Iconify";
 import AddShipper from "./AddShipper";
 import Avatar from "@mui/material/Avatar";
 import Collapse from "@mui/material/Collapse";
@@ -49,7 +47,7 @@ const TABLE_HEAD = [
   { id: "id", label: "", alignRight: false },
   { id: "batch", label: "Túi", alignRight: false },
   { id: "name", label: "Tên Trạm", alignRight: false },
-
+  { id: "batch", label: "Tổng đơn", alignRight: false },
   { id: "workDate", label: "Ngày giao hàng", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
 
@@ -134,8 +132,6 @@ export default function SessionDetailTime(props) {
 
   const dispatch = useDispatch();
 
-  // let { id } = useParams();
-
   React.useEffect(() => {
     const getDetailSession = async () => {
       await dispatch(callAPIGetListSessionDetail(token, id));
@@ -147,11 +143,6 @@ export default function SessionDetailTime(props) {
   const detailSession = useSelector((state) => {
     return state.userReducer.detailSession.batchs;
   });
-
-  const totalFood = useSelector((state) => {
-    return state.userReducer.totalfood;
-  });
-  // console.log(detailSession);
 
   React.useEffect(() => {
     if (detailSession) {
@@ -217,21 +208,10 @@ export default function SessionDetailTime(props) {
     filterName
   );
 
-  const filterTotalFood = applySortFilter(
-    totalFood,
-    getComparator(order, orderBy),
-    filterName
-  );
   const isStationNotFound = filter?.length === 0;
 
-  const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Page title="Phiên làm việc">
-      <PageHeader
-        title="Xem chi tiết phiên làm việc"
-        subTitle={`Chi tiếc phiên làm việc `}
-        icon={getIcon("fluent:apps-list-detail-20-filled")}
-      />
       <Container maxWidth={false}>
         <Stack
           direction="row"
@@ -315,17 +295,25 @@ export default function SessionDetailTime(props) {
                             {/* <TableCell align="left">
                               {station.address}
                             </TableCell> */}
+                            <TableCell align="left">{orders.length}</TableCell>
                             <TableCell align="left">
                               {detail.workDate}
                             </TableCell>
 
                             <TableCell align="left">
                               <div>
-                                {status === "waiting" && (
+                                {detail.status === "waiting" && (
                                   <Label color="warning">Đang chờ</Label>
                                 )}
-                                {status === "active" && (
-                                  <Label color="success">Hoạt động</Label>
+
+                                {detail.status === "ready" && (
+                                  <Label color="primary">Sẵn sàng</Label>
+                                )}
+                                {detail.status === "delivery" && (
+                                  <Label color="primary">Đang tiến hành</Label>
+                                )}
+                                {detail.status === "arrived" && (
+                                  <Label color="primary">Hoàng thành</Label>
                                 )}
                               </div>
                             </TableCell>
@@ -362,7 +350,6 @@ export default function SessionDetailTime(props) {
                                         <TableCell align="center">
                                           Tên món
                                         </TableCell>
-
                                         <TableCell align="center">
                                           Trạng thái
                                         </TableCell>
@@ -407,21 +394,25 @@ export default function SessionDetailTime(props) {
 
                                             <TableCell align="center">
                                               <div>
-                                                {i.status === "pending" && (
-                                                  // <Alert severity="warning">inActive</Alert>
+                                                {i.status === "waiting" && (
                                                   <Label color="primary">
                                                     Đang chờ
                                                   </Label>
                                                 )}
-                                                {i.status === "progress" && (
-                                                  // <Alert severity="info">waiting</Alert>
-                                                  <Label color="warning">
+
+                                                {i.status === "ready" && (
+                                                  <Label color="success">
+                                                    Sẵn sàng
+                                                  </Label>
+                                                )}
+                                                {i.status === "delivery" && (
+                                                  <Label color="primary">
                                                     Đang tiến hành
                                                   </Label>
                                                 )}
-                                                {i.status === "active" && (
-                                                  <Label color="success">
-                                                    Đang bán
+                                                {i.status === "arrived" && (
+                                                  <Label color="primary">
+                                                    Hoàng thành
                                                   </Label>
                                                 )}
                                               </div>
@@ -484,116 +475,6 @@ export default function SessionDetailTime(props) {
         setOpenSetShipper={setOpenSetShipper}
         OpenSetShipper={OpenSetShipper}
       />
-      <Box sx={{ marginTop: "5%" }}>
-        <PageHeader
-          title="Món ăn cần phải chuẩn bị trong phiên"
-          subTitle={`Tổng số món ăn `}
-          icon={getIcon("fluent:apps-list-detail-20-filled")}
-        />
-        <Container maxWidth={false}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={5}
-          >
-            <Typography variant="h4" gutterBottom>
-              {/* User */}
-            </Typography>
-          </Stack>
-
-          <Card>
-            <StationListtoolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-              options={getOptions()}
-            />
-
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <UserListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD_TOTAL}
-                    rowCount={totalFood?.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filterTotalFood
-                      ?.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row, index) => {
-                        const { id, image, name, count, description } = row;
-                        return (
-                          <>
-                            <TableRow hover key={id} tabIndex={-1}>
-                              <TableCell>
-                                <Avatar alt={name} src={image} />
-                              </TableCell>
-                              <TableCell>
-                                <Typography variant="subtitle2" noWrap>
-                                  {name}
-                                </Typography>
-                              </TableCell>
-
-                              <TableCell align="left">{count}</TableCell>
-
-                              <TableCell align="left">{description}</TableCell>
-                            </TableRow>
-                          </>
-                        );
-                      })}
-                  </TableBody>
-
-                  {isStationNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
-              component="div"
-              count={totalFood?.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              // fix languge in footer tables
-              labelRowsPerPage={"Số hàng trên một trang"}
-              labelDisplayedRows={({ from, to, count }) => {
-                return "" + from + "-" + to + " của " + count;
-              }}
-            />
-          </Card>
-        </Container>
-      </Box>
     </Page>
   );
 }
-
-// const data = {
-//   {
-//     kitchenId: "string",
-//     shippers: [
-//       {
-//         idShipper: "string",
-//         idShipper: "string",
-//         idShipper: "string"
-//       }
-//     ]
-//   }
-// }

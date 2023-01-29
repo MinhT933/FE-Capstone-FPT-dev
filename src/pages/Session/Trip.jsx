@@ -122,6 +122,7 @@ export default function Trip() {
   const [OpenSetShipper, setOpenSetShipper] = useState(false);
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(null);
 
@@ -160,6 +161,7 @@ export default function Trip() {
       setOpenCell(tempArr);
     }
   }, [listTrip]);
+
 
   const [arrBatch, setArrBatch] = useState([]);
   const handlebatch = () => {

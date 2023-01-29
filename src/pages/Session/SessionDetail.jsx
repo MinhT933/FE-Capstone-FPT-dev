@@ -13,10 +13,27 @@ import { Link as useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
+import PageHeaderFoodDetail from "../../components/PageHeaderFoodDetail";
+
 //----------------------------------------------------------------
 
 export default function SessionDetail(props) {
   const { OpenPopUpDetail, SetOpenPopUpDetail, orderFood } = props;
+
+
+  const handleArray = () => {
+    for (let index = 0; index < orderFood.length; index++) {
+      const element = orderFood[index];
+      return element.subscription.account.profile.fullName;
+    }
+  };
+  const handleArrayPhone = () => {
+    for (let index = 0; index < orderFood.length; index++) {
+      const element = orderFood[index];
+      return element.subscription.account.phone;
+    }
+  };
+
 
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -32,9 +49,12 @@ export default function SessionDetail(props) {
     <Paper>
       <Dialog open={OpenPopUpDetail} onClose={handleClose}>
         <DialogTitle>
-          <PageHeader
+
+          <PageHeaderFoodDetail
             title="Xem chi tiết món có trong phiên làm việc"
-            subTitle={`Thông tin chi tiết`}
+            subTitle={`Khách Hàng:${handleArray()}`}
+            subTitle1={`Số điện thoại:${handleArrayPhone()}`}
+
             icon={getIcon("fluent-mdl2:work-item")}
           />
         </DialogTitle>
