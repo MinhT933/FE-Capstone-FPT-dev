@@ -319,8 +319,11 @@ export default function FreeShipper(props) {
   };
 
   return (
-    <Paper>
-      <Dialog open={OpenPopUp} onClose={handleClose}>
+    <Paper >
+      <Dialog
+        open={OpenPopUp}
+        onClose={handleClose}
+      >
         <DialogTitle>
           <PageHeader
             title="Thêm tài xế cho bếp"
@@ -331,26 +334,6 @@ export default function FreeShipper(props) {
 
         <DialogContent>
           <Container maxWidth={false} fullWitdh maxwidth="md">
-            {/* <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    mb={5}
-                > */}
-            {/* <Typography variant="h4" gutterBottom>
-                        {/* User */}
-            {/* </Typography>  */}
-
-            {/* {decoded.role === "admin" && (
-                        <ButtonCustomize
-                            variant="contained"
-                            component={RouterLink}
-                            to="/dashboard/admin/kitchenshipper"
-                            nameButton="Thêm tài xế cho bếp"
-                        />
-                    )} */}
-            {/* </Stack> */}
-
             <Card>
               <KitchenListToolbar
                 numSelected={selected.length}
@@ -361,7 +344,10 @@ export default function FreeShipper(props) {
 
               <Box>
                 <div
-                  style={{ height: "25rem", width: "100%", marginTop: "2%" }}
+                  style={{
+                    height: "25rem", width: "100%",
+                    //  marginTop: "2%" 
+                  }}
                 >
                   {freeShipper ? (
                     <DataGrid
@@ -407,122 +393,6 @@ export default function FreeShipper(props) {
                 </div>
               </Box>
 
-              {/* <Scrollbar>
-                                <TableContainer sx={{ minWidth: 500, width: 500 }}>
-                                    <Table>
-                                        {/* <UserListHead
-                                            order={order}
-                                            orderBy={orderBy}
-                                            headLabel={TABLE_HEAD}
-                                            rowCount={freeShipper.length}
-                                            numSelected={selected.length}
-                                            onRequestSort={handleRequestSort}
-                                            onSelectAllClick={handleSelectAllClick}
-                                        /> 
-                                        <TableBody>
-                                            {filteredStations
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map((row) => {
-                                                    const {
-                                                        id,
-                                                        fullName,
-                                                        noPlate,
-                                                        vehicleType,
-                                                        status,
-                                                        account,
-                                                    } = row;
-
-                                                    const isItemSelected = selected.indexOf(fullName) !== -1;
-
-                                                    return (
-                                                        <TableRow
-                                                            hover
-                                                            key={id}
-                                                            tabIndex={-1}
-                                                            role="checkbox"
-                                                            selected={isItemSelected}
-                                                            aria-checked={isItemSelected}
-                                                        >
-                                                            <TableCell align="left">{""}</TableCell>
-
-                                                            <TableCell padding="checkbox">
-                                                                <Checkbox
-                                                                    // checked={isItemSelected}
-                                                                    onChange={(event) => console.log(event.target.checked)}
-                                                                />
-                                                            </TableCell>
-
-
-                                                            <TableCell component="th" scope="row" padding="none">
-                                                                <Stack
-                                                                    direction="row"
-                                                                    alignItems="center"
-                                                                    spacing={2}
-                                                                >
-                                                                    <Avatar
-                                                                        alt={fullName}
-                                                                        src={row.account.profile?.avatar}
-                                                                    />
-                                                                    <Typography variant="subtitle2" noWrap>
-                                                                        {row.account.profile?.fullName}
-                                                                    </Typography>
-                                                                </Stack>
-                                                            </TableCell>
-
-                                                            <TableCell align="left">
-                                                                {row.account?.phone}
-                                                            </TableCell>
-
-                                                            <TableCell align="left">{noPlate}</TableCell>
-                                                            <TableCell align="left">{vehicleType}</TableCell>
-
-                                                            <TableCell align="left">
-                                                                {" "}
-                                                                {row.account.profile?.email}{" "}
-                                                            </TableCell>
-
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                        </TableBody>
-                                        {isStationNotFound && (
-                                            <TableBody>
-                                                <TableRow>
-                                                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                        <SearchNotFound searchQuery={filterName} />
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        )}
-                                    </Table>
-                                </TableContainer>
-                            </Scrollbar> */}
-
-              {/* <TablePagination
-                                rowsPerPageOptions={[5, 10, 20]}
-                                component="div"
-                                count={freeShipper.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                // fix languge in footer tables
-                                labelRowsPerPage={"Số hàng trên một trang"}
-                                labelDisplayedRows={({ from, to, count }) => {
-                                    return "" + from + "-" + to + " của " + count;
-                                }}
-                            /> */}
-              {/* {open && (
-                        <ConfirmDialog
-                            open={open}
-                            content={value.account.profile?.fullName}
-                            handleClickOpen={handleClickOpen}
-                            handleClose={handleClose}
-                            onClick={() =>
-                                handleDelete(value.id, value.account.profile?.fullName)
-                            }
-                        />
-                    )} */}
             </Card>
 
             <Box>
