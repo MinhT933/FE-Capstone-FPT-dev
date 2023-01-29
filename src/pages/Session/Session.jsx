@@ -50,7 +50,9 @@ const TABLE_HEAD = [
   { id: "timeSlot", label: "Buổi", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { id: "", label: "Tạo chuyến", alignRight: false },
+
   // { id: "", label: "Xác nhận", alignRight: false },
+
 ];
 
 // ----------------------------------------------------------------------
@@ -201,6 +203,7 @@ export default function Session() {
     filterName
   );
 
+
   const handleCompareDate = (date) => {
     const toDate = new Date();
     const workDate = date.split("-");
@@ -226,6 +229,7 @@ export default function Session() {
     }
   };
   // handleCompareDate("2023-01-2");
+
   const isUserNotFound = filterSession.length === 0;
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
@@ -340,9 +344,11 @@ export default function Session() {
                               {status === "done" && (
                                 <Label color="success">Hoàn thành</Label>
                               )}
+
                               {status === "ready" && (
                                 <Label color="warning">Sẵn Sàng</Label>
                               )}
+
                             </div>
                           </TableCell>
 
@@ -356,6 +362,7 @@ export default function Session() {
                             />
                           </TableCell>
                           <TableCell align="left">
+
                             {handleCompareDate(workDate) === true &&
                             status === "processing" ? (
                               <ButtonCustomize
@@ -369,6 +376,7 @@ export default function Session() {
                             ) : (
                               <TableCell></TableCell>
                             )}
+
                           </TableCell>
                         </TableRow>
                       );

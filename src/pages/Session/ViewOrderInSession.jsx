@@ -145,7 +145,6 @@ export default function ViewOrderInSession(props) {
     return state.userReducer.detailSession;
   });
 
-  console.log(detail);
 
   React.useEffect(() => {
     if (detailSession) {
@@ -158,6 +157,7 @@ export default function ViewOrderInSession(props) {
       setOpenCell(tempArr);
     }
   }, [detailSession]);
+
 
   //CALL API=====================================================
   //Thay đổi trạng thái
@@ -308,7 +308,9 @@ export default function ViewOrderInSession(props) {
                                   <TableCell>
                                     {i?.subscription?.packages.name}
                                   </TableCell>
+
                                   <TableCell>{i?.packageItem.flag}</TableCell>
+
                                   <TableCell>{i?.station.name}</TableCell>
                                   <TableCell>
                                     {i?.subscription?.subscriptionDate}
@@ -321,12 +323,16 @@ export default function ViewOrderInSession(props) {
                                       )}
                                       {i.status === "progress" && (
                                         // <Alert severity="info">waiting</Alert>
-                                        <Label color="primary">
+
+                                        <Label color="warning">
+
                                           Đang tiến hành
                                         </Label>
                                       )}
                                       {i.status === "ready" && (
+
                                         <Label color="primary">Sẵn sàng</Label>
+
                                       )}
                                     </div>
                                   </TableCell>

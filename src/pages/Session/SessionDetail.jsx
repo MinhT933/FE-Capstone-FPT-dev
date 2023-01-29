@@ -14,11 +14,12 @@ import PageHeader from "../../components/PageHeader";
 import Iconify from "../../components/hook-form/Iconify";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import PageHeaderFoodDetail from "../../components/PageHeaderFoodDetail";
+
 //----------------------------------------------------------------
 
 export default function SessionDetail(props) {
   const { OpenPopUpDetail, SetOpenPopUpDetail, orderFood } = props;
-  console.log(orderFood);
+
 
   const handleArray = () => {
     for (let index = 0; index < orderFood.length; index++) {
@@ -32,6 +33,7 @@ export default function SessionDetail(props) {
       return element.subscription.account.phone;
     }
   };
+
 
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -47,10 +49,12 @@ export default function SessionDetail(props) {
     <Paper>
       <Dialog open={OpenPopUpDetail} onClose={handleClose}>
         <DialogTitle>
+
           <PageHeaderFoodDetail
             title="Xem chi tiết món có trong phiên làm việc"
             subTitle={`Khách Hàng:${handleArray()}`}
             subTitle1={`Số điện thoại:${handleArrayPhone()}`}
+
             icon={getIcon("fluent-mdl2:work-item")}
           />
         </DialogTitle>

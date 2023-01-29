@@ -33,6 +33,7 @@ import { useDispatch } from "react-redux";
 
 import { useSelector } from "react-redux";
 
+
 import {
   callAPIGetListSessionDetail,
   callAPIGetListTottalFood,
@@ -40,6 +41,7 @@ import {
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
 import Iconify from "../../components/hook-form/Iconify";
 import Avatar from "@mui/material/Avatar";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD_TOTAL = [
@@ -194,7 +196,14 @@ export default function TotalFood(props) {
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Page title="Phiên làm việc">
-      <Box>
+
+      <Box sx={{ marginTop: "5%" }}>
+        <PageHeader
+          title="Món ăn cần phải chuẩn bị trong phiên"
+          subTitle={`Tổng số món ăn `}
+          icon={getIcon("fluent:apps-list-detail-20-filled")}
+        />
+
         <Container maxWidth={false}>
           <Stack
             direction="row"

@@ -45,6 +45,8 @@ import {
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import jwt_decode from "jwt-decode";
 import API from "../../Axios/API/API";
+import { URL_API } from "./../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
 import moment from "moment";
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
@@ -121,6 +123,10 @@ export default function Trip() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+
+  const [openRow, setOpenRow] = React.useState(false);
 
   const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
   const [orderFood, setOrderFood] = useState([]);
@@ -156,6 +162,8 @@ export default function Trip() {
     }
   }, [listTrip]);
 
+
+  const [arrBatch, setArrBatch] = useState([]);
   const handlebatch = () => {
     const arr = [];
     for (let index = 0; index < listTrip.length; index++) {

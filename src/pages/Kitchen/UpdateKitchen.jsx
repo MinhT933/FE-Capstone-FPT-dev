@@ -35,7 +35,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { callAPIgetListFreeShipper } from "../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import KitchenShipperList from "../KitchenShipper/KitchenShipperList";
-import UpdateKitchen1 from "./UpdateKitchen1";
+import UpdateKitchenInfor from "./UpdateKitchenInfor";
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 /// csss button
@@ -160,22 +160,22 @@ export default function UpdateKitchen() {
                 marginTop: "2%",
             }}
         >
-            <Container maxWidth={false} fullWitdh maxwidth="md">
-                <PageHeader
-                    display="left"
-                    title="Cập nhập bếp"
-                    subTitle="Vui lòng điền đầy đủ thông tin"
-                    icon={getIcon("mdi:chef-hat")}
-                />
-                <form onSubmit={formik.handleSubmit}>
-                    <Grid
+            
+            <PageHeader
+                display="left"
+                title="Cập nhập bếp"
+                subTitle="Vui lòng điền đầy đủ thông tin"
+                icon={getIcon("mdi:chef-hat")}
+            />
+            <form onSubmit={formik.handleSubmit}>
+                {/* <Grid
                         container
                         direction="row"
                         justifyContent="space-around"
                         alignItems="stretch"
                     >
                         <Grid>
-                            <UpdateKitchen1 />
+                            <UpdateKitchenInfor />
                         </Grid>
 
                         <Grid>
@@ -183,10 +183,35 @@ export default function UpdateKitchen() {
                         </Grid>
 
 
-                    </Grid>
-                    {/* </Box> */}
+                    </Grid> */}
 
-                    {/* <Box>
+
+                {/* <Box
+                        marginTop={"5%"}
+                        sx={{
+
+                            width: "20rem",
+                        }}
+
+                    > */}
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                >
+                    <Grid>
+                        <UpdateKitchenInfor />
+                    </Grid>
+                    <Grid item xs={8}>
+                        <KitchenShipperList />
+                    </Grid>
+                    <Grid></Grid>
+                </Grid>
+
+                {/* </Box> */}
+
+                {/* <Box>
                         <Stack
                             width="20%"
                             justifyContent="center"
@@ -196,8 +221,8 @@ export default function UpdateKitchen() {
                             <ButtonCustomize nameButton="Cập nhập" type="submit" />
                         </Stack>
                     </Box> */}
-                </form>
-            </Container>
+            </form>
+          
         </Paper>
     );
 }

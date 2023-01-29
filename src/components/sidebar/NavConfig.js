@@ -145,14 +145,9 @@ const navConfigAdmin = [
 ];
 
 const navConfigKichen = [
-  // {
-  //   title: "Bếp xem bếp",
-  //   path: "/dashboard/kitchen/Listkitchen",
-  //   icon: getIcon("mdi:card-account-details-star-outline"),
-  // },
 
   {
-    title: "Bếp quản lí Người giao hàng",
+    title: "Người giao hàng",
     path: "/dashboard/kitchen/kitchenshipper",
     icon: getIcon("carbon:delivery"),
   },

@@ -1616,6 +1616,11 @@ export const callAPIGetListSession = (token, date) => {
           payload: [],
         })
       );
+
+      CustomizedToast({
+        message: `Không tìm thấy dữ liệu`,
+        type: "ERROR",
+      });
     }
   };
 };
@@ -1642,6 +1647,7 @@ export const callAPIGetListSessionDetail = (token, id) => {
           payload: [],
         })
       );
+
     }
   };
 };
@@ -1709,6 +1715,7 @@ export const callAPIGetListTottalFood = (token, id) => {
           payload: [],
         })
       );
+
     }
   };
 };
@@ -1736,6 +1743,7 @@ export const callAPIGetListTripByID = (token, id) => {
           payload: [],
         })
       );
+
     }
   };
 };

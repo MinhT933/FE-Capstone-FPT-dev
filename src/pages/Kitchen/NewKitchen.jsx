@@ -167,6 +167,7 @@ export default function NewKitchen() {
                   variant="outlined"
                   required
                   label="Tên bếp"
+                  placeholder="Tên bếp"
                   name="fullName"
                   value={formik.values.fullName}
                   onChange={(e) => {
@@ -185,8 +186,7 @@ export default function NewKitchen() {
 
                 <Controls.TextField
                   // type="number"
-                  // fullWidth
-                  sx={{ width: "85%" }}
+                  sx={{ width: "23.2rem" }}
                   name="phone"
                   label="Điện thoại"
                   placeholder="Điện thoại"
@@ -209,7 +209,8 @@ export default function NewKitchen() {
 
                 <Controls.TextField
                   type="email"
-                  sx={{ width: "85%" }}
+                  sx={{ width: "23.2rem" }}
+                  fullWidth
                   name="email"
                   label="Email"
                   placeholder="Email"
@@ -233,7 +234,10 @@ export default function NewKitchen() {
                 <Controls.Input
                   variant="outlined"
                   label="Địa chỉ"
+                  placeholder="Địa chỉ"
                   required
+                  // fullWidth
+                  // sx={{ width: "23.2rem" }}
                   name="address"
                   value={formik.values.address}
                   onChange={(e) => {
@@ -250,30 +254,9 @@ export default function NewKitchen() {
                   </FormHelperText>
                 )}
 
-                <Controls.Input
-                  variant="outlined"
-                  label="Công suất"
-                  required
-                  name="ability"
-                  value={formik.values.ability}
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                  }}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.ability && formik.errors.ability && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-username-login"
-                  >
-                    {formik.errors.ability}
-                  </FormHelperText>
-                )}
-
                 <TextField
                   type={values.showPass ? "text" : "password"}
                   name="password"
-                  // sx={{'.css-r0m7rw-MuiInputBase-root-MuiOutlinedInput-root: 20rem'}}
                   sx={{ width: "23.2rem" }}
                   label="Mật khẩu"
                   placeholder="Mật khẩu"
