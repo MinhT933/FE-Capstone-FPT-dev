@@ -48,6 +48,7 @@ const TABLE_HEAD = [
   { id: "noPlate", label: "Biển số xe", alignRight: false },
   { id: "vehicleType", label: "Loại xe", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
+  { id: "createAt", label: "Ngày tạo", alignRight: false },
   { id: "kitchenID", label: "Bếp", alignRight: false },
   { id: "inWord", label: "Nhận đơn", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
@@ -274,7 +275,6 @@ export default function AdminShipperList() {
                   {filteredStations
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      console.log(row);
                       const {
                         id,
                         fullName,
@@ -282,6 +282,7 @@ export default function AdminShipperList() {
                         vehicleType,
                         status,
                         account,
+                        createdAt,
                       } = row;
 
                       return (
@@ -321,6 +322,9 @@ export default function AdminShipperList() {
                           <TableCell align="left">
                             {" "}
                             {row.account.profile?.email}{" "}
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">
                             {row.kitchen?.account.profile.fullName}

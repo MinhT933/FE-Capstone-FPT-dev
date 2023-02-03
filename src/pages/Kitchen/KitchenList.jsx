@@ -48,10 +48,11 @@ const TABLE_HEAD = [
   // { id: "ability", label: "Công suất", alignRight: false },
   // { id: "openTime", label: "Mở cửa", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
-
+  { id: "createdAt", label: "Ngày tạo", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
+
   { label: "Thay đổi trạng thái", alignRight: false },
-  // { id: "createdAt", label: "Ngày tạo", alignRight: false },
+
   { id: "updatedAt", label: "Chi tiết", alignRight: false },
   { id: "" },
 ];
@@ -253,7 +254,7 @@ export default function KitchenList() {
                   {filteredStations
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, address, ability } = row;
+                      const { id, address, ability, createdAt } = row;
 
                       return (
                         <TableRow
@@ -280,7 +281,9 @@ export default function KitchenList() {
                           <TableCell align="left">
                             {row.account.profile?.email}
                           </TableCell>
-
+                          <TableCell align="left">
+                            {new Date(createdAt).toLocaleDateString()}
+                          </TableCell>
                           <TableCell align="left">
                             <div>
                               {row.account.status === "inActive" && (

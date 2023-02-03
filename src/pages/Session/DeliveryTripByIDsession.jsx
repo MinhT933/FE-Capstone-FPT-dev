@@ -51,7 +51,8 @@ const TABLE_HEAD_TOTAL = [
   { id: "images", name: "", alignRight: false },
   { id: "images", name: "Hình" },
   { id: "name", label: "Tên shipper", alignRight: false },
-  { id: "deliveryDate", label: "Ngày lấy đơn" },
+  { id: "deliveryDate", label: "Ngày giao" },
+  { id: "createAt", label: "Ngày tạo", alignRight: false },
   { id: "deliveryTime", label: "Thời gian lấy đơn" },
   { id: "arrivedTime", label: "Thời gian kết thúc đơn" },
   { id: "status", label: "Trạng thái", alignRight: false },
@@ -254,6 +255,7 @@ export default function DeliveryTripByIDsession(props) {
                           deliveryDate,
                           deliveryTime,
                           arrivedTime,
+                          createdAt,
                           status,
                         } = row;
                         return (
@@ -297,6 +299,10 @@ export default function DeliveryTripByIDsession(props) {
                               </TableCell>
 
                               <TableCell>{deliveryDate}</TableCell>
+                              <TableCell>
+                                {" "}
+                                {new Date(createdAt).toLocaleDateString()}
+                              </TableCell>
                               <TableCell>{deliveryTime}</TableCell>
                               <TableCell>{arrivedTime}</TableCell>
                               <TableCell align="left">

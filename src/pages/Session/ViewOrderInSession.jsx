@@ -106,8 +106,6 @@ export default function ViewOrderInSession(props) {
   const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
 
   const [filterName, setFilterName] = useState("");
-  const [sessionID, setSessionID] = useState();
-  const [OpenSetShipper, setOpenSetShipper] = useState(false);
   const [orderFood, setOderFood] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -264,6 +262,7 @@ export default function ViewOrderInSession(props) {
                       return (
                         <>
                           {row.map((i, index) => {
+                            console.log(i);
                             return (
                               <>
                                 <TableRow
@@ -307,9 +306,26 @@ export default function ViewOrderInSession(props) {
                                     {i?.subscription?.packages.name}
                                   </TableCell>
 
-                                  <TableCell>{i?.packageItem.flag}</TableCell>
+                                  {/* <TableCell>
+                                    {i?.packageItem.itemCode&}
+                                  </TableCell> */}
+                                  {i?.packageItem.itemCode === 0 && (
+                                    <TableCell>Sáng</TableCell>
+                                  )}
+                                  {i?.packageItem.itemCode === 1 && (
+                                    <TableCell>Trưa</TableCell>
+                                  )}
+                                  {i?.packageItem.itemCode === 2 && (
+                                    <TableCell>Chiều</TableCell>
+                                  )}
 
                                   <TableCell>{i?.station.name}</TableCell>
+                                  <TableCell>
+                                    {" "}
+                                    {new Date(
+                                      i?.createdAt
+                                    ).toLocaleDateString()}
+                                  </TableCell>
                                   <TableCell>
                                     {i?.subscription?.subscriptionDate}
                                   </TableCell>

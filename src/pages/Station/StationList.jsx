@@ -34,7 +34,7 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
 import moment from "moment";
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
-import { width } from "@mui/system";
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -43,6 +43,7 @@ const TABLE_HEAD = [
   { id: "address", label: "Địa chỉ", alignRight: false },
   { id: "phone", label: "Số điện thoại", alignRight: false },
   { id: "time", label: "Thời gian hoạt động", alignRight: false },
+  { id: "createAt", label: "Ngày tạo", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
   { id: "detail", label: "Chi tiết", alignRight: false },
@@ -242,12 +243,14 @@ export default function StationList() {
                   {filteredStations
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
+                      console.log(row);
                       const {
                         id,
                         name,
                         phone,
                         address,
                         openTime,
+                        createdAt,
                         closeTime,
                         status,
                       } = row;
@@ -264,6 +267,9 @@ export default function StationList() {
                               {moment(openTime, "HH:mm:ss").format("hh:mm")} -
                               {moment(closeTime, "HH:mm:ss").format("hh:mm")}
                             </div>
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(createdAt).toLocaleDateString()}
                           </TableCell>
 
                           <TableCell align="left">
