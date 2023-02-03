@@ -15,12 +15,19 @@ import DeliveryTripByIDsession from "./DeliveryTripByIDsession";
 import Iconify from "../../components/hook-form/Iconify";
 import PageDetailSession from "../../components/PageDetailSession";
 import { useDispatch } from "react-redux";
-import { callAPIGetListSessionDetail } from "../../redux/action/acction";
+import {
+  callAPIgetListOrder,
+  callAPIGetListSession,
+  callAPIGetListSessionDetail,
+} from "../../redux/action/acction";
 import { jwt_decode } from "jwt-decode";
 import { useSelector } from "react-redux";
 import ViewOrderInSession from "./ViewOrderInSession";
 import Label from "./../../components/label/label";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
+import API from "../../Axios/API/API";
+import { URL_API } from "../../Axios/URL_API/URL";
+import { CustomizedToast } from "../../components/Toast/ToastCustom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -102,6 +109,7 @@ export default function FullWidthTabs() {
   React.useEffect(() => {
     const getDetailSession = async () => {
       await dispatch(callAPIGetListSessionDetail(token, id));
+      await dispatch(callAPIgetListOrder(token, id));
     };
     getDetailSession();
   }, [dispatch, id, token]);
@@ -109,18 +117,50 @@ export default function FullWidthTabs() {
   const detailSession = useSelector((state) => {
     return state.userReducer.detailSession;
   });
-  console.log(typeof detailSession.workDate);
-
+  const OrderArr = useSelector((state) => {
+    return state.userReducer.arrayOrder;
+  });
+  console.log(OrderArr.length);
   const profile = useSelector((state) => {
     return state.userReducer.profiles;
   });
   const [Button, setButton] = useState(false);
 
   React.useEffect(() => {
-    if (handleCompareDate(new Date(), new Date(detailSession.workDate))) {
+    if (
+      handleCompareDate(new Date(), new Date(detailSession.workDate)) &&
+      detailSession.status === "progressing"
+    ) {
       setButton(true);
     }
   }, [detailSession.workDate]);
+
+  const handleDate = (date) => {
+    const a = new Date(date).toLocaleDateString().split("/");
+    if (a[0] < 10) {
+      return `${a[2]}-0${a[1]}-${a[0]}`;
+    } else return `${a[2]}-${a[1]}-${a[0]}`;
+  };
+  const [open, setOpen] = React.useState(false);
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const doneSession = async (id) => {
+    await API("PUT", URL_API + `/sessions/done_session/${id}`, null, token)
+      .then((res) => {
+        dispatch(callAPIGetListSession(token, handleDate(new Date())));
+
+        CustomizedToast({
+          message: "Cập nhập trạng thái thành công",
+          type: "SUCCESS",
+        });
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleStatus = (status) => {
     if (status === "waiting") {
@@ -129,7 +169,7 @@ export default function FullWidthTabs() {
     } else if (status === "processing") {
       return <Label color="warning">Đang phân công</Label>;
     } else if (status === "done") {
-      return <Label color="warning">Hoàn thành </Label>;
+      return <Label color="success">Hoàn thành </Label>;
     } else if (status === "ready") {
       return <Label color="warning">Chuẩn bị giao </Label>;
     }
@@ -145,29 +185,26 @@ export default function FullWidthTabs() {
         subTitle={`${"Phiên làm việc ngày: ".toUpperCase()} ${
           detailSession.workDate
         } `}
-        subTitle1={`${"Khung giờ:".toUpperCase()} ${
-          detailSession.timeSlot?.startTime
-        }-${detailSession.timeSlot?.endTime} `}
-        subTitle2={`${"Tổng đơn:".toUpperCase()} 12 `}
+        subTitle1={`${"Khung giờ:".toUpperCase()} ${detailSession.timeSlot?.startTime.slice(
+          0,
+          5
+        )}-${detailSession.timeSlot?.endTime.slice(0, 5)} `}
+        subTitle2={`${"Tổng đơn:".toUpperCase()} ${OrderArr.length}`}
         subTitle3={handleStatus(detailSession.status)}
-        subTitle4={Button && <ButtonCustomize nameButton="Hoàn thành" />}
+        subTitle4={
+          Button && (
+            <ButtonCustomize
+              nameButton="Hoàn thành"
+              onClick={async () => {
+                doneSession(id);
+              }}
+            />
+          )
+        }
         icon={getIcon("fluent:apps-list-detail-20-filled")}
       />
       <AppBar position="static">
         <Tabs
-          // TabIndicatorProps={{
-          //   style: {
-          //     tabs: {
-          //       "& .MuiTabs-indicator": {
-          //         backgroundColor: "orange",
-          //         height: 3,
-          //       },
-          //       "& .MuiTab-root.Mui-selected": {
-          //         color: "red",
-          //       },
-          //     },
-          //   },
-          // }}
           sx={{
             "& .MuiTabs-indicator": { backgroundColor: "#FFCC32" },
             "& .MuiTab-root": { color: "white" },

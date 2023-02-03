@@ -520,7 +520,7 @@ export default function NewPackage() {
                     marginLeft: "20%",
                   }}
                 >
-                  Tải lên...
+                  Tải hình...
                 </Button>
                 {/* css button input img */}
                 <Box

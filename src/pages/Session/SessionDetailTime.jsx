@@ -259,6 +259,7 @@ export default function SessionDetailTime(props) {
                       page * rowsPerPage + rowsPerPage
                     )
                     .map((row, index) => {
+                      console.log(detail.status);
                       const { id, station, status, orders } = row;
                       return (
                         <>
@@ -309,11 +310,14 @@ export default function SessionDetailTime(props) {
                                 {detail.status === "ready" && (
                                   <Label color="primary">Sẵn sàng</Label>
                                 )}
+                                {/* {detail.status === "ready" && (
+                                  <Label color="primary">Sẵn sàng</Label>
+                                )} */}
                                 {detail.status === "delivery" && (
                                   <Label color="primary">Đang tiến hành</Label>
                                 )}
-                                {detail.status === "arrived" && (
-                                  <Label color="primary">Hoàng thành</Label>
+                                {detail.status === "done" && (
+                                  <Label color="success">Hoàn thành</Label>
                                 )}
                               </div>
                             </TableCell>
@@ -359,8 +363,6 @@ export default function SessionDetailTime(props) {
                                       {orders.map((i, index) => {
                                         return (
                                           <TableRow key={index}>
-                                            {/* <TableCell>{i.status}</TableCell>
-                                            <TableCell>haha</TableCell> */}
                                             <TableCell>
                                               {i.packageItem.foodGroup.name}
                                             </TableCell>
@@ -395,13 +397,13 @@ export default function SessionDetailTime(props) {
                                             <TableCell align="center">
                                               <div>
                                                 {i.status === "waiting" && (
-                                                  <Label color="primary">
+                                                  <Label color="Warning">
                                                     Đang chờ
                                                   </Label>
                                                 )}
 
                                                 {i.status === "ready" && (
-                                                  <Label color="success">
+                                                  <Label color="primary">
                                                     Sẵn sàng
                                                   </Label>
                                                 )}
@@ -411,7 +413,7 @@ export default function SessionDetailTime(props) {
                                                   </Label>
                                                 )}
                                                 {i.status === "arrived" && (
-                                                  <Label color="primary">
+                                                  <Label color="success">
                                                     Hoàng thành
                                                   </Label>
                                                 )}

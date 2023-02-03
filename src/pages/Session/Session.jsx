@@ -209,11 +209,11 @@ export default function Session() {
     const workDate = date.split("-");
 
     const a = toDate.toLocaleDateString().split("/");
-    console.log(toDate.toLocaleDateString());
-    console.log(workDate[2]);
-    console.log(a[0]);
-    console.log(workDate[1]);
-    console.log(a[1]);
+    // console.log(toDate.toLocaleDateString());
+    // console.log(workDate[2]);
+    // console.log(a[0]);
+    // console.log(workDate[1]);
+    // console.log(a[1]);
 
     if (a[0] > workDate[2] && a[1] > workDate[1]) {
       return true;

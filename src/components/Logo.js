@@ -21,7 +21,6 @@ export default function Logo({ disabledLink = false, sx }) {
 
   const PRIMARY_DARK = theme.palette.primary.dark;
 
-
   const token = localStorage.getItem("token");
   var decoded = jwt_decode(token);
   const handleRoute = () => {
@@ -32,7 +31,7 @@ export default function Logo({ disabledLink = false, sx }) {
       return "/dashboard/manager/food";
     }
     if (decoded.role === "kitchen") {
-      return "/dashboard/kitchen/kitchenorder";
+      return "/dashboard/kitchen/session";
     }
   };
   const logo = (

@@ -3,7 +3,13 @@ import React from "react";
 import PageHeader from "./../../components/PageHeader";
 
 import { styled } from "@mui/material/styles";
-import { Grid } from "@mui/material";
+import {
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 
 import Iconify from "../../components/hook-form/Iconify";
@@ -37,6 +43,8 @@ import {
   callAPIgetListStation,
 } from "../../redux/action/acction";
 import { useSelector } from "react-redux";
+import { useDebounce } from "./useDebounce";
+import axios from "axios";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -49,13 +57,41 @@ const schema = yup.object().shape({
   phone: yup.string().required("Điền đầy đủ thông tin").trim(),
   kitchenId: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
+const goongmap =
+  "https://rsapi.goong.io/Place/AutoComplete?api_key=DuKETIrSZD6KjGweBEgitOzSOBEsGWWjys2ea1jW";
 
+const getPlate =
+  "https://rsapi.goong.io/geocode?api_key=DuKETIrSZD6KjGweBEgitOzSOBEsGWWjys2ea1jW&place_id=";
 //callAPIforCreateStation========================================
 export default function UpdateStation() {
   //callAPIforCreateStation========================================
   let { id } = useParams();
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [flag, setFlag] = useState(false);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (debouncedSearchTerm && flag === false) {
+      setIsSearching(true);
+      axios({
+        method: "GET",
+        url: goongmap + `&input=${debouncedSearchTerm}`,
+      }).then((results) => {
+        const data = results.data.predictions.map((item) => {
+          return { label: item.description, place_id: item.place_id };
+        });
+
+        setResults(data);
+      });
+    } else {
+      setResults([]);
+      setIsSearching(false);
+    }
+  }, [debouncedSearchTerm, flag]);
 
   const token = localStorage.getItem("token");
 
@@ -65,16 +101,13 @@ export default function UpdateStation() {
   const [closeTime, setClosetime] = useState([dayjs("2022-10-18T19:30:5")]);
 
   React.useEffect(() => {
-    // const getlistStation = async () => {
-    //     await dispatch(callAPIgetListStation(token));
-    // };
-    // getlistStation();
-
     API("GET", URL_API + `/stations/${id}`, null, token)
       .then((res) => {
+        setFlag(true);
         formik.setFieldValue("name", res.data.result.name);
-        formik.setFieldValue("address", res.data.result.address);
         formik.setFieldValue("phone", res.data.result.phone);
+        // formik.setFieldValue("address", res.data.result.address);
+        setSearchTerm(res.data.result.address);
         formik.setFieldValue("kitchenId", res.data.result.kitchen.id);
         formik.setOpentime("openTime", res.data.result.openTime);
         formik.setClosetime("closeTime", res.data.result.closeTime);
@@ -82,7 +115,7 @@ export default function UpdateStation() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [id]);
 
   React.useEffect(() => {
     const getlistStation = async () => {
@@ -121,6 +154,8 @@ export default function UpdateStation() {
       openTime: "",
       closeTime: "",
       kitchenId: "",
+      longitude: 0,
+      latitude: 0,
     },
 
     onSubmit: async (values) => {
@@ -133,6 +168,10 @@ export default function UpdateStation() {
         phone: formik.values.phone,
         openTime: `${openTimeSplit[0]}:${openTimeSplit[1]}`,
         closeTime: `${closeTimeSplit[0]}:${closeTimeSplit[1]}`,
+        coordinate: {
+          lattitude: values.latitude,
+          longitude: values.longitude,
+        },
       };
       try {
         const res = await API("PUT", URL_API + `/stations/${id}`, data, token);
@@ -209,12 +248,54 @@ export default function UpdateStation() {
                   variant="outlined"
                   label="Địa chỉ"
                   name="address"
-                  value={formik.values.address}
+                  value={searchTerm}
                   onChange={(e) => {
-                    formik.handleChange(e);
+                    setSearchTerm(e.target.value);
+                    setFlag(false);
                   }}
                   onBlur={formik.handleBlur}
                 />
+                {results.length > 1 ? (
+                  <Grid container spacing={2}>
+                    {results.map((item, index) => {
+                      return (
+                        <Grid item xs={12} key={index}>
+                          <List>
+                            <ListItem>
+                              <ListItemButton
+                                onClick={async () => {
+                                  setResults([]);
+                                  setSearchTerm(item.label);
+                                  setFlag(true);
+                                  axios({
+                                    method: "GET",
+                                    url: getPlate + item.place_id,
+                                  }).then((result) => {
+                                    formik.setFieldValue(
+                                      "latitude",
+                                      result.data.results[0].geometry.location
+                                        .lat
+                                    );
+                                    formik.setFieldValue(
+                                      "longitude",
+                                      result.data.results[0].geometry.location
+                                        .lng
+                                    );
+                                  });
+                                  formik.setFieldValue("address", item.label);
+                                }}
+                              >
+                                <ListItemText primary={item.label} />
+                              </ListItemButton>
+                            </ListItem>
+                          </List>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                ) : (
+                  <></>
+                )}
 
                 <Controls.Input
                   variant="outlined"

@@ -2,11 +2,7 @@ import React from "react";
 // import { Paper } from "@mui/material";
 import PageHeader from "../../components/PageHeader";
 
-import {
-  Grid,
-  Container,
-
-} from "@mui/material";
+import { Grid, Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import Page from "../../components/setPage/Page";
 import Iconify from "../../components/hook-form/Iconify";
@@ -44,19 +40,17 @@ const schema = yup.object().shape({
   fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
   email: yup.string().required("Điền đầy đủ thông tin").trim(),
   address: yup.string().required("Điền đầy đủ thông tin").trim(),
-  ability: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 
 //callAPIforCreateStation========================================
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
+// const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+// const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function UpdateKitchenInfor() {
   //callAPIforCreateStation========================================
   let { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const token = localStorage.getItem("token");
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
   if (token === null) {
@@ -66,15 +60,16 @@ export default function UpdateKitchenInfor() {
   React.useEffect(() => {
     API("GET", URL_API + `/kitchens/${id}`, null, token)
       .then((res) => {
-        formik.setFieldValue("fullName", res.data.result.account.profile.fullName);
+        formik.setFieldValue(
+          "fullName",
+          res.data.result.account.profile.fullName
+        );
         formik.setFieldValue("phone", res.data.result.account.phone);
         formik.setFieldValue("email", res.data.result.account.profile.email);
         formik.setFieldValue("address", res.data.result.address);
         formik.setFieldValue("ability", res.data.result.ability);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   React.useEffect(() => {
@@ -84,12 +79,9 @@ export default function UpdateKitchenInfor() {
     getFreeShipper();
   }, [token, dispatch]);
 
-  const [OptionValue, setOptionValue] = React.useState([]);
-
   const station = useSelector((state) => {
     return state.userReducer.listKitchen;
   });
-
 
   const freeShipper = useSelector((state) => {
     return state.userReducer.listFreeShipper;
@@ -103,7 +95,6 @@ export default function UpdateKitchenInfor() {
         title: freeShipper[i].account.profile.fullName,
       });
     }
-
     return item;
   };
 
@@ -122,48 +113,41 @@ export default function UpdateKitchenInfor() {
     },
 
     onSubmit: async (values) => {
-      // console.log(values);
+      console.log(values);
       const data = {
         fullName: formik.values.fullName,
         phone: formik.values.phone,
         email: formik.values.email,
         address: formik.values.address,
-        // ability: formik.values.ability,
       };
       try {
         const res = await API("PUT", URL_API + `/kitchens/${id}`, data, token);
-
         if (res) {
           CustomizedToast({
             message: `Cập nhập ${formik.values.fullName} thành công`,
             type: "SUCCESS",
           });
         }
-        navigate("/dashboard/admin/kitchen");
+        //
       } catch (error) {
-        // console.log(error);
         CustomizedToast({ message: "Cập nhập thất bại", type: "ERROR" });
       }
     },
   });
-
+  console.log(formik);
   return (
     <Page>
-      <Container >
+      <Container>
         <form onSubmit={formik.handleSubmit}>
           <Box
             marginTop={"5%"}
             sx={{
               width: "20rem",
             }}
-
           >
             <Grid container spacing={1}>
               <Grid item xs={12}>
-                <Stack spacing={3}
-                  // width="120%"
-                  justifyContent="center"
-                >
+                <Stack spacing={3} justifyContent="center">
                   <Controls.Input
                     variant="outlined"
                     label="Tên bếp"

@@ -66,9 +66,9 @@ const initialState = {
   listTrip: [],
   totalfood: [],
   listripByID: [],
+  arrayOrder: [],
 
   listFreeShipper: [],
-
 };
 
 export default function userReducer(state = initialState, { type, payload }) {
@@ -107,25 +107,29 @@ export default function userReducer(state = initialState, { type, payload }) {
 
     case PathAction.SET_DATE_RANGE:
       state.dateRange = payload;
-    case PathAction.GET_LIST_TRIP:
-      state.listTrip = payload;
       break;
-    case PathAction.GET_LIST_SESSION:
-      state.session = payload;
-      state.flag = payload;
-      break;
-    case PathAction.FILLTER_FLAG:
-      const filter = state.session.filter((c) => c.timeSlot.flag === +payload);
-      state.flag = filter;
-      break;
-    case PathAction.GET_LIST_SHIPPER_BY_IDKITCHEN:
-      state.shipperbyIDkitchen = payload;
-      break;
-    case PathAction.GET_LIST_SESSION_DETAIL:
-      state.detailSession = payload;
-      break;
+    // case PathAction.GET_LIST_TRIP:
+    //   state.listTrip = payload;
+    //   break;
+    // case PathAction.GET_LIST_SESSION:
+    //   state.session = payload;
+    //   state.flag = payload;
+    //   break;
+    // case PathAction.FILLTER_FLAG:
+    //   const filter = state.session.filter((c) => c.timeSlot.flag === +payload);
+    //   state.flag = filter;
+    //   break;
+    // case PathAction.GET_LIST_SHIPPER_BY_IDKITCHEN:
+    //   state.shipperbyIDkitchen = payload;
+    //   break;
+    // case PathAction.GET_LIST_SESSION_DETAIL:
+    //   state.detailSession = payload;
+    //   break;
     case PathAction.GET_LIST_FOOD_ACTIVE:
       state.listFoodActive = payload;
+      break;
+    case PathAction.GET_ARRAY_ORDER:
+      state.arrayOrder = payload;
       break;
     case PathAction.GET_COUNT:
       state.count = payload;

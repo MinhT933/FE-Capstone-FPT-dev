@@ -48,7 +48,7 @@ const TABLE_HEAD = [
   { id: "noPlate", label: "Biển số xe", alignRight: false },
   { id: "vehicleType", label: "Loại xe", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
-  // { id: "kitchenID", label: "Bếp", alignRight: false },
+  { id: "kitchenID", label: "Bếp", alignRight: false },
   { id: "inWord", label: "Nhận đơn", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
   { label: "Thay đổi trạng thái", alignRight: false },
@@ -274,6 +274,7 @@ export default function AdminShipperList() {
                   {filteredStations
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
+                      console.log(row);
                       const {
                         id,
                         fullName,
@@ -321,19 +322,16 @@ export default function AdminShipperList() {
                             {" "}
                             {row.account.profile?.email}{" "}
                           </TableCell>
-                          {/* <TableCell align="left">{row.kitchen?.address}</TableCell> */}
+                          <TableCell align="left">
+                            {row.kitchen?.account.profile.fullName}
+                          </TableCell>
 
                           <TableCell align="left">
                             <div>
-                              {/* {status === "inActive" && (
-                                                                <Label color="warning">Tạm nghỉ</Label>
-                                                            )} */}
                               {status === "active" && (
                                 <Label color="success">Sẵn sàng</Label>
                               )}
-                              {/* {status === "delete" && (
-                                                                <Label color="error">Ngưng hoạt động</Label>
-                                                            )} */}
+
                               {status === "inActive" && (
                                 <Label color="error">Tạm nghỉ</Label>
                               )}
@@ -342,15 +340,10 @@ export default function AdminShipperList() {
 
                           <TableCell align="left">
                             <div>
-                              {/* {status === "inActive" && (
-                                                                <Label color="warning">Tạm nghỉ</Label>
-                                                            )} */}
                               {account.status === "active" && (
                                 <Label color="success">Hoạt động</Label>
                               )}
-                              {/* {status === "delete" && (
-                                                                <Label color="error">Ngưng hoạt động</Label>
-                                                            )} */}
+
                               {account.status === "ban" && (
                                 <Label color="error">Bị cấm</Label>
                               )}
@@ -358,28 +351,6 @@ export default function AdminShipperList() {
                           </TableCell>
 
                           <TableCell align="left">
-                            {/* {status === "active" ? (
-                                                            <ButtonCustomize
-                                                                variant="outlined"
-                                                                onClick={() => {
-                                                                    handleDelete(id, account.profile?.fullName);
-                                                                }}
-                                                                nameButton="Chặn"
-                                                            >
-                                                                Chặn
-                                                            </ButtonCustomize>
-                                                        ) : (
-                                                            <ButtonCustomize
-                                                                variant="outlined"
-                                                                onClick={() => {
-                                                                    handleDelete(id, account.profile?.fullName);
-                                                                }}
-                                                                nameButton="Mở chặn"
-                                                            >
-                                                                Mở chặn
-                                                            </ButtonCustomize>
-                                                        )} */}
-
                             <ButtonCustomize
                               variant="outlined"
                               onClick={() => handleClickOpen(row)}

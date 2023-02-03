@@ -269,7 +269,7 @@ export default function FreeShipper(props) {
   const freeShipper = useSelector((state) => {
     return state.userReducer.listFreeShipper;
   });
-  console.log(freeShipper);
+
   //CALL API=====================================================
   //Thay đổi trạng thái
   const getOptions = () => [
@@ -319,11 +319,8 @@ export default function FreeShipper(props) {
   };
 
   return (
-    <Paper >
-      <Dialog
-        open={OpenPopUp}
-        onClose={handleClose}
-      >
+    <Paper>
+      <Dialog open={OpenPopUp} onClose={handleClose}>
         <DialogTitle>
           <PageHeader
             title="Thêm tài xế cho bếp"
@@ -345,8 +342,9 @@ export default function FreeShipper(props) {
               <Box>
                 <div
                   style={{
-                    height: "25rem", width: "100%",
-                    //  marginTop: "2%" 
+                    height: "25rem",
+                    width: "100%",
+                    //  marginTop: "2%"
                   }}
                 >
                   {freeShipper ? (
@@ -392,7 +390,6 @@ export default function FreeShipper(props) {
                   )}
                 </div>
               </Box>
-
             </Card>
 
             <Box>

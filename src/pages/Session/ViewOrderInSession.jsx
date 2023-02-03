@@ -145,7 +145,6 @@ export default function ViewOrderInSession(props) {
     return state.userReducer.detailSession;
   });
 
-
   React.useEffect(() => {
     if (detailSession) {
       const tempArr = [];
@@ -157,7 +156,6 @@ export default function ViewOrderInSession(props) {
       setOpenCell(tempArr);
     }
   }, [detailSession]);
-
 
   //CALL API=====================================================
   //Thay đổi trạng thái
@@ -318,21 +316,19 @@ export default function ViewOrderInSession(props) {
                                   <TableCell>
                                     {" "}
                                     <div>
-                                      {i.status === "pending" && (
-                                        <Label color="primary">Đang chờ</Label>
+                                      {i.status === "delivery" && (
+                                        <Label color="warning">Đang giao</Label>
                                       )}
                                       {i.status === "progress" && (
-                                        // <Alert severity="info">waiting</Alert>
-
                                         <Label color="warning">
-
                                           Đang tiến hành
                                         </Label>
                                       )}
                                       {i.status === "ready" && (
-
                                         <Label color="primary">Sẵn sàng</Label>
-
+                                      )}
+                                      {i.status === "arrived" && (
+                                        <Label color="success">Đã giao</Label>
                                       )}
                                     </div>
                                   </TableCell>

@@ -24,6 +24,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { callAPIgetListKitchenActive } from "../../redux/action/acction";
+import { useSelector } from "react-redux";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -46,6 +49,7 @@ export default function UpdateShipper() {
   let { id } = useParams();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // const token = localStorage.getItem("token");
   const Navigate = useNavigate();
@@ -54,12 +58,31 @@ export default function UpdateShipper() {
     Navigate("/");
   }
 
-  console.log(valueStarTime);
+  React.useEffect(() => {
+    const getlistStation = async () => {
+      dispatch(await callAPIgetListKitchenActive(token));
+    };
+    getlistStation();
+  }, [dispatch, token]);
 
+  const listKitchenActive = useSelector((state) => {
+    return state.userReducer.listKitchenActive;
+  });
+  const getOptionsKichen = () => {
+    const item = [];
+    for (var i = 0; i < listKitchenActive.length; i++) {
+      item.push({
+        id: listKitchenActive[i].id,
+        title: listKitchenActive[i].account.profile.fullName,
+      });
+    }
+    return item;
+  };
   React.useEffect(() => {
     API("GET", URL_API + `/shippers/${id}`, null, token)
       .then((res) => {
-        console.log(res.data.result.account.profile.DOB);
+        console.log(res.data.result.kitchen.id);
+        formik.setFieldValue("kitchenId", res.data.result.kitchen.id);
         formik.setFieldValue(
           "fullName",
           res.data.result.account.profile.fullName
@@ -68,6 +91,7 @@ export default function UpdateShipper() {
           "DOB",
           setValueStarTime(res.data.result.account.profile.DOB)
         );
+
         formik.setFieldValue("email", res.data.result.account.profile.email);
         formik.setFieldValue("noPlate", res.data.result.noPlate);
         formik.setFieldValue("vehicleType", res.data.result.vehicleType);
@@ -98,6 +122,7 @@ export default function UpdateShipper() {
       email: "",
       noPlate: "",
       vehicleType: "",
+      kitchenId: "",
     },
 
     onSubmit: async (values) => {
@@ -105,6 +130,7 @@ export default function UpdateShipper() {
         fullName: formik.values.fullName,
         DOB: handleDate(valueStarTime),
         email: formik.values.email,
+        kitchenId: formik.values.kitchenId,
         noPlate: formik.values.noPlate,
         vehicleType: formik.values.vehicleType,
       };
@@ -123,7 +149,7 @@ export default function UpdateShipper() {
     },
   });
   const b = new Date(valueStarTime).toLocaleDateString().split("/");
-
+  console.log(formik);
   return (
     <Paper
       title="Cập nhập bếp"
@@ -230,6 +256,28 @@ export default function UpdateShipper() {
                     id="standard-weight-helper-text-username-login"
                   >
                     {formik.errors.noPlate}
+                  </FormHelperText>
+                )}
+                <Controls.Select
+                  label="Bếp"
+                  name="kitchenId"
+                  width="86%"
+                  options={getOptionsKichen()}
+                  value={formik.values.kitchenId}
+                  onChange={async (e) => {
+                    const a = listKitchenActive.find(
+                      (c) => c.id === e.target.value
+                    );
+
+                    formik.setFieldValue("kitchenId", a.id);
+                  }}
+                />
+                {formik.touched.kitchenId && formik.errors.kitchenId && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.kitchenId}
                   </FormHelperText>
                 )}
 

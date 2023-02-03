@@ -16,7 +16,7 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 //validate
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { callAPIAdminCreateShipper } from "./../../redux/action/acction";
+import { callAPIAdminCreateShipper, callAPIgetListKitchenActive } from "./../../redux/action/acction";
 import { useDispatch } from "react-redux";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -29,6 +29,7 @@ import { IconButton, InputAdornment } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -64,6 +65,7 @@ export default function NewShipper() {
   React.useEffect(() => {
     const createShipper = async () => {
       await dispatch(callAPIAdminCreateShipper());
+      dispatch(await callAPIgetListKitchenActive(token));
     };
     createShipper();
     //disparch để kết thúc vào lặp vô tận loop infinity á
@@ -76,6 +78,19 @@ export default function NewShipper() {
   if (token === null) {
     Navigate("/");
   }
+  const listKitchenActive = useSelector((state) => {
+    return state.userReducer.listKitchenActive;
+  });
+  const getOptionsKichen = () => {
+    const item = [];
+    for (var i = 0; i < listKitchenActive.length; i++) {
+      item.push({
+        id: listKitchenActive[i].id,
+        title: listKitchenActive[i].account.profile.fullName,
+      });
+    }
+    return item;
+  };
 
   //selected dùng để lí ảnh
 
@@ -92,12 +107,14 @@ export default function NewShipper() {
       noPlate: "",
       vehicleType: "",
       image: null,
+      kitchenId: "",
     },
 
     //onSubmit ngay từ cái tên đầu nó dùng đẩy data xuống BE
     onSubmit: async (values) => {
       const data = {
         fullName: formik.values.fullName,
+        kitchenId: formik.values.kitchenId,
         phone: formik.values.phone,
         noPlate: formik.values.noPlate,
         password: formik.values.password,
@@ -219,6 +236,28 @@ export default function NewShipper() {
                     ),
                   }}
                 />
+                <Controls.Select
+                  label="Bếp"
+                  width="86%"
+                  name="kitchenId"
+                  options={getOptionsKichen()}
+                  value={formik.values.kitchenId}
+                  onChange={async (e) => {
+                    const a = listKitchenActive.find(
+                      (c) => c.id === e.target.value
+                    );
+
+                    formik.setFieldValue("kitchenId", a.id);
+                  }}
+                />
+                {formik.touched.kitchenId && formik.errors.kitchenId && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-username-login"
+                  >
+                    {formik.errors.kitchenId}
+                  </FormHelperText>
+                )}
 
                 <Controls.TextField
                   type="email"

@@ -34,6 +34,7 @@ import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolbar";
 import moment from "moment";
 import ConfirmDialog from "../../components/confirmDialog/ConfirmDialog";
+import { width } from "@mui/system";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -254,7 +255,6 @@ export default function StationList() {
                       return (
                         <TableRow hover key={id} tabIndex={-1}>
                           <TableCell align="left">{""}</TableCell>
-
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{phone}</TableCell>
@@ -293,6 +293,7 @@ export default function StationList() {
                                 variant="outlined"
                                 display="TableCell"
                                 component={RouterLink}
+                                width="5rem"
                                 to={`${location.pathname}/updatestation/${id}`}
                                 nameButton="Chi tiết"
                               >

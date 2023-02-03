@@ -228,7 +228,7 @@ export default function DeliveryTripByIDsession(props) {
             />
 
             <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
+              <TableContainer sx={{ minWidth: 900 }}>
                 <Table>
                   <UserListHead
                     order={order}
@@ -299,11 +299,10 @@ export default function DeliveryTripByIDsession(props) {
                               <TableCell>{deliveryDate}</TableCell>
                               <TableCell>{deliveryTime}</TableCell>
                               <TableCell>{arrivedTime}</TableCell>
-
                               <TableCell align="left">
                                 <div>
                                   {status === "ready" && (
-                                    <Label color="primary">Sẵn sàng</Label>
+                                    <Label color="info">Sẵn sàng</Label>
                                   )}
                                   {status === "waiting" && (
                                     <Label color="warning">Đang chờ</Label>
@@ -340,7 +339,7 @@ export default function DeliveryTripByIDsession(props) {
                                       <TableHead>
                                         <TableRow>
                                           <TableCell>Túi</TableCell>
-                                          <TableCell>Khách hàng</TableCell>
+                                          {/* <TableCell>Khách hàng</TableCell> */}
                                           <TableCell>Điểm giao</TableCell>
                                           <TableCell>Tổng đơn</TableCell>
                                           <TableCell>Thời gian giao</TableCell>

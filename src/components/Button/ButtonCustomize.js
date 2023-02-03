@@ -48,6 +48,8 @@ export default function ButtonCustomize(props) {
         marginTop: { marginTop },
         marginLeft: { marginLeft },
         paddingBottom: { paddingBottom },
+        boxShadow: 8,
+        border: 0.5,
       }}
     >
       {nameButton}

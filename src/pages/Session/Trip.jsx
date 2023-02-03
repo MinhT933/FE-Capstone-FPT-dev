@@ -60,8 +60,8 @@ import { array } from "yup/lib/locale";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "id", label: "", alignRight: false },
-  { id: "name", label: "id", alignRight: false },
+  { id: "ID", label: "", alignRight: false },
+  { id: "name", label: "ID", alignRight: false },
   { id: "workDelivery", label: "Ngày giao hàng", alignRight: false },
   { id: "address", label: "Ngày thêm", alignRight: false },
   { id: "workDate", label: "Ngày sửa", alignRight: false },
@@ -161,7 +161,6 @@ export default function Trip() {
       setOpenCell(tempArr);
     }
   }, [listTrip]);
-
 
   const [arrBatch, setArrBatch] = useState([]);
   const handlebatch = () => {
@@ -338,10 +337,20 @@ export default function Trip() {
                             <TableCell align="left">
                               <div>
                                 {status === "waiting" && (
+                                  // <Alert severity="info">waiting</Alert>
                                   <Label color="warning">Đang chờ</Label>
                                 )}
-                                {status === "active" && (
-                                  <Label color="success">Hoạt động</Label>
+                                {status === "delivery" && (
+                                  <Label color="warning">Đang giao</Label>
+                                )}
+                                {status === "progress" && (
+                                  <Label color="warning">Đang tiến hành</Label>
+                                )}
+                                {status === "ready" && (
+                                  <Label color="primary">Sẵn sàng</Label>
+                                )}
+                                {status === "arrived" && (
+                                  <Label color="success">Đã giao</Label>
                                 )}
                               </div>
                             </TableCell>
@@ -409,21 +418,30 @@ export default function Trip() {
 
                                             <TableCell align="center">
                                               <div>
-                                                {i.status === "inActive" && (
-                                                  // <Alert severity="warning">inActive</Alert>
-                                                  <Label color="error">
-                                                    Ngưng bán
-                                                  </Label>
-                                                )}
                                                 {i.status === "waiting" && (
                                                   // <Alert severity="info">waiting</Alert>
                                                   <Label color="warning">
                                                     Đang chờ
                                                   </Label>
                                                 )}
-                                                {i.status === "active" && (
+                                                {i.status === "delivery" && (
+                                                  <Label color="warning">
+                                                    Đang giao
+                                                  </Label>
+                                                )}
+                                                {i.status === "progress" && (
+                                                  <Label color="warning">
+                                                    Đang tiến hành
+                                                  </Label>
+                                                )}
+                                                {i.status === "ready" && (
+                                                  <Label color="primary">
+                                                    Sẵn sàng
+                                                  </Label>
+                                                )}
+                                                {i.status === "arrived" && (
                                                   <Label color="success">
-                                                    Đang bán
+                                                    Đã giao
                                                   </Label>
                                                 )}
                                               </div>

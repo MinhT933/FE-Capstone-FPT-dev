@@ -3,7 +3,13 @@ import React from "react";
 import PageHeader from "./../../components/PageHeader";
 
 import { styled } from "@mui/material/styles";
-import { Grid } from "@mui/material";
+import {
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 
 import Iconify from "../../components/hook-form/Iconify";
@@ -35,9 +41,12 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
 import { useNavigate } from "react-router-dom";
+import { useDebounce } from "./useDebounce";
+import axios from "axios";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+
 /// csss button
 
 //callAPIforCreateStation========================================
@@ -53,15 +62,27 @@ const schema = yup.object().shape({
 
   kitchenId: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
+//================================================================
+//goongMap
+const goongmap =
+  "https://rsapi.goong.io/Place/AutoComplete?api_key=DuKETIrSZD6KjGweBEgitOzSOBEsGWWjys2ea1jW";
+
+const getPlate =
+  "https://rsapi.goong.io/geocode?api_key=DuKETIrSZD6KjGweBEgitOzSOBEsGWWjys2ea1jW&place_id=";
 
 //callAPIforCreateStation========================================
 export default function NewStation() {
   const navigate = useNavigate();
+  // const [] = useState();
   //callAPIforCreateStation========================================
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const Navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   if (token === null) {
     Navigate("/");
@@ -70,10 +91,31 @@ export default function NewStation() {
   // const decoded = jwt_decode(token);
 
   const [idkitchen, setIdkitchen] = useState("");
+  const [flag, setFlag] = useState(false);
 
   const profiles = useSelector((state) => {
     return state.userReducer.profiles;
   });
+
+  React.useEffect(() => {
+    if (debouncedSearchTerm && flag === false) {
+      setIsSearching(true);
+      axios({
+        method: "GET",
+        url: goongmap + `&input=${debouncedSearchTerm}`,
+      }).then((results) => {
+        const data = results.data.predictions.map((item) => {
+          return { label: item.description, place_id: item.place_id };
+        });
+
+        setResults(data);
+      });
+    } else {
+      setResults([]);
+      setIsSearching(false);
+    }
+  }, [debouncedSearchTerm, flag]);
+
   React.useEffect(() => {
     const getlistStation = async () => {
       dispatch(await callAPIgetListStation(token));
@@ -102,6 +144,7 @@ export default function NewStation() {
 
   const [opentime, setOpentime] = useState(null);
   const [closetime, setClosetime] = useState(null);
+  // const [coordinate,setCoordinate] = useState(0);
   const formik = useFormik({
     //gắn schema để so sánh
     validationSchema: schema,
@@ -115,6 +158,8 @@ export default function NewStation() {
       phone: "",
       opentime: "",
       closetime: "",
+      longitude: 0,
+      latitude: 0,
     },
 
     onSubmit: async (values) => {
@@ -125,10 +170,12 @@ export default function NewStation() {
         name: formik.values.name,
         address: formik.values.address,
         phone: formik.values.phone,
-        // openTime: opentime,
-        // closeTime: closetime,
         openTime: `${openTimeSplit[0]}:${openTimeSplit[1]}`,
         closeTime: `${closeTimeSplit[0]}:${closeTimeSplit[1]}`,
+        coordinate: {
+          lattitude: values.latitude,
+          longitude: values.longitude,
+        },
       };
       try {
         const res = await API("POST", URL_API + "/stations", data, token);
@@ -147,7 +194,7 @@ export default function NewStation() {
       }
     },
   });
-
+  console.log(formik);
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -214,9 +261,11 @@ export default function NewStation() {
                   variant="outlined"
                   label="Địa chỉ"
                   name="address"
-                  value={formik.values.address}
+                  value={searchTerm}
                   onChange={(e) => {
-                    formik.handleChange(e);
+                    // formik.handleChange(e);
+                    setSearchTerm(e.target.value);
+                    setFlag(false);
                   }}
                   onBlur={formik.handleBlur}
                 />
@@ -227,6 +276,47 @@ export default function NewStation() {
                   >
                     {formik.errors.address}
                   </FormHelperText>
+                )}
+                {results.length > 1 ? (
+                  <Grid container spacing={2}>
+                    {results.map((item, index) => {
+                      return (
+                        <Grid item xs={12} key={index}>
+                          <List>
+                            <ListItem>
+                              <ListItemButton
+                                onClick={async () => {
+                                  setResults([]);
+                                  setSearchTerm(item.label);
+                                  setFlag(true);
+                                  axios({
+                                    method: "GET",
+                                    url: getPlate + item.place_id,
+                                  }).then((result) => {
+                                    formik.setFieldValue(
+                                      "latitude",
+                                      result.data.results[0].geometry.location
+                                        .lat
+                                    );
+                                    formik.setFieldValue(
+                                      "longitude",
+                                      result.data.results[0].geometry.location
+                                        .lng
+                                    );
+                                  });
+                                  formik.setFieldValue("address", item.label);
+                                }}
+                              >
+                                <ListItemText primary={item.label} />
+                              </ListItemButton>
+                            </ListItem>
+                          </List>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                ) : (
+                  <></>
                 )}
 
                 <Controls.TextField

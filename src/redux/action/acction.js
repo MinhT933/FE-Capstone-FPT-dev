@@ -889,7 +889,7 @@ export const LoginAthen = (user, navigate) => {
       } else if (detoken.role === "manager") {
         navigate("/dashboard/manager/food");
       } else if (detoken.role === "kitchen") {
-        navigate("/dashboard/kitchen/kitchenorder");
+        navigate("/dashboard/kitchen/session");
       } else {
         CustomizedToast({
           message: "Tài khoản không có quyền truy cập",
@@ -1616,11 +1616,6 @@ export const callAPIGetListSession = (token, date) => {
           payload: [],
         })
       );
-
-      CustomizedToast({
-        message: `Không tìm thấy dữ liệu`,
-        type: "ERROR",
-      });
     }
   };
 };
@@ -1647,7 +1642,6 @@ export const callAPIGetListSessionDetail = (token, id) => {
           payload: [],
         })
       );
-
     }
   };
 };
@@ -1715,7 +1709,6 @@ export const callAPIGetListTottalFood = (token, id) => {
           payload: [],
         })
       );
-
     }
   };
 };
@@ -1743,7 +1736,6 @@ export const callAPIGetListTripByID = (token, id) => {
           payload: [],
         })
       );
-
     }
   };
 };
@@ -1761,6 +1753,26 @@ export const callAPIgetListFreeShipper = (token) => {
       dispatch(
         createAction({
           type: PathAction.GET_LIST_FREE_SHIPPER,
+          payload: res.data.result,
+        })
+      );
+    } catch (err) {}
+  };
+};
+
+export const callAPIgetListOrder = (token, id) => {
+  return async (dispatch) => {
+    try {
+      const res = await API(
+        "GET",
+        URL_API + `/orders/bySession?sessionId=${id}`,
+        null,
+        token
+      );
+
+      dispatch(
+        createAction({
+          type: PathAction.GET_ARRAY_ORDER,
           payload: res.data.result,
         })
       );
