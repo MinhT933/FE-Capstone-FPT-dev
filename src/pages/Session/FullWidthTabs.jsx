@@ -147,7 +147,6 @@ export default function FullWidthTabs() {
       handleCompareDate(detailSession.workDate) === true &&
       detailSession.status === "processing"
     ) {
-      console.info("run1");
       setButton(true);
     } else if (detailSession.status === "waiting") {
       setButtonCreatedTrip(true);

@@ -305,7 +305,7 @@ export default function SessionDetailTime(props) {
                             <TableCell align="left">
                               <div>
                                 {status === "waiting" && (
-                                  <Label color="warning">Đang xử lí</Label>
+                                  <Label color="warning">Đang xử lý</Label>
                                 )}
 
                                 {status === "ready" && (

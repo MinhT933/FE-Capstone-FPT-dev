@@ -334,20 +334,31 @@ export default function ViewOrderInSession(props) {
                                   <TableCell>
                                     {" "}
                                     <div>
-                                      {i.status === "delivery" && (
-                                        <Label color="warning">Đang giao</Label>
-                                      )}
-                                      {i.status === "progress" && (
-                                        <Label color="warning">
-                                          Đang tiến hành
-                                        </Label>
-                                      )}
-                                      {i.status === "ready" && (
-                                        <Label color="primary">Sẵn sàng</Label>
-                                      )}
-                                      {i.status === "arrived" && (
-                                        <Label color="success">Đã giao</Label>
-                                      )}
+                                      <div>
+                                        {i.status === "progress" && (
+                                          <Label color="warning">
+                                            Đang xử lý
+                                          </Label>
+                                        )}
+                                        {i.status === "ready" && (
+                                          <Label color="primary">
+                                            Sẵn sàng
+                                          </Label>
+                                        )}
+                                        {i.status === "delivery" && (
+                                          <Label color="primary">
+                                            Đang giao
+                                          </Label>
+                                        )}
+                                        {i.status === "arrived" && (
+                                          <Label color="success">
+                                            Đã đến nơi
+                                          </Label>
+                                        )}
+                                        {i.status === "done" && (
+                                          <Label color="success">Đã giao</Label>
+                                        )}
+                                      </div>
                                     </div>
                                   </TableCell>
                                 </TableRow>
