@@ -305,7 +305,7 @@ export default function SessionDetailTime(props) {
                             <TableCell align="left">
                               <div>
                                 {status === "waiting" && (
-                                  <Label color="warning">Đang chờ</Label>
+                                  <Label color="warning">Đang xử lí</Label>
                                 )}
 
                                 {status === "ready" && (
@@ -446,14 +446,14 @@ export default function SessionDetailTime(props) {
                 )}
               </Table>
             </TableContainer>
-            <ButtonCustomize
+            {/* <ButtonCustomize
               nameButton="Tạo chuyến"
               marginLeft="45%"
               marginTop="2%"
               onClick={async () =>
                 await dispatch(sendIdSessions(token, id, Navigate))
               }
-            />
+            /> */}
           </Scrollbar>
 
           <TablePagination
