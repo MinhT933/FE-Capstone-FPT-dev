@@ -332,14 +332,13 @@ export default function ViewOrderInSession(props) {
                                     {i?.packageItem?.deliveryDate}
                                   </TableCell>
                                   <TableCell>
-                                    {" "}
                                     <div>
                                       {i.status === "delivery" && (
                                         <Label color="warning">Đang giao</Label>
                                       )}
                                       {i.status === "progress" && (
                                         <Label color="warning">
-                                          Đang tiến hành
+                                          Đang xử lý
                                         </Label>
                                       )}
                                       {i.status === "ready" && (
@@ -419,7 +418,6 @@ export default function ViewOrderInSession(props) {
                         </>
                       );
                     })}
-                  ;
                 </TableBody>
 
                 {isStationNotFound && (

@@ -19,13 +19,20 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import PageHeaderAddShipper from "../../components/PageHeaderAddShipper";
+import SetOpenPopUp from "./../../components/Trip/ChangeShipper";
 //----------------------------------------------------------------
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function AddShipper(props) {
-  const { id, setOpenSetShipper, OpenSetShipper } = props;
+  const {
+    id,
+    setOpenSetShipper,
+    OpenSetShipper,
+    ButtonShipper,
+    setButtonShipper,
+  } = props;
 
   const profiles = useSelector((state) => {
     return state.userReducer.profiles;
@@ -38,6 +45,7 @@ export default function AddShipper(props) {
   const dispatch = useDispatch();
   const [OptionValue, setOptionValue] = React.useState([]);
   const [selectedOptions, setSelectedOptions] = React.useState([]);
+
 
   const token = localStorage.getItem("token");
   if (token === null) {
@@ -104,8 +112,9 @@ export default function AddShipper(props) {
         );
         if (res) {
           dispatch(callAPIGetListSessionDetail(token, id));
+          setButtonShipper(false);
           CustomizedToast({
-            message: `Đã thêm ${formik.values.name}`,
+            message: `Đã thêm shipper thành công`,
             type: "SUCCESS",
           });
         }
@@ -138,7 +147,7 @@ export default function AddShipper(props) {
         </DialogTitle>
         <DialogContent>
           <form onSubmit={formik.handleSubmit}>
-            <Box>
+            <Box sx={{ marginLeft: "6rem" }}>
               <Autocomplete
                 multiple
                 id="checkboxes-tags-demo"
@@ -175,12 +184,14 @@ export default function AddShipper(props) {
             <ButtonCustomize
               type="submit"
               witdh="12%"
-              marginLeft="30%"
+              marginLeft="43%"
+              marginTop="2%"
               nameButton="Thêm shipper"
             />
           </form>
         </DialogContent>
       </Dialog>
+    
     </Paper>
   );
 }

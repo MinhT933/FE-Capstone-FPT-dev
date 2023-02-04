@@ -32,7 +32,7 @@ import API from "../../Axios/API/API";
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
-export default function ChangeShipper(props) {
+export default function SetOpenPopUp(props) {
   const { OpenPopUp, SetOpenPopUp, id, status } = props;
 
   // console.log(selectionModel);

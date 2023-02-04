@@ -44,6 +44,7 @@ import TripBySessionIDtoolbar from "./../../sections/@dashboard/user/TripBySessi
 import Label from "../../components/label/label";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import SessionDetail from "./SessionDetail";
+import SetOpenPopUp from "./../../components/Trip/ChangeShipper";
 
 // ----------------------------------------------------------------------
 
@@ -148,6 +149,7 @@ export default function DeliveryTripByIDsession(props) {
       setOpenCell(tempArr);
     }
   }, [trip]);
+  const [SetOpenPopUp, OpenPopUp] = React.useState(false);
   // console.log(trip);
 
   //CALL API=====================================================
@@ -308,14 +310,23 @@ export default function DeliveryTripByIDsession(props) {
                                   {status === "ready" && (
                                     <Label color="info">Sẵn sàng</Label>
                                   )}
+                                  {status === "delivery" && (
+                                    <Label color="warning">Đang giao</Label>
+                                  )}
                                   {status === "waiting" && (
-                                    <Label color="warning">Đang chờ</Label>
+                                    <Label color="warning"> Đang xử lý</Label>
                                   )}
                                   {status === "arrived" && (
                                     <Label color="success">Hoàn thành</Label>
                                   )}
+                                  {status === "reject" && (
+                                    <Label color="error">Từ chối</Label>
+                                  )}
                                 </div>
                               </TableCell>
+                              {/* {status === "reject" && (
+                                <TableCell align="left">hehe</TableCell>
+                              )} */}
                             </TableRow>
                             <TableRow>
                               <TableCell
@@ -388,7 +399,7 @@ export default function DeliveryTripByIDsession(props) {
                                                   {item.status ===
                                                     "waiting" && (
                                                     <Label color="warning">
-                                                      Đang chờ
+                                                      Đang xử lý
                                                     </Label>
                                                   )}
 
@@ -400,12 +411,12 @@ export default function DeliveryTripByIDsession(props) {
                                                   {item.status ===
                                                     "delivery" && (
                                                     <Label color="primary">
-                                                      Đang tiến hành
+                                                      Đang giao
                                                     </Label>
                                                   )}
                                                   {item.status ===
                                                     "arrived" && (
-                                                    <Label color="primary">
+                                                    <Label color="success">
                                                       Hoàn thành
                                                     </Label>
                                                   )}
@@ -416,8 +427,6 @@ export default function DeliveryTripByIDsession(props) {
                                                   nameButton="Xem chi tiết"
                                                   onClick={() => {
                                                     SetOpenPopUpDetail(true);
-                                                    // let food = [];
-
                                                     setOderFood(item.orders);
                                                   }}
                                                 />
@@ -470,6 +479,7 @@ export default function DeliveryTripByIDsession(props) {
         SetOpenPopUpDetail={SetOpenPopUpDetail}
         OpenPopUpDetail={OpenPopUpDetail}
       />
+      {/* <SetOpenPopUp OpenPopUp={OpenPopUp} SetOpenPopUp={SetOpenPopUp} /> */}
     </Page>
   );
 }

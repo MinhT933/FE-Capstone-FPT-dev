@@ -305,20 +305,18 @@ export default function SessionDetailTime(props) {
                             <TableCell align="left">
                               <div>
                                 {status === "waiting" && (
-                                  <Label color="warning">Đang chờ</Label>
+                                  <Label color="warning">Đang xử lí</Label>
                                 )}
 
                                 {status === "ready" && (
                                   <Label color="primary">Sẵn sàng</Label>
                                 )}
-                                {/* {status === "ready" && (
-                                  <Label color="primary">Sẵn sàng</Label>
-                                )} */}
+
                                 {status === "delivery" && (
-                                  <Label color="primary">Đang tiến hành</Label>
+                                  <Label color="warning">Đang giao</Label>
                                 )}
-                                {status === "done" && (
-                                  <Label color="success">Hoàn thành</Label>
+                                {status === "arrived" && (
+                                  <Label color="success">Đã giao</Label>
                                 )}
                               </div>
                             </TableCell>
@@ -397,12 +395,11 @@ export default function SessionDetailTime(props) {
 
                                             <TableCell align="center">
                                               <div>
-                                                {i.status === "waiting" && (
-                                                  <Label color="Warning">
-                                                    Đang chờ
+                                                {i.status === "progress" && (
+                                                  <Label color="warning">
+                                                    Đang xử lý
                                                   </Label>
                                                 )}
-
                                                 {i.status === "ready" && (
                                                   <Label color="primary">
                                                     Sẵn sàng
@@ -410,12 +407,22 @@ export default function SessionDetailTime(props) {
                                                 )}
                                                 {i.status === "delivery" && (
                                                   <Label color="primary">
-                                                    Đang tiến hành
+                                                    Đang giao
                                                   </Label>
                                                 )}
                                                 {i.status === "arrived" && (
                                                   <Label color="success">
-                                                    Hoàng thành
+                                                    Đã đến nơi
+                                                  </Label>
+                                                )}
+                                                {i.status === "done" && (
+                                                  <Label color="success">
+                                                    Đã giao
+                                                  </Label>
+                                                )}
+                                                {i.status === "reject" && (
+                                                  <Label color="error">
+                                                    Từ chối
                                                   </Label>
                                                 )}
                                               </div>
@@ -432,7 +439,6 @@ export default function SessionDetailTime(props) {
                         </>
                       );
                     })}
-                  ;
                 </TableBody>
 
                 {isStationNotFound && (
@@ -446,14 +452,14 @@ export default function SessionDetailTime(props) {
                 )}
               </Table>
             </TableContainer>
-            <ButtonCustomize
+            {/* <ButtonCustomize
               nameButton="Tạo chuyến"
               marginLeft="45%"
               marginTop="2%"
               onClick={async () =>
                 await dispatch(sendIdSessions(token, id, Navigate))
               }
-            />
+            /> */}
           </Scrollbar>
 
           <TablePagination

@@ -142,21 +142,47 @@ export default function FullWidthTabs() {
     }
   };
 
+  // React.useEffect(() => {
+  //   if (
+  //     handleCompareDate(detailSession.workDate) === true &&
+  //     detailSession.status === "processing"
+  //   ) {
+  //     setButton(true);
+  //   } else if (detailSession.status === "waiting") {
+  //     setButtonCreatedTrip(true);
+  //   } else if (detailSession.status === "unassigned") {
+  //     setButtonShipper(true);
+  //   } else {
+  //     setButton(false);
+  //   }
+  // }, [detailSession.workDate, detailSession.status]);
+
   React.useEffect(() => {
     if (
       handleCompareDate(detailSession.workDate) === true &&
       detailSession.status === "processing"
     ) {
-      console.info("run1");
       setButton(true);
-    } else if (detailSession.status === "waiting") {
-      setButtonCreatedTrip(true);
-    } else if (detailSession.status === "unassigned") {
-      setButtonShipper(true);
     } else {
       setButton(false);
     }
   }, [detailSession.workDate, detailSession.status]);
+
+  React.useEffect(() => {
+    if (detailSession.status === "waiting") {
+      setButtonCreatedTrip(true);
+    } else {
+      setButtonCreatedTrip(false);
+    }
+  }, [detailSession.status]);
+
+  React.useEffect(() => {
+    if (detailSession.status === "unassigned") {
+      setButtonShipper(true);
+    } else {
+      setButtonShipper(false);
+    }
+  }, [detailSession.status]);
 
   const handleDate = (date) => {
     const a = new Date(date).toLocaleDateString().split("/");
@@ -235,9 +261,10 @@ export default function FullWidthTabs() {
           ButtonCreatedTrip && (
             <ButtonCustomize
               nameButton="Tạo chuyến"
-              onClick={async () =>
-                await dispatch(sendIdSessions(token, id, Navigate))
-              }
+              onClick={async () => {
+                setButtonCreatedTrip(false);
+                await dispatch(sendIdSessions(token, id, Navigate));
+              }}
             />
           )
         }
@@ -293,6 +320,8 @@ export default function FullWidthTabs() {
         id={sessionID}
         setOpenSetShipper={setOpenSetShipper}
         OpenSetShipper={OpenSetShipper}
+        setButtonShipper={setButtonShipper}
+        ButtonShipper={ButtonShipper}
       />
     </Box>
   );
