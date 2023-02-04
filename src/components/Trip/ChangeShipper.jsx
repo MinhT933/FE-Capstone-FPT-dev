@@ -18,6 +18,7 @@ import Iconify from "../hook-form/Iconify";
 import { CustomizedToast } from "../Toast/ToastCustom";
 import ButtonCustomize from "../Button/ButtonCustomize";
 import {
+  callAPIgetShipperActiveByIDkitchen,
   callAPIgetShipperByActive,
   callAPIgetTripall,
 } from "../../redux/action/acction";
@@ -54,10 +55,16 @@ export default function ChangeShipper(props) {
     },
   };
 
-  // const idKitchen = profiles.id;
+  const profiles = useSelector((state) => {
+    return state.userReducer.profiles;
+  });
+
+  const idKitchen = profiles.id;
+
   React.useEffect(() => {
     const getfoodByFoodGroupId = async () => {
       await dispatch(callAPIgetShipperByActive(token));
+      await dispatch(callAPIgetShipperActiveByIDkitchen(token, idKitchen));
       const callAPI = async () => {
         // await dispatch(callAPIgetAPIcount(token, props.status));
         const res = await API(
@@ -78,9 +85,9 @@ export default function ChangeShipper(props) {
   };
 
   const listShipperSelectbox = useSelector((state) => {
-    return state.userReducer.listShipperActive;
+    return state.userReducer.listShipperActivebyID;
   });
-
+  console.log(listShipperSelectbox);
   const handleClose = () => {
     SetOpenPopUp(false);
   };
@@ -169,7 +176,7 @@ export default function ChangeShipper(props) {
               </div>
               <Box sx={{ marginLeft: "6.5rem", marginTop: "2rem" }}>
                 <ButtonCustomize
-                  nameButton="Tạo chuyến đi"
+                  nameButton="Chuyển"
                   type="submit"
                   width="15rem"
                 />

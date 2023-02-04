@@ -49,6 +49,7 @@ const TABLE_HEAD = [
   // { id: "openTime", label: "Mở cửa", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
   { id: "createdAt", label: "Ngày tạo", alignRight: false },
+  { id: "openningDate", label: "Ngày mở cửa", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
 
   { label: "Thay đổi trạng thái", alignRight: false },
@@ -254,7 +255,9 @@ export default function KitchenList() {
                   {filteredStations
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, address, ability, createdAt } = row;
+                      console.log(row);
+                      const { id, address, ability, createdAt, openingDate } =
+                        row;
 
                       return (
                         <TableRow
@@ -283,6 +286,9 @@ export default function KitchenList() {
                           </TableCell>
                           <TableCell align="left">
                             {new Date(createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell align="left">
+                            {new Date(openingDate).toLocaleDateString()}
                           </TableCell>
                           <TableCell align="left">
                             <div>

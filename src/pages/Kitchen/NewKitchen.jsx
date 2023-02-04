@@ -37,6 +37,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { styled } from "@mui/material/styles";
+import moment from "moment";
+import "moment-timezone";
+import dateFormat from "dateformat";
 
 //geticon
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -57,14 +60,14 @@ const schema = yup.object().shape({
   fullName: yup.string().required("Điền đầy đủ thông tin").trim(),
 
   address: yup.string().required("Điền đầy đủ thông tin").trim(),
-  ability: yup.string().required("Điền đầy đủ thông tin").trim(),
-  openingDate: yup.string().required("Điền đầy đủ thông tin").trim(),
+  // ability: yup.string().required("Điền đầy đủ thông tin").trim(),
+  // openingDate: yup.string().required("Điền đầy đủ thông tin").trim(),
 });
 //================================================================
 
 //callAPIforCreateStation========================================
 export default function NewKitchen() {
-  const [valueStarTime, setValueStarTime] = React.useState(
+  const [ValueOpenDate, setValueOpenDate] = React.useState(
     dayjs("2022-10-23T21:11:5")
   );
 
@@ -98,6 +101,29 @@ export default function NewKitchen() {
 
   const [opentime, setOpentime] = useState(null);
   const [closetime, setClosetime] = useState(null);
+
+  const handleDate = (time) => {
+    const a = new Date(time).toLocaleDateString().split("/");
+    let test = "";
+    console.log(`${a[2]}-0${a[1]}-0${a[0]}`);
+    if (a[0] < 10 && a[1] < 10) {
+      console.log(`${a[2]}-0${a[1]}-0${a[0]}`);
+      test = `${a[2]}-0${a[1]}-0${a[0]}`;
+      return test;
+    } else if (a[0] > 10 && a[1] > 10) {
+      console.log(`${a[2]}-${a[1]}-${a[0]}`);
+      test = `${a[2]}-${a[1]}-${a[0]}`;
+      return test;
+    } else if (a[0] > 10 && a[1] < 10) {
+      console.log(`${a[2]}-0${a[1]}-${a[0]}`);
+      test = `${a[2]}-0${a[1]}-${a[0]}`;
+      return test;
+    } else if (a[0] < 10 && a[1] > 10) {
+      console.log(`${a[2]}-${a[1]}-0${a[0]}`);
+      test = `${a[2]}-${a[1]}-0${a[0]}`;
+      return test;
+    }
+  };
   // const [coordinate,setCoordinate] = useState(0);
   const formik = useFormik({
     //gắn schema để so sánh
@@ -115,17 +141,17 @@ export default function NewKitchen() {
       closetime: "",
       openingDate: "",
     },
-
     onSubmit: async (values) => {
       const closeTimeSplit = new Date(closetime).toTimeString().split(":");
       const openTimeSplit = new Date(opentime).toTimeString().split(":");
+      // const date = new Date(ValueOnpenDate).toLocaleDateString().split("/");
       const data = {
         password: formik.values.password,
         fullName: formik.values.fullName,
         email: formik.values.email,
         address: formik.values.address,
         phone: formik.values.phone,
-
+        openingDate: dateFormat(ValueOpenDate, "yyyy-mm-dd"),
         openTime: `${openTimeSplit[0]}:${openTimeSplit[1]}`,
         closeTime: `${closeTimeSplit[0]}:${closeTimeSplit[1]}`,
       };
@@ -154,8 +180,7 @@ export default function NewKitchen() {
       }
     },
   });
-  console.log(formik);
-  //   console.log(valueStarTime.tolocalDateString());
+  console.log(ValueOpenDate);
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -326,9 +351,10 @@ export default function NewKitchen() {
                   name="openingDate"
                   width="27rem"
                   inputFormat="DD-MM-YYYY"
-                  value={valueStarTime}
+                  value={ValueOpenDate}
                   onChange={(e) => {
-                    setValueStarTime(e);
+                    console.log(e);
+                    setValueOpenDate(e);
                   }}
                 />
 

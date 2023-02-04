@@ -44,6 +44,7 @@ import TripBySessionIDtoolbar from "./../../sections/@dashboard/user/TripBySessi
 import Label from "../../components/label/label";
 import ButtonCustomize from "./../../components/Button/ButtonCustomize";
 import SessionDetail from "./SessionDetail";
+import ChangeShipper from "../../components/Trip/ChangeShipper";
 
 // ----------------------------------------------------------------------
 
@@ -115,7 +116,8 @@ export default function DeliveryTripByIDsession(props) {
   const [orderFood, setOderFood] = useState([]);
 
   const [OpenPopUpDetail, SetOpenPopUpDetail] = useState(false);
-
+  const [OpenPopUp, SetOpenPopUp] = useState(false);
+  const [TripID, setTripID] = useState();
   //CALL API====================================================
   const location = useLocation();
   const Navigate = useNavigate();
@@ -195,6 +197,10 @@ export default function DeliveryTripByIDsession(props) {
     setFilterName(event.target.value);
   };
 
+  const handleClickChangeShipper = (id) => {
+    setTripID(id);
+    SetOpenPopUp(true);
+  };
   const fillter = applySortFilter(
     trip,
     getComparator(order, orderBy),
@@ -309,13 +315,26 @@ export default function DeliveryTripByIDsession(props) {
                                     <Label color="info">Sẵn sàng</Label>
                                   )}
                                   {status === "waiting" && (
-                                    <Label color="warning">Đang chờ</Label>
+                                    <Label color="warning">Đang xử lý</Label>
                                   )}
                                   {status === "arrived" && (
                                     <Label color="success">Hoàn thành</Label>
                                   )}
+                                  {status === "reject" && (
+                                    <Label color="error">Từ chối</Label>
+                                  )}
                                 </div>
                               </TableCell>
+                              {status === "reject" && (
+                                <TableCell>
+                                  <ButtonCustomize
+                                    nameButton="Đổi shipper"
+                                    onClick={() => {
+                                      handleClickChangeShipper(id);
+                                    }}
+                                  />
+                                </TableCell>
+                              )}
                             </TableRow>
                             <TableRow>
                               <TableCell
@@ -355,25 +374,12 @@ export default function DeliveryTripByIDsession(props) {
                                       </TableHead>
                                       <TableBody>
                                         {batchs.map((item, idex) => {
-                                          console.log(item);
                                           return (
                                             <TableRow>
                                               <TableCell>
                                                 Túi {idex + 1}
                                               </TableCell>
-                                              {/* <TableCell>
-                                                {item.orders.map((i, index) => {
-                                                  console.log(i);
-                                                  return (
-                                                    <TableCell>
-                                                      {
-                                                        i.subscription.account
-                                                          .profile.fullName
-                                                      }
-                                                    </TableCell>
-                                                  );
-                                                })}
-                                              </TableCell> */}
+
                                               <TableCell>
                                                 {item.station.name}
                                               </TableCell>
@@ -388,7 +394,7 @@ export default function DeliveryTripByIDsession(props) {
                                                   {item.status ===
                                                     "waiting" && (
                                                     <Label color="warning">
-                                                      Đang chờ
+                                                      Đang xử lý
                                                     </Label>
                                                   )}
 
@@ -469,6 +475,11 @@ export default function DeliveryTripByIDsession(props) {
         orderFood={orderFood}
         SetOpenPopUpDetail={SetOpenPopUpDetail}
         OpenPopUpDetail={OpenPopUpDetail}
+      />
+      <ChangeShipper
+        OpenPopUp={OpenPopUp}
+        SetOpenPopUp={SetOpenPopUp}
+        id={TripID}
       />
     </Page>
   );

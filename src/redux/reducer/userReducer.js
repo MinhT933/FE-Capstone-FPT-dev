@@ -58,7 +58,6 @@ const initialState = {
   listKitchenActive: [],
   rate: [],
   dateRange: {},
-  packageItem: [],
   session: [],
   detailSession: [],
   flag: [],
@@ -68,7 +67,7 @@ const initialState = {
   listripByID: [],
   arrayOrder: [],
 
-  listFreeShipper: [],
+  listShipperActivebyID: [],
 };
 
 export default function userReducer(state = initialState, { type, payload }) {
@@ -263,6 +262,12 @@ export default function userReducer(state = initialState, { type, payload }) {
     case PathAction.GET_SHIPPER_ACTIVE:
       state.listShipperActive = payload;
       state.valueTag = payload.listShipperActive?.map(
+        (item) => item.account.profile.fullName
+      );
+      break;
+    case PathAction.GET_SHIPPER_ACTIVE_BYID:
+      state.listShipperActivebyID = payload;
+      state.valueTag = payload.listShipperActivebyID?.map(
         (item) => item.account.profile.fullName
       );
       break;
