@@ -125,6 +125,7 @@ export default function NewKitchen() {
         email: formik.values.email,
         address: formik.values.address,
         phone: formik.values.phone,
+
         openTime: `${openTimeSplit[0]}:${openTimeSplit[1]}`,
         closeTime: `${closeTimeSplit[0]}:${closeTimeSplit[1]}`,
       };
@@ -154,6 +155,7 @@ export default function NewKitchen() {
     },
   });
   console.log(formik);
+  console.log(valueStarTime.tolocalDateString());
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
