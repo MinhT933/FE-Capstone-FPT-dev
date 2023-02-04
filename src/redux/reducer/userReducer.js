@@ -119,9 +119,9 @@ export default function userReducer(state = initialState, { type, payload }) {
     //   const filter = state.session.filter((c) => c.timeSlot.flag === +payload);
     //   state.flag = filter;
     //   break;
-    // case PathAction.GET_LIST_SHIPPER_BY_IDKITCHEN:
-    //   state.shipperbyIDkitchen = payload;
-    //   break;
+    case PathAction.GET_LIST_SHIPPER_BY_IDKITCHEN:
+      state.shipperbyIDkitchen = payload;
+      break;
     // case PathAction.GET_LIST_SESSION_DETAIL:
     //   state.detailSession = payload;
     //   break;

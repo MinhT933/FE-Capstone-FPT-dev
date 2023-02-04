@@ -511,15 +511,4 @@ export default function Trip() {
   );
 }
 
-// const data = {
-//   {
-//     kitchenId: "string",
-//     shippers: [
-//       {
-//         idShipper: "string",
-//         idShipper: "string",
-//         idShipper: "string"
-//       }
-//     ]
-//   }
-// }
+

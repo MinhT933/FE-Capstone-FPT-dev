@@ -52,7 +52,6 @@ const TABLE_HEAD = [
   { id: "", label: "Tạo chuyến", alignRight: false },
 
   // { id: "", label: "Xác nhận", alignRight: false },
-
 ];
 
 // ----------------------------------------------------------------------
@@ -203,7 +202,6 @@ export default function Session() {
     filterName
   );
 
-
   const handleCompareDate = (date) => {
     const toDate = new Date();
     const workDate = date.split("-");
@@ -215,16 +213,16 @@ export default function Session() {
     // console.log(workDate[1]);
     // console.log(a[1]);
 
-    if (a[0] > workDate[2] && a[1] > workDate[1]) {
+    if (a[0] === workDate[2] && a[1] === workDate[1]) {
       return true;
     }
-    if (a[0] < workDate[2] && a[1] > workDate[1]) {
+    if (a[0] === workDate[2] && a[1] === workDate[1]) {
       return true;
     }
-    if (a[0] > workDate[2] && a[1] < workDate[1]) {
+    if (a[0] === workDate[2] && a[1] === workDate[1]) {
       return false;
     }
-    if (a[0] < workDate[2] && a[1] < workDate[1]) {
+    if (a[0] === workDate[2] && a[1] === workDate[1]) {
       return false;
     }
   };
@@ -234,11 +232,11 @@ export default function Session() {
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Page title="Phiên làm việc">
-      <PageHeader
+      {/* <PageHeader
         title="Xem chi tiết phiên làm việc"
         subTitle={`thông tin chi tiết`}
         icon={getIcon("fluent-mdl2:work-item")}
-      />
+      /> */}
       <Container maxWidth={false}>
         <Stack
           direction="row"
@@ -339,16 +337,15 @@ export default function Session() {
                               )}
                               {status === "waiting" && (
                                 // <Alert severity="info">waiting</Alert>
-                                <Label color="warning">Đang chờ</Label>
+                                <Label color="warning">Chưa tạo chuyến</Label>
                               )}
                               {status === "done" && (
                                 <Label color="success">Hoàn thành</Label>
                               )}
 
-                              {status === "ready" && (
-                                <Label color="warning">Sẵn Sàng</Label>
+                              {status === "unassigned" && (
+                                <Label color="warning">Chưa phân công</Label>
                               )}
-
                             </div>
                           </TableCell>
 
@@ -361,8 +358,7 @@ export default function Session() {
                               component={RouterLink}
                             />
                           </TableCell>
-                          <TableCell align="left">
-
+                          {/* <TableCell align="left">
                             {handleCompareDate(workDate) === true &&
                             status === "processing" ? (
                               <ButtonCustomize
@@ -376,8 +372,7 @@ export default function Session() {
                             ) : (
                               <TableCell></TableCell>
                             )}
-
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}

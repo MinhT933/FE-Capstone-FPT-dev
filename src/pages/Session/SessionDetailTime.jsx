@@ -41,6 +41,7 @@ import StationListtoolbar from "../../sections/@dashboard/user/StationListtoolba
 import AddShipper from "./AddShipper";
 import Avatar from "@mui/material/Avatar";
 import Collapse from "@mui/material/Collapse";
+import OrderinSessionToolBar from "../../sections/@dashboard/user/OrderinSessionToolBar";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -233,12 +234,12 @@ export default function SessionDetailTime(props) {
         </Stack>
 
         <Card>
-          <StationListtoolbar
+          {/* <OrderinSessionToolBar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
             options={getOptions()}
-          />
+          /> */}
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -259,7 +260,7 @@ export default function SessionDetailTime(props) {
                       page * rowsPerPage + rowsPerPage
                     )
                     .map((row, index) => {
-                      console.log(detail.status);
+                      console.log(row);
                       const { id, station, status, orders } = row;
                       return (
                         <>
@@ -303,20 +304,20 @@ export default function SessionDetailTime(props) {
 
                             <TableCell align="left">
                               <div>
-                                {detail.status === "waiting" && (
+                                {status === "waiting" && (
                                   <Label color="warning">Đang chờ</Label>
                                 )}
 
-                                {detail.status === "ready" && (
+                                {status === "ready" && (
                                   <Label color="primary">Sẵn sàng</Label>
                                 )}
-                                {/* {detail.status === "ready" && (
+                                {/* {status === "ready" && (
                                   <Label color="primary">Sẵn sàng</Label>
                                 )} */}
-                                {detail.status === "delivery" && (
+                                {status === "delivery" && (
                                   <Label color="primary">Đang tiến hành</Label>
                                 )}
-                                {detail.status === "done" && (
+                                {status === "done" && (
                                   <Label color="success">Hoàn thành</Label>
                                 )}
                               </div>

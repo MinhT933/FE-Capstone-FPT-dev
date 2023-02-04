@@ -1,9 +1,10 @@
+import { fontSize } from "@mui/joy/styles/styleFunctionSx";
 import { Card, Paper, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 // import { Paper, Card, Typography, makeStyles } from '@material-ui/core'
 
-export default function PageDetailSession(props) {
+export default function PageHeaderAddShipper(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#fdfdff",
@@ -28,19 +29,7 @@ export default function PageDetailSession(props) {
     },
   }));
   const classes = useStyles();
-  const {
-    title,
-    subTitle,
-    icon,
-    width,
-    marginLeft,
-    subTitle1,
-    subTitle2,
-    subTitle3,
-    subTitle4,
-    subTitle5,
-    subTitle6,
-  } = props;
+  const { title, subTitle, icon, width, marginLeft } = props;
   return (
     <Paper
       elevation={0}
@@ -50,30 +39,17 @@ export default function PageDetailSession(props) {
     >
       <div className={classes.pageHeader}>
         <div className={classes.pageTitle}>
-          <Typography variant="h6" component="div" sx={{ paddingTop: "2rem" }}>
-            {title}
+          <Typography variant="h6" component="div">
+            {/* {title} */}
+            Bạn cần thêm{" "}
+            <span style={{ color: "red", fontSize: "1.5rem" }}>
+              {title}
+            </span>{" "}
+            shipper cho phiên làm việc này
           </Typography>
-          <Typography variant="subtitle2" component="div">
+          {/* <Typography variant="subtitle2" component="div">
             {subTitle}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            {subTitle1}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            {subTitle2}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            TRẠNG THÁI: {subTitle3}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            {subTitle4}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            {subTitle5}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            {subTitle6}
-          </Typography>
+          </Typography> */}
         </div>
         {/* <Card className={classes.pageIcon}>{icon}</Card> */}
       </div>

@@ -152,9 +152,15 @@ export default function Foodlistoolbar({
                 onChange={async (e) => {
                   const a = category.find((c) => c.id === e.target.value);
                   setID(a.id);
-                  dispatch(
-                    await callAPIgetListFoodfilterCate(token, a.id, status)
-                  );
+                  if (status === "All") {
+                    dispatch(
+                      await callAPIgetListFoodfilterCate(token, a.id, "")
+                    );
+                  } else {
+                    dispatch(
+                      await callAPIgetListFoodfilterCate(token, a.id, status)
+                    );
+                  }
                 }}
               />
             </Grid>

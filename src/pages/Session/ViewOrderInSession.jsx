@@ -42,6 +42,7 @@ import IconButton from "@mui/material/IconButton";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Avatar from "@mui/material/Avatar";
+import OrderinSessionToolBar from "../../sections/@dashboard/user/OrderinSessionToolBar";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -52,6 +53,7 @@ const TABLE_HEAD = [
   { id: "foodGroup", label: "Gói ăn", align: "center" },
   { id: "customer", label: "Buổi", align: "center" },
   { id: "station", label: "Điểm giao", alignRight: false },
+  { id: "subscriptionDate", label: "Ngày tạo", alignRight: false },
   { id: "subscriptionDate", label: "Ngày giao", alignRight: false },
   { id: "status", label: "Trạng thái", alignRight: false },
 ];
@@ -84,8 +86,8 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_stations) =>
-        _stations.orders.packageItem.foodGroup.name
+      (_detailSession) =>
+        _detailSession.orders.subscription?.account.profile.fullName
           .toLowerCase()
           .indexOf(query.toLowerCase()) !== -1
     );
@@ -138,6 +140,7 @@ export default function ViewOrderInSession(props) {
   const detailSession = useSelector((state) => {
     return state.userReducer.detailSession.batchs;
   });
+  console.log(detailSession);
 
   const detail = useSelector((state) => {
     return state.userReducer.detailSession;
@@ -230,12 +233,12 @@ export default function ViewOrderInSession(props) {
         </Stack>
 
         <Card>
-          <StationListtoolbar
+          {/* <OrderinSessionToolBar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
             options={getOptions()}
-          />
+          /> */}
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -262,7 +265,6 @@ export default function ViewOrderInSession(props) {
                       return (
                         <>
                           {row.map((i, index) => {
-                            console.log(i);
                             return (
                               <>
                                 <TableRow
@@ -327,7 +329,7 @@ export default function ViewOrderInSession(props) {
                                     ).toLocaleDateString()}
                                   </TableCell>
                                   <TableCell>
-                                    {i?.subscription?.subscriptionDate}
+                                    {i?.packageItem?.deliveryDate}
                                   </TableCell>
                                   <TableCell>
                                     {" "}
@@ -431,14 +433,14 @@ export default function ViewOrderInSession(props) {
                 )}
               </Table>
             </TableContainer>
-            <ButtonCustomize
+            {/* <ButtonCustomize
               nameButton="Tạo chuyến"
               marginLeft="45%"
               marginTop="2%"
               onClick={async () =>
                 await dispatch(sendIdSessions(token, id, Navigate))
               }
-            />
+            /> */}
           </Scrollbar>
 
           <TablePagination
