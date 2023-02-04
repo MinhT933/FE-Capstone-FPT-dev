@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 import SessionDetailTime from "./SessionDetailTime";
-import TotalFood from "./TotalFood";
+// import TotalFood from "./TotalFood";
 import { useState } from "react";
 import DeliveryTripByIDsession from "./DeliveryTripByIDsession";
 import Iconify from "../../components/hook-form/Iconify";
@@ -19,8 +19,8 @@ import {
   callAPIgetListOrder,
   callAPIGetListSession,
   callAPIGetListSessionDetail,
+  sendIdSessions,
 } from "../../redux/action/acction";
-import { jwt_decode } from "jwt-decode";
 import { useSelector } from "react-redux";
 import ViewOrderInSession from "./ViewOrderInSession";
 import Label from "./../../components/label/label";
@@ -28,6 +28,7 @@ import ButtonCustomize from "../../components/Button/ButtonCustomize";
 import API from "../../Axios/API/API";
 import { URL_API } from "../../Axios/URL_API/URL";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
+import AddShipper from "./AddShipper";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,6 +66,8 @@ function a11yProps(index) {
 export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [sessionID, setSessionID] = useState();
+  const [OpenSetShipper, setOpenSetShipper] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -90,14 +93,11 @@ export default function FullWidthTabs() {
     },
   });
 
-  const handleCompareDate = (date1, date2) => {
-    // return (
-    //   date1.getFullYear() >= date2.getFullYear() ||
-    //   date1.getDate() >= date2.getDate() ||
-    //   date1.getMonth() >= date2.getMonth()
-    // );
-    return date1.getTime() >= date2.getTime();
-  };
+  // const handleCompareDate = (date1, date2) => {
+  //   if (date2) {
+  //     return date1.getTime() === date2.getTime();
+  //   }
+  // };
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -117,23 +117,46 @@ export default function FullWidthTabs() {
   const detailSession = useSelector((state) => {
     return state.userReducer.detailSession;
   });
+
   const OrderArr = useSelector((state) => {
     return state.userReducer.arrayOrder;
   });
-  console.log(OrderArr.length);
+
   const profile = useSelector((state) => {
     return state.userReducer.profiles;
   });
   const [Button, setButton] = useState(false);
+  const [ButtonCreatedTrip, setButtonCreatedTrip] = useState(false);
+  const [ButtonShipper, setButtonShipper] = useState(false);
+
+  const handleCompareDate = (date2) => {
+    if (date2) {
+      const toDate = new Date();
+      const workDate = new Date(date2);
+      const b = workDate.toLocaleDateString().split("/");
+
+      const a = toDate.toLocaleDateString().split("/");
+      if (b[2] === a[2] && b[1] === a[1] && b[0] === a[0]) {
+        return true;
+      } else return false;
+    }
+  };
 
   React.useEffect(() => {
     if (
-      handleCompareDate(new Date(), new Date(detailSession.workDate)) &&
-      detailSession.status === "progressing"
+      handleCompareDate(detailSession.workDate) === true &&
+      detailSession.status === "processing"
     ) {
+      console.info("run1");
       setButton(true);
+    } else if (detailSession.status === "waiting") {
+      setButtonCreatedTrip(true);
+    } else if (detailSession.status === "unassigned") {
+      setButtonShipper(true);
+    } else {
+      setButton(false);
     }
-  }, [detailSession.workDate]);
+  }, [detailSession.workDate, detailSession.status]);
 
   const handleDate = (date) => {
     const a = new Date(date).toLocaleDateString().split("/");
@@ -141,21 +164,24 @@ export default function FullWidthTabs() {
       return `${a[2]}-0${a[1]}-${a[0]}`;
     } else return `${a[2]}-${a[1]}-${a[0]}`;
   };
-  const [open, setOpen] = React.useState(false);
-  const handleClose = React.useCallback(() => {
-    setOpen(false);
-  }, []);
+  // const [open, setOpen] = React.useState(false);
+  // const handleClose = React.useCallback(() => {
+  //   setOpen(false);
+  // }, []);
 
   const doneSession = async (id) => {
     await API("PUT", URL_API + `/sessions/done_session/${id}`, null, token)
       .then((res) => {
         dispatch(callAPIGetListSession(token, handleDate(new Date())));
-
+        dispatch(callAPIGetListSessionDetail(token, id));
         CustomizedToast({
           message: "Cập nhập trạng thái thành công",
           type: "SUCCESS",
         });
-        handleClose();
+        setButtonShipper(false);
+        setButtonCreatedTrip(false);
+        setButton(false);
+        // handleClose();
       })
       .catch((err) => {
         console.log(err);
@@ -164,17 +190,21 @@ export default function FullWidthTabs() {
 
   const handleStatus = (status) => {
     if (status === "waiting") {
-      return <Label color="error">Chưa phân công</Label>;
+      return <Label color="warning">Chưa tạo chuyến</Label>;
       // return "Chưa phân công";
     } else if (status === "processing") {
-      return <Label color="warning">Đang phân công</Label>;
+      return <Label color="warning">Đang xử lý </Label>;
     } else if (status === "done") {
       return <Label color="success">Hoàn thành </Label>;
-    } else if (status === "ready") {
-      return <Label color="warning">Chuẩn bị giao </Label>;
+    } else if (status === "unassigned") {
+      return <Label color="warning">Chưa phân công </Label>;
     }
   };
 
+  const handleClickSetShipper = (id) => {
+    setSessionID(id);
+    setOpenSetShipper(true);
+  };
   const getIcon = (name) => <Iconify icon={name} width={26} height={26} />;
   return (
     <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
@@ -198,6 +228,24 @@ export default function FullWidthTabs() {
               onClick={async () => {
                 doneSession(id);
               }}
+            />
+          )
+        }
+        subTitle5={
+          ButtonCreatedTrip && (
+            <ButtonCustomize
+              nameButton="Tạo chuyến"
+              onClick={async () =>
+                await dispatch(sendIdSessions(token, id, Navigate))
+              }
+            />
+          )
+        }
+        subTitle6={
+          ButtonShipper && (
+            <ButtonCustomize
+              nameButton="Thêm shipper"
+              onClick={() => handleClickSetShipper(id)}
             />
           )
         }
@@ -237,13 +285,15 @@ export default function FullWidthTabs() {
         <TabPanel value={value} index={1} dir={theme.direction}>
           <SessionDetailTime id={id} />
         </TabPanel>
-        {/* <TabPanel value={value} index={2} dir={theme.direction}>
-          <TotalFood id={id} />
-        </TabPanel> */}
         <TabPanel value={value} index={2} dir={theme.direction}>
           <DeliveryTripByIDsession id={id} />
         </TabPanel>
       </SwipeableViews>
+      <AddShipper
+        id={sessionID}
+        setOpenSetShipper={setOpenSetShipper}
+        OpenSetShipper={OpenSetShipper}
+      />
     </Box>
   );
 }

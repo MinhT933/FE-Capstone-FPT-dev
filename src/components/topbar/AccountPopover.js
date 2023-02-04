@@ -105,6 +105,7 @@ export default function AccountPopover() {
   const profiles = useSelector((state) => {
     return state.userReducer.profiles;
   });
+  console.log(profiles);
   return (
     <>
       <IconButton
@@ -149,7 +150,7 @@ export default function AccountPopover() {
             {profiles.profile?.fullName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {profiles.profile?.email}
+            {profiles.role?.name}
           </Typography>
         </Box>
 

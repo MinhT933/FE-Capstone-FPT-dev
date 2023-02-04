@@ -154,13 +154,17 @@ export default function NewPackage() {
     API("GET", URL_API + `/food-groups/find/${e.target.value}`, null, token)
       .then((res) => {
         let arrayfood = [];
+        let sum = 0;
         arrayfood = res.data.result.foods;
         for (let index = 0; index < arrayfood.length; index++) {
           pricearray.push(arrayfood[index].price);
+          sum += arrayfood[index].price;
         }
-        var priceMorthan = Math.max.apply(Math, pricearray);
+        console.log(sum);
+        // var priceMorthan = Math.max.apply(Math, pricearray);
         const a = [...prices];
-        a.push(priceMorthan);
+        // a.push(priceMorthan);
+        a.push(sum);
         formik.setFieldValue(
           "price",
           a.reduce((accumulator, item) => accumulator + item),

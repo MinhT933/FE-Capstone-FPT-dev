@@ -139,8 +139,6 @@ export default function DeliveryTripByIDsession(props) {
     return state.userReducer.listripByID;
   });
 
-  console.log(trip);
-
   React.useEffect(() => {
     if (trip) {
       const tempArr = [];
@@ -221,12 +219,12 @@ export default function DeliveryTripByIDsession(props) {
           </Stack>
 
           <Card>
-            <TripBySessionIDtoolbar
+            {/* <TripBySessionIDtoolbar
               numSelected={selected.length}
               filterName={filterName}
               onFilterName={handleFilterByName}
               options={getOptions()}
-            />
+            /> */}
 
             <Scrollbar>
               <TableContainer sx={{ minWidth: 900 }}>
@@ -408,7 +406,7 @@ export default function DeliveryTripByIDsession(props) {
                                                   {item.status ===
                                                     "arrived" && (
                                                     <Label color="primary">
-                                                      Hoàng thành
+                                                      Hoàn thành
                                                     </Label>
                                                   )}
                                                 </div>

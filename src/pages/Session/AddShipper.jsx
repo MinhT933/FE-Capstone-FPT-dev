@@ -1,12 +1,6 @@
 import React from "react";
 import { Link as useLocation, useNavigate } from "react-router-dom";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Paper,
-  Box,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Paper, Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useFormik } from "formik";
 import { CustomizedToast } from "../../components/Toast/ToastCustom";
@@ -16,10 +10,15 @@ import { URL_API } from "./../../Axios/URL_API/URL";
 import Checkbox from "@mui/material/Checkbox";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { callAPIgetShipperByKitchenID } from "../../redux/action/acction";
+import {
+  callAPIGetListSessionDetail,
+  callAPIGetListTripByID,
+  callAPIgetShipperByKitchenID,
+} from "../../redux/action/acction";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import PageHeaderAddShipper from "../../components/PageHeaderAddShipper";
 //----------------------------------------------------------------
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -51,12 +50,16 @@ export default function AddShipper(props) {
   React.useEffect(() => {
     const getlistShipper = async () => {
       dispatch(await callAPIgetShipperByKitchenID(token, idkitchen));
+      dispatch(await callAPIGetListTripByID(token, id));
     };
     getlistShipper();
-  }, [dispatch, token, idkitchen]);
+  }, [dispatch, token, idkitchen, id]);
 
   const shipper = useSelector((state) => {
     return state.userReducer.shipperbyIDkitchen;
+  });
+  const listripByID = useSelector((state) => {
+    return state.userReducer.listripByID;
   });
 
   const getid = () => {
@@ -100,13 +103,13 @@ export default function AddShipper(props) {
           token
         );
         if (res) {
+          dispatch(callAPIGetListSessionDetail(token, id));
           CustomizedToast({
             message: `Đã thêm ${formik.values.name}`,
             type: "SUCCESS",
           });
         }
       } catch (error) {
-        console.log(error.response.data.message);
         if (error.response.data.message === "shipper not enough") {
           CustomizedToast({
             message: "Không đủ shipper",
@@ -131,11 +134,11 @@ export default function AddShipper(props) {
         maxWidth="md"
       >
         <DialogTitle>
+          <PageHeaderAddShipper title={`${listripByID.length} `} />
         </DialogTitle>
         <DialogContent>
           <form onSubmit={formik.handleSubmit}>
             <Box>
-            
               <Autocomplete
                 multiple
                 id="checkboxes-tags-demo"

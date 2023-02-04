@@ -3,14 +3,7 @@ import { useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
-import {
-  Box,
-  Link,
-  Drawer,
-  Typography,
-  Avatar,
-  Stack,
-} from "@mui/material";
+import { Box, Link, Drawer, Typography, Avatar, Stack } from "@mui/material";
 // mock
 import account from "../../_mock/account";
 // hooks
@@ -90,7 +83,6 @@ export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
       <NavSection navConfig={navConfig} />
-      ``
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack

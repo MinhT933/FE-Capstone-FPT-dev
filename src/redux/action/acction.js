@@ -105,6 +105,34 @@ export const callAPIgetListFoodfilterCate = (token, id, status) => {
           type: "ERROR",
         });
       }
+    } else if (status === "") {
+      try {
+        ///foods/byCatefory_filter?categoryId=
+        const res = await API(
+          "GET",
+          URL_API + `/foods/byCatefory_filter?categoryId=${id}`,
+          null,
+          token
+        );
+
+        dispatch(
+          createAction({
+            type: PathAction.GET_LIST_FOOD,
+            payload: res.data.result,
+          })
+        );
+      } catch (err) {
+        dispatch(
+          createAction({
+            type: PathAction.GET_LIST_FOOD,
+            payload: [],
+          })
+        );
+        CustomizedToast({
+          message: `Không tìm thấy dữ liệu`,
+          type: "ERROR",
+        });
+      }
     } else {
       try {
         const res = await API(
@@ -1666,6 +1694,7 @@ export const sendIdSessions = (token, id, Navigate) => {
           message: `Tạo phiên làm việc thành công`,
           type: "SUCCESS",
         });
+        callAPIGetListSessionDetail(token, id);
         Navigate(`/dashboard/kitchen/listTrip/${id}`);
       }
 

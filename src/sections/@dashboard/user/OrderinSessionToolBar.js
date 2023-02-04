@@ -44,7 +44,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-TripBySessionIDtoolbar.propTypes = {
+OrderinSessionToolBar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
@@ -54,7 +54,7 @@ const token = localStorage.getItem("token");
 if (token === "null") {
 }
 
-export default function TripBySessionIDtoolbar({
+export default function OrderinSessionToolBar({
   numSelected,
   filterName,
   onFilterName,

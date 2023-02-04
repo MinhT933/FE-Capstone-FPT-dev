@@ -272,7 +272,7 @@ export default function ListCateTime() {
         >
           <Tab label="Loại món ăn" {...a11yProps(0)} />
           <Tab label="Loại gói ăn" {...a11yProps(1)} />
-          <Tab label="Khung thời gian" {...a11yProps(2)} />
+          {/* <Tab label="Khung thời gian" {...a11yProps(2)} /> */}
         </Tabs>
       </Box>
       <SwipeableViews
